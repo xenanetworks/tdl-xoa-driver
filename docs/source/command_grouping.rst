@@ -7,7 +7,7 @@ Because of the abovementioned N-RTT problem, it is difficult for a CLI script to
 
 When you are using HL-API or LL-API to develop your test scripts, you can use *Command Grouping* feature to group several commands and send to the tester in one batch. 
 
-Depending on the destination the commands are bound for, either to the same or different ports, XOA Python API provides two ways of grouping commands, `Sequential Grouping`_ (all commands bound for the same port/module) and `Parallel Grouping`_ (commands are bound for different ports/modules).
+Depending on the destination the commands are bound for, either to the same or different ports, XOA Driver provides two ways of grouping commands, `Sequential Grouping`_ (all commands bound for the same port/module) and `Parallel Grouping`_ (commands are bound for different ports/modules).
 
 Sequential Grouping
 ----------------------------------------

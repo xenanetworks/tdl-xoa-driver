@@ -1,7 +1,7 @@
 Quick Start
 ===================
 
-The XOA Python API offers more than just object-oriented APIs and functions for executing test scripts. It also provides a seamless integration with `CLI commands <https://docs.xenanetworks.com/projects/xoa-cli>`_ and port configuration files from ValkyrieManager.
+The XOA Driver offers more than just object-oriented APIs and functions for executing test scripts. It also provides a seamless integration with `CLI commands <https://docs.xenanetworks.com/projects/xoa-cli>`_ and port configuration files from ValkyrieManager.
 , enabling you to effortlessly work with them.
 
 .. note::
@@ -9,7 +9,7 @@ The XOA Python API offers more than just object-oriented APIs and functions for 
     Integration with CLI commands and ValkyrieManager is supported by version >= 2.1.1.
 
 
-Scripting with XOA Python API
+Scripting with XOA Driver
 -----------------------------
 
 The simple code example demonstrates some basics of using :term:`HL-API` and :term: `HL-FUNC`:
@@ -96,7 +96,7 @@ At last, release the ports (It is absolutely OK if you don't release them.)
 Integrate with CLI and ValkyrieManager
 --------------------------------------
 
-The simple code example demonstrates how to use XOA Python API :
+The simple code example demonstrates how to use XOA Driver :
 
 * Establish connection to a Valkyrie tester.
 * Reserve a port.
@@ -141,7 +141,7 @@ You can use :guilabel:`Save Port Configuration` in ValkyrieManager to download p
     :language: python
     :lines: 19-26
 
-In addition to set port configuration from an `xpc` file, you can also send CLI commands using XOA Python API. 
+In addition to set port configuration from an `xpc` file, you can also send CLI commands using XOA Driver. 
 
 .. literalinclude:: quick_start_2.py
     :language: python

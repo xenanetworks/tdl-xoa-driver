@@ -229,7 +229,7 @@ Each module object contains a :term:`Port Manager`, which can be accessed throug
 
 .. important::
 
-    Modules and ports are test resources that cannot be created or deleted, unless the tester is reconfigured either physically or virtually. Thus, in XOA Python API, there is no "create" or "delete" methods for these two types of objects. What we can do is to `obtain` the object that represents the underlying test resource. 
+    Modules and ports are test resources that cannot be created or deleted, unless the tester is reconfigured either physically or virtually. Thus, in XOA Driver, there is no "create" or "delete" methods for these two types of objects. What we can do is to `obtain` the object that represents the underlying test resource. 
 
     A :term:`Module Manager` can contain modules of different :term:`Module Types<Module Type>`. This is because there can be various test modules installed in a physical tester. On the other hand, a :term:`Port Manager` contains ports of the same :term:`Port Type`. This is because the ports on a module are of the same type.
 
@@ -283,7 +283,7 @@ Each port object contains several :term:`Index Managers<Index Manager>` that man
 
 .. important::
 
-    Streams, connection groups, filters, modifiers, etc. are virtual. They can be created and deleted. Thus in XOA Python API, there are `create`, `delete`, and `remove` methods for you to manage these virtual resources.
+    Streams, connection groups, filters, modifiers, etc. are virtual. They can be created and deleted. Thus in XOA Driver, there are `create`, `delete`, and `remove` methods for you to manage these virtual resources.
 
     It is user's responsibility to create, retrieve, and delete those subport-level indices. Index Managers only takes care of the index assignment.
 

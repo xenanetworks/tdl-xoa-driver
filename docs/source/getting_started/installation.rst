@@ -1,25 +1,25 @@
-Installing XOA Python API
+Installing XOA Driver
 =========================
 
-XOA Python API is available to install and upgrade via the `Python Package Index <https://pypi.org/>`_. Alternatively, you can also install and upgrade from the source file.
+XOA Driver is available to install and upgrade via the `Python Package Index <https://pypi.org/>`_. Alternatively, you can also install and upgrade from the source file.
 
 .. note::
 	
-		The minimum Valkyrie release supported by XOA Python API is **83.2**. 
+		The minimum Xena release supported by XOA Driver is **83.2**. 
 
 Prerequisites
 -------------
 
-Before installing XOA Python API, please make sure your environment has installed `Python <https://www.python.org/>`_ and ``pip``.
+Before installing XOA Driver, please make sure your environment has installed `Python <https://www.python.org/>`_ and ``pip``.
 
 Python
 ^^^^^^^
 
-XOA Python API requires that you `install Python <https://realpython.com/installing-python/>`_  on your system.
+XOA Driver requires that you `install Python <https://realpython.com/installing-python/>`_  on your system.
 
 .. note:: 
 
-    XOA Python API requires Python >= 3.8.
+    XOA Driver requires Python >= 3.8.
 
 ``pip``
 ^^^^^^^
@@ -60,11 +60,7 @@ If you don't have ``pip`` installed, you can:
 Installing From PyPI Using ``pip``
 --------------------------------------
 
-``pip`` is the recommended installer for XOA Python API. The most common usage of ``pip`` is to install from the Python Package Index using `Requirement Specifiers <https://pip.pypa.io/en/stable/cli/pip_install/#requirement-specifiers>`_.
-
-.. note::
-    
-    If you install XOA Core using ``pip install xoa-core``, XOA Python API (PyPI package name `xoa_driver <https://pypi.org/project/xoa-python-api/>`_) will be automatically installed.
+``pip`` is the recommended installer for XOA Driver. The most common usage of ``pip`` is to install from the Python Package Index using `Requirement Specifiers <https://pip.pypa.io/en/stable/cli/pip_install/#requirement-specifiers>`_.
 
 
 Install to Global Namespace
@@ -74,48 +70,48 @@ Install to Global Namespace
     :new-set:
 
     .. code-block:: doscon
-        :caption: Install XOA Python API in Windows environment from PyPi.
+        :caption: Install XOA Driver in Windows environment from PyPi.
 
-        > pip install xoa-driver            # latest version
-        > pip install xoa-driver==1.0.7     # specific version
-        > pip install xoa-driver>=1.0.7     # minimum version
+        > pip install tdl-xoa-driver            # latest version
+        > pip install tdl-xoa-driver==1.0.7     # specific version
+        > pip install tdl-xoa-driver>=1.0.7     # minimum version
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Install XOA Python API in macOS/Linux environment from PyPi.
+        :caption: Install XOA Driver in macOS/Linux environment from PyPi.
 
-        $ pip install xoa-driver            # latest version
-        $ pip install xoa-driver==1.0.7     # specific version
-        $ pip install xoa-driver>=1.0.7     # minimum version
+        $ pip install tdl-xoa-driver            # latest version
+        $ pip install tdl-xoa-driver==1.0.7     # specific version
+        $ pip install tdl-xoa-driver>=1.0.7     # minimum version
 
 
 Install in Activated Virtual Environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Install XOA Python API in a virtual environment, so it does not pollute your global namespace. 
+Install XOA Driver in a virtual environment, so it does not pollute your global namespace. 
 
 For example, your project folder is called ``/my_xoa_project``.
 
 .. tab:: Windows
 
     .. code-block:: doscon
-        :caption: Install XOA Python API in a virtual environment in Windows from PyPI.
+        :caption: Install XOA Driver in a virtual environment in Windows from PyPI.
 
         [my_xoa_project]> python -m venv .\env
         [my_xoa_project]> .\env\Scripts\activate
 
-        (env) [my_xoa_project]> pip install xoa-driver
+        (env) [my_xoa_project]> pip install tdl-xoa-driver
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Install XOA Python API in a virtual environment in macOS/Linux from PyPI.
+        :caption: Install XOA Driver in a virtual environment in macOS/Linux from PyPI.
 
         [my_xoa_project]$ python3 -m venv ./env
         [my_xoa_project]$ source ./env/bin/activate
 
-        (env) [my_xoa_project]$ pip install xoa-driver
+        (env) [my_xoa_project]$ pip install tdl-xoa-driver
 
 .. seealso::
 
@@ -150,32 +146,28 @@ You can deactivate a virtual environment by typing ``deactivate`` in your shell.
 Upgrading From PyPI Using ``pip``
 --------------------------------------------
 
-To upgrade XOA Python API package from PyPI:
+To upgrade XOA Driver package from PyPI:
 
 .. tab:: Windows
     :new-set:
     
     .. code-block:: doscon
-        :caption: Upgrade XOA Python API in Windows environment from PyPi.
+        :caption: Upgrade XOA Driver in Windows environment from PyPi.
 
-        > pip install xoa-driver --upgrade
+        > pip install tdl-xoa-driver --upgrade
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Upgrade XOA Python API in macOS/Linux environment from PyPi.
+        :caption: Upgrade XOA Driver in macOS/Linux environment from PyPi.
 
-        $ pip install xoa-driver --upgrade
-
-.. note::
-    
-    If you upgrade XOA Core using ``pip install --upgrade xoa-core``, XOA Python API (PyPI package name `xoa_driver <https://pypi.org/project/xoa-python-api/>`_) will be automatically upgraded.
+        $ pip install tdl-xoa-driver --upgrade
 
 
 Installing Manually From Source
 --------------------------------------------
 
-If for some reason you need to install or upgrade XOA Python API manually from source, the steps are:
+If for some reason you need to install or upgrade XOA Driver manually from source, the steps are:
 
 **Step 1**, make sure Python packages `wheel <https://wheel.readthedocs.io/en/stable/>`_ and  `setuptools <https://setuptools.pypa.io/en/latest/index.html>`_ are installed on your system. Install ``wheel`` and ``setuptools`` using ``pip``:
 
@@ -194,20 +186,20 @@ If for some reason you need to install or upgrade XOA Python API manually from s
 
         $ pip install wheel setuptools
 
-**Step 2**, download the XOA Python API source distribution from `XOA Python API Releases <https://github.com/xenanetworks/open-automation-python-api/releases>`_. Unzip the archive and run the ``setup.py`` script to install the package:
+**Step 2**, download the XOA Driver source distribution from `XOA Driver Releases <https://github.com/xenanetworks/tdl-xoa-driver/releases>`_. Unzip the archive and run the ``setup.py`` script to install the package:
 
 .. tab:: Windows
     :new-set:
 
     .. code-block:: doscon
-        :caption: Install XOA Python API in Windows environment from source.
+        :caption: Install XOA Driver in Windows environment from source.
 
         [xoa_driver]> python setup.py install
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Install XOA Python API in macOS/Linux environment from source.
+        :caption: Install XOA Driver in macOS/Linux environment from source.
 
         [xoa_driver]$ python3 setup.py install
 
@@ -218,27 +210,22 @@ If for some reason you need to install or upgrade XOA Python API manually from s
     :new-set:
 
     .. code-block:: doscon
-        :caption: Build XOA Python API wheel in Windows environment for distribution.
+        :caption: Build XOA Driver wheel in Windows environment for distribution.
 
         [xoa_driver]> python setup.py bdist_wheel
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Build XOA Python API wheel in macOS/Linux environment for distribution.
+        :caption: Build XOA Driver wheel in macOS/Linux environment for distribution.
 
         [xoa_driver]$ python3 setup.py bdist_wheel
-
-
-.. important::
-
-    If you install XOA Core from the source code, you need to install XOA Python API (PyPI package name `xoa_driver <https://pypi.org/project/xoa-python-api/>`_) separately. This is because XOA Python API is treated as a 3rd-party dependency of XOA Core. You can go to `XOA Python API <https://github.com/xenanetworks/open-automation-python-api>`_ repository to learn how to install it.
 
 
 Uninstall and Remove Unused Dependencies
 ------------------------------------------------------------
 
-``pip uninstall xoa-driver`` can uninstall the package itself but not its dependencies. Leaving the package's dependencies in your environment can later create conflicting dependencies problem.
+``pip uninstall tdl-xoa-driver`` can uninstall the package itself but not its dependencies. Leaving the package's dependencies in your environment can later create conflicting dependencies problem.
 
 We recommend install and use the `pip-autoremove <https://github.com/invl/pip-autoremove>`_ utility to remove a package plus unused dependencies.
 
@@ -246,18 +233,18 @@ We recommend install and use the `pip-autoremove <https://github.com/invl/pip-au
     :new-set:
 
     .. code-block:: doscon
-        :caption: Uninstall XOA Python API in Windows environment.
+        :caption: Uninstall XOA Driver in Windows environment.
 
         > pip install pip-autoremove
-        > pip-autoremove xoa-driver -y
+        > pip-autoremove tdl-xoa-driver -y
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Uninstall XOA Python API in macOS/Linux environment.
+        :caption: Uninstall XOA Driver in macOS/Linux environment.
 
         $ pip install pip-autoremove
-        $ pip-autoremove xoa-driver -y
+        $ pip-autoremove tdl-xoa-driver -y
 
 .. seealso::
 

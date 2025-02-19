@@ -1,7 +1,7 @@
 Python Script Examples
 ======================
 
-You can find various XOA Python scripts in our public GitHub repository `Xena OpenAutomation Script Example Library <https://github.com/xenanetworks/open-automation-script-library>`_. It includes script examples of how you can use XOA Python API to configure a Xena tester.
+You can find various XOA Python scripts in our public GitHub repository `Xena OpenAutomation Script Example Library <https://github.com/xenanetworks/open-automation-script-library>`_. It includes script examples of how you can use XOA Driver to configure a Xena tester.
 
 What Example Folder Contains
 ----------------------------
@@ -14,7 +14,7 @@ Each folder contains at least three files:
 Installing XOA Driver
 ----------------------------
 
-This section details how to install ``xoa-driver``. Installation is necessary to execute scripts that use XOA Python API.
+This section details how to install ``xoa-driver``. Installation is necessary to execute scripts that use XOA Driver.
 
 Before installing ``xoa-driver``, please make sure your environment has installed `python>=3.10` and `pip`.
 
