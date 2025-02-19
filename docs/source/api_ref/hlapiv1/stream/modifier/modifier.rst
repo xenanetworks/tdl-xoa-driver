@@ -42,11 +42,11 @@ values the modifier should take on. This applies only to incrementing and
 decrementing modifiers; random modifiers always produce every possible bit
 pattern. The range is specified as three values: mix, step, and max, where max
 must be equal to min plus a multiple of step. Note that when "decrement" is
-specified in :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_MODIFIER` as the action, the value sequence will begin with the
+specified in :class:`~xoa_driver.internals.commands.ps_commands.PS_MODIFIER` as the action, the value sequence will begin with the
 max value instead of the min value and decrement from there: {max, max-1, max-2,
 ...., min, max, max-1...}.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_MODIFIERRANGE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_MODIFIERRANGE`
 
 .. code-block:: python
 
@@ -69,7 +69,7 @@ consecutive bits starting from that position, and applies an action to those
 bits in each packet. Packets can be repeated so that a certain number of
 identical packets are transmitted before applying the next modification.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_MODIFIER`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_MODIFIER`
 
 .. code-block:: python
 
@@ -89,7 +89,7 @@ Endianness
 ----------------------
 Network byte order is Big Endian, where the MSB is assigned with the smallest address. Xena’s modifier (16-bit, 24-bit, or 32-bit) inc/dec mode is default to BIG, which inc/dec starts from the LSB (the largest address). The user can set the mode to LITTLE, which the modifier inc/dec starts from the MSB (the smallest address)
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_MODIFIER_ENDIAN`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_MODIFIER_ENDIAN`
 
 .. code-block:: python
 

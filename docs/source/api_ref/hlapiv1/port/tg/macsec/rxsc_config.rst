@@ -6,7 +6,7 @@ Description
 
 The description of the port’s RX SC.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_DESCR`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_DESCR`
 
 .. code-block:: python
 
@@ -22,11 +22,11 @@ SCI Value
 
 The SCI of the port’s RX SC.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_SCI`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_SCI`
 
 .. code-block:: python
 
-    await rxsc_obj.config.sci.set(sci=Hex("0102030405060001"))
+    await rxsc_obj.config.sci.set(sci=Hex("0102030405060002"))
     
     resp = await rxsc_obj.config.sci.get()
     resp.sci
@@ -37,7 +37,7 @@ Confidentiality Offset
 
 The confidentiality offset of the port’s RX SC.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_CONF_OFFSET`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_CONF_OFFSET`
 
 .. code-block:: python
 
@@ -52,7 +52,7 @@ Cipher Suite
 
 The cipher suite of the port’s RX SC.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_CIPHERSUITE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_CIPHERSUITE`
 
 .. code-block:: python
 
@@ -70,7 +70,7 @@ Starting Packet Number
 
 The first PN number that the port’s RX SC expectes to receive.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_STARTING_PN`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_STARTING_PN`
 
 .. code-block:: python
 
@@ -85,7 +85,7 @@ Test Payload ID
 
 Associate a TPLD ID with the RX SC.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_TPLDID`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_TPLDID`
 
 .. code-block:: python
 
@@ -103,7 +103,7 @@ Configure the value of a SAK key on the port’s RX SC.
 
 The number and values of SAK keys depend on the cipher suite used.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_SAK_VALUE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_SAK_VALUE`
 
 .. code-block:: python
 
@@ -116,3 +116,31 @@ Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_
     # For GCM_AES_256 and GCM_AES_256_XPN
     await rxsc_obj.access_sak_value(0).set(sak_key_value=Hex("0001020304050607000102030405060700010203040506070001020304050607"))
     await rxsc_obj.access_sak_value(1).set(sak_key_value=Hex("0001020304050607000102030405060700010203040506070001020304050607"))
+
+XPN SSCI Value
+--------------
+
+The XPN SSCI of the port’s RX SC.
+
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_XPN_SSCI`
+
+.. code-block:: python
+
+    await rxsc_obj.config.xpn_ssci.set(sci=Hex("00000000"))
+    
+    resp = await rxsc_obj.config.xpn_ssci.get()
+    resp.ssci
+
+XPN Salt Value
+--------------
+
+The XPN Salt of the port’s RX SC.
+
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_XPN_SALT`
+
+.. code-block:: python
+
+    await rxsc_obj.config.xpn_salt.set(sci=Hex("000000000000000000000000"))
+    
+    resp = await rxsc_obj.config.xpn_salt.get()
+    resp.salt

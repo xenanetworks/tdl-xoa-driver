@@ -16,7 +16,7 @@ is used. 3) No sequence checking (packet loss or packet misordering). The number
 of received packets for each stream can still be compared to the number of
 transmitted packets to detect packet loss once traffic has been stopped.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TPLDMODE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TPLDMODE`
 
 .. code-block:: python
 
@@ -39,13 +39,13 @@ logical streams are merged onto one physical port. There are four primary modes:
 
 * Strict Uniform: This is a slight variation of normal interleaved scheduling, which emphasizes strict uniformity of the inter-packet-gaps as more important than hitting the stream rates absolutely precisely.
 
-* Sequential: Each stream in turn contribute one or more packets, before continuing to the next stream, in a cyclical pattern. The count of packets for each stream is obtained from the :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_PACKETLIMIT` command value for the stream. The individual rates for each stream are ignored, and instead the overall rate is determined at the port-level. This in turn determines the rates for each stream, taking into account their packet lengths and counts. The maximum number of packets in a cycle (i.e. the sum of :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_PACKETLIMIT` for all enabled streams) is 500. If the packet number is larger than 500,  will be returned when attempting to start the traffic (``P_TRAFFIC ON``).
+* Sequential: Each stream in turn contribute one or more packets, before continuing to the next stream, in a cyclical pattern. The count of packets for each stream is obtained from the :class:`~xoa_driver.internals.commands.ps_commands.PS_PACKETLIMIT` command value for the stream. The individual rates for each stream are ignored, and instead the overall rate is determined at the port-level. This in turn determines the rates for each stream, taking into account their packet lengths and counts. The maximum number of packets in a cycle (i.e. the sum of :class:`~xoa_driver.internals.commands.ps_commands.PS_PACKETLIMIT` for all enabled streams) is 500. If the packet number is larger than 500,  will be returned when attempting to start the traffic (``P_TRAFFIC ON``).
 
 * Burst: When this mode is selected, frames from the streams on a port are sent as bursts as depicted below:
-    * The Burst Period is defined in the :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TXBURSTPERIOD` command.
-    * For the individual streams the number of packets in a burst is defined by the PS_BURST command, while the Inter Packet Gap and the Inter Burst Gap are defined by the :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_BURSTGAP` command.
+    * The Burst Period is defined in the :class:`~xoa_driver.internals.commands.p_commands.P_TXBURSTPERIOD` command.
+    * For the individual streams the number of packets in a burst is defined by the PS_BURST command, while the Inter Packet Gap and the Inter Burst Gap are defined by the :class:`~xoa_driver.internals.commands.ps_commands.PS_BURSTGAP` command.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TXMODE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TXMODE`
 
 .. code-block:: python
 
@@ -72,7 +72,7 @@ bursts (from a number of streams) to the start of next sequence of bursts.
     
     Only used when Port TX Mode is "BURST".
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TXBURSTPERIOD`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TXBURSTPERIOD`
 
 .. code-block:: python
 
@@ -91,9 +91,9 @@ Valid values are 0-31250 (0 to 2,000,000 microseconds).
 
 .. note::
 
-    You must use :class:`~tdl_xoa_driver.internals.commands.c_commands.C_TRAFFIC` instead of :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TRAFFIC` to start traffic for Tx Delay to take effect.
+    You must use :class:`~xoa_driver.internals.commands.c_commands.C_TRAFFIC` instead of :class:`~xoa_driver.internals.commands.p_commands.P_TRAFFIC` to start traffic for Tx Delay to take effect.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TXDELAY`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TXDELAY`
 
 .. code-block:: python
 
@@ -108,7 +108,7 @@ TX Enable
 ------------
 Whether a port should enable its transmitter, or keep the outgoing link down.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TXENABLE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TXENABLE`
 
 .. code-block:: python
 
@@ -127,7 +127,7 @@ started on the port. A value of 0 or -1 makes the port transmit continuously.
 Traffic from the streams on the port can however also be set to stop after
 transmitting a number of packets.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TXPACKETLIMIT`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TXPACKETLIMIT`
 
 .. code-block:: python
 
@@ -142,9 +142,9 @@ Time Limit
 ------------
 A port-level time-limit on how long it keeps transmitting when started. After
 the elapsed time traffic must be stopped and restarted. This complements the
-stream-level :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_PACKETLIMIT` function.
+stream-level :class:`~xoa_driver.internals.commands.ps_commands.PS_PACKETLIMIT` function.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TXTIMELIMIT`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TXTIMELIMIT`
 
 .. code-block:: python
 
@@ -160,7 +160,7 @@ TX Time Elapsed
 How long the port has been transmitting, the elapsed time since traffic was
 started.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TXTIME`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TXTIME`
 
 .. code-block:: python
 
@@ -173,7 +173,7 @@ Prepare TX
 ------------
 Prepare port for transmission.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TXPREPARE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TXPREPARE`
 
 .. code-block:: python
 
@@ -189,7 +189,7 @@ Controls if a port with speed higher than 10G supports dynamic changes when the 
     
     This command is only supported by ports with speed higher than 10G.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_DYNAMIC`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_DYNAMIC`
 
 .. code-block:: python
     

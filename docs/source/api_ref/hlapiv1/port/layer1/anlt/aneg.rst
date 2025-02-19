@@ -5,7 +5,7 @@ Configuration
 --------------
 Auto-negotiation configuration.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pp_commands.PP_AUTONEG`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pp_commands.PP_AUTONEG`
 
 .. code-block:: python
 
@@ -20,7 +20,7 @@ Status
 --------
 Status of auto-negotiation.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pp_commands.PP_AUTONEGSTATUS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pp_commands.PP_AUTONEGSTATUS`
 
 .. code-block:: python
 
@@ -43,7 +43,7 @@ Whether the port responds to incoming auto-negotiation requests.
     
     Only applicable to RJ45 ports
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_AUTONEGSELECTION`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_AUTONEGSELECTION`
 
 .. code-block:: python
 

@@ -1,7 +1,7 @@
 Gray Coding
 =========================
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pp_commands.PP_GRAYCODING`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pp_commands.PP_GRAYCODING`
 
 .. code-block:: python
 

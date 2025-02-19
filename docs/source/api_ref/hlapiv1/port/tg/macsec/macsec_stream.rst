@@ -6,7 +6,7 @@ Enable MACsec on Stream
 
 Enable or disable MACsec on the stream.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_MACSEC_ENABLE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_MACSEC_ENABLE`
 
 .. code-block:: python
 
@@ -22,7 +22,7 @@ Assign TX SC to Stream
 
 Assign a TX SC to a stream.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_MACSEC_ASSIGN`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_MACSEC_ASSIGN`
 
 .. code-block:: python
 

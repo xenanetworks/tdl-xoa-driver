@@ -6,7 +6,7 @@ Configuration
 
 Configuration LT out-of-sync preset and timeout
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_LINKTRAIN_CONFIG`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_LINKTRAIN_CONFIG`
 
 .. code-block:: python
 
@@ -20,7 +20,7 @@ Status
 
 Get link training status.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_LINKTRAIN_STATUS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_LINKTRAIN_STATUS`
 
 .. code-block:: python
 
@@ -34,7 +34,7 @@ Info
 
 Get link training result info.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_LINKTRAININFO`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_LINKTRAININFO`
 
 .. code-block:: python
 
@@ -198,7 +198,7 @@ Preset Configuration (Native)
 
 Configure the preset values (native values) of a serdes and the response to the received IC request.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_PRESET_CONFIG`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_PRESET_CONFIG`
 
 .. code-block:: python
 
@@ -225,7 +225,7 @@ Preset Configuration (IEEE)
 
 Configure the preset values (IEEE coefficient values) of a serdes and the response to the received IC request.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_PRESET_CONFIG_COEFF`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_PRESET_CONFIG_COEFF`
 
 .. code-block:: python
 
@@ -253,7 +253,7 @@ Preset Configuration (mV/dB)
 
 Configure the preset values (mV/dB values) of a serdes and the response to the received IC request.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_PRESET_CONFIG_LEVEL`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_PRESET_CONFIG_LEVEL`
 
 .. code-block:: python
 
@@ -280,7 +280,7 @@ Reset
 
 Reset the preset of the serdes to its default values.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_PRESET_RESET`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_PRESET_RESET`
 
 .. code-block:: python
 
@@ -299,7 +299,7 @@ Tap Range and Response Configuration (Native)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Configure the lower and the upper bound of transmit equalizer (native value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_LT_PHYTXEQ_RANGE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_LT_PHYTXEQ_RANGE`
 
 .. code-block:: python
 
@@ -342,7 +342,7 @@ Tap Range and Response Configuration (IEEE)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Configure the lower and the upper bound of transmit equalizer (IEEE coefficient value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_LT_PHYTXEQ_RANGE_COEFF`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_LT_PHYTXEQ_RANGE_COEFF`
 
 .. code-block:: python
 

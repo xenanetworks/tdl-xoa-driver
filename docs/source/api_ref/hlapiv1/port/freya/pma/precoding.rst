@@ -1,7 +1,7 @@
 Precoding
 =========================
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pp_commands.PP_PRECODING`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pp_commands.PP_PRECODING`
 
 .. code-block:: python
 

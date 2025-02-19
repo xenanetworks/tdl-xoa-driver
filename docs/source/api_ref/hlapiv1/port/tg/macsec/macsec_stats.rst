@@ -6,7 +6,7 @@ Port TX Statistics
 
 Port-level MACsec TX counters
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_TX_STATS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_TX_STATS`
 
 .. code-block:: python
 
@@ -18,7 +18,7 @@ Port TX SC Statistics
 
 SC-level MACsec TX counters.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_TXSC_STATS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_TXSC_STATS`
 
 .. code-block:: python
 
@@ -31,7 +31,7 @@ Clear TX Statistics
 
 Clear the MACsec TX counters of the port, including both the port-level and the sc-level counters.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_TX_CLEAR`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_TX_CLEAR`
 
 .. code-block:: python
 
@@ -44,7 +44,7 @@ Port RX Statistics
 
 Port-level MACsec RX counters
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RX_STATS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RX_STATS`
 
 .. code-block:: python
 
@@ -56,7 +56,7 @@ Port RX SC Statistics
 
 SC-level MACsec RX counters.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_STATS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RXSC_STATS`
 
 .. code-block:: python
 
@@ -69,7 +69,7 @@ Clear RX Statistics
 
 Clear the MACsec RX counters of the port, including both the port-level and the sc-level counters.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_RX_CLEAR`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_RX_CLEAR`
 
 .. code-block:: python
 

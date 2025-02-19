@@ -73,7 +73,7 @@ If the stream payload type is set to ``Incrementing``, then an additional minimu
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.ps_commands
+.. automodule:: xoa_driver.internals.commands.ps_commands
     :members:
     :no-undoc-members:
     :exclude-members: __init__

@@ -3,7 +3,7 @@ Control
 
 Enable/disable AN and LT
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_ANLT`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_ANLT`
 
 .. code-block:: python
 

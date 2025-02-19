@@ -55,11 +55,11 @@ If the status message from the server is not ``<OK>``, an exception will be rais
         await my_awesome_func(stop_event)
     File "example.py", line 89, in my_awesome_func
         await my_port.eee.mode.set_off()
-    File "/env/lib/python3.10/site-packages/tdl_xoa_driver/internals/core/transporter/token.py", line 36, in __ask
+    File "/env/lib/python3.10/site-packages/xoa_driver/internals/core/transporter/token.py", line 36, in __ask
         raise e
-    File "/env/lib/python3.10/site-packages/tdl_xoa_driver/internals/core/transporter/token.py", line 34, in __ask
+    File "/env/lib/python3.10/site-packages/xoa_driver/internals/core/transporter/token.py", line 34, in __ask
         result = await fut
-    tdl_xoa_driver.internals.core.transporter.exceptions.BadStatus: Bad status <CommandStatus.NOTWRITABLE: 4> of P_LPTXMODE!
+    xoa_driver.internals.core.transporter.exceptions.BadStatus: Bad status <CommandStatus.NOTWRITABLE: 4> of P_LPTXMODE!
 
     Response              : ['58', '45', '4e', '41', '00', '00', '00', '00', '04', '04', 'ff', 'ff', '00', '00', '01', 'ea']
     class_name           : P_LPTXMODE
@@ -89,9 +89,9 @@ If you know Python, you can simply write codes to handle exceptions caused by th
     :emphasize-lines: 22-26
 
     import asyncio
-    from tdl_xoa_driver import testers
-    from tdl_xoa_driver import modules
-    from tdl_xoa_driver import ports
+    from xoa_driver import testers
+    from xoa_driver import modules
+    from xoa_driver import ports
 
     async def my_awesome_script():
         tester = await testers.L23Tester(host="10.20.1.253", username="XOA", debug=True)
@@ -135,10 +135,10 @@ You can also use context manager ``suppress`` to **ignore exceptions** if you do
 
     import asyncio
     from contextlib import suppress
-    from tdl_xoa_driver import testers
-    from tdl_xoa_driver import modules
-    from tdl_xoa_driver import ports
-    from tdl_xoa_driver import exceptions
+    from xoa_driver import testers
+    from xoa_driver import modules
+    from xoa_driver import ports
+    from xoa_driver import exceptions
 
     async def my_awesome_script():
         tester = await testers.L23Tester(host="10.20.1.253", username="XOA", debug=True)
@@ -172,9 +172,9 @@ If you want to do **command grouping** (send multiple commands in one batch) **b
     :emphasize-lines: 22-28
 
     import asyncio
-    from tdl_xoa_driver import testers
-    from tdl_xoa_driver import modules
-    from tdl_xoa_driver import ports
+    from xoa_driver import testers
+    from xoa_driver import modules
+    from xoa_driver import ports
 
     async def my_awesome_script():
         tester = await testers.L23Tester(host="10.20.1.253", username="XOA", debug=True)

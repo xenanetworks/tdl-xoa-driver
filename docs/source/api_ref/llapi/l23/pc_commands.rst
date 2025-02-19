@@ -9,7 +9,7 @@ The capture command names all have the form ``PC_<xxx>`` and require both a modu
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.pc_commands
+.. automodule:: xoa_driver.internals.commands.pc_commands
     :members:
     :no-undoc-members:
     :exclude-members: __init__

@@ -5,7 +5,7 @@ This module contains the **impairment port commands**.
 
 -------
 
-.. currentmodule:: tdl_xoa_driver.internals.commands.p_commands
+.. currentmodule:: xoa_driver.internals.commands.p_commands
 
 
 .. autoclass:: P_EMULATE
@@ -20,7 +20,7 @@ This module contains the **impairment port commands**.
     :exclude-members: GetDataAttr, SetDataAttr, __init__
 
 
-.. currentmodule:: tdl_xoa_driver.internals.commands.pe_commands
+.. currentmodule:: xoa_driver.internals.commands.pe_commands
 
 
 .. autoclass:: PE_FCSDROP

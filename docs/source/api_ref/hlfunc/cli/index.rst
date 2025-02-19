@@ -5,7 +5,7 @@ You can utilize the following high-level functions to set up testers, modules, a
 
 -------
 
-.. currentmodule:: tdl_xoa_driver.hlfuncs.cli
+.. currentmodule:: xoa_driver.hlfuncs.cli
 
 Configure from String
 -------------------------

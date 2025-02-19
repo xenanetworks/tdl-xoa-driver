@@ -11,7 +11,7 @@ While a filter is enabled, neither its condition nor the definition of each matc
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.pl_commands
+.. automodule:: xoa_driver.internals.commands.pl_commands
     :members:
     :no-undoc-members:
     :exclude-members: __init__

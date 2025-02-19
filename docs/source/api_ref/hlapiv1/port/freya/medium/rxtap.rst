@@ -6,7 +6,7 @@ Config
 
 Set to manual values.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pp_commands.PP_PHYRXEQ_EXT`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pp_commands.PP_PHYRXEQ_EXT`
 
 .. code-block:: python
 

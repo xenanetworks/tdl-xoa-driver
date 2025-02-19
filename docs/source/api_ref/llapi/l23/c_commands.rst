@@ -6,7 +6,7 @@ This module contains the **chassis classes** that deal with basic information an
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.c_commands
+.. automodule:: xoa_driver.internals.commands.c_commands
     :members:
     :no-undoc-members:
     :exclude-members:  __init__

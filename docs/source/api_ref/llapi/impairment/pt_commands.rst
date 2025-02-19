@@ -5,7 +5,7 @@ This module contains the **impairment flow TX statistics commands**.
 
 -------
 
-.. currentmodule:: tdl_xoa_driver.internals.commands.pt_commands
+.. currentmodule:: xoa_driver.internals.commands.pt_commands
 
 
 .. autoclass:: PT_FLOWTOTAL

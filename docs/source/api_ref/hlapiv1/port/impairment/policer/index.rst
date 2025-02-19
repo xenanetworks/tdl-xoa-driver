@@ -9,7 +9,7 @@ Policer Configuration
 -----------------------
 Configures the bandwidth policer.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pe_commands.PE_BANDPOLICER`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pe_commands.PE_BANDPOLICER`
 
 .. code-block:: python
 

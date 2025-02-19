@@ -34,7 +34,7 @@ The first 6 sample values are so-called sampled levels: <p1> <p2> < p3> <m1> <m2
 Control
 -------
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_CTRL`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_CTRL`
 
 .. code-block:: python
 
@@ -44,7 +44,7 @@ Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl
 Data
 ------
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pl1_commands.PL1_GET_DATA`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_commands.PL1_GET_DATA`
 
 .. code-block:: python
     

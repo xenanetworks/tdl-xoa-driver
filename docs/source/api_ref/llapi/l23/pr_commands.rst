@@ -9,7 +9,7 @@ All bit-and byte-level statistics are at layer-2, so they include the full Ether
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.pr_commands
+.. automodule:: xoa_driver.internals.commands.pr_commands
     :members:
     :no-undoc-members:
     :exclude-members: __init__, PR_FLOWTOTAL, PR_FLOWCLEAR

@@ -10,7 +10,7 @@ length of each packet is reflected in the size of the payload portion of the
 packet, whereas the header has constant length. Length variation complements,
 and is independent of, the content variation produced by header modifiers.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_PACKETLENGTH`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_PACKETLENGTH`
 
 .. code-block:: python
 
@@ -45,7 +45,7 @@ that can be freely specified for each generated stream of the port to a higher v
 (5) If the needed maximum header length (P_MAXHEADERLENGTH ``<p_maxheaderlength_label>`` ``<max_header_length>``)
 is not possible with the actual number of active streams for the port, the command will fail with: <BADVALUE>.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_AUTOADJUST`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_AUTOADJUST`
 
 .. code-block:: python
 
@@ -62,7 +62,7 @@ incrementing sequence of byte values or a repeated multi-byte pattern. Length
 variation complements and is independent of the content variation produced by
 header modifiers.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_PAYLOAD`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_PAYLOAD`
 
 .. code-block:: python
 
@@ -104,7 +104,7 @@ The feature requires the P_PAYLOADMODE command on the parent port being set to
 
     Use ``await port.payload_mode.set_extpl()`` to set the port's payload mode to Extended Payload.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.ps_commands.PS_EXTPAYLOAD`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_EXTPAYLOAD`
 
 .. code-block:: python
 

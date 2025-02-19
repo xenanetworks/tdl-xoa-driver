@@ -1,9 +1,9 @@
 Exception
 =================================
 
-``tdl_xoa_driver.exceptions`` includes exception classes.
+``xoa_driver.exceptions`` includes exception classes.
 
-.. automodule:: tdl_xoa_driver.exceptions
+.. automodule:: xoa_driver.exceptions
     :members:
     :no-undoc-members:
     :exclude-members:  __init__

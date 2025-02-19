@@ -5,7 +5,7 @@ This module contains the **impairment custom distribution commands**.
 
 -------
 
-.. currentmodule:: tdl_xoa_driver.internals.commands.pec_commands
+.. currentmodule:: xoa_driver.internals.commands.pec_commands
 
 
 

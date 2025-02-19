@@ -5,7 +5,7 @@ This module contains the **impairment module commands**.
 
 -------
 
-.. currentmodule:: tdl_xoa_driver.internals.commands.m_commands
+.. currentmodule:: xoa_driver.internals.commands.m_commands
 
 
 .. autoclass:: M_EMULBYPASS

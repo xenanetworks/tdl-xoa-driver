@@ -33,7 +33,7 @@ By combining several :term:`CGs<CG>` on a port, it is possible to create more co
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.p4g_commands
+.. automodule:: xoa_driver.internals.commands.p4g_commands
     :members:
     :no-undoc-members:
     :exclude-members: GetDataAttr, SetDataAttr, __init__

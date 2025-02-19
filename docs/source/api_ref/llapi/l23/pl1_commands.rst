@@ -5,7 +5,7 @@ This module contains the **Layer-1 classes** that mainly deal auto-negotiation a
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.pl1_commands
+.. automodule:: xoa_driver.internals.commands.pl1_commands
     :members:
     :no-undoc-members:
     :exclude-members: __init__

@@ -5,7 +5,7 @@ Signal Status
 -------------------------
 Obtain the PHY signal status.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pp_commands.PP_PHYSIGNALSTATUS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pp_commands.PP_PHYSIGNALSTATUS`
 
 .. code-block:: python
 
@@ -18,7 +18,7 @@ Settings
 -------------------------
 Get/Set low-level PHY settings.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pp_commands.PP_PHYSETTINGS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pp_commands.PP_PHYSETTINGS`
 
 .. code-block:: python
 

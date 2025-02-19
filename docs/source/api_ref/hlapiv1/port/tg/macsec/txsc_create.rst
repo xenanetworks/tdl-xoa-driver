@@ -6,7 +6,7 @@ Create and Obtain
 
 Create a new TX Secure Channel (SC) on the port.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_TXSC_CREATE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_TXSC_CREATE`
 
 .. code-block:: python
 
@@ -40,7 +40,7 @@ Remove
 
 Delete a TX Secure Channel (SC) on the port.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MACSEC_TXSC_DELETE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MACSEC_TXSC_DELETE`
 
 .. code-block:: python
 

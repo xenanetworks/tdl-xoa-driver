@@ -6,7 +6,7 @@ Chassis Traffic
 Starts or stops the traffic on a number of ports on the chassis simultaneously.
 The ports are identified by pairs of integers (module port).
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.c_commands.C_TRAFFIC`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.c_commands.C_TRAFFIC`
 
 .. code-block:: python
 
@@ -18,7 +18,7 @@ Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.c_
 
 Synchronized Chassis Traffic
 ----------------------------
-Works just as the :class:`~tdl_xoa_driver.internals.commands.c_commands.C_TRAFFIC` command described above with an additional option to
+Works just as the :class:`~xoa_driver.internals.commands.c_commands.C_TRAFFIC` command described above with an additional option to
 specify a point in time where traffic should be started. This can be used to
 start traffic simultaneously on multiple chassis. The ports are identified by
 pairs of integers (module port).
@@ -27,7 +27,7 @@ pairs of integers (module port).
 
     This requires that the chassis in question all use the TimeKeeper option to keep their CPU clocks synchronized.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.c_commands.C_TRAFFICSYNC`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.c_commands.C_TRAFFICSYNC`
 
 .. code-block:: python
 

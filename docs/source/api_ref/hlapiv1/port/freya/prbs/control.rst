@@ -3,7 +3,7 @@ Control
 
 Controls the PRBS mode of the interface.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pp_commands.PP_TXPRBSCONFIG`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pp_commands.PP_TXPRBSCONFIG`
 
 .. code-block:: python
 

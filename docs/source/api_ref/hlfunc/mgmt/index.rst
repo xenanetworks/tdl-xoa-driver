@@ -5,7 +5,7 @@ The following high-level functions handle test resource management, e.g. connect
 
 -------
 
-.. currentmodule:: tdl_xoa_driver.hlfuncs.mgmt
+.. currentmodule:: xoa_driver.hlfuncs.mgmt
 
 HL Tester Functions
 ---------------------------

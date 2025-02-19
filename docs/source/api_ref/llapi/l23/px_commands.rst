@@ -5,7 +5,7 @@ This module contains the **L23 port transceiver classes** that deal with access 
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.px_commands
+.. automodule:: xoa_driver.internals.commands.px_commands
     :members:
     :no-undoc-members:
     :exclude-members: __init__

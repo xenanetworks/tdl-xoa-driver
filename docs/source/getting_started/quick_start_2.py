@@ -1,11 +1,11 @@
 import asyncio
 
-from tdl_xoa_driver import testers
-from tdl_xoa_driver import modules
-from tdl_xoa_driver import ports
-from tdl_xoa_driver import enums
-from tdl_xoa_driver import utils
-from tdl_xoa_driver.hlfuncs import mgmt, cli
+from xoa_driver import testers
+from xoa_driver import modules
+from xoa_driver import ports
+from xoa_driver import enums
+from xoa_driver import utils
+from xoa_driver.hlfuncs import mgmt, cli
 
 async def my_awesome_func(stop_event: asyncio.Event):
     # create tester instance and establish connection

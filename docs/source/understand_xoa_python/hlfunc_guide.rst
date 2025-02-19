@@ -7,7 +7,7 @@ HL-FUNC provides high-level abstraction functions on top of the object-oriented 
 
 .. code-block:: python
 
-    from tdl_xoa_driver.hlfuncs import anlt, mgmt
+    from xoa_driver.hlfuncs import anlt, mgmt
 
     # Regardless of who owns the port, this function makes sure you have the ownership.
     await mgmt.reserve_port(port, force=True)

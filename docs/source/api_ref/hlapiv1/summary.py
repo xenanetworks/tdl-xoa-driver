@@ -1,14 +1,14 @@
 import asyncio
 
-from tdl_xoa_driver import testers
-from tdl_xoa_driver import modules
-from tdl_xoa_driver import ports
-from tdl_xoa_driver import enums
-from tdl_xoa_driver import utils
-from tdl_xoa_driver import misc
-from tdl_xoa_driver.hlfuncs import mgmt
-from tdl_xoa_driver.misc import Hex
-from tdl_xoa_driver.lli import commands
+from xoa_driver import testers
+from xoa_driver import modules
+from xoa_driver import ports
+from xoa_driver import enums
+from xoa_driver import utils
+from xoa_driver import misc
+from xoa_driver.hlfuncs import mgmt
+from xoa_driver.misc import Hex
+from xoa_driver.lli import commands
 import ipaddress
 
 

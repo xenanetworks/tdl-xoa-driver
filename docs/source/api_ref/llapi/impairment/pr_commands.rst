@@ -5,7 +5,7 @@ This module contains the **impairment flow RX statistics commands**.
 
 -------
 
-.. currentmodule:: tdl_xoa_driver.internals.commands.pr_commands
+.. currentmodule:: xoa_driver.internals.commands.pr_commands
 
 
 .. autoclass:: PR_FLOWTOTAL

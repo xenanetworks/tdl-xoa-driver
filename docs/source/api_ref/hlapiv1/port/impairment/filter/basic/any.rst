@@ -17,11 +17,11 @@ offset. Applying a mask, allows to only filter based on selected bits within the
 
         For SET, the only allowed ``_filter_type`` is ``shadow-copy``.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pef_commands.PEF_ANYCONFIG`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pef_commands.PEF_ANYCONFIG`
 
 .. code-block:: python
 
-    from tdl_xoa_driver import misc
+    from xoa_driver import misc
 
     filter = await port.emulation.flows[1].shadow_filter.get_mode() # e.g. flow_id = 1
     if isinstance(filter, misc.BasicImpairmentFlowFilter):
@@ -41,11 +41,11 @@ Basic mode only. Defines if filtering on ANY field in a packet is used for flow 
 
     For SET, the only allowed ``_filter_type`` is ``shadow-copy``.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.pef_commands.PEF_ANYSETTINGS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pef_commands.PEF_ANYSETTINGS`
 
 .. code-block:: python
     
-    from tdl_xoa_driver import misc
+    from xoa_driver import misc
     
     filter = await port.emulation.flows[1].shadow_filter.get_mode() # e.g. flow_id = 1
     if isinstance(filter, misc.BasicImpairmentFlowFilter):

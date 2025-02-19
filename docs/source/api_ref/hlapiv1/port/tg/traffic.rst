@@ -5,7 +5,7 @@ Rate Percent
 ------------
 The port-level rate of the traffic transmitted for a port in sequential tx mode, expressed in millionths of the effective rate for the port. The bandwidth consumption includes the inter-frame gaps, and does not depend on the length of the packets for the streams.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_RATEFRACTION`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_RATEFRACTION`
 
 .. code-block:: python
 
@@ -20,7 +20,7 @@ Rate L2 Bits Per Second
 -----------------------
 The port-level rate of the traffic transmitted for a port in sequential tx mode, expressed in units of bits per-second at layer-2, thus including the Ethernet header but excluding the inter-frame gap. The bandwidth consumption is somewhat dependent on the length of the packets generated for the stream, and also on the inter-frame gap for the port.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_RATEL2BPS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_RATEL2BPS`
 
 .. code-block:: python
 
@@ -35,7 +35,7 @@ Rate Frames Per Second
 ----------------------
 The port-level rate of the traffic transmitted for a port in sequential tx mode, expressed in packets per second. The bandwidth consumption is heavily dependent on the length of the packets generated for the streams, and also on the inter-frame gap for the port.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_RATEPPS`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_RATEPPS`
 
 .. code-block:: python
 
@@ -56,7 +56,7 @@ of packets with contributions from each stream that is enabled. The streams are 
     If any of the specified packet sizes cannot fit into the packet generator, this command will return FAILED and not start the traffic.
     While traffic is on the streams for this port cannot be enabled or disabled, and the configuration of those streams that are enabled cannot be changed.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TRAFFIC`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TRAFFIC`
 
 .. code-block:: python
 
@@ -72,9 +72,9 @@ Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_
 
 Traffic Error
 ----------------------------
-Obtain the traffic error which has occurred in the last ``*_TRAFFIC`` or :class:`~tdl_xoa_driver.internals.commands.c_commands.C_TRAFFICSYNC` command.
+Obtain the traffic error which has occurred in the last ``*_TRAFFIC`` or :class:`~xoa_driver.internals.commands.c_commands.C_TRAFFICSYNC` command.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_TRAFFICERR`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_TRAFFICERR`
 
 .. code-block:: python
 
@@ -89,7 +89,7 @@ Transmits a single packet from a port, independent of the stream definitions,
 and independent of whether traffic is on. A valid Frame Check Sum is written
 into the final four bytes.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_XMITONE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_XMITONE`
 
 .. code-block:: python
 
@@ -99,9 +99,9 @@ Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_
 
 Single Frame Time
 ----------------------------
-The time at which the latest packet was transmitted using the :class:`~tdl_xoa_driver.internals.commands.p_commands.P_XMITONE` command. The time reference is the same used by the time stamps of captured packets.
+The time at which the latest packet was transmitted using the :class:`~xoa_driver.internals.commands.p_commands.P_XMITONE` command. The time reference is the same used by the time stamps of captured packets.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_XMITONETIME`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_XMITONETIME`
 
 .. code-block:: python
 

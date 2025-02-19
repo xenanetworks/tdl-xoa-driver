@@ -7,7 +7,7 @@ This module contains the **L23 port classes** that deal with basic information a
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.p_commands
+.. automodule:: xoa_driver.internals.commands.p_commands
     :members:
     :no-undoc-members:
     :exclude-members: __init__, P_EMULATE, P_LOADMODE

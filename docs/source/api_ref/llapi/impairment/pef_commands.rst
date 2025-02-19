@@ -21,7 +21,7 @@ There are 2 register copies used to configure the filters:
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.pef_commands
+.. automodule:: xoa_driver.internals.commands.pef_commands
     :members:
     :no-undoc-members:
     :exclude-members: GetDataAttr, SetDataAttr, __init__

@@ -5,7 +5,7 @@ Mode
 -----------
 A multicast mode for a port. Ports can use the IGMPv2 protocol to join or leave multicast groups, either on an on-off basis or repeatedly.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MULTICAST`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MULTICAST`
 
 .. code-block:: python
 
@@ -41,7 +41,7 @@ Extended Mode
 --------------
 A multicast mode for a port. Ports can use the IGMPv2/IGMPv3 protocol to join or leave multicast groups, either on an on-off basis or repeatedly. 
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MULTICASTEXT`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MULTICASTEXT`
 
 .. code-block:: python
 
@@ -110,9 +110,9 @@ Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_
 
 Source List
 -----------
-Multicast source list of the port. Only valid if the IGMP protocol version is IGMPv3 set by :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MULTICAST`.
+Multicast source list of the port. Only valid if the IGMP protocol version is IGMPv3 set by :class:`~xoa_driver.internals.commands.p_commands.P_MULTICAST`.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MCSRCLIST`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MCSRCLIST`
 
 .. code-block:: python
 
@@ -127,7 +127,7 @@ Header
 -----------
 Allows addition of a VLAN tag to IGMPv2 and IGPMv3 packets.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_MULTICASTHDR`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_MULTICASTHDR`
 
 .. code-block:: python
 
@@ -147,7 +147,7 @@ IGMPv3 Group Record
 ---------------------
 Configure if a single membership report bundles multiple multicast group records to decrease the number of packets sent when using IGMPv3. This command returns ``<NOTVALID>`` when the IGMP version is not IGMPv3.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.p_commands.P_IGMPV3_GROUP_RECORD_BUNDLE`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_IGMPV3_GROUP_RECORD_BUNDLE`
 
 .. code-block:: python
 

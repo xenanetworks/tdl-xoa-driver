@@ -5,7 +5,7 @@ This module contains the **impairment port statistics commands**.
 
 -------
 
-.. currentmodule:: tdl_xoa_driver.internals.commands.pe_commands
+.. currentmodule:: xoa_driver.internals.commands.pe_commands
 
 
 

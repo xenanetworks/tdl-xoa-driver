@@ -2,7 +2,7 @@ Capabilities
 =========================
 Gets the module capabilities.
 
-Corresponding low-level API class: :class:`~tdl_xoa_driver.internals.commands.m_commands.M_CAPABILITIES`
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.m_commands.M_CAPABILITIES`
 
 .. code-block:: python
 

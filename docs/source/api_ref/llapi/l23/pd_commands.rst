@@ -11,7 +11,7 @@ While a histogram is actively collecting samples its parameters cannot be change
 
 -------
 
-.. automodule:: tdl_xoa_driver.internals.commands.pd_commands
+.. automodule:: xoa_driver.internals.commands.pd_commands
     :members:
     :no-undoc-members:
     :exclude-members: __init__
