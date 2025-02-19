@@ -1,0 +1,43 @@
+import setuptools
+
+
+def main():
+    with open("README.md", "r", encoding="utf-8") as fh:
+        long_description = fh.read()
+
+    setuptools.setup(
+        name="tdl-xoa-driver",
+        description=(
+            "XOA Driver is a driver providing user-friendly communication"
+            " interfaces to Xena Traffic Generation test equipment."
+            " It provides a rich collection of programming interfaces that can be used to either write"
+            " test scripts or develop applications."
+        ),
+        long_description=long_description,
+        long_description_content_type="text/markdown",
+        author="Leonard Yu",
+        author_email="leonard.yu@teledyne.com",
+        maintainer="Teledyne LeCroy Xena",
+        maintainer_email="support@xenanetworks.com",
+        url="https://github.com/xenanetworks/tdl-xoa-driver",
+        packages=setuptools.find_packages(),
+        license='Apache 2.0',
+        install_requires=["typing_extensions"],  # we are not able to skip of using typing_extensions, for make code compatible with python 3.8
+        classifiers=[
+            "Development Status :: 5 - Production/Stable",
+            "Intended Audience :: Developers",
+            "Topic :: Software Development :: Libraries :: Python Modules",
+            "License :: OSI Approved :: Apache Software License",
+            "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11",
+            "Programming Language :: Python :: 3.12",
+            "Programming Language :: Python :: 3.13",
+        ],
+        python_requires=">=3.8",
+    )
+
+
+if __name__ == '__main__':
+    main()

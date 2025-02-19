@@ -1,0 +1,12 @@
+# File: docs/requirements.txt
+
+# Defining the exact version will make sure things don't break
+sphinx>=8.0.2
+readthedocs-sphinx-search>=0.3.2
+sphinx-inline-tabs==2023.4.21
+loguru==0.7.0
+sphinx-copybutton==0.5.2
+sphinx-remove-toctrees==0.0.3
+sphinx_rtd_theme>=3.0.0
+sphinxcontrib-googleanalytics
+typing_extensions
