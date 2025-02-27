@@ -16,7 +16,7 @@ Installing XOA Driver
 
 This section details how to install ``tdl-xoa-driver``. Installation is necessary to execute scripts that use XOA Driver.
 
-Before installing ``tdl-xoa-driver``, please make sure your environment has installed `python>=3.10` and `pip`.
+Before installing ``tdl-xoa-driver``, please make sure your environment has installed `python>=3.8` and `pip`.
 
 You can install the ``tdl-xoa-driver`` to your global or virtual environment for Windows, macOS, and Linux using the commands below. 
 

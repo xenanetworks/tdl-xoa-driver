@@ -47,12 +47,12 @@ Install ``setuptools`` using pip:
 
 To install source of python packages:
 ``` shell
-/tdl_xoa_driver> python setup.py install
+/xoa_driver> python setup.py install
 ```
 
 To build ``.whl`` file for distribution:
 ``` shell
-/tdl_xoa_driver> python setup.py bdist_wheel
+/xoa_driver> python setup.py bdist_wheel
 ```
 
 
@@ -68,11 +68,11 @@ To build ``.whl`` file for distribution:
 ```python
 import asyncio
 
-from tdl_xoa_driver import testers
-from tdl_xoa_driver import modules
-from tdl_xoa_driver import ports
-from tdl_xoa_driver import enums
-from tdl_xoa_driver import utils
+from xoa_driver import testers
+from xoa_driver import modules
+from xoa_driver import ports
+from xoa_driver import enums
+from xoa_driver import utils
 
 async def my_awesome_func():
     # Establish connection with a Valkyrie tester
