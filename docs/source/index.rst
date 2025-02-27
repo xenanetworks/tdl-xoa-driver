@@ -4,7 +4,7 @@ XOA Driver Documentation
 
 This document provides a comprehensive guide to using the XOA Driver, including installation instructions, usage examples, and API reference documentation. The documentation is organized by API function and includes detailed descriptions of each function, along with usage examples and expected output.
 
-This XOA Driver documentation provides a wealth of information for network engineers and developers who are interested in automating network testing tasks using Xena test equipment. With its comprehensive API reference and usage examples, the documentation can help users get up and running quickly and efficiently with the XOA Driver.
+This documentation provides a wealth of information for network engineers and developers who are interested in automating network testing tasks using Xena test equipment. With its comprehensive API reference and usage examples, the documentation can help users get up and running quickly and efficiently with the XOA Driver.
 
 The target audience of this document is test specialists who develop and run automated test scripts/programs using Xena test equipment. Users of this document should have the following knowledge and experience:
 

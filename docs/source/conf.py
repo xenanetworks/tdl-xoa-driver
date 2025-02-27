@@ -51,8 +51,8 @@ month = datetime.datetime.today().month
 project = f"XOA Driver"
 copyright = f"{year}, {company}"
 author = company
-title = f"XOA Drive Documentation"
-output_basename = f" tdl_xoa_driver_doc"
+title = f"XOA Driver Documentation"
+output_basename = f"tdl_xoa_driver_doc"
 
 # The full version, including alpha/beta/rc tags.
 release = get_version("../../xoa_driver/__init__.py")
