@@ -1,7 +1,7 @@
 Modifier
 =========================
 
-Stream modifier APIs for Valkyrie streams.
+Stream modifier APIs for Xena streams.
 
 .. toctree::
     :glob:

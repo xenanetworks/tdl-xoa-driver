@@ -1,7 +1,7 @@
 Stream
 =========================
 
-Stream APIs for Valkyrie.
+Stream APIs for Xena.
 
 .. toctree::
     :glob:

@@ -71,7 +71,7 @@ A 'simple' and-expression can only have non-negated terms.
 
 ``<term>              =  <length-term>``
 
-In practice, the simplest way to generate these encodings is to use the ValkyrieManager,
+In practice, the simplest way to generate these encodings is to use the XenaManager,
 which supports Boolean expressions using the operators ``&, |, and ~``, and simply query the chassis for the resulting script-level definition.
 
 Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pf_commands.PF_CONDITION`

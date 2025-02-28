@@ -1,7 +1,7 @@
 Port
 =========================
 
-Package ``xoa_driver.ports`` includes port APIs for Valkyrie, Vulcan, Chimera, ValkyrieVE, and VulcanVE.
+Package ``xoa_driver.ports`` includes port APIs for Traffic Generation, Layer 1, and Network Emulation
 
 .. toctree::
     :glob:

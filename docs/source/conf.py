@@ -195,7 +195,7 @@ html_title = title
 # The path to the HTML logo image in the static path, or URL to the logo, or ''.
 # html_logo = './_static/xoa_logo.png'
 
-html_favicon = './_static/xoa_favicon_16.png'
+html_favicon = './_static/favicon.png'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

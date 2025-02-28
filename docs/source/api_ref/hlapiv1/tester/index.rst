@@ -1,7 +1,7 @@
 Tester
 =========================
 
-``xoa_driver.testers`` includes tester APIs for Valkyrie, Vulcan, ValkyrieVE, and VulcanVE.
+``xoa_driver.testers`` includes tester APIs for all testers.
 
 .. toctree::
     :glob:

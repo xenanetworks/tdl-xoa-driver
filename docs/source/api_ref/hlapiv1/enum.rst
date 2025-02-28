@@ -1,7 +1,7 @@
 Enum
 =================================
 
-``xoa_driver.enums`` includes enum classes for Valkyrie, Vulcan, Chimera, ValkyrieVE, and VulcanVE.
+``xoa_driver.enums`` includes enum classes for Traffic Generation, Layer 1, and Network Emulation
 
 .. automodule:: xoa_driver.enums
     :members:

@@ -1,7 +1,7 @@
 Length Term
 =========================
 
-Length Term APIs for Valkyrie.
+Length Term APIs for Xena.
 
 .. toctree::
     :glob:
