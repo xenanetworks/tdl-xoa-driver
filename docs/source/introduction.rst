@@ -38,15 +38,12 @@ By leveraging both the XOA Driver and XOA CLI, users can take advantage of the b
 In summary, the XOA Driver and XOA CLI work together to provide a comprehensive and flexible testing solution. The Python API brings automation and scripting capabilities, while the CLI offers precise control and configuration options. The integration between the two allows users to leverage their respective strengths and achieve a synergistic testing workflow.
 
 .. figure:: /_static/xoa_cli_synergy.png
-    :scale: 100 %
     :align: left
 
     Synergy Between XOA Driver and XOA CLI
 
-        A1: Save port configurations from ValkyrieManager and conveniently load them at a later time.
+    * Save port configurations from XenaManager and load them via XenaManager to configure the ports.
 
-        A2: Use CLI commands to manage and control testers.
+    * Use CLI commands to manage and control testers.
 
-        B1: Save port configurations from ValkyrieManager and conveniently load them using XOA Driver to facilitate the automation process.
-
-        B2: Use CLI commands inside XOA Driver to manage and control testers.
+    * Save port configurations from XenaManager and load them using XOA Driver configure the ports. Use CLI commands inside XOA Driver to manage and control testers.

@@ -13,10 +13,10 @@ Glossary of Terms
         The foundation of Xena OpenAutomation is its Python API (XOA Driver) that provides interfaces for engineers to manage Xena hardware and virtual test equipment.
 
     XOA CLI
-        XOA Command-Line Interface. Xena provides a rich set of CLI commands for users to administer test chassis for test automation. `Read more here <https://xenanetworks.com/?knowledge-base=knowledge-base/automation/scripting-for-valkyrie-vantage-chimera/valkyrie-vantage-chimera-cli-scripting-guide/overview/intro>`_.
+        XOA Command-Line Interface. Xena provides a rich set of CLI commands for users to administer test chassis for test automation.
 
     XOA Core
-        `Xena OpenAutomation Core <https://github.com/xenanetworks/open-automation-core>`_ is an open test suite framework to execute XOA Test Suites as its plugins.
+        Test framework to execute XOA RFC Test Suites as its plugins.
 
     API 
         Application Programming Interface.
