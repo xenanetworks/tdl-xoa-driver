@@ -77,5 +77,5 @@ This module contains the **impairment port commands**.
     :exclude-members: GetDataAttr, SetDataAttr, __init__
 
 
-The other port commands are the same as :ref:`Valkyrie Port Commands <l23_p_commands>`.
+The other port commands are the same as :ref:`Xena Port Commands <l23_p_commands>`.
 

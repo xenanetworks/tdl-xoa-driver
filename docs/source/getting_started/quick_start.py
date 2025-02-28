@@ -9,7 +9,7 @@ from xoa_driver.hlfuncs import mgmt
 
 async def my_awesome_func():
     
-    # Establish connection to a Valkyrie tester 10.10.10.10 with username JonDoe.
+    # Establish connection to a Xena tester 10.10.10.10 with username JonDoe.
     async with testers.L23Tester("10.10.10.10", "xoa") as tester:
         
         # Access module index 0 on the tester

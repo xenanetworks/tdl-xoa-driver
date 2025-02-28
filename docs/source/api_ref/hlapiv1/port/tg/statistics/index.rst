@@ -1,7 +1,7 @@
 Statistics
 =========================
 
-Statistics for Valkyrie ports.
+Statistics for Xena ports.
 
 .. toctree::
     :glob:

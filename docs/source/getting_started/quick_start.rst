@@ -14,7 +14,7 @@ Scripting with XOA Driver
 
 The simple code example demonstrates some basics of using :term:`HL-API` and :term: `HL-FUNC`:
 
-* Establish connection to a Valkyrie tester.
+* Establish connection to a Xena tester.
 * Reserve a port.
 * Create a stream on the port.
 * Configure the stream.
@@ -68,7 +68,7 @@ Then, we want to clear the statistics counters of both TX and RX ports. We can u
     :language: python
     :lines: 50-56
 
-Now, let's start the traffic on the TX port for roughly 10 seconds and stop. It is "*roughly*" because we use ``sleep()`` to control the duration. It may feel accurate to you but for a Valkyrie tester that can generate 800Gbps traffic with time measurement to nanosecond range, ``sleep()`` is far from accurate in terms of time controlling. If your test requires high-accuracy time control, don't use software to control time. Instead, limit the port's TX time so that you can have down to microsecond-range traffic duration.
+Now, let's start the traffic on the TX port for roughly 10 seconds and stop. It is "*roughly*" because we use ``sleep()`` to control the duration. It may feel accurate to you but for a Xena tester that can generate 800Gbps traffic with time measurement to nanosecond range, ``sleep()`` is far from accurate in terms of time controlling. If your test requires high-accuracy time control, don't use software to control time. Instead, limit the port's TX time so that you can have down to microsecond-range traffic duration.
 
 .. literalinclude:: quick_start.py
     :language: python
@@ -98,7 +98,7 @@ Integrate with CLI and XenaManager
 
 The simple code example demonstrates how to use XOA Driver :
 
-* Establish connection to a Valkyrie tester.
+* Establish connection to a Xena tester.
 * Reserve a port.
 * Port configuration from `.xpc` file
 * Port configuration from CLI commands

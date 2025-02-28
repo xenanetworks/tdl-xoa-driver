@@ -1,7 +1,7 @@
 Module
 =========================
 
-``xoa_driver.modules`` includes module APIs for Valkyrie, Vulcan, Chimera, ValkyrieVE, and VulcanVE.
+``xoa_driver.modules`` includes module APIs for Traffic Generation, Layer 1, and Network Emulation
 
 .. toctree::
     :glob:
