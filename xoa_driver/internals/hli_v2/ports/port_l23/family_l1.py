@@ -1,7 +1,7 @@
 
 import functools
 from typing import TYPE_CHECKING, Tuple
-from typing_extensions import Self
+from typing import Self
 from xoa_driver.internals.commands import (
     P_DYNAMIC,
     # PL1_AUTONEGINFO,

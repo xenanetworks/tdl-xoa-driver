@@ -1,4 +1,3 @@
-typing_extensions>=4.3.0
 loguru
 pdoc
 pytest

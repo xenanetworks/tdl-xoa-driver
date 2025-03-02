@@ -1,7 +1,7 @@
 from __future__ import annotations
 from asyncio import Future
 from typing import Generic
-from typing_extensions import Self
+from typing import Self
 from ._typings import HeaderType
 
 

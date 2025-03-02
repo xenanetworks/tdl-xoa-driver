@@ -3,7 +3,7 @@ from typing import (
     TYPE_CHECKING,
     Type
 )
-from typing_extensions import Self
+from typing import Self
 from xoa_driver.internals.commands import (
     C_REMOTEPORTCOUNTS,
     C_BUILDSTRING,
