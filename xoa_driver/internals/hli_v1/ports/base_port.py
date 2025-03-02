@@ -1,5 +1,5 @@
 import functools
-from typing_extensions import Self
+from typing import Self
 from abc import (
     ABC,
     abstractmethod,

@@ -16,7 +16,7 @@ from typing import (
     TypeVar,
 )
 
-from typing_extensions import (
+from typing import (
     NoReturn,
     Self,
 )

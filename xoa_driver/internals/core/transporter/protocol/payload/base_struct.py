@@ -14,7 +14,7 @@ from typing import (
     Type,
     cast,
 )
-from typing_extensions import (
+from typing import (
     Self,
     dataclass_transform,
 )

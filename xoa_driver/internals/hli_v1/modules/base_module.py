@@ -9,7 +9,7 @@ from abc import (
     ABC,
     abstractmethod,
 )
-from typing_extensions import Self
+from typing import Self
 from xoa_driver.internals.commands import enums
 from xoa_driver.internals.commands import (
     M_MODEL,
