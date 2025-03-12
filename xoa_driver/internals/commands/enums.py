@@ -3264,8 +3264,8 @@ class MACSecRekeyMode(IntEnum):
     PN_EXHAUSTION = 0
     """Switch to the next SAK when PN is exhausted."""
 
-    PACKET_CNT = 1
-    """Switch to the next SAK when the given number of packets are transmitted."""
+    PACKET_NUMBER = 1
+    """Switch to the next SAK when the given packet number is transmitted."""
 
 
 class MACSecEncryptionMode(IntEnum):

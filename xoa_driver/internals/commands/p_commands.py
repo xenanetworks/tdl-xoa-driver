@@ -5053,14 +5053,14 @@ class P_MACSEC_TXSC_REKEY_MODE:
         """byte, the rekey mode of the port’s TX SC"""
 
         value: int = field(XmpInt())
-        """integer, defines the packet count. This value will be ignored if the mode is set to PN_EXHAUSTION"""
+        """integer, defines the packet number that triggers the rekey. This value will be ignored if the mode is set to PN_EXHAUSTION"""
 
     class SetDataAttr(RequestBodyStruct):
         mode: MACSecRekeyMode = field(XmpByte())
         """byte, the rekey mode of the port’s TX SC"""
 
         value: int = field(XmpInt())
-        """integer, defines the packet count. This value will be ignored if the mode is set to PN_EXHAUSTION"""
+        """integer, defines the packet number that triggers the rekey. This value will be ignored if the mode is set to PN_EXHAUSTION"""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the rekey mode of the port’s TX SC
