@@ -5998,3 +5998,30 @@ class P_MACSEC_RX_ENABLE:
     set_on = functools.partialmethod(set, OnOff.ON)
     """Enable the RX port MACSec.
     """
+
+@register_command
+@dataclass
+class P_USED_TPLDID:
+    """
+    Get the used TPLD IDs from the port. If the port doesn't support TPLD ID traffic, the port will return <NOTSUPPORTED>
+    """
+
+    code: typing.ClassVar[int] = 319
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        used_tids: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """integer list, the used TPLD IDs from the port."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the used TPLD IDs from the port.
+
+        :return: the used TPLD IDs from the port.
+        :rtype: P_USED_TPLDID.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
