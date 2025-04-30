@@ -146,7 +146,7 @@ class Ethernet:
         return f"{_dst_mac}{_src_mac}{_ethertype}".upper()
     
 ####################################
-#           VLAN               #
+#           VLAN                   #
 ####################################
 
 @dataclass
@@ -874,3 +874,45 @@ class IB:
             return str(self.bth)+str(self.rdeth)
         if self.bth.opcode == BTHOpcode.UD_SEND_ONLY:
             return str(self.bth)+str(self.deth)
+
+
+######################
+#       MPLS         #
+######################
+@dataclass
+class MPLS:
+    label: int = 0
+    exp: int = 0
+    s: int = 1
+    ttl: int = 0
+
+    def __str__(self):
+        _combo: str = '{:06X}'.format((self.label<<4)+(self.exp<<1)+(self.s))
+        _ttl: str = '{:02X}'.format(self.ttl)
+        return f"{_combo}{_ttl}".upper()
+
+
+__all__ = (
+    "IPV4",
+    "IPV6",
+    "UDP",
+    "TCP",
+    "PTP",
+    "eCPRIGeneralDataTransfer",
+    "DHCPV4",
+    "DHCPOptionMessageType",
+    "DHCPOptionClientIdentifier",
+    "DHCPOptionRequestedIP",
+    "DHCPOptionParamRequestList",
+    "DHCPOptionPad",
+    "DHCPOptionEnd",
+    "MACControlPFC",
+    "MACControlPause",
+    "BTH",
+    "RETH",
+    "AETH",
+    "RDETH",
+    "DETH",
+    "IB",
+    "MPLS"
+)
