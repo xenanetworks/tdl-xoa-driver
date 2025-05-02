@@ -29,6 +29,7 @@ from xoa_driver.internals.commands import (
     C_FLASH,
     C_MODEL_NAME,
     C_MODEL_NUMBER,
+    C_USED_TPLDID,
 )
 from xoa_driver.internals.core.funcs import establish_connection
 from xoa_driver.internals.core.transporter.handler import TransportationHandler
@@ -171,6 +172,12 @@ class BaseTester(ABC, Generic[TesterStateStorage]):
         """Specifies tester's flash LEDs status.
 
         :type: C_FLASH
+        """
+
+        self.used_tpld_ids = C_USED_TPLDID(self._conn)
+        """Tester's used TPLD IDs.
+
+        :type: C_USED_TPLDID
         """
 
     async def __aenter__(self: Awaitable[T]) -> T:
