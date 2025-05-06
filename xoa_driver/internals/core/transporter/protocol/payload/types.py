@@ -21,6 +21,7 @@ FMT_INT = 'i'
 FMT_U_INT = 'I'
 FMT_SHORT = 'h'
 FMT_U_SHORT = 'H'
+FMT_JSON = 'J'
 
 # region Base Type
 
@@ -169,5 +170,13 @@ class XmpSequence(XmpType[tuple]):
         self.length = length
         self.repetitions = None
         self.data_format = "".join(f"{t.repetitions or ''}{t.data_format}" for t in self.types_chunk)
+
+
+class XmpJson(XmpType[dict]):
+    """Description class of XMP JSON type representation"""
+
+    def __init__(self) -> None:
+        self.data_format = FMT_JSON
+        self.repetitions = None
 
 # endregion
