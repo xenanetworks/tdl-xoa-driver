@@ -322,9 +322,13 @@ class PX_CDB_SUPPORT:
         """
         dict, json.
         
-        e.g. {"cdb_instances_supported": 2}
+        .. code-block:: json 
         
-        ``cdb_instances_supported``: CDP instnaces supported
+            {
+                "cdb_instances_supported": 2
+            }
+        
+        * ``cdb_instances_supported``: CDP instnaces supported
 
             * 0 = CDB functionality not supported
             * 1 = One CDB instance supported
@@ -358,7 +362,11 @@ class PX_CDB_ABORT_PROCESSING:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g. {"cdb_status": "0x00"}
+        .. code-block:: json
+        
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -366,6 +374,7 @@ class PX_CDB_ABORT_PROCESSING:
             * 0000 0001b: Host Password Accepted.
             * 1xxx xxxxb: Module Password accepted.
             * Bits ‘x’ may contain custom information.
+
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
@@ -406,7 +415,11 @@ class PX_CDB_CHANGE_PASSWORD:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g. {"cdb_status": "0x00"}
+        .. code-block:: json 
+        
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -437,7 +450,11 @@ class PX_CDB_CHANGE_PASSWORD:
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
-        e.g. {"new_password": "0x54555657"}
+        .. code-block:: json 
+        
+            {
+                "new_password": "0x54555657"
+            }
 
         * ``new_password``: hex string, new password to be entered.
 
@@ -463,7 +480,11 @@ class PX_CDB_ENTER_PASSWORD:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g. {"cdb_status": "0x00"}
+        .. code-block:: json 
+        
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -471,12 +492,17 @@ class PX_CDB_ENTER_PASSWORD:
             * 0000 0001b: Host Password Accepted.
             * 1xxx xxxxb: Module Password accepted.
             * Bits ‘x’ may contain custom information.
+
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
         """dict, json
 
-        e.g. {"password": "0x54555657"}
+        .. code-block:: json
+            
+            {
+                "password": "0x54555657"
+            }
 
         * ``password``: hex string, password to be entered.
 
@@ -498,7 +524,11 @@ class PX_CDB_ENTER_PASSWORD:
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
-        e.g. {"password": "0x54555657"}
+        .. code-block:: json
+        
+            {
+                "password": "0x54555657"
+            }
 
         * ``password``: hex string, password to be entered.
 
@@ -524,7 +554,12 @@ class PX_CDB_QUERY_STATUS:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g. {"cdb_status": "0x00", "status": "0x00"}
+        .. code-block:: json
+        
+            {
+                "cdb_status": "0x00", 
+                "status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -538,9 +573,14 @@ class PX_CDB_QUERY_STATUS:
         cmd_data: dict = field(XmpJson())
         """dict, json
 
-        e.g. {"response_delay": 0}
+        .. code-block:: json
+        
+            {
+                "response_delay": 0
+            }
 
         * ``response_delay``: Programmable delay in ms for module responding to this command. A value of 0 asks for module response as fast as possible.
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -558,9 +598,14 @@ class PX_CDB_QUERY_STATUS:
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
-        e.g. {"response_delay": 0}
+        .. code-block:: json
+        
+            {
+                "response_delay": 0
+            }
 
         * ``response_delay``: Programmable delay in ms for module responding to this command. A value of 0 asks for module response as fast as possible.
+
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
@@ -584,7 +629,12 @@ class PX_CDB_EXTERNAL_FEATURES:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g. {"cdb_status": "0x00", "supplement_support": "0x00"}
+        .. code-block:: json
+        
+            {
+                "cdb_status": "0x00",
+                "supplement_support": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -594,6 +644,7 @@ class PX_CDB_EXTERNAL_FEATURES:
             * Bits ‘x’ may contain custom information.
         
         * ``supplement_support``: hex string, Bit 0 = 0/1: CMIS-VCS not supported/supported
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -623,22 +674,23 @@ class PX_CDB_FW_MGMT_FEATURES:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00",
-            "feature_support_mask": "0x00",
-            "start_cmd_payload_size": 2,
-            "erased_byte": "0x00",
-            "read_write_length_ext": 2,
-            "write_mechanism": "0x00",
-            "read_mechanism": "0x00",
-            "hitless_restart": 0,
-            "max_duration_start": 123,
-            "max_duration_abort": 123,
-            "max_duration_write": 123,
-            "max_duration_complete": 123,
-            "max_duration_copy": 123
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00",
+                "feature_support_mask": "0x00",
+                "start_cmd_payload_size": 2,
+                "erased_byte": "0x00",
+                "read_write_length_ext": 2,
+                "write_mechanism": "0x00",
+                "read_mechanism": "0x00",
+                "hitless_restart": 0,
+                "max_duration_start": 123,
+                "max_duration_abort": 123,
+                "max_duration_write": 123,
+                "max_duration_complete": 123,
+                "max_duration_copy": 123
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -659,6 +711,7 @@ class PX_CDB_FW_MGMT_FEATURES:
         * ``max_duration_write``: integer, U16 Maximum time in M ms for a CDB Write command to complete execution
         * ``max_duration_complete``: integer, U16 Maximum time in M ms for a CDB Complete command to complete execution
         * ``max_duration_copy``: integer, U16 Maximum time in M ms for a CDB Copy command to complete execution
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -688,20 +741,21 @@ class PX_CDB_GET_APP_ATTRIBUTES:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00",
-            "application_number": 123,
-            "max_module_power": 123,
-            "prog_output_power_min": 123,
-            "prog_output_power_max": 123,
-            "pre_fec_ber_threshold": 123.123,
-            "rx_los_optical_power_threshold": 123,
-            "rx_power_high_alarm_threshold": 123,
-            "rx_power_low_alarm_threshold": 123,
-            "rx_power_high_warning_threshold": 123,
-            "rx_power_low_warning_threshold": 123
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00",
+                "application_number": 123,
+                "max_module_power": 123,
+                "prog_output_power_min": 123,
+                "prog_output_power_max": 123,
+                "pre_fec_ber_threshold": 123.123,
+                "rx_los_optical_power_threshold": 123,
+                "rx_power_high_alarm_threshold": 123,
+                "rx_power_low_alarm_threshold": 123,
+                "rx_power_high_warning_threshold": 123,
+                "rx_power_low_warning_threshold": 123
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -720,14 +774,20 @@ class PX_CDB_GET_APP_ATTRIBUTES:
         * ``rx_power_low_alarm_threshold``: integer, U16: OpticalPowerRxLowAlarmThreshold. Unit: 0.1uW.
         * ``rx_power_high_warning_threshold``: integer, U16: OpticalPowerRxHighWarningThreshold.Unit: 0.1uW.
         * ``rx_power_low_warning_threshold``: integer, U16: OpticalPowerRxLowWarningThreshold. Unit: 0.1uW.
+
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
         """dict, json
 
-        e.g. {"application_number": 1}
+        .. code-block:: json
+        
+            {
+                "application_number": 1
+            }
 
         * ``application_number``: integer, U16 Application number. 15-8: reserved (0). 7-4: NADBlockIndex (0-15) or 0. 3-0: AppSelCode (1-15)
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -744,8 +804,15 @@ class PX_CDB_GET_APP_ATTRIBUTES:
         Set CMD Data
         :param cmd_data: CMD DATA
         :type cmd_data: dict
-        e.g. {"application_number": 1}
+
+        .. code-block:: json
+        
+            {
+                "application_number": 1
+            }
+
         * ``application_number``: integer, U16 Application number. 15-8: reserved (0). 7-4: NADBlockIndex (0-15) or 0. 3-0: AppSelCode (1-15)
+
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
@@ -768,19 +835,20 @@ class PX_CDB_GET_IF_CODE_DESCR:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00",
-            "interface_id": "0x01",
-            "interface_location": "0x00",
-            "interfacre_name": "10G Ethernet",
-            "interfacre_description": "10G Ethernet",
-            "interfacre_data_rate": 10.3125,
-            "interfacre_lane_count": 1,
-            "lane_signaling_rate": 10.3125,
-            "modulation": "PAM4",
-            "bits_per_symbol": 2
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00",
+                "interface_id": "0x01",
+                "interface_location": "0x00",
+                "interfacre_name": "10G Ethernet",
+                "interfacre_description": "10G Ethernet",
+                "interfacre_data_rate": 10.3125,
+                "interfacre_lane_count": 1,
+                "lane_signaling_rate": 10.3125,
+                "modulation": "PAM4",
+                "bits_per_symbol": 2
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -804,11 +872,12 @@ class PX_CDB_GET_IF_CODE_DESCR:
         cmd_data: dict = field(XmpJson())
         """dict, json
 
-        e.g.
-        {
-            "interface_id": "0x01",
-            "interface_location": "0x00"
-        }
+        .. code-block:: json
+
+            {
+                "interface_id": "0x01",
+                "interface_location": "0x00"
+            }
 
         * ``interface_id``: hex string, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
         * ``interface_location``: integer, 0: media side. 1: host side.
@@ -829,13 +898,17 @@ class PX_CDB_GET_IF_CODE_DESCR:
         Set CMD Data
         :param cmd_data: CMD DATA
         :type cmd_data: dict
-        e.g. 
-        {
-            "interface_id": "0x01",
-            "interface_location": "0x00"
-        }
+
+        .. code-block:: json
+
+            {
+                "interface_id": "0x01",
+                "interface_location": "0x00"
+            }
+
         * ``interface_id``: hex string, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
         * ``interface_location``: integer, 0: media side. 1: host side.
+
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
@@ -858,12 +931,13 @@ class PX_CDB_MODULE_FEATURES:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00",
-            "cmd_support_mask": "0x00000000000000000000000000000000",
-            "max_completion_time": 1000
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00",
+                "cmd_support_mask": "0x00000000000000000000000000000000",
+                "max_completion_time": 1000
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -874,6 +948,7 @@ class PX_CDB_MODULE_FEATURES:
         
         * ``cmd_support_mask``: :hex string, indicates support of CDB commands 0000h-00FFh. This array of 32 bytes indicates support of CDB commands CMD <i>, with identifiers 0 ≤ <i> ≤ 255, as follows: CMD <i> is supported when bit<j>=<i>mod 8 of byte<k> = 138+floor(<i>/8) is set.
         * ``max_completion_time``: integer, U16 Maximum CDB command execution time in ms, of all supported CDB commands.
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -902,23 +977,24 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00",
-            "cmd_support_mask": "0xFF",
-            "num_certificates": 0,
-            "cert_chain_supported": 0,
-            "certificate_format": 0,
-            "certificate_length_1": 0,
-            "certificate_length_2": 0,
-            "certificate_length_3": 0,
-            "certificate_length_4": 0,
-            "digest_length": 0,
-            "signature_time": 0,
-            "signature_length": 0,
-            "signature_format": 0,
-            "signature_pad_scheme": 0
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00",
+                "cmd_support_mask": "0xFF",
+                "num_certificates": 0,
+                "cert_chain_supported": 0,
+                "certificate_format": 0,
+                "certificate_length_1": 0,
+                "certificate_length_2": 0,
+                "certificate_length_3": 0,
+                "certificate_length_4": 0,
+                "digest_length": 0,
+                "signature_time": 0,
+                "signature_length": 0,
+                "signature_format": 0,
+                "signature_pad_scheme": 0
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -940,6 +1016,7 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
         * ``signature_length``: integer, Length (in bytes) of the encoded/padded (if applicable) digest signature
         * ``signature_format``: integer, 0: Not supported. 1: **Custom, vendor specific encoding**. 2: Raw binary byte stream. 3: DER encoding. 4: ECDSA (R,S) integer pair, integers prefixed with length. 5-255: Reserved.
         * ``signature_pad_scheme``: integer, 0: None. 1: **Custom**. 2: PKCS#1 v1.5. 3: OAEP. 4: PSS. 5-255: Reserved
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -969,10 +1046,11 @@ class PX_CDB_ABORT_FIRMWARE_DOWNLOAD:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00"
-        }
+        .. code-block:: json
+        
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1021,10 +1099,11 @@ class PX_CDB_COMMIT_FIRMWARE_IMAGE:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00"
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1073,10 +1152,11 @@ class PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00"
-        }
+        .. code-block:: json
+        
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1125,12 +1205,13 @@ class PX_CDB_COPY_FIRMWARE_IMAGE:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00",
-            "copy_direction": "0xAB",
-            "copy_status": "0x00"
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00",
+                "copy_direction": "0xAB",
+                "copy_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1169,7 +1250,12 @@ class PX_CDB_COPY_FIRMWARE_IMAGE:
         Set CMD Data
         :param cmd_data: CMD DATA
         :type cmd_data: dict
-        e.g. {"copy_direction": "0xAB"}
+
+        .. code-block:: json
+        
+            {
+                "copy_direction": "0xAB"
+            }
 
         * ``copy_direction``: hex string, copy direction.
 
@@ -1198,24 +1284,25 @@ class PX_CDB_GET_FIRMWARE_INFO:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00",
-            "firmware_status": 0,
-            "image_information": 0,
-            "image_a_major": 0,
-            "image_a_minor": 0,
-            "image_a_build": 0,
-            "image_a_extra_string": "abcdef",
-            "image_b_major": 0,
-            "image_b_minor": 0,
-            "image_b_build": 0,
-            "image_b_extra_string": "abcdef",
-            "factory_boot_major": 0,
-            "factory_boot_minor": 0,
-            "factory_boot_build": 0,
-            "factory_boot_extra_string": "abcdef"
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00",
+                "firmware_status": 0,
+                "image_information": 0,
+                "image_a_major": 0,
+                "image_a_minor": 0,
+                "image_a_build": 0,
+                "image_a_extra_string": "abcdef",
+                "image_b_major": 0,
+                "image_b_minor": 0,
+                "image_b_build": 0,
+                "image_b_extra_string": "abcdef",
+                "factory_boot_major": 0,
+                "factory_boot_minor": 0,
+                "factory_boot_build": 0,
+                "factory_boot_extra_string": "abcdef"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1266,6 +1353,7 @@ class PX_CDB_GET_FIRMWARE_INFO:
         * ``factory_boot_minor``: integer, Factory or Boot firmware minor revision.
         * ``factory_boot_build``: integer, Factory or Boot firmware build number.
         * ``factory_boot_extra_string``: string, Factory or Boot additional information (32-byte long ASCII string).
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1297,11 +1385,12 @@ class PX_CDB_READ_FIRMWARE_BLOCK_EPL:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00",
-            "image_data": "0x00010203040506070809"
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00",
+                "image_data": "0x00010203040506070809"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1310,7 +1399,8 @@ class PX_CDB_READ_FIRMWARE_BLOCK_EPL:
             * 1xxx xxxxb: Module Password accepted.
             * Bits ‘x’ may contain custom information.
 
-        * ``image_data``: :term:`list of hex<H*>`, Up to 128 bytes.
+        * ``image_data``: hex string, Up to 128 bytes.
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1342,12 +1432,13 @@ class PX_CDB_READ_FIRMWARE_BLOCK_LPL:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00",
-            "base_address_block": "0x0000000C",
-            "image_data": "0x00010203040506070809"
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00",
+                "base_address_block": "0x0000000C",
+                "image_data": "0x00010203040506070809"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1358,6 +1449,7 @@ class PX_CDB_READ_FIRMWARE_BLOCK_LPL:
 
         * ``base_address_block``:  hex string, Base address of the data block within the firmware image.
         * ``image_data``: : hex string, Up to 116 bytes.
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1387,10 +1479,11 @@ class PX_CDB_RUN_FIRMWARE_IMAGE:
         reply: dict = field(XmpJson())
         """dict, json
         
-        e.g.
-        {
-            "cdb_status": "0x00"
-        }
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1398,16 +1491,18 @@ class PX_CDB_RUN_FIRMWARE_IMAGE:
             * 0000 0001b: Host Password Accepted.
             * 1xxx xxxxb: Module Password accepted.
             * Bits ‘x’ may contain custom information.
+
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
         """dict, json
 
-        e.g.
-        {
-            "image_to_run": 0,
-            "delay_to_reset": 100
-        }
+        .. code-block:: json
+
+            {
+                "image_to_run": 0,
+                "delay_to_reset": 100
+            }
 
         * ``image_to_run``: integer, index of the image to run.
 
@@ -1417,6 +1512,7 @@ class PX_CDB_RUN_FIRMWARE_IMAGE:
             * 3 = Attempt Hitless Reset to Running Image
 
         * ``delay_to_reset``: integer, Indicates the delay in ms after receiving this command before a reset will occur, starting from the time the CDB complete Flag is set.
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1433,11 +1529,13 @@ class PX_CDB_RUN_FIRMWARE_IMAGE:
         Set CMD Data
         :param cmd_data: CMD DATA
         :type cmd_data: dict
-        e.g.
-        {
-            "image_to_run": 0,
-            "delay_to_reset": 100
-        }
+
+        .. code-block:: json
+
+            {
+                "image_to_run": 0,
+                "delay_to_reset": 100
+            }
 
         * ``image_to_run``: integer, index of the image to run.
 
@@ -1447,6 +1545,7 @@ class PX_CDB_RUN_FIRMWARE_IMAGE:
             * 3 = Attempt Hitless Reset to Running Image
 
         * ``delay_to_reset``: integer, Indicates the delay in ms after receiving this command before a reset will occur, starting from the time the CDB complete Flag is set.
+
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
@@ -1468,10 +1567,12 @@ class PX_CDB_START_FIRMWARE_DOWNLOAD:
     class GetDataAttr(ResponseBodyStruct):
         reply: dict = field(XmpJson())
         """dict, json
-        e.g.
-        {
-            "cdb_status": "0x00"
-        }
+
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1479,18 +1580,22 @@ class PX_CDB_START_FIRMWARE_DOWNLOAD:
             * 0000 0001b: Host Password Accepted.
             * 1xxx xxxxb: Module Password accepted.
             * Bits ‘x’ may contain custom information.
+
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
         """dict, json
-        e.g.
-        {
-            "image_size": 12,
-            "vendor_data": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-        }
+        
+        .. code-block:: json
+
+            {
+                "image_size": 12,
+                "vendor_data": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            }
 
         * ``image_size``: integer, U32 Size of firmware image to download into the module. This should be the file size including the LPL bytes sent as vendor data in this message.
         * ``vendor_data``: hex string, U8 Array of vendor specific data to be sent to the module. This data is sent as part of the firmware download message. The size of this data is included in the image_size parameter.
+        
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1507,14 +1612,17 @@ class PX_CDB_START_FIRMWARE_DOWNLOAD:
         Set CMD Data
         :param cmd_data: CMD DATA
         :type cmd_data: dict
-        e.g.
-        {
-            "image_size": 12,
-            "vendor_data": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-        }
+
+        .. code-block:: json
+
+            {
+                "image_size": 12,
+                "vendor_data": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            }
 
         * ``image_size``: integer, U32 Size of firmware image to download into the module. This should be the file size including the LPL bytes sent as vendor data in this message.
         * ``vendor_data``: hex string, U8 Array of vendor specific data to be sent to the module. This data is sent as part of the firmware download message. The size of this data is included in the image_size parameter.
+
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
@@ -1537,10 +1645,12 @@ class PX_CDB_WRITE_FIRMWARE_BLOCK_EPL:
     class GetDataAttr(ResponseBodyStruct):
         reply: dict = field(XmpJson())
         """dict, json
-        e.g.
-        {
-            "cdb_status": "0x00"
-        }
+
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1548,16 +1658,20 @@ class PX_CDB_WRITE_FIRMWARE_BLOCK_EPL:
             * 0000 0001b: Host Password Accepted.
             * 1xxx xxxxb: Module Password accepted.
             * Bits ‘x’ may contain custom information.
+
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
         """dict, json
-        e.g.
-        {
-            "firmware_block": "0x00010203040506070809"
-        }
+
+        .. code-block:: json
+
+            {
+                "firmware_block": "0x00010203040506070809"
+            }
 
         * ``firmware_block``: hex string, Up to 2048 Bytes.
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1574,12 +1688,15 @@ class PX_CDB_WRITE_FIRMWARE_BLOCK_EPL:
         Set CMD Data
         :param cmd_data: CMD DATA
         :type cmd_data: dict
-        e.g.
-        {
-            "firmware_block": "0x00010203040506070809"
-        }
+
+        .. code-block:: json
+
+            {
+                "firmware_block": "0x00010203040506070809"
+            }
 
         * ``firmware_block``: hex string, Up to 2048 Bytes.
+
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex, self._block_address], cmd_data=cmd_data))
@@ -1602,10 +1719,12 @@ class PX_CDB_WRITE_FIRMWARE_BLOCK_LPL:
     class GetDataAttr(ResponseBodyStruct):
         reply: dict = field(XmpJson())
         """dict, json
-        e.g.
-        {
-            "cdb_status": "0x00"
-        }
+        
+        .. code-block:: json
+
+            {
+                "cdb_status": "0x00"
+            }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
@@ -1613,16 +1732,20 @@ class PX_CDB_WRITE_FIRMWARE_BLOCK_LPL:
             * 0000 0001b: Host Password Accepted.
             * 1xxx xxxxb: Module Password accepted.
             * Bits ‘x’ may contain custom information.
+
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
         """dict, json
-        e.g.
-        {
-            "firmware_block": "0x00010203040506070809"
-        }
+        
+        .. code-block:: json
+
+            {
+                "firmware_block": "0x00010203040506070809"
+            }
 
         * ``firmware_block``: hex string, Up to 116 bytes. One block of the firmware image. The actually needed length may be shorter than the available FirmwareBlock field size.
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1639,12 +1762,15 @@ class PX_CDB_WRITE_FIRMWARE_BLOCK_LPL:
         Set CMD Data
         :param cmd_data: CMD DATA
         :type cmd_data: dict
-        e.g.
-        {
-            "firmware_block": "0x00010203040506070809"
-        }
+
+        .. code-block:: json
+
+            {
+                "firmware_block": "0x00010203040506070809"
+            }
 
         * ``firmware_block``: hex string, Up to 116 bytes. One block of the firmware image. The actually needed length may be shorter than the available FirmwareBlock field size.
+
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex, self._block_address], cmd_data=cmd_data))
@@ -1666,34 +1792,37 @@ class PX_CUST_REPLY:
     class GetDataAttr(ResponseBodyStruct):
         reply: dict = field(XmpJson())
         """dict, json
-        e.g.
-        {
-            "reply_status": {
-                "cdb_cmd_complete_flag": "0x00",
-                "cdb_status": "0x00",
-            },
-            "reply_header": {
-                "rpl_length": 9,
-                "rpl_check_code": 9
-            }
-            "reply_data": {
-                "data": "0x00"
-            }
-        }
+        
+        .. code-block:: json
 
-        * ``reply_status``: :term:`json<J>`, JSON formatted string containing the following fields:
+            {
+                "reply_status": {
+                    "cdb_cmd_complete_flag": "0x00",
+                    "cdb_status": "0x00",
+                },
+                "reply_header": {
+                    "rpl_length": 9,
+                    "rpl_check_code": 9
+                }
+                "reply_data": {
+                    "data": "0x00"
+                }
+            }
+
+        * ``reply_status``: dict, JSON formatted string containing the following fields:
 
             * ``cdb_cmd_complete_flag``: hex string, indicates whether the CDB command is complete.
             * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
-        * ``reply_header``: :term:`json<J>`, JSON formatted string containing the following fields:
+        * ``reply_header``: dict, JSON formatted string containing the following fields:
 
             * ``rpl_length``: integer, length of the reply data.
             * ``rpl_check_code``: integer, check code for the reply data.
 
-        * ``reply_data``: :term:`json<J>`, JSON formatted string containing the following fields:
+        * ``reply_data``: dict, JSON formatted string containing the following fields:
 
             * ``data``: hex string, the actual data to be sent in the reply.
+
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1720,32 +1849,7 @@ class PX_CUST_REQUEST:
 
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
-        """dict, json
-        e.g.
-        {
-            "cmd_header": {
-                "cmd_id": "0x00",
-                "epl_length": 0,
-                "lpl_length": 0,
-                "rpl_length": 0,
-                "rpl_check_code": 0
-            },
-            "cmd_data": {
-                "data": "0x00"
-            }
-        }
-
-        * ``cmd_header``: JSON object, contains the command header fields.
-
-            * ``cmd_id``: hex string, command ID.
-            * ``epl_length``: integer, length of the EPL.
-            * ``lpl_length``: integer, length of the LPL.
-            * ``rpl_length``: integer, length of the RPL. (optional)
-            * ``rpl_check_code``: integer, check code for the RPL. (optional)
-
-        * ``cmd_data``: JSON object, contains the command data fields.
-
-            * ``data``: hex string, command data.
+        """Set CMD Data
         """
 
     
@@ -1754,21 +1858,23 @@ class PX_CUST_REQUEST:
         Set CMD Data
         :param cmd_data: CMD DATA
         :type cmd_data: dict
-        e.g.
-        {
-            "cmd_header": {
-                "cmd_id": "0x00",
-                "epl_length": 0,
-                "lpl_length": 0,
-                "rpl_length": 0,
-                "rpl_check_code": 0
-            },
-            "cmd_data": {
-                "data": "0x00"
-            }
-        }
 
-        * ``cmd_header``: JSON object, contains the command header fields.
+        .. code-block:: json
+
+            {
+                "cmd_header": {
+                    "cmd_id": "0x00",
+                    "epl_length": 0,
+                    "lpl_length": 0,
+                    "rpl_length": 0,
+                    "rpl_check_code": 0
+                },
+                "cmd_data": {
+                    "data": "0x00"
+                }
+            }
+
+        * ``cmd_header``: dict, contains the command header fields.
 
             * ``cmd_id``: hex string, command ID.
             * ``epl_length``: integer, length of the EPL.
@@ -1776,9 +1882,10 @@ class PX_CUST_REQUEST:
             * ``rpl_length``: integer, length of the RPL. (optional)
             * ``rpl_check_code``: integer, check code for the RPL. (optional)
 
-        * ``cmd_data``: JSON object, contains the command data fields.
+        * ``cmd_data``: dict, contains the command data fields.
 
             * ``data``: hex string, command data.
+
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
