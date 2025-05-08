@@ -51,6 +51,7 @@ from xoa_driver.internals.commands import (
     P_TXBURSTPERIOD,
     P_CAPABILITIES_EXT,
     P_IGMPV3_GROUP_RECORD_BUNDLE,
+    P_USED_TPLDID,
 )
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
@@ -518,6 +519,12 @@ class BasePortL23(base_port.BasePort[ports_state.PortL23LocalState]):
         """L23 port's match term index manager.
 
         :type: MatchTermIndices
+        """
+
+        self.used_tpld_ids = P_USED_TPLDID(conn, module_id, port_id)
+        """TG port's used TPLD IDs.
+
+        :type: P_USED_TPLDID
         """
 
     on_speed_change = functools.partialmethod(utils.on_event, P_SPEED)

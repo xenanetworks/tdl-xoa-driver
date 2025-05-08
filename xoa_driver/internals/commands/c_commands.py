@@ -2039,3 +2039,29 @@ class C_MODEL_NUMBER:
         """
 
         return Token(self._connection, build_get_request(self))
+    
+
+@register_command
+@dataclass
+class C_USED_TPLDID:
+    """
+    Get the used TPLD IDs from the chassis.
+    """
+
+    code: typing.ClassVar[int] = 44
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+
+    class GetDataAttr(ResponseBodyStruct):
+        used_tids: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """integer list, the used TPLD IDs from the chassis."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the used TPLD IDs from the chassis.
+
+        :return: the used TPLD IDs from the chassis.
+        :rtype: C_USED_TPLDID.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self))

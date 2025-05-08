@@ -1064,6 +1064,12 @@ class MediaConfigurationType(IntEnum):
     OSFP_NRZ = 120
     """OSFP, 56G serdes, NRZ"""
 
+    QSFP_DD_NRZ_ANLT = 121
+    """QSFP-DD, 25G serdes, L1/ANLT"""
+
+    OSFP_NRZ_ANLT = 122
+    """OSFP, 25G serdes, L1/ANLT"""    
+
     UNKNOWN = 255
 
 
@@ -3264,8 +3270,8 @@ class MACSecRekeyMode(IntEnum):
     PN_EXHAUSTION = 0
     """Switch to the next SAK when PN is exhausted."""
 
-    PACKET_CNT = 1
-    """Switch to the next SAK when the given number of packets are transmitted."""
+    PACKET_NUMBER = 1
+    """Switch to the next SAK when the given packet number is transmitted."""
 
 
 class MACSecEncryptionMode(IntEnum):
