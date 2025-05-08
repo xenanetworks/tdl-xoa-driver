@@ -40,3 +40,15 @@ Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_comm
     # Status
     resp = await port.status.get()
     resp.optical_power
+
+Used TPLD ID
+-----------------
+Get the used TPLD IDs from the port.
+
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.p_commands.P_USED_TPLDID`
+
+.. code-block:: python
+
+    # Used TPLD IDs
+    resp = await port.used_tpld_ids.get()
+    resp.used_tpld_ids

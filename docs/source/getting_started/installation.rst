@@ -3,10 +3,6 @@ Installing XOA Driver
 
 XOA Driver is available to install and upgrade via the `Python Package Index <https://pypi.org/>`_. Alternatively, you can also install and upgrade from the source file.
 
-.. note::
-	
-		The minimum Xena release supported by XOA Driver is **83.2**. 
-
 Prerequisites
 -------------
 
@@ -19,7 +15,7 @@ XOA Driver requires that you `install Python <https://realpython.com/installing-
 
 .. note:: 
 
-    XOA Driver requires Python >= 3.8.
+    XOA Driver requires Python >= 3.11
 
 ``pip``
 ^^^^^^^
@@ -72,18 +68,18 @@ Install to Global Namespace
     .. code-block:: doscon
         :caption: Install XOA Driver in Windows environment from PyPi.
 
-        > pip install tdl-xoa-driver            # latest version
-        > pip install tdl-xoa-driver==1.0.7     # specific version
-        > pip install tdl-xoa-driver>=1.0.7     # minimum version
+        > pip install tdl-xoa-driver -U         # latest version
+        > pip install tdl-xoa-driver==1.1.0     # specific version
+        > pip install tdl-xoa-driver>=1.1.0     # minimum version
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
         :caption: Install XOA Driver in macOS/Linux environment from PyPi.
 
-        $ pip install tdl-xoa-driver            # latest version
-        $ pip install tdl-xoa-driver==1.0.7     # specific version
-        $ pip install tdl-xoa-driver>=1.0.7     # minimum version
+        $ pip3 install tdl-xoa-driver -U         # latest version
+        $ pip3 install tdl-xoa-driver==1.1.0     # specific version
+        $ pip3 install tdl-xoa-driver>=1.1.0     # minimum version
 
 
 Install in Activated Virtual Environment
@@ -111,7 +107,7 @@ For example, your project folder is called ``/my_xoa_project``.
         [my_xoa_project]$ python3 -m venv ./env
         [my_xoa_project]$ source ./env/bin/activate
 
-        (env) [my_xoa_project]$ pip install tdl-xoa-driver
+        (env) [my_xoa_project]$ pip3 install tdl-xoa-driver
 
 .. seealso::
 
@@ -154,14 +150,14 @@ To upgrade XOA Driver package from PyPI:
     .. code-block:: doscon
         :caption: Upgrade XOA Driver in Windows environment from PyPi.
 
-        > pip install tdl-xoa-driver --upgrade
+        > pip install tdl-xoa-driver -U
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
         :caption: Upgrade XOA Driver in macOS/Linux environment from PyPi.
 
-        $ pip install tdl-xoa-driver --upgrade
+        $ pip3 install tdl-xoa-driver -U
 
 
 Installing Manually From Source
@@ -184,7 +180,7 @@ If for some reason you need to install or upgrade XOA Driver manually from sourc
     .. code-block:: console
         :caption: Install ``wheel`` and ``setuptools`` in macOS/Linux environment.
 
-        $ pip install wheel setuptools
+        $ pip3 install wheel setuptools
 
 **Step 2**, download the XOA Driver source distribution from `XOA Driver Releases <https://github.com/xenanetworks/tdl-xoa-driver/releases>`_. Unzip the archive and run the ``setup.py`` script to install the package:
 
@@ -220,34 +216,3 @@ If for some reason you need to install or upgrade XOA Driver manually from sourc
         :caption: Build XOA Driver wheel in macOS/Linux environment for distribution.
 
         [xoa_driver]$ python3 setup.py bdist_wheel
-
-
-Uninstall and Remove Unused Dependencies
-------------------------------------------------------------
-
-``pip uninstall tdl-xoa-driver`` can uninstall the package itself but not its dependencies. Leaving the package's dependencies in your environment can later create conflicting dependencies problem.
-
-We recommend install and use the `pip-autoremove <https://github.com/invl/pip-autoremove>`_ utility to remove a package plus unused dependencies.
-
-.. tab:: Windows
-    :new-set:
-
-    .. code-block:: doscon
-        :caption: Uninstall XOA Driver in Windows environment.
-
-        > pip install pip-autoremove
-        > pip-autoremove tdl-xoa-driver -y
-
-.. tab:: macOS/Linux
-
-    .. code-block:: console
-        :caption: Uninstall XOA Driver in macOS/Linux environment.
-
-        $ pip install pip-autoremove
-        $ pip-autoremove tdl-xoa-driver -y
-
-.. seealso::
-
-    See the `pip uninstall <https://pip.pypa.io/en/stable/cli/pip_uninstall/#pip-uninstall>`_ reference.
-
-    See `pip-autoremove <https://github.com/invl/pip-autoremove>`_ usage.

@@ -2054,7 +2054,7 @@ class C_USED_TPLDID:
     _connection: 'interfaces.IConnection'
 
     class GetDataAttr(ResponseBodyStruct):
-        used_tids: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        used_tpld_ids: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
         """integer list, the used TPLD IDs from the chassis."""
 
     def get(self) -> Token[GetDataAttr]:

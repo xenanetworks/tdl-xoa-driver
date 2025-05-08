@@ -32,7 +32,7 @@ def main():
             "Programming Language :: Python :: 3.13",
             "Programming Language :: Python :: 3.14",
         ],
-        python_requires=">=3.9",
+        python_requires=">=3.11",
     )
 
 

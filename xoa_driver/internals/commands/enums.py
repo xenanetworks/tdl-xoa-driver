@@ -733,15 +733,11 @@ class PayloadType(IntEnum):
 
     INC16 = 5
     """
-    .. versionadded:: 1.1
-
     Incrementing with 0xFFFF (16-bit mode)
     """
 
     DEC16 = 6
     """
-    .. versionadded:: 1.1
-
     Decrementing with 0xFFFF (16-bit mode)
     """
 
@@ -2284,8 +2280,6 @@ class LinkTrainingFailureType(IntEnum):
 
 class Layer1ConfigType(IntEnum):
     """
-    .. versionadded:: 1.1
-
     Enums for PL1_CFG_TMP's type.
     """
 
@@ -2320,8 +2314,6 @@ class Layer1ConfigType(IntEnum):
 class Layer1LogType(IntEnum):
     """
 
-    .. versionadded:: 1.1
-
     .. warning::
 
         Still in beta mode. Subjected to changes
@@ -2338,10 +2330,7 @@ class Layer1LogType(IntEnum):
 
 class LinkTrainAlgorithm(IntEnum):
     """
-    .. versionadded:: 1.2
-
     Link Training Algorithm
-
     """
 
     INTERACTIVE = 0
@@ -2356,8 +2345,6 @@ class LinkTrainAlgorithm(IntEnum):
 
 class LinkTrainCmd(IntEnum):
     """
-    .. versionadded:: 1.1
-
     Link Training commands
 
     """
@@ -2386,8 +2373,6 @@ class LinkTrainCmd(IntEnum):
 
 class LinkTrainPresets(IntEnum):
     """
-    .. versionadded:: 1.1
-
     Link Training presets
 
     """
@@ -2413,8 +2398,6 @@ class LinkTrainPresets(IntEnum):
 
 class LinkTrainCoeffs(IntEnum):
     """
-    .. versionadded:: 1.1
-
 
     Link Training coefficients
 
@@ -2441,8 +2424,6 @@ class LinkTrainCoeffs(IntEnum):
 
 class LinkTrainEncoding(IntEnum):
     """
-    .. versionadded:: 1.1
-
     Link Training Encoding
 
     """
@@ -2462,8 +2443,6 @@ class LinkTrainEncoding(IntEnum):
 
 class LinkTrainCmdResults(IntEnum):
     """
-    .. versionadded:: 1.1
-
     Link Training Command Results
 
     """
@@ -2501,8 +2480,6 @@ class LinkTrainCmdResults(IntEnum):
 
 class LinkTrainCmdFlags(IntEnum):
     """
-    .. versionadded:: 1.1
-
     Link Training Command Flags
 
     """
@@ -2528,8 +2505,6 @@ class LinkTrainCmdFlags(IntEnum):
 
 class LinkTrainAnnounce(IntEnum):
     """
-    .. versionadded:: 1.1
-
     Link Training Announce
 
     """
@@ -2540,8 +2515,6 @@ class LinkTrainAnnounce(IntEnum):
 
 class AnLtLogControl(IntEnum):
     """
-    .. versionadded:: 1.3
-
     ANLT log control bits
 
     """

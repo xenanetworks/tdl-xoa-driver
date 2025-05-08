@@ -509,8 +509,6 @@ class PR_UAT_TIME:
 @dataclass
 class PR_TOTALEXT:
     """
-    .. versionadded: v1.1
-
     An extension of :class:`PR_TOTAL` that also includes a calculation of bytes received in the last second, as well as a number of port error counters.
     PR_TOTALEXT returns list of long integers. This list may be expanded in future software releases.
     """
@@ -565,8 +563,6 @@ class PR_TOTALEXT:
 @dataclass
 class PR_NOTPLDEXT:
     """
-    .. versionadded: v1.1
-
     An extension of :class:`PR_NOTPLD` that also includes a calculation of bytes received in the last second.
     PR_NOTPLDEXT returns list of long integers. This list may be expanded in future software releases.
     """
@@ -610,8 +606,6 @@ class PR_NOTPLDEXT:
 @dataclass
 class PR_TPLDTRAFFICEXT:
     """
-    .. versionadded: v1.1
-
     An extension of :class:`PR_TPLDTRAFFIC` that also includes a calculation of bytes received in the last second.
     PR_TPLDTRAFFICEXT returns list of long integers. This list may be expanded in future software releases.
     """
@@ -657,8 +651,6 @@ class PR_TPLDTRAFFICEXT:
 @dataclass
 class PR_FILTEREXT:
     """
-    .. versionadded: v1.1
-
     An extension of :class:`PR_FILTER` that also includes a calculation of bytes received in the last second.
     PR_FILTEREXT returns list of long integers. This list may be expanded in future software releases.
     """

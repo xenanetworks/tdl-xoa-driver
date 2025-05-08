@@ -271,8 +271,6 @@ async def lt_coeff_inc(
     emphasis: enums.LinkTrainCoeffs
 ) -> enums.LinkTrainCmdResults:
     """
-    .. versionadded:: 1.1
-
     Ask the remote port to increase coeff of the specified serdes.
 
     :param port: the port object
@@ -293,8 +291,6 @@ async def lt_coeff_dec(
     emphasis: enums.LinkTrainCoeffs
 ) -> enums.LinkTrainCmdResults:
     """
-    .. versionadded:: 1.1
-
     Ask the remote port to decrease coeff of the specified serdes.
 
     :param port: the port object
@@ -316,8 +312,6 @@ async def lt_coeff_no_eq(
 ) -> enums.LinkTrainCmdResults:
 
     """
-    .. versionadded:: 2.0
-
     Ask the remote port to set the coeff to NO_EQ on the specified serdes.
 
     :param port: the port object
@@ -338,8 +332,6 @@ async def lt_preset(
     preset: enums.LinkTrainPresets
 ) -> enums.LinkTrainCmdResults:
     """
-    .. versionadded:: 1.1
-
     Ask the remote port to use the preset of the specified serdes.
 
     :param port: the port object
@@ -360,8 +352,6 @@ async def lt_encoding(
     encoding: enums.LinkTrainEncoding
 ) -> enums.LinkTrainCmdResults:
     """
-    .. versionadded:: 1.1
-
     Ask the remote port to use the encoding of the specified serdes.
 
     :param port: the port object
@@ -378,8 +368,6 @@ async def lt_encoding(
 
 async def lt_trained(port: GenericL23Port, serdes: int) -> enums.LinkTrainCmdResults:
     """
-    .. versionadded:: 1.1
-
     Tell the remote port that the current serdes is trained.
 
     :param port: the port object
@@ -431,8 +419,6 @@ async def lt_status(port: GenericL23Port, serdes: int) -> dict[str, t.Any]:
 
 async def txtap_get(port: GenericL23Port, serdes: int) -> dict[str, int]:
     """
-    .. versionadded:: 1.1
-
     Get the tap value of the local TX tap.
 
     :param port: the port object
@@ -457,8 +443,6 @@ async def txtap_set(
     post1: int,
 ) -> None:
     """
-    .. versionadded:: 1.1
-
     Set the tap value of the local TX tap.
 
     :param port: the port object
@@ -545,8 +529,6 @@ async def anlt_status(port: GenericL23Port) -> dict[str, t.Any]:
 
 async def anlt_log(port: GenericL23Port) -> str:
     """
-    .. versionadded:: 1.1
-
     Get the anlt log messages
 
     :param port: the port object
@@ -578,8 +560,6 @@ async def anlt_stop(port: GenericL23Port) -> None:
 
 async def txtap_autotune(port: GenericL23Port, serdes: int) -> None:
     """
-    .. versionadded:: 1.3
-
     Auto tune the tap value of the local TX tap.
 
     :param port: the port object
@@ -597,8 +577,6 @@ async def txtap_autotune(port: GenericL23Port, serdes: int) -> None:
 
 async def lt_im_status(port: GenericL23Port) -> dict[str, t.Any]:
     """
-    .. versionadded:: 1.3
-
     Get LT initial modulation config
 
     :param port: the port object
@@ -621,8 +599,6 @@ async def lt_im_status(port: GenericL23Port) -> dict[str, t.Any]:
 
 async def lt_algorithm_status(port: GenericL23Port) -> dict[str, t.Any]:
     """
-    .. versionadded:: 1.3
-
     Get LT initial modulation config
 
     :param port: the port object
@@ -645,8 +621,6 @@ async def lt_algorithm_status(port: GenericL23Port) -> dict[str, t.Any]:
 
 async def anlt_strict(port: GenericL23Port, enable: bool) -> None:
     """
-    .. versionadded:: 1.3
-
     Should ANLT strict mode be enabled
 
     :param port: the port object
@@ -671,8 +645,6 @@ async def anlt_strict(port: GenericL23Port, enable: bool) -> None:
 
 async def anlt_log_control(port: GenericL23Port, types: t.List[enums.AnLtLogControl]) -> None:
     """
-    .. versionadded:: 1.3
-
     Control what should be logged for ANLT by xenaserver
 
     :param port: the port object
@@ -699,8 +671,6 @@ async def anlt_log_control(port: GenericL23Port, types: t.List[enums.AnLtLogCont
 
 async def anlt_log_control_get(port: GenericL23Port) -> dict[str, bool]:
     """
-    .. versionadded:: 2.7
-
     Get ANLT log control config
 
     :param port: the port object

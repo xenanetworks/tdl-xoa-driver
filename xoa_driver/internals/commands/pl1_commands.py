@@ -59,14 +59,7 @@ from .enums import (
 @dataclass
 class PL1_AUTONEGINFO:
     """
-    .. versionadded:: 2.0
-
-    .. warning::
-
-        Still in beta mode. Subjected to changes
-
     Get L1 auto-negotiation information. Information is split into a number of pages.
-
     """
 
     code: typing.ClassVar[int] = 385
@@ -117,12 +110,6 @@ class PL1_AUTONEGINFO:
 @dataclass
 class PL1_LINKTRAININFO:
     """
-    .. versionadded:: 2.0
-
-    .. warning::
-
-        Still in beta mode. Subjected to changes
-
     Get L1 link training information. Information is per Serdes and split into a number of pages.
     """
 
@@ -304,12 +291,6 @@ class PL1_LINKTRAININFO:
 @dataclass
 class PL1_LOG:
     """
-    .. versionadded:: 2.0
-
-    .. warning::
-
-        Still in beta mode. Subjected to changes
-
     Return a log line of either AN or LT for the given Serdes. The log string line contains the latest 100 lines.
     """
 
@@ -339,8 +320,6 @@ class PL1_LOG:
 @dataclass
 class PL1_CFG_TMP:
     """
-    .. versionadded:: 1.1
-
     .. warning::
 
         Still in beta mode. Subjected to changes
@@ -388,8 +367,6 @@ class PL1_CFG_TMP:
 @dataclass
 class PL1_LINKTRAIN_CMD:
     """
-    .. versionadded:: 1.1
-
     .. warning::
 
         Still in beta mode. Subjected to changes
@@ -440,8 +417,6 @@ class PL1_LINKTRAIN_CMD:
 @dataclass
 class PL1_LT_PHYTXEQ_RANGE:
     """
-    .. versionadded:: 2.9
-    
     Configure the lower and the upper bound of transmit equalizer (native value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
 
     """
@@ -487,8 +462,6 @@ class PL1_LT_PHYTXEQ_RANGE:
 @dataclass
 class PL1_LT_PHYTXEQ_RANGE_COEFF:
     """
-    .. versionadded:: 2.9
-    
     Configure the lower and the upper bound of transmit equalizer (IEEE coefficient value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
     
     Whenever <response> == AUTO (the default), min and max will have their default values, which can be read with “get”. Any value that attempt to set the min and max when <response> == AUTO will be ignored by the chassis.
@@ -559,8 +532,6 @@ class PL1_LT_PHYTXEQ_RANGE_COEFF:
 @dataclass
 class PL1_CTRL:
     """
-    .. versionadded:: 2.5
-
     The Signal Integrity feature offers the equivalent of an Equivalent Time oscilloscope trace of the RX PAM4 signal (later, also PAM2). The trace is done with the A/D converter in the GTM receiver also doing the data sampling / CDR function, i.e. the trace is taken after the RX equalizer.
 
     The HW characteristics of the Versal GTM used in Freya are: Trace length = 2000 samples, sample resolution = 7 bits 2's complement, i.e. range = -64..63.
@@ -600,8 +571,6 @@ class PL1_CTRL:
 @dataclass
 class PL1_GET_DATA:
     """
-    .. versionadded:: 2.5
-
     The Signal Integrity feature offers the equivalent of an Equivalent Time oscilloscope trace of the RX PAM4 signal (later, also PAM2). The trace is done with the A/D converter in the GTM receiver also doing the data sampling / CDR function, i.e. the trace is taken after the RX equalizer.
 
     The HW characteristics of the Versal GTM used in Freya are: Trace length = 2000 samples, sample resolution = 7 bits 2’s complement, i.e. range = -64..63.
@@ -664,8 +633,6 @@ class PL1_GET_DATA:
 @dataclass
 class PL1_PRESET_CONFIG:
     """
-    .. versionadded:: 2.9
-    
     Configure the preset values (native values) of a serdes and the response to the received IC request.
 
     """
@@ -723,8 +690,6 @@ class PL1_PRESET_CONFIG:
 @dataclass
 class PL1_PRESET_RESET:
     """
-    .. versionadded:: 2.9
-    
     Reset the preset of the serdes to its default values.
 
     """
@@ -753,8 +718,6 @@ class PL1_PRESET_RESET:
 @dataclass
 class PL1_PRESET_CONFIG_LEVEL:
     """
-    .. versionadded:: 2.9
-    
     Configure the preset values (mV/dB values) of a serdes and the response to the received IC request.
 
     """
@@ -812,8 +775,6 @@ class PL1_PRESET_CONFIG_LEVEL:
 @dataclass
 class PL1_PRESET_CONFIG_COEFF:
     """
-    .. versionadded:: 2.9
-    
     Configure the preset values (IEEE coefficient values) of a serdes and the response to the received IC request.
 
     """
@@ -871,8 +832,6 @@ class PL1_PRESET_CONFIG_COEFF:
 @dataclass
 class PL1_PHYTXEQ_LEVEL:
     """
-    .. versionadded:: 2.5
-    
     Control and monitor the equalizer settings of the on-board PHY in the transmission direction (towards the transceiver cage).
 
     .. note::
@@ -927,8 +886,6 @@ class PL1_PHYTXEQ_LEVEL:
 @dataclass
 class PL1_PHYTXEQ_COEFF:
     """
-    .. versionadded:: 2.5
-    
     Control and monitor the equalizer settings of the on-board PHY in the transmission direction (towards the transceiver cage).
 
     .. note::
@@ -993,8 +950,6 @@ class PL1_PHYTXEQ_COEFF:
 @dataclass
 class PL1_AUTONEG_STATUS:
     """
-    .. versionadded:: 2.5
-
     Returns received technology abilities, FEC abilities, pause abilities, HCD technology ability, FEC mode result, and pause mode result.
     """
 
@@ -1033,8 +988,6 @@ class PL1_AUTONEG_STATUS:
 @dataclass
 class PL1_AUTONEG_ABILITIES:
     """
-    .. versionadded:: 2.5
-
     Return the supported technology abilities, FEC abilities, and pause abilities of the port.
     """
 
@@ -1063,8 +1016,6 @@ class PL1_AUTONEG_ABILITIES:
 @dataclass
 class PL1_PCS_VARIANT:
     """
-    .. versionadded:: 2.5
-
     PCS variant configuration.
     """
 
@@ -1097,8 +1048,6 @@ class PL1_PCS_VARIANT:
 @dataclass
 class PL1_CWE_CYCLE:
     """
-    .. versionadded:: 2.7
-
     Configure the FEC codeword error injection cycle.
     """
 
@@ -1142,8 +1091,6 @@ class PL1_CWE_CYCLE:
 @dataclass
 class PL1_CWE_ERR_SYM_INDICES:
     """
-    .. versionadded:: 2.7
-
     Configure the positions of the errored symbols in errored codewords.
     """
 
@@ -1193,8 +1140,6 @@ class PL1_CWE_ERR_SYM_INDICES:
 @dataclass
 class PL1_CWE_BIT_ERR_MASK:
     """
-    .. versionadded:: 2.7
-
     Configure the bit error mask for the errored symbols.
     """
 
@@ -1236,8 +1181,6 @@ class PL1_CWE_BIT_ERR_MASK:
 @dataclass
 class PL1_CWE_FEC_ENGINE:
     """
-    .. versionadded:: 2.7
-
     Configure which FEC engines to use.
     """
 
@@ -1283,8 +1226,6 @@ class PL1_CWE_FEC_ENGINE:
 @dataclass
 class PL1_CWE_FEC_STATS:
     """
-    .. versionadded:: 2.7
-
     FEC error injection statistics.
     """
 
@@ -1316,8 +1257,6 @@ class PL1_CWE_FEC_STATS:
 @dataclass
 class PL1_AUTONEG_CONFIG:
     """
-    .. versionadded:: 2.5
-
     Auto-negotiation configuration for Freya
     """
 
@@ -1350,8 +1289,6 @@ class PL1_AUTONEG_CONFIG:
 @dataclass
 class PL1_ANLT:
     """
-    .. versionadded:: 2.5
-
     ANLT action
     """
 
@@ -1408,8 +1345,6 @@ class PL1_ANLT:
 @dataclass
 class PL1_PHYTXEQ:
     """
-    .. versionadded:: 2.5
-    
     Control and monitor the equalizer settings of the on-board PHY in the transmission direction (towards the transceiver cage).
 
     .. note::
@@ -1464,8 +1399,6 @@ class PL1_PHYTXEQ:
 @dataclass
 class PL1_LINKTRAIN_CONFIG:
     """
-    .. versionadded:: 2.5
-
     Per-port link training settings
     """
 
@@ -1528,8 +1461,6 @@ class PL1_LINKTRAIN_STATUS:
 @dataclass
 class PL1_CWE_CONTROL:
     """
-    .. versionadded:: 2.7
-
     Control the FEC codeword error injection.
     """
 
@@ -1567,8 +1498,6 @@ class PL1_CWE_CONTROL:
 @dataclass
 class PL1_CWE_FEC_STATS_CLEAR:
     """
-    .. versionadded:: 2.7
-
     Clear FEC codeword injection TX stats
     """
 
@@ -1586,3 +1515,99 @@ class PL1_CWE_FEC_STATS_CLEAR:
         """Clear FEC codeword injection TX stats
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class PL1_PNSWAP_TX:
+    """
+    Enable/disable P/N polarity swap of the SerDes in the transmission direction
+    """
+
+    code: typing.ClassVar[int] = 532
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _serdes_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        on_off: OnOff = field(XmpByte())
+
+    class SetDataAttr(RequestBodyStruct):
+        on_off: OnOff = field(XmpByte())
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the P/N polarity swap setting of the SerDes in the transmission direction.
+
+        :return: P/N polarity swap setting of the SerDes in the transmission direction
+        :rtype: PL1_PNSWAP_TX.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+
+    def set(self, on_off: OnOff) -> Token[None]:
+        """Set the P/N polarity swap setting of the SerDes in the transmission direction.
+
+        :param on_off: P/N polarity swap setting of the SerDes in the transmission direction.
+        :type on_off: OnOff
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, on_off=on_off, indices=[self._serdes_xindex])) 
+    
+    set_on = functools.partialmethod(set, OnOff.ON)
+    """Set P/N polarity swap of the SerDes in the transmission direction to ON
+    """
+
+    set_off = functools.partialmethod(set, OnOff.OFF)
+    """Set P/N polarity swap of the SerDes in the transmission direction to OFF
+    """
+    
+
+@register_command
+@dataclass
+class PL1_PNSWAP_RX:
+    """
+    Enable/disable P/N polarity swap of the SerDes in the receiving direction
+    """
+
+    code: typing.ClassVar[int] = 533
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _serdes_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        on_off: OnOff = field(XmpByte())
+
+    class SetDataAttr(RequestBodyStruct):
+        on_off: OnOff = field(XmpByte())
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the P/N polarity swap setting of the SerDes in the receiving direction.
+
+        :return: P/N polarity swap setting of the SerDes in the receiving direction
+        :rtype: PL1_PNSWAP_RX.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+
+    def set(self, on_off: OnOff) -> Token[None]:
+        """Set the P/N polarity swap setting of the SerDes in the receiving direction.
+
+        :param on_off: P/N polarity swap setting of the SerDes in the receiving direction.
+        :type on_off: OnOff
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, on_off=on_off, indices=[self._serdes_xindex])) 
+    
+    set_on = functools.partialmethod(set, OnOff.ON)
+    """Set P/N polarity swap of the SerDes in the receiving direction to ON
+    """
+
+    set_off = functools.partialmethod(set, OnOff.OFF)
+    """Set P/N polarity swap of the SerDes in the receiving direction to OFF
+    """

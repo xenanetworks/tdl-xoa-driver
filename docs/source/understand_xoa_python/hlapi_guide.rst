@@ -14,19 +14,19 @@ API Notation and Namings
 
 HL-API aims to be semantic in function naming to avoid expectation conflict, as well as avoiding methods that can return values of different types. The key rule is: **one method, one action**. The following notations are used throughout this chapter.
 
-:``<resource>``:
+:<resource>:
     
     Represents ``Tester | Module | Port | <indices> | <namespace_class>``.
 
-:``<indices>``:
+:<indices>:
     
     Represents *stream indices*, *connection group indices*, *filter indices*, etc.
 
-:``<namespace_class>``:
+:<namespace_class>:
 
     A group of commands that manage the resources of the same kind but still stays at the same level as others.
 
-:``<command_oo_name>``:
+:<command_oo_name>:
 
     command name adapted to the object-oriented programming concept. Commands of the same access level, which read or modify parameters of the same type, are grouped under one ``<namespace_class>``.
     

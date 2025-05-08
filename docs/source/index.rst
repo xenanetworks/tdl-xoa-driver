@@ -1,21 +1,14 @@
 ============================================
-XOA Driver Documentation
+Welcome to TDL XOA Driver Documentation
 ============================================
 
-This document provides a comprehensive guide to using the XOA Driver, including installation instructions, usage examples, and API reference documentation. The documentation is organized by API function and includes detailed descriptions of each function, along with usage examples and expected output.
+:Version: |version|
+:Release: |release|
+:Date: |today|
 
-This documentation provides a wealth of information for network engineers and developers who are interested in automating network testing tasks using Xena test equipment. With its comprehensive API reference and usage examples, the documentation can help users get up and running quickly and efficiently with the XOA Driver.
+This documentation is intended for test specialists who are developing and running automated test scripts/programs using Xena test equipment. The XOA Driver is a Python-based driver that provides a high-level interface to the Xena test equipment, allowing users to easily control and configure the hardware for testing purposes.
 
-The target audience of this document is test specialists who develop and run automated test scripts/programs using Xena test equipment. Users of this document should have the following knowledge and experience:
-
-* Ability to program with Python language.
-* Familiarity with the operating system of the development environment.
-* Familiarity with Xena test equipment.
-* Working knowledge of data communications theory and practice.
-
-.. important::
-
-   To learn :term:`XOA CLI` commands, go to `XOA CLI Documentation <https://docs.xenanetworks.com/projects/tdl-xoa-cli>`_. 
+This documentation covers how to use the XOA Driver, including how to install it, examples of how to use it, and detailed API documentation. It's organized by API function, with descriptions, examples, and expected results.
 
 -----------
 
@@ -27,11 +20,11 @@ The target audience of this document is test specialists who develop and run aut
 
    introduction
    getting_started/index
+   code_example/index
    understand_xoa_python/index
    test_resource_mgt
    command_grouping
    status_msg_exceptions
-   code_example/index
    api_ref/index   
    glossary
 
