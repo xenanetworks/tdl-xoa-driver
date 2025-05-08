@@ -20,15 +20,15 @@ API Notation and Namings
 
 LL-API aims to be semantic in function naming to avoid expectation conflict, as well as avoiding methods that can return values of different types. The key rule is: **one method, one action**. The following notations are used throughout this chapter.
 
-:``<indices>``:
+:<indices>:
     
     Represents *stream indices*, *connection group indices*, *filter indices*, etc.
 
-:``<prefix_command_group>``:
+:<prefix_command_group>:
     
     A group of commands that manage the resources of the same kind but still stays at the same level as others. For example, ``P_SPEEDSELECTION`` and ``P_SPEEDS_SUPPORTED`` are in the ``P_`` category.
 
-:``<command_name>``:
+:<command_name>:
     
     The CLI name of the command. Commands of the same access level, which access or modify parameters of the same kind, are grouped under one command group as shown in the example below.
 

@@ -11,6 +11,10 @@ Additionally, the XOA Driver goes beyond providing object-oriented APIs and func
 
 Overall, the XOA Driver is a valuable tool for anyone looking to automate their network testing tasks using Xena test equipment. With its simple, yet powerful, interface and support for the Python programming language, the XOA Driver provides a flexible and extensible framework for automating network testing tasks and improving the quality of network infrastructure.
 
+.. important::
+    
+    To learn :term:`XOA CLI` commands, go to `XOA CLI Documentation <https://docs.xenanetworks.com/projects/tdl-xoa-cli>`_. 
+
 Differences Between XOA Driver and CLI
 ------------------------------------------
 
