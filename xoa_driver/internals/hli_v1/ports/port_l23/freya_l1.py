@@ -41,6 +41,8 @@ from xoa_driver.internals.commands import (
     PL1_PRESET_CONFIG_LEVEL,
     PL1_PRESET_RESET,
     PP_PRBSTYPE,
+    PL1_PNSWAP_RX,
+    PL1_PNSWAP_TX,
 )
 from .pcs_pma_ghijkl import (
     Prbs,
@@ -61,6 +63,18 @@ class FreyaPMA:
         """GET/SET Gray-Coding Configurations. (only for Freya)
 
         :type: PP_GRAYCODING
+        """
+
+        self.pn_swap_rx = PL1_PNSWAP_RX(conn, module_id, port_id, serdes_xindex)
+        """GET/SET PN-Swap RX Configurations. (only for Freya)
+
+        :type: PL1_PNSWAP_RX
+        """
+
+        self.pn_swap_tx = PL1_PNSWAP_TX(conn, module_id, port_id, serdes_xindex)
+        """GET/SET PN-Swap TX Configurations. (only for Freya)
+        
+        :type: PL1_PNSWAP_TX
         """
 
 class FreyaSIV:
