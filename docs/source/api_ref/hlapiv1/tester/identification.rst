@@ -136,3 +136,15 @@ Corresponding low-level API class: :class:`~xoa_driver.internals.commands.c_comm
     # Model Name
     resp = await tester.model_number.get()
     resp.number
+
+Chassis Used TPLD IDs
+----------------------
+Get the used TPLD IDs from the chassis.
+
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.c_commands.C_USED_TPLDID`
+
+.. code-block:: python
+
+    # Used TPLD IDs
+    resp = await tester.used_tpld_ids.get()
+    resp.used_tpld_ids
