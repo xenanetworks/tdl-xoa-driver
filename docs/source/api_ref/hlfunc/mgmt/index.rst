@@ -7,21 +7,21 @@ The following high-level functions handle test resource management, e.g. connect
 
 .. currentmodule:: xoa_driver.hlfuncs.mgmt
 
-HL Tester Functions
+High-Level Tester Functions
 ---------------------------
 
 .. autofunction:: reserve_tester
 
-.. autofunction:: free_tester
+.. autofunction:: release_tester
 
 .. autofunction:: get_chassis_sys_uptime_sec
 
-HL Module Functions
+High-Level Module Functions
 ---------------------------
 
 .. autofunction:: reserve_module
 
-.. autofunction:: free_module
+.. autofunction:: release_module
 
 .. autofunction:: get_module
 
@@ -39,14 +39,14 @@ HL Module Functions
 
 .. autofunction:: get_module_cage_insertion_count
 
-HL Port Functions
+High-Level Port Functions
 -------------------------
 
 .. autofunction:: reserve_port
 
-.. autofunction:: reset_port
+.. autofunction:: release_port
 
-.. autofunction:: free_port
+.. autofunction:: release_ports
 
 .. autofunction:: get_port
 
@@ -54,10 +54,9 @@ HL Port Functions
 
 .. autofunction:: get_all_ports
 
-.. autofunction:: free_ports
 
-HL Stream Functions
--------------------------
+High-Level Stream Functions
+---------------------------
 
 .. autofunction:: remove_streams
 
