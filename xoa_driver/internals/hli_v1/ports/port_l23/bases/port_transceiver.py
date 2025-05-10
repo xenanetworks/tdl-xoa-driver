@@ -36,7 +36,7 @@ from xoa_driver.internals.commands import (
 
 
 class PortTransceiver:
-    """L23 port transceiver."""
+    """Transceiver access class."""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         self.__conn = conn
@@ -44,22 +44,24 @@ class PortTransceiver:
         self.__port_id = port_id
 
         self.i2c_config = PX_I2C_CONFIG(conn, module_id, port_id)
-        """Access speed on a transceiver.
-        :type: PX_I2C_CONFIG
+        """
+        Access speed on a transceiver I2C access in the unit of KHz. Default to 100. 
+        
+        When the transceiver is plugged out and in again, the speed will be reset to the default value 100. The speed has a minimum and a maximum, which can be obtained from port.capabilities(). 
+        
+        The I2C speed configuration will not be included in the port configuration file (.xpc). When you load a port configuration to a port, the transceiver I2C access speed will be reset to default.
         """
 
-    def access_temperature(self):
+        self.temperature = PX_TEMPERATURE(conn, module_id, port_id)
         """Transceiver temperature in Celsius.
 
-        :return: Transceiver temperature integral and decimal parts
-        :rtype: PX_TEMPERATURE
+        Temperature value before the decimal digit, and 1/256th of a degree Celsius after the decimal digit.
         """
 
-        return PX_TEMPERATURE(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-        )
+        self.cmis = CMIS(conn, module_id, port_id)
+        """
+        Access CMIS interface.
+        """
 
     def access_rw(self, page_address: int, register_address: int) -> "PX_RW":
         """Access to register interface by the transceiver.
@@ -139,220 +141,111 @@ class PortTransceiver:
             register_address,
             byte_count
         )
-    
-    def cdb_support(self) -> "PX_CDB_SUPPORT":
-        """Return the supported CDB instances.
 
-        :return: the supported CDB instances
-        :rtype: PX_CDB_SUPPORT
+class CMIS():
+    """CMIS access class.
+    """
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        self.__conn = conn
+        self.__module_id = module_id
+        self.__port_id = port_id
+
+        self.cdb_instances_supported = PX_CDB_SUPPORT(conn, module_id, port_id)
+        """Return the number of supported CDB instances.
+        """
+
+    def cdb(self, cdb_instance_id: int) -> "CDB":
+        """Access CMIS CDB command interface.
+
+        :param cdb_instance_id: 0 for CDB Instance 1, 1 for CDB Instance 2
+        :type cdb_instance_id: int
+        """
+        return CDB(self.__conn, self.__module_id, self.__port_id, cdb_instance_id)
+        
+
+class CDB():
+    """CMIS CDB command access class.
+    """
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, cdb_instance_id: int) -> None:
+
+        self.__conn = conn
+        self.__module_id = module_id
+        self.__port_id = port_id
+        self.__cdb_instance_id = cdb_instance_id
+
+        self.cmd_0000h_query_status = PX_CDB_QUERY_STATUS(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0000h: Query Status
+        """
+
+        self.cmd_0001h_enter_password = PX_CDB_ENTER_PASSWORD(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0001h: Enter Password
+        """
+
+        self.cmd_0002h_change_password = PX_CDB_CHANGE_PASSWORD(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0002h: Change Password
         """
         
-        return PX_CDB_SUPPORT(
-            self.__conn,
-            self.__module_id,
-            self.__port_id
-        )
-    
-    def cdb_abort_processing(self, cdb_instance_xindex: int) -> "PX_CDB_ABORT_PROCESSING":
-        """This is CMD 0004h: Abort Processing
+        self.cmd_0004h_abort_processing = PX_CDB_ABORT_PROCESSING(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0004h: Abort Processing
+        """ 
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_ABORT_PROCESSING(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_change_password(self, cdb_instance_xindex: int) -> "PX_CDB_CHANGE_PASSWORD":
-        """This is CMD 0002h: Change Password
+        self.cmd_0005h_change_password = PX_CDB_CHANGE_PASSWORD(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0005h: Change Password
+        """
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_CHANGE_PASSWORD(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_enter_password(self, cdb_instance_xindex: int) -> "PX_CDB_ENTER_PASSWORD":
-        """This is CMD 0001h: Enter Password
+        self.cmd_0040h_module_features = PX_CDB_MODULE_FEATURES(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0040h: Module Features
+        """
+        self.cmd_0044h_sec_feat_capabilities = PX_CDB_SEC_FEAT_CAPABILITIES(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0044h: Security Features and Capabilities
+        """
+        self.cmd_0045h_external_features = PX_CDB_EXTERNAL_FEATURES(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0045h: Externally Defined Features
+        """
+        self.cmd_0041h_fw_mgmt_features = PX_CDB_FW_MGMT_FEATURES(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0041h: Firmware Management Features
+        """
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_ENTER_PASSWORD(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_query_status(self, cdb_instance_xindex: int) -> "PX_CDB_QUERY_STATUS":
-        """This is CMD 0000h: Query Status
+        self.cmd_0050h_get_app_attributes = PX_CDB_GET_APP_ATTRIBUTES(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0050h: Get Application Attributes
+        """
+        self.cmd_0051h_get_if_code_descr = PX_CDB_GET_IF_CODE_DESCR(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0051h: Get Interface Code Description
+        """
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_QUERY_STATUS(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_external_features(self, cdb_instance_xindex: int) -> "PX_CDB_EXTERNAL_FEATURES":
-        """This is CMD 0045h: Externally Defined Features
+        self.cmd_0102h_abort_firmware_download = PX_CDB_ABORT_FIRMWARE_DOWNLOAD(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0102h: Abort Firmware Download
+        """
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_EXTERNAL_FEATURES(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_fw_mgmt_features(self, cdb_instance_xindex: int) -> "PX_CDB_FW_MGMT_FEATURES":
-        """This is CMD 0041h: Firmware Management Features
+        self.cmd_010ah_commit_firmware_image = PX_CDB_COMMIT_FIRMWARE_IMAGE(conn, module_id, port_id,cdb_instance_id)
+        """CMD 010Ah: Commit Firmware Image
+        """
+        self.cmd_0107h_complete_firmware_download = PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0107h: Complete Firmware Download
+        """
+        self.cmd_0108h_copy_firmware_image = PX_CDB_COPY_FIRMWARE_IMAGE(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0108h: Complete Firmware Download
+        """
+        self.cmd_0109h_run_firmware_image = PX_CDB_RUN_FIRMWARE_IMAGE(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0109h: Run Firmware Image
+        """
+        self.cmd_0100h_get_firmware_info = PX_CDB_GET_FIRMWARE_INFO(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0100h: Get Firmware Info
+        """
+        self.cmd_0101h_start_firmware_download = PX_CDB_START_FIRMWARE_DOWNLOAD(conn, module_id, port_id,cdb_instance_id)
+        """CMD 0101h: Start Firmware Download
+        """
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_FW_MGMT_FEATURES(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_get_app_attributes(self, cdb_instance_xindex: int) -> "PX_CDB_GET_APP_ATTRIBUTES":
-        """This is CMD 0050h: Get Application Attributes
+        self.cmd_custom_reply = PX_CUST_REPLY(conn, module_id, port_id,cdb_instance_id)
+        """Defines the custom reply to receiver for the CDB instance.
+        """
+        self.cmd_custom_request = PX_CUST_REQUEST(conn, module_id, port_id,cdb_instance_id)
+        """Defnees the custom request to be sent to the CDB instance.
+        """
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_GET_APP_ATTRIBUTES(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_get_if_code_descr(self, cdb_instance_xindex: int) -> "PX_CDB_GET_IF_CODE_DESCR":
-        """This is CMD 0051h: Get Interface Code Description
+    def cmd_0106h_read_firmware_block_epl(self, block_address: int, length: int) -> "PX_CDB_READ_FIRMWARE_BLOCK_EPL":
+        """CMD 0106h: Read Firmware Block EPL
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_GET_IF_CODE_DESCR(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_module_features(self, cdb_instance_xindex: int) -> "PX_CDB_MODULE_FEATURES":
-        """This is CMD 0040h: Module Features
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_MODULE_FEATURES(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_sec_feat_capabilities(self, cdb_instance_xindex: int) -> "PX_CDB_SEC_FEAT_CAPABILITIES":
-        """This is CMD 0044h: Security Features and Capabilities
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_SEC_FEAT_CAPABILITIES(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_abort_firmware_download(self, cdb_instance_xindex: int) -> "PX_CDB_ABORT_FIRMWARE_DOWNLOAD":
-        """This is CMD 0102h: Abort Firmware Download
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_ABORT_FIRMWARE_DOWNLOAD(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_commit_firmware_image(self, cdb_instance_xindex: int) -> "PX_CDB_COMMIT_FIRMWARE_IMAGE":
-        """This is CMD 010Ah: Commit Firmware Image
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_COMMIT_FIRMWARE_IMAGE(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_complete_firmware_download(self, cdb_instance_xindex: int) -> "PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD":
-        """TThis is CMD 0107h: Complete Firmware Download
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_copy_firmware_image(self, cdb_instance_xindex: int) -> "PX_CDB_COPY_FIRMWARE_IMAGE":
-        """This is CMD 0107h: Complete Firmware Download
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_COPY_FIRMWARE_IMAGE(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_get_firmware_info(self, cdb_instance_xindex: int) -> "PX_CDB_GET_FIRMWARE_INFO":
-        """This is CMD 0100h: Get Firmware Info
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """        
-        return PX_CDB_GET_FIRMWARE_INFO(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex
-        )
-    
-    def cdb_read_firmware_block_epl(self, cdb_instance_xindex: int, block_address: int, length: int) -> "PX_CDB_READ_FIRMWARE_BLOCK_EPL":
-        """This is CMD 0106h: Read Firmware Block EPL
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
         :type block_address: int
         :param length: Number of bytes to read back to the EPL in this command, starting at the indicated address.
@@ -362,16 +255,14 @@ class PortTransceiver:
             self.__conn,
             self.__module_id,
             self.__port_id,
-            cdb_instance_xindex,
+            self.__cdb_instance_id,
             block_address,
             length
         )
     
-    def cdb_read_firmware_block_lpl(self, cdb_instance_xindex: int, block_address: int, length: int) -> "PX_CDB_READ_FIRMWARE_BLOCK_LPL":
-        """This is CMD 0106h: Read Firmware Block LPL
+    def cmd_0105h_read_firmware_block_lpl(self, block_address: int, length: int) -> "PX_CDB_READ_FIRMWARE_BLOCK_LPL":
+        """CMD 0105h: Read Firmware Block LPL
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
         :type block_address: int
         :param length: Number of bytes to read back to the LPL in this command, starting at the indicated address.
@@ -382,42 +273,14 @@ class PortTransceiver:
             self.__conn,
             self.__module_id,
             self.__port_id,
-            cdb_instance_xindex,
+            self.__cdb_instance_id,
             block_address,
             length
         )
     
-    def cdb_run_firmware_image(self, cdb_instance_xindex: int) -> "PX_CDB_RUN_FIRMWARE_IMAGE":
-        """This is CMD 0109h: Run Firmware Image
+    def cmd_0104h_write_firmware_block_epl(self, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_EPL":
+        """CMD 0104h: Write Firmware Block EPL
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """
-        return PX_CDB_RUN_FIRMWARE_IMAGE(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex,
-        )
-    
-    def cdb_start_firmware_download(self, cdb_instance_xindex: int) -> "PX_CDB_START_FIRMWARE_DOWNLOAD":
-        """This is CMD 0101h: Start Firmware Download
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """
-        return PX_CDB_START_FIRMWARE_DOWNLOAD(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex,
-        )
-    
-    def cdb_write_firmware_block_epl(self, cdb_instance_xindex: int, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_EPL":
-        """This is CMD 0104h: Write Firmware Block EPL
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
         :type block_address: int
         """
@@ -425,15 +288,13 @@ class PortTransceiver:
             self.__conn,
             self.__module_id,
             self.__port_id,
-            cdb_instance_xindex,
+            self.__cdb_instance_id,
             block_address,
         )
     
-    def cdb_write_firmware_block_lpl(self, cdb_instance_xindex: int, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_LPL":
-        """This is CMD 0103h: Write Firmware Block LPL
+    def cmd_0103h_write_firmware_block_lpl(self, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_LPL":
+        """CMD 0103h: Write Firmware Block LPL
 
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
         :type block_address: int
         """
@@ -441,33 +302,7 @@ class PortTransceiver:
             self.__conn,
             self.__module_id,
             self.__port_id,
-            cdb_instance_xindex,
+            self.__cdb_instance_id,
             block_address,
         )
     
-    def cdb_custom_reply(self, cdb_instance_xindex: int) -> "PX_CUST_REPLY":
-        """Defines the custom reply to receiver for the CDB instance.
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """
-        return PX_CUST_REPLY(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex,
-        )
-    
-    
-    def cdb_custom_request(self, cdb_instance_xindex: int) -> "PX_CUST_REQUEST":
-        """Defines the custom request to be sent to the CDB instance.
-
-        :param cdb_instance_xindex: 0 for CDB Instance 1, 1 for CDB Instance 2
-        :type cdb_instance_xindex: int
-        """
-        return PX_CUST_REQUEST(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            cdb_instance_xindex,
-        )

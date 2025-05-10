@@ -268,7 +268,7 @@ class PX_TEMPERATURE:
 @dataclass
 class PX_I2C_CONFIG:
     """
-    Set the get the access speed on a transceiver I2C access in the unit of KHz. Default to 100. When the transceiver is plugged out and in again, the speed will be reset to the default value 100. The speed has a minimum and a maximum, which can be obtained from P_CAPABILITIES. The I2C speed configuration will not be included in the port configuration file (.xpc). When you load a port configuration to a port, the transceiver I2C access speed will be reset to default 100.
+    Access speed on a transceiver I2C access in the unit of KHz. Default to 100. When the transceiver is plugged out and in again, the speed will be reset to the default value 100. The speed has a minimum and a maximum, which can be obtained from P_CAPABILITIES. The I2C speed configuration will not be included in the port configuration file (.xpc). When you load a port configuration to a port, the transceiver I2C access speed will be reset to default 100.
     """
 
     code: typing.ClassVar[int] = 539
@@ -321,15 +321,15 @@ class PX_CDB_SUPPORT:
         reply: dict = field(XmpJson())
         """
         dict, json.
-        
+
         .. code-block:: json 
         
             {
                 "cdb_instances_supported": 2
             }
         
-        * ``cdb_instances_supported``: CDP instnaces supported
-
+       * ``cdb_instances_supported``: CDP instnaces supported
+            
             * 0 = CDB functionality not supported
             * 1 = One CDB instance supported
             * 2 = Two CDB instances supported
@@ -369,11 +369,11 @@ class PX_CDB_ABORT_PROCESSING:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
+            
             * 0000 0000b: Module Boot Up.
             * 0000 0001b: Host Password Accepted.
             * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
+            * Bits x may contain custom information.
 
         """
     class SetDataAttr(RequestBodyStruct):
