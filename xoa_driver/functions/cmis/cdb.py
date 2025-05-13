@@ -159,7 +159,7 @@ class CMD0002hChangePasswordReply:
 
         """
 
-async def cmd_0002h_change_password(port: Z800FreyaPort, cdb_instance: int, new_password: str) -> None:
+async def cmd_0002h_change_password_cmd(port: Z800FreyaPort, cdb_instance: int, new_password: str) -> None:
     """Send CMD 0002h Change Password
 
     :param port: the port object to send the command to
@@ -368,9 +368,9 @@ class CMD0041hFirmwareManagementFeaturesReply:
 
         On Failure
 
-            *01 000000b: Failed, no specific failure
-            *01 000010b: Parameter range error or not supported
-            *01 000101b: CdbChkCode error
+            * ``01 000000b``: Failed, no specific failure
+            * ``01 000010b``: Parameter range error or not supported
+            * ``01 000101b``: CdbChkCode error
 
         """
         self.image_readback: int = 1 if int(reply["feature_support_mask"], 16) & 0x80 else 0
@@ -657,7 +657,7 @@ class CMD0044hSecFeaturesAndCapabilitiesReply:
         
         * 0: Not supported. 
         * 1: 28 bytes (SHA224). 
-        ,* 2: 32 bytes (SHA256). 
+        * 2: 32 bytes (SHA256). 
         * 3: 48 bytes (SHA384). 
         * 4: 64 bytes (SHA512). 
         * 5-255: **Reserved**.
@@ -691,7 +691,7 @@ class CMD0044hSecFeaturesAndCapabilitiesReply:
 
         """
 
-async def cmd_0044h_security_features_and_capabilities_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0044hSecFeaturesAndCapabilitiesReply:
+async def cmd_0044h_sec_feat_and_capabilities_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0044hSecFeaturesAndCapabilitiesReply:
     """Read the module response to CMD 0044h Security Features and Capabilities
 
     :param port: the port object to read the response from
@@ -923,6 +923,22 @@ async def cmd_0051h_get_interface_code_description_cmd(port: Z800FreyaPort, cdb_
     }
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0051h_get_if_code_descr.set(cmd_data=cmd_data)
 
+async def cmd_0051h_get_interface_code_description_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0051hGetInterfaceCodeDescriptionReply:
+    """Read the module response to CMD 0051h Get Interface Code Description
+
+    :param port: the port object to read the response from
+    :type port: Z800FreyaPort
+    :param cdb_instance: CDB instance number.
+    
+        * 0 = CBD Instance 1
+        * 1 = CDB Instance 2
+    
+    :type cdb_instance: int
+    :return: REPLY of CMD 0051h Get Interface Code Description
+    :rtype: CMD0051hGetInterfaceCodeDescriptionReply
+    """
+    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0051h_get_if_code_descr.get()
+    return CMD0051hGetInterfaceCodeDescriptionReply(resp.reply)
 
 # CMD 0100h: Get Firmware Info
 class CMD0100hGetFirmwareInfoReply:
@@ -1440,7 +1456,7 @@ async def cmd_0107h_complete_firmware_download_reply(port: Z800FreyaPort, cdb_in
 
 
 # CMD 0108h: Copy Firmware Image
-class CMD0108CopyFirmwareImageReply:
+class CMD0108hCopyFirmwareImageReply:
     """REPLY message of CMD 0108h Copy Firmware Image
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
@@ -1502,7 +1518,7 @@ async def cmd_0108h_copy_firmware_image_cmd(port: Z800FreyaPort, cdb_instance: i
     }
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0108h_copy_firmware_image.set(cmd_data=cmd_data)
 
-async def cmd_0108h_copy_firmware_image_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0108CopyFirmwareImageReply:
+async def cmd_0108h_copy_firmware_image_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0108hCopyFirmwareImageReply:
     """Read the module response to CMD 0108h Copy Firmware Image
 
     :param port: the port object to read the response from
@@ -1517,11 +1533,11 @@ async def cmd_0108h_copy_firmware_image_reply(port: Z800FreyaPort, cdb_instance:
     :rtype: CMD0108CopyFirmwareImageReply
     """
     resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0108h_copy_firmware_image.get()
-    return CMD0108CopyFirmwareImageReply(resp.reply)
+    return CMD0108hCopyFirmwareImageReply(resp.reply)
 
 
 # CMD 0109h: Run Firmware Image
-class CMD0109RunFirmwareImageReply:
+class CMD0109hRunFirmwareImageReply:
     """REPLY message of CMD 0109h Run Firmware Image
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
@@ -1574,7 +1590,7 @@ async def cmd_0109h_run_firmware_image_cmd(port: Z800FreyaPort, cdb_instance: in
     }
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0109h_run_firmware_image.set(cmd_data=cmd_data)
 
-async def cmd_0109h_run_firmware_image_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0109RunFirmwareImageReply:
+async def cmd_0109h_run_firmware_image_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0109hRunFirmwareImageReply:
     """Read the module response to CMD 0109h Run Firmware Image
 
     :param port: the port object to read the response from
@@ -1589,7 +1605,7 @@ async def cmd_0109h_run_firmware_image_reply(port: Z800FreyaPort, cdb_instance: 
     :rtype: CMD0109RunFirmwareImageReply
     """
     resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0109h_run_firmware_image.get()
-    return CMD0109RunFirmwareImageReply(resp.reply)
+    return CMD0109hRunFirmwareImageReply(resp.reply)
 
 
 # CMD 010Ah: Commit Firmware Image
@@ -1751,9 +1767,10 @@ async def cmd_custom_cmd_request(port: Z800FreyaPort, cdb_instance: int, cmd_id:
 
 async def start_firmware_update(port: Z800FreyaPort, cdb_instance: int, firmware_file: str) -> None:
     """
-    Start transceiver firmware update on the specified port.
 
-    7.3.1.2 Reference Firmware Download Procedure using CDB 1
+    Specified in **OIF-CMIS-05.3**
+
+    Start transceiver firmware update on the specified port.
 
     The host begins by reading module capabilities using CMD 0041h: (Firmware Management Features).
 
@@ -1801,4 +1818,5 @@ async def start_firmware_update(port: Z800FreyaPort, cdb_instance: int, firmware
         if reply.cdb_status != "0x01":
             raise RuntimeError(f"Start Failed. Module is not in firmware upgrade mode.")
         else:
+            return
 
