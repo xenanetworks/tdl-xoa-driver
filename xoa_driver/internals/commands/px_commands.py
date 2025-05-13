@@ -369,11 +369,6 @@ class PX_CDB_ABORT_PROCESSING:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-            
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits x may contain custom information.
 
         """
     class SetDataAttr(RequestBodyStruct):
@@ -422,11 +417,6 @@ class PX_CDB_CHANGE_PASSWORD:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
 
         """
     class SetDataAttr(RequestBodyStruct):
@@ -487,11 +477,6 @@ class PX_CDB_ENTER_PASSWORD:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
 
         """
     class SetDataAttr(RequestBodyStruct):
@@ -562,6 +547,7 @@ class PX_CDB_QUERY_STATUS:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
+        * ``status``: hex string
 
             * 0000 0000b: Module Boot Up.
             * 0000 0001b: Host Password Accepted.
@@ -637,12 +623,6 @@ class PX_CDB_EXTERNAL_FEATURES:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-        
         * ``supplement_support``: hex string, Bit 0 = 0/1: CMIS-VCS not supported/supported
 
         """
@@ -693,16 +673,10 @@ class PX_CDB_FW_MGMT_FEATURES:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-        
         * ``feature_support_mask``: hex string, indicates support of Firmware Management features.
         * ``start_cmd_payload_size``: integer, This defines the number of bytes that the host must extract from the beginning of the vendor-delivered binary firmware image file and send to the module in CMD 0101h (Start).
         * ``erased_byte``: hex string, This is the value representing an erased byte. The purpose of advertising this byte is to optionally reduce download time by allowing the host to skip sending blocks of the image containing ErasedByte values only.
-        * ``read_write_length_ext``: :integer, specifies the allowable additional number of byte octets in a READ or a WRITE, specifically for Firmware Management Commands (IDs 0100h-01FFh).
+        * ``read_write_length_ext``: integer, specifies the allowable additional number of byte octets in a READ or a WRITE, specifically for Firmware Management Commands (IDs 0100h-01FFh).
         * ``write_mechanism``: hex string, Firmware update supported mechanism
         * ``read_mechanism`` : hex string, Firmware read / readback support mechanism.
         * ``hitless_restart``: integer, 0: CMD Run Image causes a reset. Traffic is affected. 1: CMD Run Image may reset but module will do its best to maintain traffic and management states. Data path functions are not reset.
@@ -758,12 +732,6 @@ class PX_CDB_GET_APP_ATTRIBUTES:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-        
         * ``application_number``: integer, U16 Application number. 15-8: reserved (0). 7-4: NADBlockIndex (0-15) or 0. 3-0: AppSelCode (1-15).
         * ``max_module_power``: integer, U16: Worst case module power dissipation when this Application is instantiated homogeneously as often as possible in parallel (when applicable) with worst case configuration options. Unit: 0.25 W.
         * ``prog_output_power_min``: integer, S16: Minimum Programmable Output Power, Unit: 0.01 dBm.
@@ -851,12 +819,6 @@ class PX_CDB_GET_IF_CODE_DESCR:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-        
         * ``interface_id``: hex string, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
         * ``interface_location``: integer, 0: media side. 1: host side.
         * ``interfacre_name``: string, 16-byte long ACII string. Name of the interface.
@@ -935,17 +897,11 @@ class PX_CDB_MODULE_FEATURES:
 
             {
                 "cdb_status": "0x00",
-                "cmd_support_mask": "0x00000000000000000000000000000000",
+                "cmd_support_mask": "0x0000000000000000000000000000000000000000000000000000000000000000",
                 "max_completion_time": 1000
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-        
         * ``cmd_support_mask``: :hex string, indicates support of CDB commands 0000h-00FFh. This array of 32 bytes indicates support of CDB commands CMD <i>, with identifiers 0 ≤ <i> ≤ 255, as follows: CMD <i> is supported when bit<j>=<i>mod 8 of byte<k> = 138+floor(<i>/8) is set.
         * ``max_completion_time``: integer, U16 Maximum CDB command execution time in ms, of all supported CDB commands.
 
@@ -997,17 +953,11 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-        
         * ``cmd_support_mask``: hex string, indicates support of CDB commands 0400-04FFh. 
         * ``num_certificates``: integer, number of public certificates the host may obtain from the module. The device must contain a single leaf certificate and it may optionally contain one or more intermediate certificates optionally followed by a root certificate. For X.509 certificates, intermediate certificates are not self-signed, and the root cert is self-signed. ``num_certificates <= 4``.
         * ``cert_chain_supported``: integer, 0: Certificate chain is not supported. Module contains leaf certificate instance i = 0 only. 1: Module supports certificate chain and host must specify the instance when downloading a certificate. Instance i = 0 is the start of the chain, i.e. the leaf certificate, and any instance i+1 is another certificate used to sign the certificate instance i, where ``i < num_certificates <= 4``
         * ``certificate_format``: integer, 0: Not supported. 1: **Custom**. 2: X509v3 DER encoding. 3-255: Reserved.
-        * ``certificate_length_1``: integer, Length of leaf certificate i =0.
+        * ``certificate_length_1``: integer, Length of leaf certificate i = 0.
         * ``certificate_length_2``: integer, Length of certificate i = 1 or 0 when not supported.
         * ``certificate_length_3``: integer, Length of certificate i = 2 or 0 when not supported.
         * ``certificate_length_4``: integer, Length of certificate i = 3 or 0 when not supported.
@@ -1053,11 +1003,6 @@ class PX_CDB_ABORT_FIRMWARE_DOWNLOAD:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
 
         """
     class SetDataAttr(RequestBodyStruct):
@@ -1107,11 +1052,6 @@ class PX_CDB_COMMIT_FIRMWARE_IMAGE:
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
@@ -1160,11 +1100,6 @@ class PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD:
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
@@ -1191,7 +1126,7 @@ class PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD:
 @register_command
 @dataclass
 class PX_CDB_COPY_FIRMWARE_IMAGE:
-    """This is CMD 0107h: Complete Firmware Download
+    """This is CMD 0108h: Copy Firmware Image
     """
     code: typing.ClassVar[int] = 479
     pushed: typing.ClassVar[bool] = False
@@ -1214,12 +1149,6 @@ class PX_CDB_COPY_FIRMWARE_IMAGE:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-
         * ``copy_direction``: hex string, copy direction.
 
             * ``0xAB``, Copy Image A into Image B
@@ -1260,7 +1189,7 @@ class PX_CDB_COPY_FIRMWARE_IMAGE:
         * ``copy_direction``: hex string, copy direction.
 
             * ``0xAB``, Copy Image A into Image B
-            * ``0xBA``,Copy Image B into Image A
+            * ``0xBA``, Copy Image B into Image A
 
         """
 
@@ -1305,12 +1234,6 @@ class PX_CDB_GET_FIRMWARE_INFO:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-
         * ``firmware_status``: integer, Firmware Status.
 
         Bitmask to indicate FW Status.
@@ -1393,12 +1316,6 @@ class PX_CDB_READ_FIRMWARE_BLOCK_EPL:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-
         * ``image_data``: hex string, Up to 128 bytes.
 
         """
@@ -1441,12 +1358,6 @@ class PX_CDB_READ_FIRMWARE_BLOCK_LPL:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-
         * ``base_address_block``:  hex string, Base address of the data block within the firmware image.
         * ``image_data``: : hex string, Up to 116 bytes.
 
@@ -1486,11 +1397,6 @@ class PX_CDB_RUN_FIRMWARE_IMAGE:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
 
         """
     class SetDataAttr(RequestBodyStruct):
@@ -1576,11 +1482,6 @@ class PX_CDB_START_FIRMWARE_DOWNLOAD:
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
@@ -1654,11 +1555,6 @@ class PX_CDB_WRITE_FIRMWARE_BLOCK_EPL:
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
 
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
-
         """
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
@@ -1727,11 +1623,6 @@ class PX_CDB_WRITE_FIRMWARE_BLOCK_LPL:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-
-            * 0000 0000b: Module Boot Up.
-            * 0000 0001b: Host Password Accepted.
-            * 1xxx xxxxb: Module Password accepted.
-            * Bits ‘x’ may contain custom information.
 
         """
     class SetDataAttr(RequestBodyStruct):

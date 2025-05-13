@@ -173,91 +173,102 @@ class CDB():
         self.__port_id = port_id
         self.__cdb_instance_id = cdb_instance_id
 
-        self.cmd_0000h_query_status = PX_CDB_QUERY_STATUS(conn, module_id, port_id,cdb_instance_id)
+        # CDB Module Commands
+        self.cmd_0000h_query_status = PX_CDB_QUERY_STATUS(conn, module_id, port_id, cdb_instance_id)
         """CMD 0000h: Query Status
         """
-
-        self.cmd_0001h_enter_password = PX_CDB_ENTER_PASSWORD(conn, module_id, port_id,cdb_instance_id)
+        self.cmd_0001h_enter_password = PX_CDB_ENTER_PASSWORD(conn, module_id, port_id, cdb_instance_id)
         """CMD 0001h: Enter Password
         """
-
-        self.cmd_0002h_change_password = PX_CDB_CHANGE_PASSWORD(conn, module_id, port_id,cdb_instance_id)
+        self.cmd_0002h_change_password = PX_CDB_CHANGE_PASSWORD(conn, module_id, port_id, cdb_instance_id)
         """CMD 0002h: Change Password
         """
-        
-        self.cmd_0004h_abort_processing = PX_CDB_ABORT_PROCESSING(conn, module_id, port_id,cdb_instance_id)
+        self.cmd_0004h_abort_processing = PX_CDB_ABORT_PROCESSING(conn, module_id, port_id, cdb_instance_id)
         """CMD 0004h: Abort Processing
         """ 
 
-        self.cmd_0005h_change_password = PX_CDB_CHANGE_PASSWORD(conn, module_id, port_id,cdb_instance_id)
-        """CMD 0005h: Change Password
-        """
-
-        self.cmd_0040h_module_features = PX_CDB_MODULE_FEATURES(conn, module_id, port_id,cdb_instance_id)
+        # CDB Features and Capabilities Inquiry Commands
+        self.cmd_0040h_module_features = PX_CDB_MODULE_FEATURES(conn, module_id, port_id, cdb_instance_id)
         """CMD 0040h: Module Features
         """
-        self.cmd_0044h_sec_feat_capabilities = PX_CDB_SEC_FEAT_CAPABILITIES(conn, module_id, port_id,cdb_instance_id)
-        """CMD 0044h: Security Features and Capabilities
-        """
-        self.cmd_0045h_external_features = PX_CDB_EXTERNAL_FEATURES(conn, module_id, port_id,cdb_instance_id)
-        """CMD 0045h: Externally Defined Features
-        """
-        self.cmd_0041h_fw_mgmt_features = PX_CDB_FW_MGMT_FEATURES(conn, module_id, port_id,cdb_instance_id)
+        self.cmd_0041h_fw_mgmt_features = PX_CDB_FW_MGMT_FEATURES(conn, module_id, port_id, cdb_instance_id)
         """CMD 0041h: Firmware Management Features
         """
-
-        self.cmd_0050h_get_app_attributes = PX_CDB_GET_APP_ATTRIBUTES(conn, module_id, port_id,cdb_instance_id)
+        self.cmd_0044h_sec_feat_capabilities = PX_CDB_SEC_FEAT_CAPABILITIES(conn, module_id, port_id, cdb_instance_id)
+        """CMD 0044h: Security Features and Capabilities
+        """
+        self.cmd_0045h_external_features = PX_CDB_EXTERNAL_FEATURES(conn, module_id, port_id, cdb_instance_id)
+        """CMD 0045h: Externally Defined Features
+        """
+        self.cmd_0050h_get_app_attributes = PX_CDB_GET_APP_ATTRIBUTES(conn, module_id, port_id, cdb_instance_id)
         """CMD 0050h: Get Application Attributes
         """
-        self.cmd_0051h_get_if_code_descr = PX_CDB_GET_IF_CODE_DESCR(conn, module_id, port_id,cdb_instance_id)
+        self.cmd_0051h_get_if_code_descr = PX_CDB_GET_IF_CODE_DESCR(conn, module_id, port_id, cdb_instance_id)
         """CMD 0051h: Get Interface Code Description
         """
 
-        self.cmd_0102h_abort_firmware_download = PX_CDB_ABORT_FIRMWARE_DOWNLOAD(conn, module_id, port_id,cdb_instance_id)
-        """CMD 0102h: Abort Firmware Download
-        """
-
-        self.cmd_010ah_commit_firmware_image = PX_CDB_COMMIT_FIRMWARE_IMAGE(conn, module_id, port_id,cdb_instance_id)
-        """CMD 010Ah: Commit Firmware Image
-        """
-        self.cmd_0107h_complete_firmware_download = PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD(conn, module_id, port_id,cdb_instance_id)
-        """CMD 0107h: Complete Firmware Download
-        """
-        self.cmd_0108h_copy_firmware_image = PX_CDB_COPY_FIRMWARE_IMAGE(conn, module_id, port_id,cdb_instance_id)
-        """CMD 0108h: Complete Firmware Download
-        """
-        self.cmd_0109h_run_firmware_image = PX_CDB_RUN_FIRMWARE_IMAGE(conn, module_id, port_id,cdb_instance_id)
-        """CMD 0109h: Run Firmware Image
-        """
-        self.cmd_0100h_get_firmware_info = PX_CDB_GET_FIRMWARE_INFO(conn, module_id, port_id,cdb_instance_id)
+        # CDB Firmware Management Commands
+        self.cmd_0100h_get_firmware_info = PX_CDB_GET_FIRMWARE_INFO(conn, module_id, port_id, cdb_instance_id)
         """CMD 0100h: Get Firmware Info
         """
-        self.cmd_0101h_start_firmware_download = PX_CDB_START_FIRMWARE_DOWNLOAD(conn, module_id, port_id,cdb_instance_id)
+        self.cmd_0101h_start_firmware_download = PX_CDB_START_FIRMWARE_DOWNLOAD(conn, module_id, port_id, cdb_instance_id)
         """CMD 0101h: Start Firmware Download
         """
+        self.cmd_0102h_abort_firmware_download = PX_CDB_ABORT_FIRMWARE_DOWNLOAD(conn, module_id, port_id, cdb_instance_id)
+        """CMD 0102h: Abort Firmware Download
+        """
+        # cmd_0103h_write_firmware_block_lpl defined as function
+        # cmd_0104h_write_firmware_block_epl defined as function
+        # cmd_0105h_read_firmware_block_lpl defined as function
+        # cmd_0106h_read_firmware_block_epl defined as function
 
-        self.cmd_custom_reply = PX_CUST_REPLY(conn, module_id, port_id,cdb_instance_id)
+        self.cmd_0107h_complete_firmware_download = PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD(conn, module_id, port_id, cdb_instance_id)
+        """CMD 0107h: Complete Firmware Download
+        """
+        self.cmd_0108h_copy_firmware_image = PX_CDB_COPY_FIRMWARE_IMAGE(conn, module_id, port_id, cdb_instance_id)
+        """CMD 0108h: Copy Firmware Image
+        """
+        self.cmd_0109h_run_firmware_image = PX_CDB_RUN_FIRMWARE_IMAGE(conn, module_id, port_id, cdb_instance_id)
+        """CMD 0109h: Run Firmware Image
+        """
+        self.cmd_010ah_commit_firmware_image = PX_CDB_COMMIT_FIRMWARE_IMAGE(conn, module_id, port_id, cdb_instance_id)
+        """CMD 010Ah: Commit Firmware Image
+        """
+        
+        # Custom Commands
+        self.cmd_custom_reply = PX_CUST_REPLY(conn, module_id, port_id, cdb_instance_id)
         """Defines the custom reply to receiver for the CDB instance.
         """
-        self.cmd_custom_request = PX_CUST_REQUEST(conn, module_id, port_id,cdb_instance_id)
+        self.cmd_custom_request = PX_CUST_REQUEST(conn, module_id, port_id, cdb_instance_id)
         """Defnees the custom request to be sent to the CDB instance.
         """
 
-    def cmd_0106h_read_firmware_block_epl(self, block_address: int, length: int) -> "PX_CDB_READ_FIRMWARE_BLOCK_EPL":
-        """CMD 0106h: Read Firmware Block EPL
+    def cmd_0103h_write_firmware_block_lpl(self, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_LPL":
+        """CMD 0103h: Write Firmware Block LPL
 
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
         :type block_address: int
-        :param length: Number of bytes to read back to the EPL in this command, starting at the indicated address.
-        :type length: int
         """
-        return PX_CDB_READ_FIRMWARE_BLOCK_EPL(
+        return PX_CDB_WRITE_FIRMWARE_BLOCK_LPL(
             self.__conn,
             self.__module_id,
             self.__port_id,
             self.__cdb_instance_id,
             block_address,
-            length
+        )
+    
+    def cmd_0104h_write_firmware_block_epl(self, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_EPL":
+        """CMD 0104h: Write Firmware Block EPL
+
+        :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
+        :type block_address: int
+        """
+        return PX_CDB_WRITE_FIRMWARE_BLOCK_EPL(
+            self.__conn,
+            self.__module_id,
+            self.__port_id,
+            self.__cdb_instance_id,
+            block_address,
         )
     
     def cmd_0105h_read_firmware_block_lpl(self, block_address: int, length: int) -> "PX_CDB_READ_FIRMWARE_BLOCK_LPL":
@@ -278,31 +289,19 @@ class CDB():
             length
         )
     
-    def cmd_0104h_write_firmware_block_epl(self, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_EPL":
-        """CMD 0104h: Write Firmware Block EPL
+    def cmd_0106h_read_firmware_block_epl(self, block_address: int, length: int) -> "PX_CDB_READ_FIRMWARE_BLOCK_EPL":
+        """CMD 0106h: Read Firmware Block EPL
 
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
         :type block_address: int
+        :param length: Number of bytes to read back to the EPL in this command, starting at the indicated address.
+        :type length: int
         """
-        return PX_CDB_WRITE_FIRMWARE_BLOCK_EPL(
+        return PX_CDB_READ_FIRMWARE_BLOCK_EPL(
             self.__conn,
             self.__module_id,
             self.__port_id,
             self.__cdb_instance_id,
             block_address,
-        )
-    
-    def cmd_0103h_write_firmware_block_lpl(self, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_LPL":
-        """CMD 0103h: Write Firmware Block LPL
-
-        :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
-        :type block_address: int
-        """
-        return PX_CDB_WRITE_FIRMWARE_BLOCK_LPL(
-            self.__conn,
-            self.__module_id,
-            self.__port_id,
-            self.__cdb_instance_id,
-            block_address,
-        )
-    
+            length
+        )   
