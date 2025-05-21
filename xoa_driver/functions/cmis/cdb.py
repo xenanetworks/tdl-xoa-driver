@@ -1,9 +1,9 @@
 from __future__ import annotations
-import asyncio
 import typing as t
 from xoa_driver.ports import Z800FreyaPort
-from datetime import datetime
-import json
+from ._utils import *
+from ._constants import *
+import time
 
 
 # CMD 0000h: Query Status
@@ -1764,59 +1764,211 @@ async def cmd_custom_cmd_request(port: Z800FreyaPort, cdb_instance: int, cmd_id:
     await port.transceiver.cmis.cdb(cdb_instance).cmd_custom_request.set(cmd_data=cmd_data)
 
 
-
-async def start_firmware_update(port: Z800FreyaPort, cdb_instance: int, firmware_file: str) -> None:
-    """
-
-    Specified in **OIF-CMIS-05.3**
+async def firmware_download_procedure(port: Z800FreyaPort, cdb_instance: int, firmware_file: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
+    """Specified in **OIF-CMIS-05.3**
 
     Start transceiver firmware update on the specified port.
 
     The host begins by reading module capabilities using CMD 0041h: (Firmware Management Features).
 
-    The host then reads (and possibly converts to binary format) the vendor specific and vendor provided firmware 3 download file into a contiguous addressable byte array defined as the binary download image.
+    The host then reads (and possibly converts to binary format) the vendor specific and vendor provided firmware download file into a contiguous addressable byte array defined as the binary download image.
 
-    To start the firmware download, the host sends the download image header consisting of the first 5 StartCmdPayloadSize bytes from the download image using CMD 0101h: (Start Firmware Download). This 6 header instructs the module in a vendor specific way about the full or partial download content to be expected. 
+    To start the firmware download, the host sends the download image header consisting of the first StartCmdPayloadSize bytes from the download image using CMD 0101h: (Start Firmware Download). This header instructs the module in a vendor specific way about the full or partial download content to be expected. 
 
-    Before the module updates an image bank in a download procedure the module ensures that the bank is marked 8 as empty or corrupt until the download has eventually finished successfully.
+    Before the module updates an image bank in a download procedure the module ensures that the bank is marked as empty or corrupt until the download has eventually finished successfully.
 
-    When CMD 0101h: was successful, the module is ready to accept data from the host using the advertised 10 method, either CMD 0103h: (Write Firmware Block LPL) or CMD 0104h: (Write Firmware Block EPL). These 11 command differ only in the allowed size of a download image block, which: is advertised for the EPL variant.
+    When CMD 0101h: was successful, the module is ready to accept data from the host using the advertised method, either CMD 0103h: (Write Firmware Block LPL) or CMD 0104h: (Write Firmware Block EPL). These command differ only in the allowed size of a download image block, which: is advertised for the EPL variant.
 
-    The host zero-initializes a variable containing the address of the next data block to be sent or received in 13 subsequent Write Firmware Block or Read Firmware Block commands, respectively.
+    The host zero-initializes a variable containing the address of the next data block to be sent or received in subsequent Write Firmware Block or Read Firmware Block commands, respectively.
 
-    In a loop the host then reads subsequent bytes of the download image in blocks not exceeding the allowed 15 block site and sends it using CMD 0103h: or 0104h.
+    In a loop the host then reads subsequent bytes of the download image in blocks not exceeding the allowed block site and sends it using CMD 0103h: or 0104h.
 
+    :param port: the port object to send the command to
+    :type port: Z800FreyaPort
+    :param cdb_instance: the CDB instance number.
+    :type cdb_instance: int
+    :param firmware_file: the module firmware filename
+    :type firmware_file: str
+    :param use_epl_write: should the procedure use EPL write mechanism for data block write.
+    :type use_epl_write: bool
+    :param use_abort_for_failure: should the procedure use CMD 0102h Abort Firmware Download to abort the firmware download on failure.
+    :type use_abort_for_failure: bool
     """
-
-    resp = await port.transceiver.cmis.cdb_instances_supported.get()
-    cdb_instances_supported = resp.reply["cdb_instances_supported"]
+    reply_obj = await port.transceiver.cmis.cdb_instances_supported.get()
+    cdb_instances_supported = reply_obj.reply["cdb_instances_supported"]
     # Check if the specified CDB instance is supported
     if cdb_instance >= cdb_instances_supported:
-        raise ValueError(f"CDB instance {cdb_instance} is not supported. Only {cdb_instances_supported} CDB instances are supported.")
-    
-    # Get the current date and time
-    now = datetime.now()
-    # Format the date and time as a string
-    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        print(f"CDB instance {cdb_instance} is not supported. Only {cdb_instances_supported} CDB instances are supported.")
+        return False
     
     # Log the start of the firmware update
-    print(f"Starting firmware update on {port} at {formatted_date}")
+    print(f"Starting firmware update on {port}")
     
     # Read capabilities (CMD 0041h)
     # Read size of START_LPL, erase byte
-    reply = await cmd_0041h_fw_mgmt_features_reply(port, cdb_instance)
-    start_lpl_bytes = reply.start_cmd_payload_size
-    reply.erased_byte
+    reply_obj = await cmd_0041h_fw_mgmt_features_reply(port, cdb_instance)
+    firmware_header_size = reply_obj.start_cmd_payload_size
 
-    with open(firmware_file, "rb") as f:
-        # Read the firmware file into a byte array
-        firmware_data = "0x" + f.read(start_lpl_bytes).hex()
+    # Determine the write mechanism
+    write_mechanism = reply_obj.write_mechanism.lower().lstrip("0x")
+    if write_mechanism == WriteMechanism.NONE_SUPPORTED:
+        print(f"Write Mechanism is not supported. Unable to proceed with firmware update.")
+        return False
+    elif write_mechanism == WriteMechanism.LPL_ONLY:
+        print(f"Only CMD 0103h Write Firmware Block LPL is supported. Will use LPL write mechanism.")
+        use_epl_write = False
+    elif write_mechanism == WriteMechanism.EPL_ONLY:
+        print(f"Only CMD 0104h Write Firmware Block EPL is supported. Will use EPL write mechanism.")
+        use_epl_write = True
+    else:
+        print((f"Both CMD 0103h and CMD 0104h are supported. Will use the preferred write mechanism."))
+    
+    # Read the erased byte value
+    erased_byte = reply_obj.erased_byte
+    if reply_obj.abort_cmd == 0 and use_abort_for_failure == True:
+        use_abort_for_failure = False
+        print(f"CMD 0102h Abort Firmware Download is not supported by the module. Will use CMD 0107h Complete Firmware Download instead.")
+    
+    # Start the data block write loop
+    return await __write_data_block_loop(port, cdb_instance, firmware_file, firmware_header_size, erased_byte, use_epl_write, use_abort_for_failure)
 
-        await cmd_0101h_start_firmware_download_cmd(port, cdb_instance, len(firmware_data), firmware_data)
 
-        reply = await cmd_0101h_start_firmware_download_reply(port, cdb_instance)
-        if reply.cdb_status != "0x01":
-            raise RuntimeError(f"Start Failed. Module is not in firmware upgrade mode.")
+##################
+# Helper functions
+##################
+async def __write_data_block_loop(port: Z800FreyaPort, cdb_instance: int, firmware_filename: str, firmware_header_size: int, erased_byte: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
+    """Write data block loop
+
+    :param port: the port object
+    :type port: Z800FreyaPort
+    :param cdb_instance: CDB instance number.
+    :type cdb_instance: int
+    :param firmware_filename: module firmware filename
+    :type firmware_filename: str
+    :param firmware_header_size: firmware header size
+    :type firmware_header_size: int
+    :param erased_byte: value of the erased byte in hex string format
+    :type erased_byte: str
+    :param use_epl_write: should the procedure use EPL write mechanism for data block write.
+    :type use_epl_write: bool
+    :param use_abort_for_failure: should the procedure use CMD 0102h Abort Firmware Download to abort the firmware download on failure.
+    :type use_abort_for_failure: bool
+    """
+    if use_epl_write == True:
+        write_func_map = {
+            "block_size": 2048,
+            "write_func": cmd_0104h_write_firmware_block_epl_cmd,
+            "description": "CMD 0104h: (Write Firmware Block EPL)"
+        }
+    else:
+        write_func_map = {
+            "block_size": 116,
+            "write_func": cmd_0103h_write_firmware_block_lpl_cmd,
+            "description": "CMD 0103h: (Write Firmware Block LPL)"
+        }
+
+    with open(firmware_filename, "rb") as f:        
+        # Read the header data
+        firmware_header_data = "0x" + f.read(firmware_header_size).hex()
+
+        # Send the header data using CMD 0101h: (Start Firmware Download), and wait for SUCCESS response
+        await cmd_0101h_start_firmware_download_cmd(port, cdb_instance, firmware_header_size, firmware_header_data)
+        if await __cmd_successful("cmd_0101h_start_firmware_download_cmd", port, cdb_instance) == False:
+            print(f"CMD 0101h: (Start Firmware Download) failed to become SUCCESS.")
+
+        addr = 0
+        while True:
+            # Read the a block of firmware data
+            data_block = f.read(write_func_map["block_size"])
+            if not data_block:
+                print(f"EOF. No more data to read.")
+                break
+            data_block_len = len(data_block)
+            data_block_hex = "0x" + data_block.hex()
+            if check_erased_byte(data_block_hex, erased_byte) == True:
+                addr += data_block_len
+                continue
+            else:
+                # Send the data block
+                func = write_func_map["write_func"]
+                await func(port, cdb_instance, addr, data_block_hex)
+                if await __cmd_successful(str(write_func_map["write_func"]), port, cdb_instance) == False:
+                    print(f"{write_func_map['description']} failed.")
+                    await __abort_firmware_download(port, cdb_instance, use_abort_for_failure)
+                    return False
+                else:
+                    addr += data_block_len
+                    continue
+
+        # Send CMD 0107h: (Complete Firmware Download) to complete the firmware download
+        await cmd_0107h_complete_firmware_download_cmd(port, cdb_instance)
+        if await __cmd_successful("cmd_0107h_complete_firmware_download_cmd", port, cdb_instance) == False:
+            print(f"CMD 0107h: (Complete Firmware Download) failed.")
+            print(f"Firmware Update Failed.")
+            return False
+        
+        print(f"Firmware Update Successful.")
+        return True
+
+
+async def __abort_firmware_download(port: Z800FreyaPort, cdb_instance: int, use_abort_for_failure: bool) -> None:
+    """Abort firmware download
+
+    :param port: the port object
+    :type port: Z800FreyaPort
+    :param cdb_instance: the CDB instance number
+    :type cdb_instance: int
+    :param use_abort_for_failure: should the procedure use CMD 0102h Abort Firmware Download to abort the firmware download on failure.
+    :type use_abort_for_failure: bool
+    """
+    if use_abort_for_failure == True:
+        # Send CMD 0102h: (Abort Firmware Download) to abort the firmware download
+        await cmd_0102h_abort_firmware_download_cmd(port, cdb_instance)
+        if await __cmd_successful("cmd_0102h_abort_firmware_download_cmd", port, cdb_instance) == False:
+            print(f"CMD 0102h: (Abort Firmware Download) failed.")
         else:
-            return
+            print(f"CMD 0102h: (Abort Firmware Download) successful.")
+    else:
+        # Send CMD 0107h: (Complete Firmware Download) to complete the firmware download
+        await cmd_0107h_complete_firmware_download_cmd(port, cdb_instance)
+        if await __cmd_successful("cmd_0107h_complete_firmware_download_cmd", port, cdb_instance) == False:
+            print(f"CMD 0107h: (Complete Firmware Download) failed.")
+        else:
+            print(f"CMD 0107h: (Complete Firmware Download) successful.")
 
+    print(f"Firmware Update Failed.")
+
+
+async def __cmd_successful(cmd_name: str, port: Z800FreyaPort, cdb_instance: int, timeout = 5.0) -> bool:
+    """Check if the CDB command is successful.
+
+    :param cmd_name: the function name of the command to check
+    :type cmd_name: str
+    :param port: the port object
+    :type port: Z800FreyaPort
+    :param cdb_instance: the CDB instance number
+    :type cdb_instance: int
+    :param timeout: the timeout, defaults to 5.0
+    :type timeout: float, optional
+    :return: if the command is successful or not
+    :rtype: bool
+    """
+    func_map = {
+        "cmd_0101h_start_firmware_download_reply": cmd_0101h_start_firmware_download_reply,
+        "cmd_0103h_write_firmware_block_lpl_reply": cmd_0103h_write_firmware_block_lpl_reply,
+        "cmd_0104h_write_firmware_block_epl_reply": cmd_0104h_write_firmware_block_epl_reply,
+        "cmd_0107h_complete_firmware_download_reply": cmd_0107h_complete_firmware_download_reply,
+    }
+    if cmd_name not in func_map:
+        print(f"Invalid command name: {cmd_name}. Valid commands are: {list(func_map.keys())}")
+        return False
+    start = time.time()
+    while time.time() - start < timeout:
+        reply_obj = await func_map[cmd_name](port, cdb_instance)
+        if check_cdb_status(reply_obj.cdb_status) == CdbCommandCoarseStatus.SUCCESS:
+            return True
+        elif check_cdb_status(reply_obj.cdb_status) == CdbCommandCoarseStatus.FAILED:
+            return False
+        else:
+            time.sleep(timeout/100)
+    return False
