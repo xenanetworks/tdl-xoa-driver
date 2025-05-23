@@ -981,7 +981,7 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
 
 @register_command
 @dataclass
-class PX_CDB_ABORT_FIRMWARE_DOWNLOAD:
+class PX_CDB_ABORT_FW_DOWNLOAD:
     """This is CMD 0102h: Abort Firmware Download
     """
     code: typing.ClassVar[int] = 473
@@ -1029,7 +1029,7 @@ class PX_CDB_ABORT_FIRMWARE_DOWNLOAD:
 
 @register_command
 @dataclass
-class PX_CDB_COMMIT_FIRMWARE_IMAGE:
+class PX_CDB_COMMIT_FW_IMAGE:
     """This is CMD 010Ah: Commit Firmware Image
     """
     code: typing.ClassVar[int] = 483
@@ -1077,7 +1077,7 @@ class PX_CDB_COMMIT_FIRMWARE_IMAGE:
 
 @register_command
 @dataclass
-class PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD:
+class PX_CDB_COMPLETE_FW_DOWNLOAD:
     """This is CMD 0107h: Complete Firmware Download
     """
     code: typing.ClassVar[int] = 478
@@ -1125,7 +1125,7 @@ class PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD:
 
 @register_command
 @dataclass
-class PX_CDB_COPY_FIRMWARE_IMAGE:
+class PX_CDB_COPY_FW_IMAGE:
     """This is CMD 0108h: Copy Firmware Image
     """
     code: typing.ClassVar[int] = 479
@@ -1198,7 +1198,7 @@ class PX_CDB_COPY_FIRMWARE_IMAGE:
 
 @register_command
 @dataclass
-class PX_CDB_GET_FIRMWARE_INFO:
+class PX_CDB_GET_FW_INFO:
     """This is CMD 0100h: Get Firmware Info
     """
     code: typing.ClassVar[int] = 471
@@ -1291,7 +1291,7 @@ class PX_CDB_GET_FIRMWARE_INFO:
 
 @register_command
 @dataclass
-class PX_CDB_READ_FIRMWARE_BLOCK_EPL:
+class PX_CDB_READ_FW_BLOCK_EPL:
     """This is CMD 0106h: Read Firmware Block EPL
     """
     code: typing.ClassVar[int] = 477
@@ -1332,7 +1332,7 @@ class PX_CDB_READ_FIRMWARE_BLOCK_EPL:
 
 @register_command
 @dataclass
-class PX_CDB_READ_FIRMWARE_BLOCK_LPL:
+class PX_CDB_READ_FW_BLOCK_LPL:
     """This is CMD 0105h: Read Firmware Block LPL
     """
     code: typing.ClassVar[int] = 476
@@ -1375,7 +1375,7 @@ class PX_CDB_READ_FIRMWARE_BLOCK_LPL:
 
 @register_command
 @dataclass
-class PX_CDB_RUN_FIRMWARE_IMAGE:
+class PX_CDB_RUN_FW_IMAGE:
     """This is CMD 0109h: Run Firmware Image
     """
     code: typing.ClassVar[int] = 482
@@ -1459,7 +1459,7 @@ class PX_CDB_RUN_FIRMWARE_IMAGE:
 
 @register_command
 @dataclass
-class PX_CDB_START_FIRMWARE_DOWNLOAD:
+class PX_CDB_START_FW_DOWNLOAD:
     """This is CMD 0101h: Start Firmware Download
     """
     code: typing.ClassVar[int] = 472
@@ -1531,7 +1531,7 @@ class PX_CDB_START_FIRMWARE_DOWNLOAD:
 
 @register_command
 @dataclass
-class PX_CDB_WRITE_FIRMWARE_BLOCK_EPL:
+class PX_CDB_WRITE_FW_BLOCK_EPL:
     """This is CMD 0104h: Write Firmware Block EPL
     """
     code: typing.ClassVar[int] = 475
@@ -1600,7 +1600,7 @@ class PX_CDB_WRITE_FIRMWARE_BLOCK_EPL:
 
 @register_command
 @dataclass
-class PX_CDB_WRITE_FIRMWARE_BLOCK_LPL:
+class PX_CDB_WRITE_FW_BLOCK_LPL:
     """This is CMD 0103h: Write Firmware Block LPL
     """
     code: typing.ClassVar[int] = 474

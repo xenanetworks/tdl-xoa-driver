@@ -19,17 +19,17 @@ from xoa_driver.internals.commands import (
     PX_CDB_GET_IF_CODE_DESCR,
     PX_CDB_MODULE_FEATURES,
     PX_CDB_SEC_FEAT_CAPABILITIES,
-    PX_CDB_ABORT_FIRMWARE_DOWNLOAD,
-    PX_CDB_COMMIT_FIRMWARE_IMAGE,
-    PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD,
-    PX_CDB_COPY_FIRMWARE_IMAGE,
-    PX_CDB_GET_FIRMWARE_INFO,
-    PX_CDB_READ_FIRMWARE_BLOCK_EPL,
-    PX_CDB_READ_FIRMWARE_BLOCK_LPL,
-    PX_CDB_RUN_FIRMWARE_IMAGE,
-    PX_CDB_START_FIRMWARE_DOWNLOAD,
-    PX_CDB_WRITE_FIRMWARE_BLOCK_EPL,
-    PX_CDB_WRITE_FIRMWARE_BLOCK_LPL,
+    PX_CDB_ABORT_FW_DOWNLOAD,
+    PX_CDB_COMMIT_FW_IMAGE,
+    PX_CDB_COMPLETE_FW_DOWNLOAD,
+    PX_CDB_COPY_FW_IMAGE,
+    PX_CDB_GET_FW_INFO,
+    PX_CDB_READ_FW_BLOCK_EPL,
+    PX_CDB_READ_FW_BLOCK_LPL,
+    PX_CDB_RUN_FW_IMAGE,
+    PX_CDB_START_FW_DOWNLOAD,
+    PX_CDB_WRITE_FW_BLOCK_EPL,
+    PX_CDB_WRITE_FW_BLOCK_LPL,
     PX_CUST_REPLY,
     PX_CUST_REQUEST,
 )
@@ -208,13 +208,13 @@ class CDB():
         """
 
         # CDB Firmware Management Commands
-        self.cmd_0100h_get_firmware_info = PX_CDB_GET_FIRMWARE_INFO(conn, module_id, port_id, cdb_instance_id)
+        self.cmd_0100h_get_firmware_info = PX_CDB_GET_FW_INFO(conn, module_id, port_id, cdb_instance_id)
         """CMD 0100h: Get Firmware Info
         """
-        self.cmd_0101h_start_firmware_download = PX_CDB_START_FIRMWARE_DOWNLOAD(conn, module_id, port_id, cdb_instance_id)
+        self.cmd_0101h_start_firmware_download = PX_CDB_START_FW_DOWNLOAD(conn, module_id, port_id, cdb_instance_id)
         """CMD 0101h: Start Firmware Download
         """
-        self.cmd_0102h_abort_firmware_download = PX_CDB_ABORT_FIRMWARE_DOWNLOAD(conn, module_id, port_id, cdb_instance_id)
+        self.cmd_0102h_abort_firmware_download = PX_CDB_ABORT_FW_DOWNLOAD(conn, module_id, port_id, cdb_instance_id)
         """CMD 0102h: Abort Firmware Download
         """
         # cmd_0103h_write_firmware_block_lpl defined as function
@@ -222,16 +222,16 @@ class CDB():
         # cmd_0105h_read_firmware_block_lpl defined as function
         # cmd_0106h_read_firmware_block_epl defined as function
 
-        self.cmd_0107h_complete_firmware_download = PX_CDB_COMPLETE_FIRMWARE_DOWNLOAD(conn, module_id, port_id, cdb_instance_id)
+        self.cmd_0107h_complete_firmware_download = PX_CDB_COMPLETE_FW_DOWNLOAD(conn, module_id, port_id, cdb_instance_id)
         """CMD 0107h: Complete Firmware Download
         """
-        self.cmd_0108h_copy_firmware_image = PX_CDB_COPY_FIRMWARE_IMAGE(conn, module_id, port_id, cdb_instance_id)
+        self.cmd_0108h_copy_firmware_image = PX_CDB_COPY_FW_IMAGE(conn, module_id, port_id, cdb_instance_id)
         """CMD 0108h: Copy Firmware Image
         """
-        self.cmd_0109h_run_firmware_image = PX_CDB_RUN_FIRMWARE_IMAGE(conn, module_id, port_id, cdb_instance_id)
+        self.cmd_0109h_run_firmware_image = PX_CDB_RUN_FW_IMAGE(conn, module_id, port_id, cdb_instance_id)
         """CMD 0109h: Run Firmware Image
         """
-        self.cmd_010ah_commit_firmware_image = PX_CDB_COMMIT_FIRMWARE_IMAGE(conn, module_id, port_id, cdb_instance_id)
+        self.cmd_010ah_commit_firmware_image = PX_CDB_COMMIT_FW_IMAGE(conn, module_id, port_id, cdb_instance_id)
         """CMD 010Ah: Commit Firmware Image
         """
         
@@ -243,13 +243,13 @@ class CDB():
         """Defnees the custom request to be sent to the CDB instance.
         """
 
-    def cmd_0103h_write_firmware_block_lpl(self, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_LPL":
+    def cmd_0103h_write_firmware_block_lpl(self, block_address: int) -> "PX_CDB_WRITE_FW_BLOCK_LPL":
         """CMD 0103h: Write Firmware Block LPL
 
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
         :type block_address: int
         """
-        return PX_CDB_WRITE_FIRMWARE_BLOCK_LPL(
+        return PX_CDB_WRITE_FW_BLOCK_LPL(
             self.__conn,
             self.__module_id,
             self.__port_id,
@@ -257,13 +257,13 @@ class CDB():
             block_address,
         )
     
-    def cmd_0104h_write_firmware_block_epl(self, block_address: int) -> "PX_CDB_WRITE_FIRMWARE_BLOCK_EPL":
+    def cmd_0104h_write_firmware_block_epl(self, block_address: int) -> "PX_CDB_WRITE_FW_BLOCK_EPL":
         """CMD 0104h: Write Firmware Block EPL
 
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
         :type block_address: int
         """
-        return PX_CDB_WRITE_FIRMWARE_BLOCK_EPL(
+        return PX_CDB_WRITE_FW_BLOCK_EPL(
             self.__conn,
             self.__module_id,
             self.__port_id,
@@ -271,7 +271,7 @@ class CDB():
             block_address,
         )
     
-    def cmd_0105h_read_firmware_block_lpl(self, block_address: int, length: int) -> "PX_CDB_READ_FIRMWARE_BLOCK_LPL":
+    def cmd_0105h_read_firmware_block_lpl(self, block_address: int, length: int) -> "PX_CDB_READ_FW_BLOCK_LPL":
         """CMD 0105h: Read Firmware Block LPL
 
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
@@ -280,7 +280,7 @@ class CDB():
         :type length: int
         :rtype: PX_CDB_READ_FIRMWARE_BLOCK_LPL
         """
-        return PX_CDB_READ_FIRMWARE_BLOCK_LPL(
+        return PX_CDB_READ_FW_BLOCK_LPL(
             self.__conn,
             self.__module_id,
             self.__port_id,
@@ -289,7 +289,7 @@ class CDB():
             length
         )
     
-    def cmd_0106h_read_firmware_block_epl(self, block_address: int, length: int) -> "PX_CDB_READ_FIRMWARE_BLOCK_EPL":
+    def cmd_0106h_read_firmware_block_epl(self, block_address: int, length: int) -> "PX_CDB_READ_FW_BLOCK_EPL":
         """CMD 0106h: Read Firmware Block EPL
 
         :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the "Start Command Payload Size"
@@ -297,7 +297,7 @@ class CDB():
         :param length: Number of bytes to read back to the EPL in this command, starting at the indicated address.
         :type length: int
         """
-        return PX_CDB_READ_FIRMWARE_BLOCK_EPL(
+        return PX_CDB_READ_FW_BLOCK_EPL(
             self.__conn,
             self.__module_id,
             self.__port_id,
