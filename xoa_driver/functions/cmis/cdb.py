@@ -4,6 +4,8 @@ from xoa_driver.ports import Z800FreyaPort
 from ._utils import *
 from ._constants import *
 import time
+from contextlib import suppress
+from xoa_driver import exceptions
 
 
 # CMD 0000h: Query Status
@@ -75,9 +77,12 @@ async def cmd_0000h_query_status_reply(port: Z800FreyaPort, cdb_instance: int) -
     :return: REPLY of CMD 0000h Query Status
     :rtype: CMD0000hQueryStatusReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0000h_query_status.get()
-    return CMD0000hQueryStatusReply(resp.reply)
-
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0000h_query_status.get()
+            return CMD0000hQueryStatusReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 # CMD 0001h: Enter Password
 class CMD0001hEnterPasswordReply:
@@ -134,8 +139,13 @@ async def cmd_0001h_enter_password_reply(port: Z800FreyaPort, cdb_instance: int)
     :return: REPLY of CMD 0001h Enter Password
     :rtype: CMD0001hEnterPasswordReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0001h_enter_password.get()
-    return CMD0001hEnterPasswordReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0001h_enter_password.get()
+            return CMD0001hEnterPasswordReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
+    
 
 # CMD 0002h: Change Password
 class CMD0002hChangePasswordReply:
@@ -192,8 +202,12 @@ async def cmd_0002h_change_password_reply(port: Z800FreyaPort, cdb_instance: int
     :return: REPLY of CMD 0002h Change Password
     :rtype: CMD0002hChangePasswordReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0002h_change_password.get()
-    return CMD0002hChangePasswordReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0002h_change_password.get()
+            return CMD0002hChangePasswordReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0004h: Abort Processing
@@ -244,8 +258,12 @@ async def cmd_0004h_abort_processing_reply(port: Z800FreyaPort, cdb_instance: in
     :return: REPLY of CMD 0004h Abort Processing
     :rtype: CMD0004hAbortProcessingReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0004h_abort_processing.get()
-    return CMD0004hAbortProcessingReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0004h_abort_processing.get()
+            return CMD0004hAbortProcessingReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0040h: Module Features
@@ -349,8 +367,12 @@ async def cmd_0040h_module_features_reply(port: Z800FreyaPort, cdb_instance: int
     :return: REPLY of CMD 0040h Module Features
     :rtype: CMD0040hModuleFeaturesReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0040h_module_features.get()
-    return CMD0040hModuleFeaturesReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0040h_module_features.get()
+            return CMD0040hModuleFeaturesReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0041h: Firmware Management Features
@@ -488,8 +510,12 @@ async def cmd_0041h_fw_mgmt_features_reply(port: Z800FreyaPort, cdb_instance: in
     :return: REPLY of CMD 0041h Firmware Management Features
     :rtype: CMD0041hFirmwareManagementFeaturesReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0041h_fw_mgmt_features.get()
-    return CMD0041hFirmwareManagementFeaturesReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0041h_fw_mgmt_features.get()
+            return CMD0041hFirmwareManagementFeaturesReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0044h: Security Features and Capabilities
@@ -705,8 +731,12 @@ async def cmd_0044h_sec_feat_and_capabilities_reply(port: Z800FreyaPort, cdb_ins
     :return: REPLY of CMD 0044h Security Features and Capabilities
     :rtype: CMD0044hSecFeaturesAndCapabilitiesReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0044h_sec_feat_capabilities.get()
-    return CMD0044hSecFeaturesAndCapabilitiesReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0044h_sec_feat_capabilities.get()
+            return CMD0044hSecFeaturesAndCapabilitiesReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 # CMD 0045h: Externally Defined Features
 class CMD0045hExternallyDefinedFeaturesReply:
@@ -744,8 +774,12 @@ async def cmd_0045h_externally_defined_features_reply(port: Z800FreyaPort, cdb_i
     :return: REPLY of CMD 0045h Externally Defined Features
     :rtype: CMD0045hExternallyDefinedFeaturesReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0045h_external_features.get()
-    return CMD0045hExternallyDefinedFeaturesReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0045h_external_features.get()
+            return CMD0045hExternallyDefinedFeaturesReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 # CMD 0050h: Get Application Attributes
 class CMD0050hGetApplicationAttributesReply:
@@ -844,8 +878,12 @@ async def cmd_0050h_get_application_attributes_reply(port: Z800FreyaPort, cdb_in
     :return: REPLY of CMD 0050h Get Application Attributes
     :rtype: CMD0050hGetApplicationAttributesReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0045h_external_features.get()
-    return CMD0050hGetApplicationAttributesReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0045h_external_features.get()
+            return CMD0050hGetApplicationAttributesReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
         
 
 # CMD 0051h: Get Interface Code Description
@@ -937,8 +975,13 @@ async def cmd_0051h_get_interface_code_description_reply(port: Z800FreyaPort, cd
     :return: REPLY of CMD 0051h Get Interface Code Description
     :rtype: CMD0051hGetInterfaceCodeDescriptionReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0051h_get_if_code_descr.get()
-    return CMD0051hGetInterfaceCodeDescriptionReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0051h_get_if_code_descr.get()
+            return CMD0051hGetInterfaceCodeDescriptionReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
+
 
 # CMD 0100h: Get Firmware Info
 class CMD0100hGetFirmwareInfoReply:
@@ -1033,8 +1076,12 @@ async def cmd_0100h_get_firmware_info_reply(port: Z800FreyaPort, cdb_instance: i
     :return: REPLY of CMD 0100h Get Firmware Info
     :rtype: CMD0100hGetFirmwareInfoReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0100h_get_firmware_info.get()
-    return CMD0100hGetFirmwareInfoReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0100h_get_firmware_info.get()
+            return CMD0100hGetFirmwareInfoReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0101h: Start Firmware Download
@@ -1099,8 +1146,12 @@ async def cmd_0101h_start_firmware_download_reply(port: Z800FreyaPort, cdb_insta
     :return: REPLY of CMD 0101h Start Firmware Download
     :rtype: CMD0101hStartFirmwareDownloadReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0101h_start_firmware_download.get()
-    return CMD0101hStartFirmwareDownloadReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0101h_start_firmware_download.get()
+            return CMD0101hStartFirmwareDownloadReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0102h: Abort Firmware Download
@@ -1157,8 +1208,12 @@ async def cmd_0102h_abort_firmware_download_reply(port: Z800FreyaPort, cdb_insta
     :return: REPLY of CMD 0102h Abort Firmware Download
     :rtype: CMD0102hAbortFirmwareDownloadReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0102h_abort_firmware_download.get()
-    return CMD0102hAbortFirmwareDownloadReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0102h_abort_firmware_download.get()
+            return CMD0102hAbortFirmwareDownloadReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0103h: Write Firmware Block LPL
@@ -1222,8 +1277,12 @@ async def cmd_0103h_write_firmware_block_lpl_reply(port: Z800FreyaPort, cdb_inst
     :return: REPLY of CMD 0103h Write Firmware Block LPL
     :rtype: CMD0103hWriteFirmwareBlockLPLReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0103h_write_firmware_block_lpl.get()
-    return CMD0103hWriteFirmwareBlockLPLReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0103h_write_firmware_block_lpl.get()
+            return CMD0103hWriteFirmwareBlockLPLReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0104h: Write Firmware Block EPL
@@ -1288,8 +1347,12 @@ async def cmd_0104h_write_firmware_block_epl_reply(port: Z800FreyaPort, cdb_inst
     :return: REPLY of CMD 0104h Write Firmware Block EPL
     :rtype: CMD0104hWriteFirmwareBlockEPLReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0104h_write_firmware_block_epl.get()
-    return CMD0104hWriteFirmwareBlockEPLReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0104h_write_firmware_block_epl.get()
+            return CMD0104hWriteFirmwareBlockEPLReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0105h: Read Firmware Block LPL
@@ -1342,9 +1405,13 @@ async def cmd_0105h_read_firmware_block_lpl_reply(port: Z800FreyaPort, cdb_insta
     :return: REPLY of CMD 0105h Read Firmware Block LPL
     :rtype: CMD0105hReadFirmwareBlockLPLReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0105h_read_firmware_block_lpl(block_address=block_address, length=length).get()
-    return CMD0105hReadFirmwareBlockLPLReply(resp.reply)
-
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0105h_read_firmware_block_lpl(block_address=block_address, length=length).get()
+            return CMD0105hReadFirmwareBlockLPLReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
+    
 
 # CMD 0106h: Read Firmware Block EPL
 class CMD0106hReadFirmwareBlockEPLReply:
@@ -1393,8 +1460,12 @@ async def cmd_0106h_read_firmware_block_epl_reply(port: Z800FreyaPort, cdb_insta
     :return: REPLY of CMD 0106h Read Firmware Block EPL
     :rtype: CMD0106hReadFirmwareBlockEPLReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0106h_read_firmware_block_epl(block_address=block_address, length=length).get()
-    return CMD0106hReadFirmwareBlockEPLReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0106h_read_firmware_block_epl(block_address=block_address, length=length).get()
+            return CMD0106hReadFirmwareBlockEPLReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0107h: Complete Firmware Download
@@ -1451,8 +1522,12 @@ async def cmd_0107h_complete_firmware_download_reply(port: Z800FreyaPort, cdb_in
     :return: REPLY of CMD 0107h Complete Firmware Download
     :rtype: CMD0107hCompleteFirmwareDownloadReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0107h_complete_firmware_download.get()
-    return CMD0107hCompleteFirmwareDownloadReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0107h_complete_firmware_download.get()
+            return CMD0107hCompleteFirmwareDownloadReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0108h: Copy Firmware Image
@@ -1532,8 +1607,12 @@ async def cmd_0108h_copy_firmware_image_reply(port: Z800FreyaPort, cdb_instance:
     :return: REPLY of CMD 0108h Copy Firmware Image
     :rtype: CMD0108CopyFirmwareImageReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0108h_copy_firmware_image.get()
-    return CMD0108hCopyFirmwareImageReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0108h_copy_firmware_image.get()
+            return CMD0108hCopyFirmwareImageReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 0109h: Run Firmware Image
@@ -1604,8 +1683,12 @@ async def cmd_0109h_run_firmware_image_reply(port: Z800FreyaPort, cdb_instance: 
     :return: REPLY of CMD 0109h Run Firmware Image
     :rtype: CMD0109RunFirmwareImageReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0109h_run_firmware_image.get()
-    return CMD0109hRunFirmwareImageReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0109h_run_firmware_image.get()
+            return CMD0109hRunFirmwareImageReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 010Ah: Commit Firmware Image
@@ -1662,8 +1745,12 @@ async def cmd_010ah_commit_firmware_image_reply(port: Z800FreyaPort, cdb_instanc
     :return: REPLY of CMD 010Ah Commit Firmware Image
     :rtype: CMD010AhCommitFirmwareImageReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_010ah_commit_firmware_image.get()
-    return CMD010AhCommitFirmwareImageReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_010ah_commit_firmware_image.get()
+            return CMD010AhCommitFirmwareImageReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 
 # CMD 8000h-FFFFh: Custom Command
@@ -1717,8 +1804,12 @@ async def cmd_custom_cmd_reply(port: Z800FreyaPort, cdb_instance: int) -> Custom
     :return: REPLY of CMD 8000h-FFFFh Custom Command
     :rtype: CustomCMDReply
     """
-    resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_custom_reply.get()
-    return CustomCMDReply(resp.reply)
+    while True:
+        try:
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_custom_reply.get()
+            return CustomCMDReply(resp.reply)
+        except exceptions.XmpPendingError:
+            time.sleep(0.1)
 
 async def cmd_custom_cmd_request(port: Z800FreyaPort, cdb_instance: int, cmd_id: str, epl_length: int, lpl_length: int, rpl_length: int, rpl_check_code: int, data: str) -> None:
     """Send CMD 8000h-FFFFh Custom Command
