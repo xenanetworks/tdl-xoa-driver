@@ -353,6 +353,20 @@ class CMD0040hModuleFeaturesReply:
         """integer, U16 Maximum CDB command execution time in ms, of all supported CDB commands
         """
 
+async def cmd_0040h_module_features_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
+    """Send CMD 0040h Module Features
+
+    :param port: the port object to send the command to
+    :type port: Z800FreyaPort
+    :param cdb_instance: CDB instance number.
+    
+        * 0 = CBD Instance 1
+        * 1 = CDB Instance 2
+    
+    :type cdb_instance: int
+    """
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0040h_module_features.set()
+
 async def cmd_0040h_module_features_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0040hModuleFeaturesReply:
     """Read the module response to CMD 0040h Module Features
 
@@ -495,6 +509,20 @@ class CMD0041hFirmwareManagementFeaturesReply:
         self.max_duration_copy: int = reply["max_duration_copy"]
         """integer, U16 Maximum time in M ms for a CDB Copy command to complete execution
         """
+
+async def cmd_0041h_fw_mgmt_features_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
+    """Send CMD 0041h Firmware Management Features
+
+    :param port: the port object to send the command to
+    :type port: Z800FreyaPort
+    :param cdb_instance: CDB instance number.
+    
+        * 0 = CBD Instance 1
+        * 1 = CDB Instance 2
+    
+    :type cdb_instance: int
+    """
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0041h_fw_mgmt_features.set()
 
 async def cmd_0041h_fw_mgmt_features_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0041hFirmwareManagementFeaturesReply:
     """Read the module response to CMD 0041h Firmware Management Features
@@ -717,6 +745,20 @@ class CMD0044hSecFeaturesAndCapabilitiesReply:
 
         """
 
+async def cmd_0044h_sec_feat_capabilities_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
+    """Send CMD 0044h Security Features and Capabilities
+
+    :param port: the port object to send the command to
+    :type port: Z800FreyaPort
+    :param cdb_instance: CDB instance number.
+    
+        * 0 = CBD Instance 1
+        * 1 = CDB Instance 2
+    
+    :type cdb_instance: int
+    """
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0044h_sec_feat_capabilities.set()
+
 async def cmd_0044h_sec_feat_and_capabilities_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0044hSecFeaturesAndCapabilitiesReply:
     """Read the module response to CMD 0044h Security Features and Capabilities
 
@@ -759,7 +801,21 @@ class CMD0045hExternallyDefinedFeaturesReply:
         self.supplement_support: str = reply["supplement_support"]
         """Bit 0 = 0/1: CMIS-VCS not supported/supported
         """
-        
+
+async def cmd_0045h_externally_defined_features_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
+    """Send CMD 0045h Externally Defined Features
+
+    :param port: the port object to send the command to
+    :type port: Z800FreyaPort
+    :param cdb_instance: CDB instance number.
+    
+        * 0 = CBD Instance 1
+        * 1 = CDB Instance 2
+    
+    :type cdb_instance: int
+    """
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0045h_external_features.set()
+
 async def cmd_0045h_externally_defined_features_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0045hExternallyDefinedFeaturesReply:
     """Read the module response to CMD 0045h Externally Defined Features
 
@@ -1062,6 +1118,20 @@ class CMD0100hGetFirmwareInfoReply:
         """string, Factory or Boot additional information (32-byte long ASCII string).
         """
 
+async def cmd_0100h_get_firmware_info_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
+    """Send CMD 0100h Get Firmware Info
+
+    :param port: the port object to send the command to
+    :type port: Z800FreyaPort
+    :param cdb_instance: CDB instance number.
+    
+        * 0 = CBD Instance 1
+        * 1 = CDB Instance 2
+    
+    :type cdb_instance: int
+    """
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0100h_get_firmware_info.set()
+
 async def cmd_0100h_get_firmware_info_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0100hGetFirmwareInfoReply:
     """Read the module response to CMD 0100h Get Firmware Info
 
@@ -1259,9 +1329,10 @@ async def cmd_0103h_write_firmware_block_lpl_cmd(port: Z800FreyaPort, cdb_instan
     :type firmware_block: hex str
     """
     cmd_data = {
+        "block_address": block_address,
         "firmware_block": firmware_block
     }
-    await port.transceiver.cmis.cdb(cdb_instance).cmd_0103h_write_firmware_block_lpl(block_address=block_address).set(cmd_data=cmd_data)
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0103h_write_firmware_block_lpl.set(cmd_data=cmd_data)
 
 async def cmd_0103h_write_firmware_block_lpl_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0103hWriteFirmwareBlockLPLReply:
     """Read the module response to CMD 0103h Write Firmware Block LPL
@@ -1329,9 +1400,10 @@ async def cmd_0104h_write_firmware_block_epl_cmd(port: Z800FreyaPort, cdb_instan
     """
 
     cmd_data = {
+        "block_address": block_address,
         "firmware_block": firmware_block
     }
-    await port.transceiver.cmis.cdb(cdb_instance).cmd_0104h_write_firmware_block_epl(block_address=block_address).set(cmd_data=cmd_data)
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0104h_write_firmware_block_epl.set(cmd_data=cmd_data)
 
 async def cmd_0104h_write_firmware_block_epl_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0104hWriteFirmwareBlockEPLReply:
     """Read the module response to CMD 0104h Write Firmware Block EPL
@@ -1387,7 +1459,29 @@ class CMD0105hReadFirmwareBlockLPLReply:
         """hex string, Up to 116 bytes.
         """
 
-async def cmd_0105h_read_firmware_block_lpl_reply(port: Z800FreyaPort, cdb_instance: int, block_address: int, length: int) -> CMD0105hReadFirmwareBlockLPLReply:
+async def cmd_0105h_read_firmware_block_lpl_cmd(port: Z800FreyaPort, cdb_instance: int, block_address: int, length: int) -> None:
+    """Send CMD 0105h Read Firmware Block LPL
+
+    :param port: the port object to send the command to
+    :type port: Z800FreyaPort
+    :param cdb_instance: CDB instance number.
+    
+        * 0 = CBD Instance 1
+        * 1 = CDB Instance 2
+    
+    :type cdb_instance: int
+    :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
+    :type block_address: int
+    :param length: U16 Number of bytes to read back to the LPL in this command, starting at the indicated address.
+    :type length: int
+    """
+    cmd_data = {
+        "block_address": block_address,
+        "length": length
+    }
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0105h_read_firmware_block_lpl.set(cmd_data=cmd_data)
+
+async def cmd_0105h_read_firmware_block_lpl_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0105hReadFirmwareBlockLPLReply:
     """Read the module response to CMD 0105h Read Firmware Block LPL
 
     :param port: the port object to read the response from
@@ -1407,7 +1501,7 @@ async def cmd_0105h_read_firmware_block_lpl_reply(port: Z800FreyaPort, cdb_insta
     """
     while True:
         try:
-            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0105h_read_firmware_block_lpl(block_address=block_address, length=length).get()
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0105h_read_firmware_block_lpl.get()
             return CMD0105hReadFirmwareBlockLPLReply(resp.reply)
         except exceptions.XmpPendingError:
             time.sleep(0.1)
@@ -1442,7 +1536,29 @@ class CMD0106hReadFirmwareBlockEPLReply:
         """Up to 128 Bytes. Actual Length specified in RPLLength
         """
 
-async def cmd_0106h_read_firmware_block_epl_reply(port: Z800FreyaPort, cdb_instance: int, block_address: int, length: int) -> CMD0106hReadFirmwareBlockEPLReply:
+async def cmd_0106h_read_firmware_block_epl_cmd(port: Z800FreyaPort, cdb_instance: int, block_address: int, length: int) -> None:
+    """Send CMD 0106h Read Firmware Block EPL
+
+    :param port: the port object to send the command to
+    :type port: Z800FreyaPort
+    :param cdb_instance: CDB instance number.
+    
+        * 0 = CBD Instance 1
+        * 1 = CDB Instance 2
+    
+    :type cdb_instance: int
+    :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”
+    :type block_address: int
+    :param length: U16 Number of bytes to read back to the EPL in this command, starting at the indicated address.
+    :type length: int
+    """
+    cmd_data = {
+        "block_address": block_address,
+        "length": length
+    }
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0106h_read_firmware_block_epl.set(cmd_data=cmd_data)
+
+async def cmd_0106h_read_firmware_block_epl_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0106hReadFirmwareBlockEPLReply:
     """Read the module response to CMD 0106h Read Firmware Block EPL
 
     :param port: the port object to read the response from
@@ -1462,7 +1578,7 @@ async def cmd_0106h_read_firmware_block_epl_reply(port: Z800FreyaPort, cdb_insta
     """
     while True:
         try:
-            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0106h_read_firmware_block_epl(block_address=block_address, length=length).get()
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0106h_read_firmware_block_epl.get()
             return CMD0106hReadFirmwareBlockEPLReply(resp.reply)
         except exceptions.XmpPendingError:
             time.sleep(0.1)

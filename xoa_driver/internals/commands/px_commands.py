@@ -627,6 +627,11 @@ class PX_CDB_EXTERNAL_FEATURES:
 
         """
 
+    class SetDataAttr(RequestBodyStruct):
+        cmd_data: dict = field(XmpJson())
+        """dict, json
+        """
+
     def get(self) -> Token[GetDataAttr]:
         """Get REPLY
 
@@ -635,6 +640,13 @@ class PX_CDB_EXTERNAL_FEATURES:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
+    
+    def set(self) -> Token[None]:
+        """
+        Set CMD Data
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data={}))
 
 
 @register_command
@@ -688,6 +700,11 @@ class PX_CDB_FW_MGMT_FEATURES:
 
         """
 
+    class SetDataAttr(RequestBodyStruct):
+        cmd_data: dict = field(XmpJson())
+        """dict, json
+        """
+
     def get(self) -> Token[GetDataAttr]:
         """Get REPLY
 
@@ -696,6 +713,13 @@ class PX_CDB_FW_MGMT_FEATURES:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
+    
+    def set(self) -> Token[None]:
+        """
+        Set CMD Data
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data={}))
 
 
 @register_command
@@ -907,6 +931,11 @@ class PX_CDB_MODULE_FEATURES:
 
         """
 
+    class SetDataAttr(RequestBodyStruct):
+        cmd_data: dict = field(XmpJson())
+        """dict, json
+        """
+
     def get(self) -> Token[GetDataAttr]:
         """Get REPLY
 
@@ -915,6 +944,13 @@ class PX_CDB_MODULE_FEATURES:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
+    
+    def set(self) -> Token[None]:
+        """
+        Set CMD Data
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data={}))
     
 @register_command
 @dataclass
@@ -969,6 +1005,11 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
 
         """
 
+    class SetDataAttr(RequestBodyStruct):
+        cmd_data: dict = field(XmpJson())
+        """dict, json
+        """
+
     def get(self) -> Token[GetDataAttr]:
         """Get REPLY
 
@@ -977,6 +1018,13 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
+    
+    def set(self) -> Token[None]:
+        """
+        Set CMD Data
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data={}))
 
 
 @register_command
@@ -1279,6 +1327,11 @@ class PX_CDB_GET_FW_INFO:
 
         """
 
+    class SetDataAttr(RequestBodyStruct):
+        cmd_data: dict = field(XmpJson())
+        """dict, json
+        """
+
     def get(self) -> Token[GetDataAttr]:
         """Get REPLY
 
@@ -1287,6 +1340,13 @@ class PX_CDB_GET_FW_INFO:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
+    
+    def set(self) -> Token[None]:
+        """
+        Set CMD Data
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data={}))
 
 
 @register_command
@@ -1301,8 +1361,6 @@ class PX_CDB_READ_FW_BLOCK_EPL:
     _module: int
     _port: int
     _cdb_instance_xindex: int
-    _block_address: int
-    _length: int
 
     class GetDataAttr(ResponseBodyStruct):
         reply: dict = field(XmpJson())
@@ -1320,6 +1378,12 @@ class PX_CDB_READ_FW_BLOCK_EPL:
 
         """
 
+    class SetDataAttr(RequestBodyStruct):
+        cmd_data: dict = field(XmpJson())
+        """dict, json
+        """
+
+
     def get(self) -> Token[GetDataAttr]:
         """Get REPLY
 
@@ -1327,7 +1391,29 @@ class PX_CDB_READ_FW_BLOCK_EPL:
         :rtype: PX_CDB_READ_FIRMWARE_BLOCK_EPL.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex, self._block_address, self._length]))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
+    
+    def set(self, cmd_data: dict) -> Token[None]:
+        """
+        Set CMD Data
+
+        :param cmd_data: CMD DATA
+        :type cmd_data: dict
+
+        .. code-block:: json 
+        
+            {
+                "block_address": 12,
+                "length": 10
+            }
+
+        * ``block_address``: integer, U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
+        
+        * ``length``: integer, Number of bytes to read back to the EPL in this command, starting at the indicated address.
+
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
 
 
 @register_command
@@ -1342,8 +1428,6 @@ class PX_CDB_READ_FW_BLOCK_LPL:
     _module: int
     _port: int
     _cdb_instance_xindex: int
-    _block_address: int
-    _length: int
 
     class GetDataAttr(ResponseBodyStruct):
         reply: dict = field(XmpJson())
@@ -1363,6 +1447,11 @@ class PX_CDB_READ_FW_BLOCK_LPL:
 
         """
 
+    class SetDataAttr(RequestBodyStruct):
+        cmd_data: dict = field(XmpJson())
+        """dict, json
+        """
+
     def get(self) -> Token[GetDataAttr]:
         """Get REPLY
 
@@ -1370,7 +1459,29 @@ class PX_CDB_READ_FW_BLOCK_LPL:
         :rtype: PX_CDB_WRITE_FIRMWARE_BLOCK_EPL.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex, self._block_address, self._length]))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
+    
+    def set(self, cmd_data: dict) -> Token[None]:
+        """
+        Set CMD Data
+
+        :param cmd_data: CMD DATA
+        :type cmd_data: dict
+
+        .. code-block:: json 
+        
+            {
+                "block_address": 12,
+                "length": 10
+            }
+
+        * ``block_address``: integer, U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
+        
+        * ``length``: integer, Number of bytes to read back to the EPL in this command, starting at the indicated address.
+
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
 
 
 @register_command
@@ -1541,7 +1652,6 @@ class PX_CDB_WRITE_FW_BLOCK_EPL:
     _module: int
     _port: int
     _cdb_instance_xindex: int
-    _block_address: int
 
     class GetDataAttr(ResponseBodyStruct):
         reply: dict = field(XmpJson())
@@ -1559,15 +1669,6 @@ class PX_CDB_WRITE_FW_BLOCK_EPL:
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
         """dict, json
-
-        .. code-block:: json
-
-            {
-                "firmware_block": "0x00010203040506070809"
-            }
-
-        * ``firmware_block``: hex string, Up to 2048 Bytes.
-
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1577,7 +1678,7 @@ class PX_CDB_WRITE_FW_BLOCK_EPL:
         :rtype: PX_CDB_WRITE_FIRMWARE_BLOCK_EPL.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex, self._block_address]))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
     def set(self, cmd_data: dict) -> Token[None]:
         """
@@ -1587,15 +1688,17 @@ class PX_CDB_WRITE_FW_BLOCK_EPL:
 
         .. code-block:: json
 
-            {
+            {   
+                "block_address": 12,
                 "firmware_block": "0x00010203040506070809"
             }
 
+        * ``block_address``: integer, U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
         * ``firmware_block``: hex string, Up to 2048 Bytes.
 
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex, self._block_address], cmd_data=cmd_data))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
     
 
 @register_command
@@ -1610,7 +1713,6 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
     _module: int
     _port: int
     _cdb_instance_xindex: int
-    _block_address: int
 
     class GetDataAttr(ResponseBodyStruct):
         reply: dict = field(XmpJson())
@@ -1628,15 +1730,6 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
     class SetDataAttr(RequestBodyStruct):
         cmd_data: dict = field(XmpJson())
         """dict, json
-        
-        .. code-block:: json
-
-            {
-                "firmware_block": "0x00010203040506070809"
-            }
-
-        * ``firmware_block``: hex string, Up to 116 bytes. One block of the firmware image. The actually needed length may be shorter than the available FirmwareBlock field size.
-
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1646,7 +1739,7 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
         :rtype: PX_CDB_WRITE_FIRMWARE_BLOCK_LPL.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex, self._block_address]))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
     def set(self, cmd_data: dict) -> Token[None]:
         """
@@ -1657,14 +1750,16 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
         .. code-block:: json
 
             {
+                "block_address": 12,
                 "firmware_block": "0x00010203040506070809"
             }
 
+        * ``block_address``: integer, U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
         * ``firmware_block``: hex string, Up to 116 bytes. One block of the firmware image. The actually needed length may be shorter than the available FirmwareBlock field size.
 
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex, self._block_address], cmd_data=cmd_data))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
 
 
 @register_command
