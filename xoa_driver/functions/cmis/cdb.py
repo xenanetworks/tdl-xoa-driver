@@ -1671,6 +1671,9 @@ class CMD0108hCopyFirmwareImageReply:
             * ``01 000101b``: CdbChkCode error
 
         """
+        self.length: int = reply["length"]
+        """integer, number of bytes copied.
+        """
         self.copy_direction: str = reply["copy_direction"]
         """hex string, copy direction.
 
