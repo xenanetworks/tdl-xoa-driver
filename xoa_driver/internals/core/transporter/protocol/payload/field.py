@@ -38,6 +38,7 @@ from .types import (
     # Preconverted Dynamic
     XmpStr,
     XmpSequence,
+    XmpJson,
 )
 
 
@@ -51,7 +52,7 @@ TYPES_FIXED = (
     XmpMacAddress,
 )
 TYPES_COMBI = (XmpHex,)
-TYPES_DYNAMIC = (XmpStr,)
+TYPES_DYNAMIC = (XmpStr, XmpJson)
 TYPES_COMPOSED = (XmpSequence,)
 
 # Important: The instances of the FieldSpecs will live as a class variables

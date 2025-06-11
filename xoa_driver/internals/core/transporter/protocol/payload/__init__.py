@@ -14,7 +14,8 @@ from .types import (
     XmpSequence,
     XmpShort,
     XmpStr,
-    Hex
+    Hex,
+    XmpJson,
 )
 
 __all__ = (
@@ -32,6 +33,7 @@ __all__ = (
     "XmpShort",
     "XmpStr",
     "Hex",
+    "XmpJson"
 )
 
 
