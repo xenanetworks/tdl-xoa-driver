@@ -1886,7 +1886,7 @@ class M_RECONFIG_STATUS:
     _module: int
 
     class GetDataAttr(ResponseBodyStruct):
-        status:  ModuleConfigStatus = field(XmpInt())
+        status:  ModuleConfigStatus = field(XmpByte())
         """Module configuration status."""
 
         progress: int = field(XmpInt())
