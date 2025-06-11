@@ -1925,7 +1925,7 @@ async def cmd_custom_cmd_reply(port: Z800FreyaPort, cdb_instance: int) -> Custom
     """
     while True:
         try:
-            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_custom_reply.get()
+            resp = await port.transceiver.cmis.cdb(cdb_instance).custom_cmd.get()
             return CustomCMDReply(resp.reply)
         except exceptions.XmpPendingError:
             time.sleep(0.1)
@@ -1959,7 +1959,7 @@ async def cmd_custom_cmd_request(port: Z800FreyaPort, cdb_instance: int, cmd_id:
     :param data: ``CMD Data.Data``. The data to be sent in the command.
     :type data: hex str
     """
-    cmd_data = {
+    cmd = {
         "cmd_header": {
             "cmd_id": cmd_id,
             "epl_length": epl_length,
@@ -1971,7 +1971,7 @@ async def cmd_custom_cmd_request(port: Z800FreyaPort, cdb_instance: int, cmd_id:
             "data": data
         }
     }
-    await port.transceiver.cmis.cdb(cdb_instance).cmd_custom_request.set(cmd_data=cmd_data)
+    await port.transceiver.cmis.cdb(cdb_instance).custom_cmd.set(cmd=cmd)
 
 
 async def firmware_download_procedure(port: Z800FreyaPort, cdb_instance: int, firmware_file: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
