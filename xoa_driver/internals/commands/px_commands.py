@@ -1762,12 +1762,13 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
 
 
+
 @register_command
 @dataclass
-class PX_CUST_REPLY:
-    """Defines the custom reply to receiver for the CDB instance.
+class PX_CUST_CMD:
+    """Defines the custom request and reply to be sent to the CDB instance.
     """
-    code: typing.ClassVar[int] = 474874
+    code: typing.ClassVar[int] = 486
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -1775,6 +1776,49 @@ class PX_CUST_REPLY:
     _port: int
     _cdb_instance_xindex: int
 
+    class SetDataAttr(RequestBodyStruct):
+        cmd: dict = field(XmpJson())
+        """Set CMD
+        """
+
+    
+    def set(self, cmd: dict) -> Token[None]:
+        """
+        Set CMD
+        :param cmd: CMD DATA
+        :type cmd: dict
+
+        .. code-block:: json
+
+            {
+                "cmd_header": {
+                    "cmd_id": "0x00",
+                    "epl_length": 0,
+                    "lpl_length": 0,
+                    "rpl_length": 0,
+                    "rpl_check_code": 0
+                },
+                "cmd_data": {
+                    "data": "0x00"
+                }
+            }
+
+        * ``cmd_header``: dict, contains the command header fields.
+
+            * ``cmd_id``: hex string, command ID.
+            * ``epl_length``: integer, length of the EPL.
+            * ``lpl_length``: integer, length of the LPL.
+            * ``rpl_length``: integer, length of the RPL. (optional)
+            * ``rpl_check_code``: integer, check code for the RPL. (optional)
+
+        * ``cmd_data``: dict, contains the command data fields.
+
+            * ``data``: hex string, command data.
+
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd=cmd))
+    
     class GetDataAttr(ResponseBodyStruct):
         reply: dict = field(XmpJson())
         """dict, json
@@ -1815,67 +1859,125 @@ class PX_CUST_REPLY:
         """Get REPLY
 
         :return: REPLY
-        :rtype: PX_CUST_REPLY.GetDataAttr
+        :rtype: PX_CUST_CMD.GetDataAttr
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
+
+
+# @register_command
+# @dataclass
+# class PX_CUST_REPLY:
+#     """Defines the custom reply to receiver for the CDB instance.
+#     """
+#     code: typing.ClassVar[int] = 487
+#     pushed: typing.ClassVar[bool] = False
+
+#     _connection: 'interfaces.IConnection'
+#     _module: int
+#     _port: int
+#     _cdb_instance_xindex: int
+
+#     class GetDataAttr(ResponseBodyStruct):
+#         reply: dict = field(XmpJson())
+#         """dict, json
+        
+#         .. code-block:: json
+
+#             {
+#                 "reply_status": {
+#                     "cdb_cmd_complete_flag": "0x00",
+#                     "cdb_status": "0x00",
+#                 },
+#                 "reply_header": {
+#                     "rpl_length": 9,
+#                     "rpl_check_code": 9
+#                 }
+#                 "reply_data": {
+#                     "data": "0x00"
+#                 }
+#             }
+
+#         * ``reply_status``: dict, JSON formatted string containing the following fields:
+
+#             * ``cdb_cmd_complete_flag``: hex string, indicates whether the CDB command is complete.
+#             * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
+
+#         * ``reply_header``: dict, JSON formatted string containing the following fields:
+
+#             * ``rpl_length``: integer, length of the reply data.
+#             * ``rpl_check_code``: integer, check code for the reply data.
+
+#         * ``reply_data``: dict, JSON formatted string containing the following fields:
+
+#             * ``data``: hex string, the actual data to be sent in the reply.
+
+#         """
+
+#     def get(self) -> Token[GetDataAttr]:
+#         """Get REPLY
+
+#         :return: REPLY
+#         :rtype: PX_CUST_REPLY.GetDataAttr
+#         """
+#         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-@register_command
-@dataclass
-class PX_CUST_REQUEST:
-    """Defines the custom request to be sent to the CDB instance.
-    """
-    code: typing.ClassVar[int] = 486
-    pushed: typing.ClassVar[bool] = False
+    
+# @register_command
+# @dataclass
+# class PX_CUST_REQUEST:
+#     """Defines the custom request to be sent to the CDB instance.
+#     """
+#     code: typing.ClassVar[int] = 486
+#     pushed: typing.ClassVar[bool] = False
 
-    _connection: 'interfaces.IConnection'
-    _module: int
-    _port: int
-    _cdb_instance_xindex: int
+#     _connection: 'interfaces.IConnection'
+#     _module: int
+#     _port: int
+#     _cdb_instance_xindex: int
 
-    class SetDataAttr(RequestBodyStruct):
-        cmd_data: dict = field(XmpJson())
-        """Set CMD Data
-        """
+#     class SetDataAttr(RequestBodyStruct):
+#         cmd_data: dict = field(XmpJson())
+#         """Set CMD Data
+#         """
 
     
-    def set(self, cmd_data: dict) -> Token[None]:
-        """
-        Set CMD Data
-        :param cmd_data: CMD DATA
-        :type cmd_data: dict
+#     def set(self, cmd_data: dict) -> Token[None]:
+#         """
+#         Set CMD Data
+#         :param cmd_data: CMD DATA
+#         :type cmd_data: dict
 
-        .. code-block:: json
+#         .. code-block:: json
 
-            {
-                "cmd_header": {
-                    "cmd_id": "0x00",
-                    "epl_length": 0,
-                    "lpl_length": 0,
-                    "rpl_length": 0,
-                    "rpl_check_code": 0
-                },
-                "cmd_data": {
-                    "data": "0x00"
-                }
-            }
+#             {
+#                 "cmd_header": {
+#                     "cmd_id": "0x00",
+#                     "epl_length": 0,
+#                     "lpl_length": 0,
+#                     "rpl_length": 0,
+#                     "rpl_check_code": 0
+#                 },
+#                 "cmd_data": {
+#                     "data": "0x00"
+#                 }
+#             }
 
-        * ``cmd_header``: dict, contains the command header fields.
+#         * ``cmd_header``: dict, contains the command header fields.
 
-            * ``cmd_id``: hex string, command ID.
-            * ``epl_length``: integer, length of the EPL.
-            * ``lpl_length``: integer, length of the LPL.
-            * ``rpl_length``: integer, length of the RPL. (optional)
-            * ``rpl_check_code``: integer, check code for the RPL. (optional)
+#             * ``cmd_id``: hex string, command ID.
+#             * ``epl_length``: integer, length of the EPL.
+#             * ``lpl_length``: integer, length of the LPL.
+#             * ``rpl_length``: integer, length of the RPL. (optional)
+#             * ``rpl_check_code``: integer, check code for the RPL. (optional)
 
-        * ``cmd_data``: dict, contains the command data fields.
+#         * ``cmd_data``: dict, contains the command data fields.
 
-            * ``data``: hex string, command data.
+#             * ``data``: hex string, command data.
 
-        """
+#         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
+#         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=cmd_data))
 
-
-
+    
 # endregion
