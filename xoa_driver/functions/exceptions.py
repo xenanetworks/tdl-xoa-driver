@@ -59,6 +59,12 @@ class NotSupportPortSpeed(ConfigError):
         self.msg = f"This module {module_id} does not support the port-speed configuration under its current media configuration!"
 
 
+class NotSupportMediaPortSpeed(ConfigError):
+    def __init__(self, module: GenericAnyModule) -> None:
+        module_id = module.module_id
+        self.msg = f"This module {module_id} does not support this module configuration!"
+
+
 __all__ = (
     "ConfigError",
     "NotConnectedError",
@@ -69,4 +75,5 @@ __all__ = (
     "NotSupportPcsPmaError",
     "NotSupportMedia",
     "NotSupportPortSpeed",
+    "NotSupportMediaPortSpeed",
 )

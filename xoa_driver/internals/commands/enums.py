@@ -1064,7 +1064,10 @@ class MediaConfigurationType(IntEnum):
     """QSFP-DD, 25G serdes, L1/ANLT"""
 
     OSFP_NRZ_ANLT = 122
-    """OSFP, 25G serdes, L1/ANLT"""    
+    """OSFP, 25G serdes, L1/ANLT"""
+
+    QSFP28_NRZ_ANLT = 123
+    """QSFP28, 25G serdes, L1/ANLT"""
 
     UNKNOWN = 255
 
@@ -3177,6 +3180,12 @@ class ModuleModelName(IntEnum):
     Z_800_Q_FREYA   = 10
     Z_800_O_FREYA   = 11
     E_100_Q_CHIMERA = 12
+
+class ModuleConfigStatus(IntEnum):
+    UNKNOWN = 0
+    SUCCESS = 1
+    PROGRESSING = 2
+    FAILED = 3
     
 # endregion
 

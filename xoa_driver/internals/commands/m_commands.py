@@ -45,7 +45,8 @@ from .enums import (
     ImpairmentLatencyMode,
     PPMSweepStatus,
     PPMSweepMode,
-    ModuleModelName
+    ModuleModelName,
+    ModuleConfigStatus,
 )
 
 
@@ -1859,13 +1860,44 @@ class M_MODEL_NAME:
 
     class GetDataAttr(ResponseBodyStruct):
         name:  ModuleModelName = field(XmpInt())
-        """ModuleModelName, model name of the Xena module."""
+        """Module Model Name, model name of the Xena module."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the Xena chassis model name.
 
         :return: the model name of the Xena tester
-        :rtype: C_MODEL_NAME.GetDataAttr
+        :rtype: M_MODEL_NAME.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module))
+
+
+@register_command
+@dataclass
+class M_RECONFIG_STATUS:
+    """
+    Show the test module configuration status when the user has configured the test module to a different configuration than the one it is currently running. 
+    """
+
+    code: typing.ClassVar[int] = 399
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        status:  ModuleConfigStatus = field(XmpInt())
+        """Module configuration status."""
+
+        progress: int = field(XmpInt())
+        """Progress in units of 0.1%, i.e. valid range 0-1000. Increments are module-specific, the value may in some cases jump directly from 0 to 1000, or in other cases progress more smoothly.
+        """
+
+    def get(self) -> Token[GetDataAttr]:
+        """Show the test module configuration status when the user has configured the test module to a different configuration than the one it is currently running.
+
+        :return: the model name of the Xena tester
+        :rtype: M_RECONFIG_STATUS.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module))

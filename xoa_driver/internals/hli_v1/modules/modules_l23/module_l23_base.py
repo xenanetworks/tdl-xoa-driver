@@ -29,6 +29,7 @@ from xoa_driver.internals.commands import (
     M_TXCLOCKFILTER_NEW,
     M_UPGRADEPAR,
     M_VERSIONSTR,
+    M_RECONFIG_STATUS,
 )
 
 from xoa_driver.internals.utils import attributes as utils
@@ -161,12 +162,20 @@ class CFP:
         :type: M_CFPTYPE
         """
 
-        self.config = CfpModule(conn, module)
-        """The CFP configuration of the test module.
 
-        :type: CfpModule
-        """
 
+class ModuleConfig:
+    """Test module CFP"""
+
+    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
+        self.media = MediaModule(conn, module)
+        """Test module's media type configuration."""
+
+        self.port_speed = CfpModule(conn, module)
+        """Test module's port speed configuration."""
+
+        self.status = M_RECONFIG_STATUS(conn, module.module_id)
+        """Test module's configuration status."""
 
 class MTiming:
     """Test module timing and clock configuration"""
@@ -249,13 +258,7 @@ class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
         :type: M_STATUS
         """
 
-        self.media = MediaModule(conn, self)
-        """Test module's media type.
-
-        :type: ModuleMedia
-        """
-
-        self.available_speeds = M_MEDIASUPPORT(conn, self.module_id)
+        self.supported_configs = M_MEDIASUPPORT(conn, self.module_id)
         """Test module's available speeds.
 
         :type: M_MEDIASUPPORT
@@ -302,6 +305,9 @@ class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
 
         :type: CFP
         """
+
+        self.config = ModuleConfig(conn, self)
+        """Test module's configuration."""
 
         self.upgrade = MUpgrade(conn, self.module_id)
         """Test module's upgrade settings.

@@ -265,41 +265,41 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.temperature
 
     # Media Configuration
-    await module.media.set(media_config=enums.MediaConfigurationType.BASE_T1)
-    await module.media.set(media_config=enums.MediaConfigurationType.BASE_T1S)
-    await module.media.set(media_config=enums.MediaConfigurationType.CFP)
-    await module.media.set(media_config=enums.MediaConfigurationType.CFP4)
-    await module.media.set(media_config=enums.MediaConfigurationType.CXP)
-    await module.media.set(media_config=enums.MediaConfigurationType.OSFP800)
-    await module.media.set(media_config=enums.MediaConfigurationType.OSFP800_ANLT)
-    await module.media.set(media_config=enums.MediaConfigurationType.QSFP112)
-    await module.media.set(media_config=enums.MediaConfigurationType.QSFP112_ANLT)
-    await module.media.set(media_config=enums.MediaConfigurationType.QSFP28_NRZ)
-    await module.media.set(media_config=enums.MediaConfigurationType.QSFP28_PAM4)
-    await module.media.set(media_config=enums.MediaConfigurationType.QSFP56_PAM4)
-    await module.media.set(media_config=enums.MediaConfigurationType.QSFPDD_NRZ)
-    await module.media.set(media_config=enums.MediaConfigurationType.QSFPDD_PAM4)
-    await module.media.set(media_config=enums.MediaConfigurationType.QSFPDD800)
-    await module.media.set(media_config=enums.MediaConfigurationType.QSFPDD800_ANLT)
-    await module.media.set(media_config=enums.MediaConfigurationType.SFP112)
-    await module.media.set(media_config=enums.MediaConfigurationType.SFP28)
-    await module.media.set(media_config=enums.MediaConfigurationType.SFP56)
-    await module.media.set(media_config=enums.MediaConfigurationType.SFPDD)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.BASE_T1)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.BASE_T1S)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.CFP)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.CFP4)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.CXP)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.OSFP800)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.OSFP800_ANLT)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.QSFP112)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.QSFP112_ANLT)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.QSFP28_NRZ)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.QSFP28_PAM4)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.QSFP56_PAM4)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.QSFPDD_NRZ)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.QSFPDD_PAM4)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.QSFPDD800)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.QSFPDD800_ANLT)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.SFP112)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.SFP28)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.SFP56)
+    await module.config.media.set(media_config=enums.MediaConfigurationType.SFPDD)
 
-    resp = await module.media.get()
+    resp = await module.config.media.get()
     resp.media_config
     
     # Supported Media
-    resp = await module.available_speeds.get()
+    resp = await module.supported_configs.get()
     resp.media_info_list
 
     # Port Configuration
-    await module.cfp.config.set(portspeed_list=[1, 800000])
-    await module.cfp.config.set(portspeed_list=[2, 400000, 400000])
-    await module.cfp.config.set(portspeed_list=[4, 200000, 200000, 200000, 200000])
-    await module.cfp.config.set(portspeed_list=[8, 100000, 100000, 100000, 100000, 100000, 100000, 100000, 100000])
+    await module.config.port_speed.set(portspeed_list=[1, 800000])
+    await module.config.port_speed.set(portspeed_list=[2, 400000, 400000])
+    await module.config.port_speed.set(portspeed_list=[4, 200000, 200000, 200000, 200000])
+    await module.config.port_speed.set(portspeed_list=[8, 100000, 100000, 100000, 100000, 100000, 100000, 100000, 100000])
 
-    resp = await module.cfp.config.get()
+    resp = await module.config.port_speed.get()
     resp.portspeed_list
 
     # Reservation
@@ -1702,63 +1702,63 @@ async def my_awesome_func(stop_event: asyncio.Event):
     #################################################
 
     # PRBS Configuration
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS7, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.CAUI_VIRTUAL, 
         polynomial=enums.PRBSPolynomial.PRBS9, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.PERSECOND)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS10, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS11, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS13, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS15, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS20, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS23, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS31, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS49, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
-    await port.serdes[0].prbs.config.type.set(
+    await port.serdes[0].prbs.control.set(
         prbs_inserted_type=enums.PRBSInsertedType.PHY_LINE, 
         polynomial=enums.PRBSPolynomial.PRBS58, 
         invert=enums.PRBSInvertState.NON_INVERTED, 
         statistics_mode=enums.PRBSStatisticsMode.ACCUMULATIVE)
 
-    resp = await port.serdes[0].prbs.config.type.get()
+    resp = await port.serdes[0].prbs.control.get()
     resp.prbs_inserted_type
     resp.polynomial
     resp.invert
@@ -2624,7 +2624,8 @@ async def my_awesome_func(stop_event: asyncio.Event):
         )
 
         resp = await flow.latency_range.get()
-        resp.
+        resp.min
+        resp.max
         
 
         # Poisson distribution for impairment Latency & Jitter
