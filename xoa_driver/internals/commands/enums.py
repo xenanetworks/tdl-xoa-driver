@@ -1064,7 +1064,10 @@ class MediaConfigurationType(IntEnum):
     """QSFP-DD, 25G serdes, L1/ANLT"""
 
     OSFP_NRZ_ANLT = 122
-    """OSFP, 25G serdes, L1/ANLT"""    
+    """OSFP, 25G serdes, L1/ANLT"""
+
+    QSFP28_NRZ_ANLT = 123
+    """QSFP28, 25G serdes, L1/ANLT"""
 
     UNKNOWN = 255
 
