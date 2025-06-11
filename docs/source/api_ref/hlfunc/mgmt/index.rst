@@ -29,6 +29,8 @@ High-Level Module Functions
 
 .. autofunction:: get_module_supported_media
 
+.. autofunction:: set_module_config
+
 .. autofunction:: set_module_media_config
 
 .. autofunction:: set_module_port_config

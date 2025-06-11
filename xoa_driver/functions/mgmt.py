@@ -11,6 +11,7 @@ from xoa_driver.testers import GenericAnyTester, L23Tester
 from .exceptions import (
     NotSupportMedia,
     NotSupportPortSpeed,
+    NotSupportMediaPortSpeed,
 )
 from .tools import MODULE_EOL_INFO
 from itertools import chain  # type: ignore[Pylance false warning]
@@ -171,7 +172,7 @@ def get_module_supported_media(
     item = {}
 
     for media_item in module.info.media_info_list:  # type: ignore
-        for sub_item in media_item.available_speeds:
+        for sub_item in media_item.supported_configs:
             item = dict()
             item["media"] = media_item.cage_type
             item["port_count"] = sub_item.port_count
@@ -209,7 +210,8 @@ async def set_module_media_config(
     # set the module media if the target media is found in supported media
     for item in supported_media_list:
         if item["media"] == media:
-            await module.media.set(media_config=media)
+            await module.config.media.set(media_config=media)
+            await release_module(module, False)
             return None
 
     # raise exception is the target media is not found in the supported media
@@ -239,14 +241,13 @@ async def set_module_port_config(
     """
 
     # reserve the module first
-    await release_module(module, True)
     await reserve_module(module, force)
 
     # get the supported media by the module
     supported_media_list = get_module_supported_media(module)
 
     # get the current media of the module
-    reply = await module.media.get()
+    reply = await module.config.media.get()
     current_media = reply.media_config
 
     # set the module port speed if we can find the port-speed in the corresponding media
@@ -259,10 +260,55 @@ async def set_module_port_config(
             )
         ):
             portspeed_list = [port_count] + port_count * [port_speed]
-            await module.cfp.config.set(portspeed_list=portspeed_list)
+            await module.config.port_speed.set(portspeed_list=portspeed_list)
             await release_module(module, False)
             return None
     raise NotSupportPortSpeed(module)
+
+
+async def set_module_config(
+    module: t.Union[GenericL23Module, ModuleChimera],
+    media: enums.MediaConfigurationType,
+    port_count: int,
+    port_speed: int,
+    force: bool = True,
+) -> None:
+    """Change the module configuration to the target media, port count and port speed.
+
+    :param module: the module object
+    :type module: t.Union[GenericL23Module, ModuleChimera]
+    :param media: the target media for the module
+    :type media: enums.MediaConfigurationType
+    :param port_count: the target port count
+    :type port_count: int
+    :param port_speed: the target port speed in Mbps, e.g. 40000 for 40G
+    :type port_speed: int
+    :param force: should forcibly reserve the module, defaults to True
+    :type force: bool, optional
+    :raises NotSupportMediaPortSpeed: the provided media, port count and port speed configuration is not supported by the module
+    """
+
+    # reserve the module first
+    await reserve_module(module, force)
+
+    # get the supported media
+    supported_media_list = get_module_supported_media(module)
+
+    # set the module media if the target media is found in supported media
+    for item in supported_media_list:
+        if all(
+            (
+                item["media"] == media,
+                item["port_count"] == port_count,
+                item["port_speed"] == port_speed,
+            )
+        ):
+            portspeed_list = [port_count] + port_count * [port_speed]
+            await module.config.media.set(media_config=media)
+            await module.config.port_speed.set(portspeed_list=portspeed_list)
+            await release_module(module, False)
+            return None
+    raise NotSupportMediaPortSpeed(module)
 
 
 async def get_module_eol_date(module: GenericAnyModule) -> str:

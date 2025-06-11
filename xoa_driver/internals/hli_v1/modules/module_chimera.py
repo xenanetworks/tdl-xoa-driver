@@ -23,6 +23,7 @@ from xoa_driver.internals.commands import (
     M_CFPCONFIGEXT,
     M_UPGRADEPAR,
     M_VERSIONSTR,
+    M_RECONFIG_STATUS,
 )
 
 from xoa_driver.internals.hli_v1 import revisions
@@ -71,13 +72,20 @@ class ChCFP:
 
         :type: M_CFPTYPE
         """
-        self.config = CfpModule(conn, module)
-        """
-        The CFP configuration of the test module.
 
-        :type: CfpModule
-        """
 
+class ChConfig:
+    """Configuration test module (Chimera)."""
+
+    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
+        self.media = MediaModule(conn, module)
+        """Test module's media type configuration."""
+
+        self.port_speed = CfpModule(conn, module)
+        """Test module's port speed configuration."""
+
+        self.status = M_RECONFIG_STATUS(conn, module.module_id)
+        """Test module's configuration status."""
 
 class ChUpgrade:
     """
@@ -220,13 +228,7 @@ class ModuleChimera(bm.BaseModule["modules_state.ModuleLocalState"]):
         :type: M_VERSIONSTR
         """
 
-        self.media = MediaModule(conn, self)
-        """Test module's media type.
-
-        :type: MediaModule
-        """
-
-        self.available_speeds = M_MEDIASUPPORT(conn, self.module_id)
+        self.supported_configs = M_MEDIASUPPORT(conn, self.module_id)
         """Test module's available speeds.
 
         :type: M_MEDIASUPPORT
@@ -237,6 +239,9 @@ class ModuleChimera(bm.BaseModule["modules_state.ModuleLocalState"]):
 
         :type: M_NAME
         """
+
+        self.config = ChConfig(conn, self)
+        """Test module's configuration."""
 
         self.ports: pm.PortsManager["ports.PortChimera"] = pm.PortsManager(
             conn=conn,

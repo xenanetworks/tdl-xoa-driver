@@ -3180,6 +3180,12 @@ class ModuleModelName(IntEnum):
     Z_800_Q_FREYA   = 10
     Z_800_O_FREYA   = 11
     E_100_Q_CHIMERA = 12
+
+class ModuleConfigStatus(IntEnum):
+    UNKNOWN = 0
+    SUCCESS = 1
+    PROGRESSING = 2
+    FAILED = 3
     
 # endregion
 
