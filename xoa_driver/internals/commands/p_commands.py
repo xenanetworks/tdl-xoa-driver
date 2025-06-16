@@ -570,6 +570,8 @@ class P_CAPABILITIES:
         * Bit 4: Can monitor PCS RX Lane Skew
         * Bit 5: Can control PCS TX Lane Skew
         * Bit 6: Can FEC error injection
+        * Bit 8: Can Pre-coding
+        * Bit 9: Can Gray-coding
         """
         # fec_engines: int = field(XmpInt(), min_version=465)
         # """The number of FEC engines available"""
