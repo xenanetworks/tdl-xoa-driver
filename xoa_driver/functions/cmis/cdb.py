@@ -1313,7 +1313,7 @@ class CMD0103hWriteFirmwareBlockLPLReply:
 
         """
 
-async def cmd_0103h_write_firmware_block_lpl_cmd(port: Z800FreyaPort, cdb_instance: int, block_address: int, firmware_block: str) -> None:
+async def cmd_0103h_write_firmware_block_lpl_cmd(port: Z800FreyaPort, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
     """Send CMD 0103h Write Firmware Block LPL
 
     :param port: the port object to send the command to
@@ -1327,11 +1327,11 @@ async def cmd_0103h_write_firmware_block_lpl_cmd(port: Z800FreyaPort, cdb_instan
     :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the “Start Command Payload Size”.
     :type block_address: int
     :param firmware_block: U8[116] One block of the firmware image. The actually needed length may be shorter than the available FirmwareBlock field size. This actual length of the block is defined in Byte 132 (LPLLength)
-    :type firmware_block: hex str
+    :type firmware_block: bytes
     """
     cmd_data = {
         "block_address": block_address,
-        "firmware_block": firmware_block
+        "firmware_block": "0x" + bytes.hex(firmware_block).upper()
     }
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0103h_write_firmware_block_lpl.set(cmd_data=cmd_data)
 
@@ -1383,7 +1383,7 @@ class CMD0104hWriteFirmwareBlockEPLReply:
 
         """
 
-async def cmd_0104h_write_firmware_block_epl_cmd(port: Z800FreyaPort, cdb_instance: int, block_address: int, firmware_block: str) -> None:
+async def cmd_0104h_write_firmware_block_epl_cmd(port: Z800FreyaPort, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
     """Send CMD 0104h Write Firmware Block EPL
 
     :param port: the port object to send the command to
@@ -1402,7 +1402,7 @@ async def cmd_0104h_write_firmware_block_epl_cmd(port: Z800FreyaPort, cdb_instan
 
     cmd_data = {
         "block_address": block_address,
-        "firmware_block": firmware_block
+        "firmware_block": "0x" + bytes.hex(firmware_block).upper()
     }
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0104h_write_firmware_block_epl.set(cmd_data=cmd_data)
 
