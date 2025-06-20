@@ -172,7 +172,7 @@ class XmpSequence(XmpType[tuple]):
         self.data_format = "".join(f"{t.repetitions or ''}{t.data_format}" for t in self.types_chunk)
 
 
-class XmpJson(XmpType[dict]):
+class XmpJson(XmpType[bytes]):
     """Description class of XMP JSON type representation"""
 
     def __init__(self) -> None:
