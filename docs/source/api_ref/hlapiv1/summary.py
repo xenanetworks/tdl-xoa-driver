@@ -707,22 +707,22 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.cos_7
 
     # Loopback
-    await port.loop_back.set(mode=enums.LoopbackMode.L1RX2TX)
-    await port.loop_back.set_l1rx2tx()
-    await port.loop_back.set(mode=enums.LoopbackMode.L2RX2TX)
-    await port.loop_back.set_l2rx2tx()
-    await port.loop_back.set(mode=enums.LoopbackMode.L3RX2TX)
-    await port.loop_back.set_l3rx2tx()
-    await port.loop_back.set(mode=enums.LoopbackMode.NONE)
-    await port.loop_back.set_none()
-    await port.loop_back.set(mode=enums.LoopbackMode.PORT2PORT)
-    await port.loop_back.set_port2port()
-    await port.loop_back.set(mode=enums.LoopbackMode.TXOFF2RX)
-    await port.loop_back.set_txoff2rx()
-    await port.loop_back.set(mode=enums.LoopbackMode.TXON2RX)
-    await port.loop_back.set_txon2rx()
+    await port.loopback.set(mode=enums.LoopbackMode.L1RX2TX)
+    await port.loopback.set_l1rx2tx()
+    await port.loopback.set(mode=enums.LoopbackMode.L2RX2TX)
+    await port.loopback.set_l2rx2tx()
+    await port.loopback.set(mode=enums.LoopbackMode.L3RX2TX)
+    await port.loopback.set_l3rx2tx()
+    await port.loopback.set(mode=enums.LoopbackMode.NONE)
+    await port.loopback.set_none()
+    await port.loopback.set(mode=enums.LoopbackMode.PORT2PORT)
+    await port.loopback.set_port2port()
+    await port.loopback.set(mode=enums.LoopbackMode.TXOFF2RX)
+    await port.loopback.set_txoff2rx()
+    await port.loopback.set(mode=enums.LoopbackMode.TXON2RX)
+    await port.loopback.set_txon2rx()
 
-    resp = await port.loop_back.get()
+    resp = await port.loopback.get()
     resp.mode
 
     # BRR Mode
@@ -993,7 +993,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.max_header_length
 
     # MIX Weights
-    await port.mix.weights.set(
+    await port.imix.weights.set(
         weight_56_bytes:=0,
         weight_60_bytes:=0,
         weight_64_bytes:=70,
@@ -1011,7 +1011,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         weight_9216_bytes:=0,
         weight_16360_bytes:=0)
     
-    resp = await port.mix.weights.get()
+    resp = await port.imix.weights.get()
     resp.weight_56_bytes
     resp.weight_60_bytes
     resp.weight_64_bytes
@@ -1030,18 +1030,18 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.weight_16360_bytes
 
     # MIX Lengths
-    await port.mix.lengths[0].set(frame_size=56)
-    await port.mix.lengths[1].set(frame_size=60)
-    await port.mix.lengths[14].set(frame_size=9216)
-    await port.mix.lengths[15].set(frame_size=16360)
+    await port.imix.lengths[0].set(frame_size=56)
+    await port.imix.lengths[1].set(frame_size=60)
+    await port.imix.lengths[14].set(frame_size=9216)
+    await port.imix.lengths[15].set(frame_size=16360)
 
-    resp = await port.mix.lengths[0].get()
+    resp = await port.imix.lengths[0].get()
     resp.frame_size
-    resp = await port.mix.lengths[1].get()
+    resp = await port.imix.lengths[1].get()
     resp.frame_size
-    resp = await port.mix.lengths[14].get()
+    resp = await port.imix.lengths[14].get()
     resp.frame_size
-    resp = await port.mix.lengths[15].get()
+    resp = await port.imix.lengths[15].get()
     resp.frame_size
 
     # Payload Mode
@@ -1275,55 +1275,55 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.mode
 
     # TX Mode
-    await port.tx_config.mode.set(mode=enums.TXMode.NORMAL)
-    await port.tx_config.mode.set_normal()
-    await port.tx_config.mode.set(mode=enums.TXMode.BURST)
-    await port.tx_config.mode.set_burst()
-    await port.tx_config.mode.set(mode=enums.TXMode.SEQUENTIAL)
-    await port.tx_config.mode.set_sequential()
-    await port.tx_config.mode.set(mode=enums.TXMode.STRICTUNIFORM)
-    await port.tx_config.mode.set_strictuniform()
+    await port.tx_control.mode.set(mode=enums.TXMode.NORMAL)
+    await port.tx_control.mode.set_normal()
+    await port.tx_control.mode.set(mode=enums.TXMode.BURST)
+    await port.tx_control.mode.set_burst()
+    await port.tx_control.mode.set(mode=enums.TXMode.SEQUENTIAL)
+    await port.tx_control.mode.set_sequential()
+    await port.tx_control.mode.set(mode=enums.TXMode.STRICTUNIFORM)
+    await port.tx_control.mode.set_strictuniform()
 
-    resp = await port.tx_config.mode.get()
+    resp = await port.tx_control.mode.get()
     resp.mode
 
     # Burst Period
-    await port.tx_config.burst_period.set(burst_period=100)
+    await port.tx_control.burst_period.set(burst_period=100)
     
-    resp = await port.tx_config.burst_period.get()
+    resp = await port.tx_control.burst_period.get()
     resp.burst_period
 
     # TX Delay
-    await port.tx_config.delay.set(delay_val=100)
+    await port.tx_control.delay.set(delay_val=100)
 
-    resp = await port.tx_config.delay.get()
+    resp = await port.tx_control.delay.get()
     resp.delay_val
 
     # TX Enable
-    await port.tx_config.enable.set(on_off=enums.OnOff.ON)
-    await port.tx_config.enable.set(on_off=enums.OnOff.OFF)
+    await port.tx_control.enable.set(on_off=enums.OnOff.ON)
+    await port.tx_control.enable.set(on_off=enums.OnOff.OFF)
     
-    resp = await port.tx_config.enable.get()
+    resp = await port.tx_control.enable.get()
     resp.on_off
 
     # Packet Limit
-    await port.tx_config.packet_limit.set(packet_count_limit=1_000_000)
+    await port.tx_control.packet_limit.set(packet_count_limit=1_000_000)
     
-    resp = await port.tx_config.packet_limit.get()
+    resp = await port.tx_control.packet_limit.get()
     resp.packet_count_limit
 
     # Time Limit
-    await port.tx_config.time_limit.set(microseconds=1_000_000)
+    await port.tx_control.time_limit.set(microseconds=1_000_000)
     
-    resp = await port.tx_config.time_limit.get()
+    resp = await port.tx_control.time_limit.get()
     resp.microseconds
 
     # TX Time Elapsed
-    resp = await port.tx_config.time.get()
+    resp = await port.tx_control.time.get()
     resp.microseconds
 
     # Prepare TX
-    await port.tx_config.prepare.set()
+    await port.tx_control.prepare.set()
 
     # Dynamic Traffic Rate
     await port.dynamic.set(on_off=enums.OnOff.OFF)
@@ -2289,15 +2289,15 @@ async def my_awesome_func(stop_event: asyncio.Event):
         resp.action
 
         # Set TPLD mode
-        await port.emulation.tpld_mode.set(mode=enums.TPLDMode.NORMAL)
-        await port.emulation.tpld_mode.set(mode=enums.TPLDMode.MICRO)
+        await port.impairment.tpld_mode.set(mode=enums.TPLDMode.NORMAL)
+        await port.impairment.tpld_mode.set(mode=enums.TPLDMode.MICRO)
 
-        resp = await port.emulation.tpld_mode.get()
+        resp = await port.impairment.tpld_mode.get()
         resp.mode
 
         # Configure flow's basic filter on a port
         # Configure flow properties
-        flow = port.emulation.flows[1]
+        flow = port.impairment.flows[1]
 
         await flow.comment.set(comment="Flow description")
         
@@ -2456,7 +2456,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
 
         # Configure flow's extended filter on a port
         # Configure flow properties
-        flow = port.emulation.flows[1]
+        flow = port.impairment.flows[1]
         await flow.comment.set("Flow description")
 
         # Initializing the shadow copy of the filter.
@@ -2909,7 +2909,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         await flow.statistics.clear.set()
         
         # Port statistics
-        port_drop = await port.emulation.statistics.drop.get()
+        port_drop = await port.impairment.statistics.drop.get()
         port_drop.pkt_drop_count_total
         port_drop.pkt_drop_count_programmed
         port_drop.pkt_drop_count_bandwidth
@@ -2919,7 +2919,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         port_drop.pkt_drop_ratio_bandwidth
         port_drop.pkt_drop_ratio_other
 
-        port_corrupted = await port.emulation.statistics.corrupted.get()
+        port_corrupted = await port.impairment.statistics.corrupted.get()
         port_corrupted.fcs_corrupted_pkt_count
         port_corrupted.fcs_corrupted_pkt_ratio
         port_corrupted.ip_corrupted_pkt_count
@@ -2931,21 +2931,21 @@ async def my_awesome_func(stop_event: asyncio.Event):
         port_corrupted.udp_corrupted_pkt_count
         port_corrupted.udp_corrupted_pkt_ratio
 
-        port_delayed = await port.emulation.statistics.latency.get()
+        port_delayed = await port.impairment.statistics.latency.get()
         port_delayed.pkt_count
         port_delayed.ratio
 
-        port_jittered = await port.emulation.statistics.jittered.get()
+        port_jittered = await port.impairment.statistics.jittered.get()
         port_jittered.pkt_count
         port_jittered.ratio
 
-        port_duplicated = await port.emulation.statistics.duplicated.get()
+        port_duplicated = await port.impairment.statistics.duplicated.get()
         port_duplicated.pkt_count
         port_duplicated.ratio
 
-        port_misordered = await port.emulation.statistics.mis_ordered.get()
+        port_misordered = await port.impairment.statistics.mis_ordered.get()
         port_misordered.pkt_count
         port_misordered.ratio
 
-        await port.emulation.clear.set()
+        await port.impairment.clear.set()
 # endregion

@@ -31,12 +31,12 @@ from xoa_driver.internals.utils.managers import ports_manager as pm
 from xoa_driver.internals.utils import attributes as utils
 from xoa_driver.internals.state_storage import modules_state
 from xoa_driver import ports
-from xoa_driver.internals.hli_v1.modules.modules_l23.module_l23_base import MediaModule, CfpModule
+from xoa_driver.internals.hli_v1.modules.module_l23 import MediaModule, CfpModule
 from . import base_module as bm
 
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli_v1.modules.modules_l23.module_l23_base import ModuleL23
+    from xoa_driver.internals.hli_v1.modules.module_l23 import ModuleL23
     from . import __interfaces as m_itf
 
 
@@ -134,7 +134,6 @@ class ChTiming:
 
         :type: M_CLOCKSYNCSTATUS
         """
-
 
 class ModuleChimera(bm.BaseModule["modules_state.ModuleLocalState"]):
     """
@@ -312,6 +311,7 @@ class ModuleChimera(bm.BaseModule["modules_state.ModuleLocalState"]):
 
     on_adv_timing_clock_tx_source_change = functools.partialmethod(utils.on_event, M_TXCLOCKSOURCE_NEW)
     """Register a callback to the event that the module's clock that drives the port TX rates changes."""
+
 
 
 @typing.final

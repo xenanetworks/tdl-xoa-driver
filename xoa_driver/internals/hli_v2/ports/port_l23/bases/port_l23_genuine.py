@@ -89,7 +89,7 @@ class BasePortL23Genuine(BasePortL23):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
 
-        self._local_states = ports_state.PortL23GenuineLocalState()
+        self._local_states = ports_state.PortL23LocalState()
 
         self.flash = P_FLASH(conn, module_id, port_id)
         """L23 port flashes.
@@ -160,7 +160,7 @@ class BasePortL23Genuine(BasePortL23):
         """
 
     @property
-    def info(self) -> ports_state.PortL23GenuineLocalState:
+    def info(self) -> ports_state.PortL23LocalState:
         return self._local_states
 
     async def _setup(self):

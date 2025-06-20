@@ -1,5 +1,5 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/tdl-xoa-driver) [![PyPI](https://img.shields.io/pypi/v/tdl-xoa-driver)](https://pypi.python.org/pypi/tdl-xoa-driver) [![Documentation Status](https://readthedocs.com/projects/xena-networks-tdl-xoa-driver/badge/?version=latest)](https://docs.xenanetworks.com/projects/tdl-xoa-driver/en/latest/?badge=latest)
-# XOA Driver
+# XOA Driver v2
 XOA Driver is a standalone Python library that provides a user-friendly and powerful interface for automating network testing tasks using Xena Networks test equipment. Xena test equipment is a high-performance network test device designed for testing and measuring the performance of network equipment and applications.
 
 ## Introduction

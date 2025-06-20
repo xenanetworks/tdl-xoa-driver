@@ -3,9 +3,7 @@ from dataclasses import dataclass, field
 import typing as t
 from xoa_driver import enums
 from xoa_driver.utils import apply
-from xoa_driver.internals.hli_v1.ports.port_l23.family_l import FamilyL
-from xoa_driver.internals.hli_v1.ports.port_l23.family_l1 import FamilyFreya
-from xoa_driver.ports import GenericL23Port
+from xoa_driver.ports import PortL23
 from xoa_driver.lli import commands
 from xoa_driver.internals.core import interfaces as itf
 from xoa_driver.misc import Token
@@ -21,14 +19,12 @@ from .tools import (
 )
 import asyncio
 
-PcsPmaSupported = (FamilyL, FamilyFreya)
-AutoNegSupported = (FamilyL, FamilyFreya)
-LinkTrainingSupported = FamilyL
+
 
 
 @dataclass
 class DoAnlt:
-    port: GenericL23Port
+    port: PortL23
     """port object"""
     should_do_an: bool
     """should the port do autoneg?"""
@@ -167,7 +163,7 @@ class DoAnlt:
 
 
 async def anlt_start(
-    port: GenericL23Port,
+    port: PortL23,
     should_do_an: bool,
     should_do_lt: bool,
     an_allow_loopback: bool,
@@ -183,7 +179,7 @@ async def anlt_start(
     Start ANLT on a port
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param should_do_an: should the port do autoneg?
     :type should_do_an: bool
     :param should_do_lt: should the port do link training?
@@ -216,14 +212,14 @@ async def anlt_start(
     await anlt.run()
 
 
-async def autoneg_status(port: GenericL23Port) -> dict[str, t.Any]:
+async def autoneg_status(port: PortL23) -> dict[str, t.Any]:
     """
     .. versionchanged:: 2.5
 
     Get the auto-negotiation status
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :return:
     :rtype: typing.Dict[str, typing.Any]
     """
@@ -247,7 +243,7 @@ LinkTrainType = t.Union[
 
 
 async def __lt_coeff(
-    port: GenericL23Port,
+    port: PortL23,
     serdes: int,
     arg: LinkTrainType,
     *,
@@ -266,7 +262,7 @@ async def __lt_coeff(
 
 
 async def lt_coeff_inc(
-    port: GenericL23Port,
+    port: PortL23,
     serdes: int,
     emphasis: enums.LinkTrainCoeffs
 ) -> enums.LinkTrainCmdResults:
@@ -274,7 +270,7 @@ async def lt_coeff_inc(
     Ask the remote port to increase coeff of the specified serdes.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :param emphasis: the emphasis to increase
@@ -286,7 +282,7 @@ async def lt_coeff_inc(
 
 
 async def lt_coeff_dec(
-    port: GenericL23Port,
+    port: PortL23,
     serdes: int,
     emphasis: enums.LinkTrainCoeffs
 ) -> enums.LinkTrainCmdResults:
@@ -294,7 +290,7 @@ async def lt_coeff_dec(
     Ask the remote port to decrease coeff of the specified serdes.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :param emphasis: the emphasis to decrease
@@ -306,7 +302,7 @@ async def lt_coeff_dec(
 
 
 async def lt_coeff_no_eq(
-    port: GenericL23Port,
+    port: PortL23,
     serdes: int,
     emphasis: enums.LinkTrainCoeffs
 ) -> enums.LinkTrainCmdResults:
@@ -315,7 +311,7 @@ async def lt_coeff_no_eq(
     Ask the remote port to set the coeff to NO_EQ on the specified serdes.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :param emphasis: the emphasis to set to NO_EQ
@@ -327,7 +323,7 @@ async def lt_coeff_no_eq(
 
 
 async def lt_preset(
-    port: GenericL23Port,
+    port: PortL23,
     serdes: int,
     preset: enums.LinkTrainPresets
 ) -> enums.LinkTrainCmdResults:
@@ -335,7 +331,7 @@ async def lt_preset(
     Ask the remote port to use the preset of the specified serdes.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :param preset: preset index to select for the serdes, 0,1,2,3,4,
@@ -347,7 +343,7 @@ async def lt_preset(
 
 
 async def lt_encoding(
-    port: GenericL23Port,
+    port: PortL23,
     serdes: int,
     encoding: enums.LinkTrainEncoding
 ) -> enums.LinkTrainCmdResults:
@@ -355,7 +351,7 @@ async def lt_encoding(
     Ask the remote port to use the encoding of the specified serdes.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :param encoding: link training encoding
@@ -366,12 +362,12 @@ async def lt_encoding(
     return await __lt_coeff(port, serdes, encoding, cmd=enums.LinkTrainCmd.CMD_ENCODING)
 
 
-async def lt_trained(port: GenericL23Port, serdes: int) -> enums.LinkTrainCmdResults:
+async def lt_trained(port: PortL23, serdes: int) -> enums.LinkTrainCmdResults:
     """
     Tell the remote port that the current serdes is trained.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :return:
@@ -385,14 +381,14 @@ async def lt_trained(port: GenericL23Port, serdes: int) -> enums.LinkTrainCmdRes
     )
 
 
-async def lt_status(port: GenericL23Port, serdes: int) -> dict[str, t.Any]:
+async def lt_status(port: PortL23, serdes: int) -> dict[str, t.Any]:
     """
     .. versionchanged:: 2.5
 
     Show the link training status.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :return: LT status of the serdes
@@ -417,12 +413,12 @@ async def lt_status(port: GenericL23Port, serdes: int) -> dict[str, t.Any]:
     )
 
 
-async def txtap_get(port: GenericL23Port, serdes: int) -> dict[str, int]:
+async def txtap_get(port: PortL23, serdes: int) -> dict[str, int]:
     """
     Get the tap value of the local TX tap.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :return: tap values of the serdes
@@ -434,7 +430,7 @@ async def txtap_get(port: GenericL23Port, serdes: int) -> dict[str, int]:
 
 
 async def txtap_set(
-    port: GenericL23Port,
+    port: PortL23,
     serdes: int,
     pre3: int,
     pre2: int,
@@ -446,7 +442,7 @@ async def txtap_set(
     Set the tap value of the local TX tap.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :param pre3: pre3 value
@@ -474,12 +470,12 @@ async def txtap_set(
     )
 
 
-async def anlt_link_recovery(port: GenericL23Port, restart_link_down: bool, restart_lt_failure: bool) -> None:
+async def anlt_link_recovery(port: PortL23, restart_link_down: bool, restart_lt_failure: bool) -> None:
     """
     This command manages the auto-restart features.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param restart_link_down: enable AN+LT auto-restart when a link down condition is detected. A "link down" state signifies the loss of a valid input signal, which can occur due to events such as cable unplugging and re-plugging, TX disable, or link flap on the link partner's end. The auto-restart process will continue until the link is re-established. Please note that this setting is only effective when AN and/or LT are enabled.
     :type restart_link_down: bool
     :param restart_lt_failure: if LT is enabled and experiences a failure on either side, the port will initiate the AN+LT restart process repeatedly until LT succeeds. This functionality is only applicable when LT is enabled.
@@ -499,14 +495,14 @@ async def anlt_link_recovery(port: GenericL23Port, restart_link_down: bool, rest
     await cmd_.set(values=[param])
 
 
-async def anlt_status(port: GenericL23Port) -> dict[str, t.Any]:
+async def anlt_status(port: PortL23) -> dict[str, t.Any]:
     """
     .. versionchanged:: 2.5
 
     Get the overview of ANLT status
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :return: AN/LT status of the port
     :rtype: typing.Dict[str, typing.Any]
     """
@@ -527,12 +523,12 @@ async def anlt_status(port: GenericL23Port) -> dict[str, t.Any]:
     return dictionize_anlt_status(_link_recovery, _anlt_op, _linktrain_cfg, _capabilities, _allow_loopback)
 
 
-async def anlt_log(port: GenericL23Port) -> str:
+async def anlt_log(port: PortL23) -> str:
     """
     Get the anlt log messages
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :return: AN/LT protocol log traces of the port
     :rtype: str
     """
@@ -541,14 +537,14 @@ async def anlt_log(port: GenericL23Port) -> str:
     return log.log_string
 
 
-async def anlt_stop(port: GenericL23Port) -> None:
+async def anlt_stop(port: PortL23) -> None:
     """
     .. versionchanged:: 2.5
 
     Stop AN & LT
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     """
     conn, mid, pid = get_ctx(port)
 
@@ -558,12 +554,12 @@ async def anlt_stop(port: GenericL23Port) -> None:
         )
 
 
-async def txtap_autotune(port: GenericL23Port, serdes: int) -> None:
+async def txtap_autotune(port: PortL23, serdes: int) -> None:
     """
     Auto tune the tap value of the local TX tap.
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param serdes: the serdes index, starting from 0
     :type serdes: int
     :return:
@@ -575,12 +571,12 @@ async def txtap_autotune(port: GenericL23Port, serdes: int) -> None:
     await phy_autotune.set(on_off=enums.OnOff.ON)
 
 
-async def lt_im_status(port: GenericL23Port) -> dict[str, t.Any]:
+async def lt_im_status(port: PortL23) -> dict[str, t.Any]:
     """
     Get LT initial modulation config
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :return: LT initial modulation configuration of the port
     :rtype: typing.Dict[str, typing.Any]
     """
@@ -597,12 +593,12 @@ async def lt_im_status(port: GenericL23Port) -> dict[str, t.Any]:
     return dictionize_lt_im_status(capabilities, initial_mods)
 
 
-async def lt_algorithm_status(port: GenericL23Port) -> dict[str, t.Any]:
+async def lt_algorithm_status(port: PortL23) -> dict[str, t.Any]:
     """
     Get LT initial modulation config
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :return: LT initial modulation configuration of the port
     :rtype: typing.Dict[str, typing.Any]
     """
@@ -619,12 +615,12 @@ async def lt_algorithm_status(port: GenericL23Port) -> dict[str, t.Any]:
     return dictionize_lt_algorithm_status(capabilities, algorithms)
 
 
-async def anlt_strict(port: GenericL23Port, enable: bool) -> None:
+async def anlt_strict(port: PortL23, enable: bool) -> None:
     """
     Should ANLT strict mode be enabled
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param enable: should ANLT strict mode be enabled
     :type enable: bool
     :return:
@@ -643,12 +639,12 @@ async def anlt_strict(port: GenericL23Port, enable: bool) -> None:
         ).set(values=[param])
 
 
-async def anlt_log_control(port: GenericL23Port, types: t.List[enums.AnLtLogControl]) -> None:
+async def anlt_log_control(port: PortL23, types: t.List[enums.AnLtLogControl]) -> None:
     """
     Control what should be logged for ANLT by xenaserver
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :param types: control what should be logged for ANLT by xenaserver
     :type types: t.List[enums.AnLtLogControl]
     :return:
@@ -669,12 +665,12 @@ async def anlt_log_control(port: GenericL23Port, types: t.List[enums.AnLtLogCont
             enums.Layer1ConfigType.ANLT_LOG_CONTROL
         ).set(values=[param])
 
-async def anlt_log_control_get(port: GenericL23Port) -> dict[str, bool]:
+async def anlt_log_control_get(port: PortL23) -> dict[str, bool]:
     """
     Get ANLT log control config
 
     :param port: the port object
-    :type port: :class:`~xoa_driver.ports.GenericL23Port`
+    :type port: :class:`~xoa_driver.ports.PortL23`
     :return: dict of log control status
     :rtype:  dict[str, bool]
     """

@@ -75,17 +75,20 @@ class PortChimeraLocalState(PortLocalState):
         )
         self.capabilities = capabilities
 
-
+    
 class PortL23LocalState(PortLocalState):
     """L23 port's local state
     """
     __slots__ = (
+        "port_possible_speed_modes",
         "capabilities",
         "traffic_state"
-    )
+        )
+
     capabilities: "P_CAPABILITIES.GetDataAttr"
 
     def __init__(self) -> None:
+        self.port_possible_speed_modes: List["enums.PortSpeedMode"] = []
         self.traffic_state: "enums.TrafficOnOff" = enums.TrafficOnOff.OFF
 
     async def initiate(self, port) -> None:
@@ -97,26 +100,15 @@ class PortL23LocalState(PortLocalState):
         self.capabilities = capabilities
         self.traffic_state = enums.TrafficOnOff(traffic_state_r.on_off)
 
-    def register_subscriptions(self, port) -> None:
-        super().register_subscriptions(port)
-        port._conn.subscribe(P_TRAFFIC, utils.Update(self, "traffic_state", "on_off", port._check_identity))
-
-
-class PortL23GenuineLocalState(PortL23LocalState):
-    """L23 port's local state
-    """
-    __slots__ = ("port_possible_speed_modes",)
-
-    def __init__(self) -> None:
-        self.port_possible_speed_modes: List["enums.PortSpeedMode"] = []
-
-    async def initiate(self, port) -> None:
-        await super().initiate(port)
         speed_detector = SpeedDetector(
             self.capabilities,
             self.interface
         )
         self.port_possible_speed_modes = speed_detector.find_port_possible_speed()
+    
+    def register_subscriptions(self, port) -> None:
+        super().register_subscriptions(port)
+        port._conn.subscribe(P_TRAFFIC, utils.Update(self, "traffic_state", "on_off", port._check_identity))
 
     @property
     def is_brr_mode_supported(self) -> bool:

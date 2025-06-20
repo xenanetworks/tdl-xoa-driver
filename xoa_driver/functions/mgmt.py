@@ -3,11 +3,9 @@ import asyncio
 import typing as t
 from xoa_driver import enums, testers
 from xoa_driver.utils import apply
-from xoa_driver.internals.hli_v2.ports.port_l23.family_l import FamilyL
-from xoa_driver.internals.hli_v2.ports.port_l23.family_l1 import FamilyL1
-from xoa_driver.ports import GenericAnyPort
-from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule
-from xoa_driver.testers import GenericAnyTester, L23Tester
+from xoa_driver.ports import *
+from xoa_driver.modules import *
+from xoa_driver.testers import *
 from .exceptions import (
     NotSupportMedia,
     NotSupportPortSpeed,
@@ -17,10 +15,6 @@ from .tools import MODULE_EOL_INFO
 from itertools import chain  # type: ignore[Pylance false warning]
 from datetime import datetime
 import json
-
-PcsPmaSupported = (FamilyL, FamilyL1)
-AutoNegSupported = (FamilyL, FamilyL1)
-LinkTrainingSupported = FamilyL
 
 
 # region Testers
@@ -158,7 +152,7 @@ async def release_module(
 
 
 def get_module_supported_media(
-    module: GenericL23Module | ModuleChimera,
+    module: ModuleL23 | ModuleChimera,
 ) -> list[dict[str, t.Any]]:
     """
     Get a list of supported media, port speed and count of the module.
@@ -183,7 +177,7 @@ def get_module_supported_media(
 
 
 async def set_module_media_config(
-    module: t.Union[GenericL23Module, ModuleChimera],
+    module: t.Union[ModuleL23, ModuleChimera],
     media: enums.MediaConfigurationType,
     force: bool = True,
 ) -> None:
@@ -219,7 +213,7 @@ async def set_module_media_config(
 
 
 async def set_module_port_config(
-    module: t.Union[GenericL23Module, ModuleChimera],
+    module: t.Union[ModuleL23, ModuleChimera],
     port_count: int,
     port_speed: int,
     force: bool = True,
@@ -228,7 +222,7 @@ async def set_module_port_config(
     Set module's port-speed configuration
 
     :param module: The module object
-    :type module: t.Union[GenericL23Module, ModuleChimera]
+    :type module: t.Union[ModuleL23, ModuleChimera]
     :param port_count: The port count
     :type port_count: int
     :param port_speed: The port speed in Mbps, e.g. 40000 for 40G
@@ -267,7 +261,7 @@ async def set_module_port_config(
 
 
 async def set_module_config(
-    module: t.Union[GenericL23Module, ModuleChimera],
+    module: t.Union[ModuleL23, ModuleChimera],
     media: enums.MediaConfigurationType,
     port_count: int,
     port_speed: int,
@@ -276,7 +270,7 @@ async def set_module_config(
     """Change the module configuration to the target media, port count and port speed.
 
     :param module: the module object
-    :type module: t.Union[GenericL23Module, ModuleChimera]
+    :type module: t.Union[ModuleL23, ModuleChimera]
     :param media: the target media for the module
     :type media: enums.MediaConfigurationType
     :param port_count: the target port count
@@ -341,12 +335,12 @@ async def get_module_eol_days(module: GenericAnyModule) -> int:
     return timedelta.days
 
 
-async def get_module_cage_insertion_count(module: Z800FreyaModule, cage_index: int) -> int:
+async def get_module_cage_insertion_count(module: ModuleL23, cage_index: int) -> int:
     """
     Get module cage insertion count
 
     :param module: The Z800 Freya module object
-    :type module: Z800FreyaModule
+    :type module: ModuleL23
     :param cage_index: The cage index
     :type module: int
     :return: Insertion count of the cage
@@ -470,12 +464,12 @@ async def release_ports(*ports: GenericAnyPort) -> None:
 
 
 # region Streams
-async def remove_streams(port: GenericAnyPort) -> None:
+async def remove_streams(port: PortL23) -> None:
     """
     Remove all streams on a port witout resetting the port.
 
     :param port: The port object
-    :type port: GenericAnyPort
+    :type port: PortL23
     """
     await port.streams.server_sync()
     await asyncio.gather(*(s.delete() for s in port.streams))

@@ -8,7 +8,8 @@ from xoa_driver import enums
 
 
 def get_ctx(port: GenericAnyPort) -> tuple["itf.IConnection", int, int]:
-    return (port._conn, *port.kind)
+    kind0, kind1 = port.kind
+    return (port._conn, kind0, kind1)
 
 
 def dictionize_autoneg_status(
