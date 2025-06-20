@@ -318,9 +318,9 @@ class PX_CDB_SUPPORT:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
+        reply: dict = field(XmpJson(min_len=2))
         """
-        bytes, json.
+        dict, json.
 
         .. code-block:: json 
         
@@ -359,8 +359,8 @@ class PX_CDB_ABORT_PROCESSING:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
         
@@ -372,8 +372,8 @@ class PX_CDB_ABORT_PROCESSING:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -407,8 +407,8 @@ class PX_CDB_CHANGE_PASSWORD:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json 
         
@@ -420,8 +420,8 @@ class PX_CDB_CHANGE_PASSWORD:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -433,12 +433,12 @@ class PX_CDB_CHANGE_PASSWORD:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
 
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json 
         
@@ -467,8 +467,8 @@ class PX_CDB_ENTER_PASSWORD:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json 
         
@@ -480,8 +480,8 @@ class PX_CDB_ENTER_PASSWORD:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
 
         .. code-block:: json
             
@@ -502,12 +502,12 @@ class PX_CDB_ENTER_PASSWORD:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
 
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json
         
@@ -536,8 +536,8 @@ class PX_CDB_QUERY_STATUS:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
         
@@ -556,8 +556,8 @@ class PX_CDB_QUERY_STATUS:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
 
         .. code-block:: json
         
@@ -578,11 +578,11 @@ class PX_CDB_QUERY_STATUS:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json
         
@@ -612,8 +612,8 @@ class PX_CDB_EXTERNAL_FEATURES:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
         
@@ -628,8 +628,8 @@ class PX_CDB_EXTERNAL_FEATURES:
         """
 
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -663,8 +663,8 @@ class PX_CDB_FW_MGMT_FEATURES:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -701,8 +701,8 @@ class PX_CDB_FW_MGMT_FEATURES:
         """
 
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -736,8 +736,8 @@ class PX_CDB_GET_APP_ATTRIBUTES:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -769,8 +769,8 @@ class PX_CDB_GET_APP_ATTRIBUTES:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
 
         .. code-block:: json
         
@@ -791,11 +791,11 @@ class PX_CDB_GET_APP_ATTRIBUTES:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json
         
@@ -824,8 +824,8 @@ class PX_CDB_GET_IF_CODE_DESCR:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -855,8 +855,8 @@ class PX_CDB_GET_IF_CODE_DESCR:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
 
         .. code-block:: json
 
@@ -879,11 +879,11 @@ class PX_CDB_GET_IF_CODE_DESCR:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json
 
@@ -914,8 +914,8 @@ class PX_CDB_MODULE_FEATURES:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -932,8 +932,8 @@ class PX_CDB_MODULE_FEATURES:
         """
 
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -966,8 +966,8 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1006,8 +1006,8 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
         """
 
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1041,8 +1041,8 @@ class PX_CDB_ABORT_FW_DOWNLOAD:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
         
@@ -1054,8 +1054,8 @@ class PX_CDB_ABORT_FW_DOWNLOAD:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1089,8 +1089,8 @@ class PX_CDB_COMMIT_FW_IMAGE:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1102,8 +1102,8 @@ class PX_CDB_COMMIT_FW_IMAGE:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1137,8 +1137,8 @@ class PX_CDB_COMPLETE_FW_DOWNLOAD:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
         
@@ -1150,8 +1150,8 @@ class PX_CDB_COMPLETE_FW_DOWNLOAD:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1185,8 +1185,8 @@ class PX_CDB_COPY_FW_IMAGE:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1209,8 +1209,8 @@ class PX_CDB_COPY_FW_IMAGE:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1222,11 +1222,11 @@ class PX_CDB_COPY_FW_IMAGE:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json
         
@@ -1258,8 +1258,8 @@ class PX_CDB_GET_FW_INFO:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1328,8 +1328,8 @@ class PX_CDB_GET_FW_INFO:
         """
 
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1363,8 +1363,8 @@ class PX_CDB_READ_FW_BLOCK_EPL:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1374,13 +1374,13 @@ class PX_CDB_READ_FW_BLOCK_EPL:
             }
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
-        * ``image_data``: hex string, Up to 128 bytes.
+        * ``image_data``: hex string, Up to 2048 bytes.
 
         """
 
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
 
@@ -1393,12 +1393,12 @@ class PX_CDB_READ_FW_BLOCK_EPL:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
 
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json 
         
@@ -1430,8 +1430,8 @@ class PX_CDB_READ_FW_BLOCK_LPL:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1443,13 +1443,13 @@ class PX_CDB_READ_FW_BLOCK_LPL:
 
         * ``cdb_status``: hex string, provides the status of the most recently triggered CDB command.
         * ``base_address_block``:  hex string, Base address of the data block within the firmware image.
-        * ``image_data``: : hex string, Up to 116 bytes.
+        * ``image_data``: : hex string, Up to 2048 bytes.
 
         """
 
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1461,12 +1461,12 @@ class PX_CDB_READ_FW_BLOCK_LPL:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
 
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json 
         
@@ -1498,8 +1498,8 @@ class PX_CDB_RUN_FW_IMAGE:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1511,8 +1511,8 @@ class PX_CDB_RUN_FW_IMAGE:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
 
         .. code-block:: json
 
@@ -1541,11 +1541,11 @@ class PX_CDB_RUN_FW_IMAGE:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json
 
@@ -1582,8 +1582,8 @@ class PX_CDB_START_FW_DOWNLOAD:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
 
         .. code-block:: json
 
@@ -1595,8 +1595,8 @@ class PX_CDB_START_FW_DOWNLOAD:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1619,11 +1619,11 @@ class PX_CDB_START_FW_DOWNLOAD:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json
 
@@ -1654,8 +1654,8 @@ class PX_CDB_WRITE_FW_BLOCK_EPL:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
 
         .. code-block:: json
 
@@ -1667,8 +1667,8 @@ class PX_CDB_WRITE_FW_BLOCK_EPL:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1680,11 +1680,11 @@ class PX_CDB_WRITE_FW_BLOCK_EPL:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json
 
@@ -1715,8 +1715,8 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
     _cdb_instance_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1728,8 +1728,8 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
 
         """
     class SetDataAttr(RequestBodyStruct):
-        cmd_data: bytes = field(XmpJson())
-        """bytes, json
+        cmd_data: dict = field(XmpJson(min_len=2))
+        """dict, json
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -1741,11 +1741,11 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex]))
     
-    def set(self, cmd_data: bytes) -> Token[None]:
+    def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
         :param cmd_data: CMD DATA
-        :type cmd_data: bytes
+        :type cmd_data: dict
 
         .. code-block:: json
 
@@ -1777,16 +1777,16 @@ class PX_CUST_CMD:
     _cdb_instance_xindex: int
 
     class SetDataAttr(RequestBodyStruct):
-        cmd: bytes = field(XmpJson())
+        cmd: dict = field(XmpJson(min_len=2))
         """Set CMD
         """
 
     
-    def set(self, cmd: bytes) -> Token[None]:
+    def set(self, cmd: dict) -> Token[None]:
         """
         Set CMD
-        :param cmd: CMD DATA
-        :type cmd: bytes
+        :param cmd: CMD
+        :type cmd: dict
 
         .. code-block:: json
 
@@ -1820,8 +1820,8 @@ class PX_CUST_CMD:
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd=cmd))
     
     class GetDataAttr(ResponseBodyStruct):
-        reply: bytes = field(XmpJson())
-        """bytes, json
+        reply: dict = field(XmpJson(min_len=2))
+        """dict, json
         
         .. code-block:: json
 
@@ -1879,7 +1879,7 @@ class PX_CUST_CMD:
 #     _cdb_instance_xindex: int
 
 #     class GetDataAttr(ResponseBodyStruct):
-#         reply: bytes = field(XmpJson())
+#         reply: bytes = field(XmpJson(min_len=2))
 #         """bytes, json
         
 #         .. code-block:: json
@@ -1937,16 +1937,16 @@ class PX_CUST_CMD:
 #     _cdb_instance_xindex: int
 
 #     class SetDataAttr(RequestBodyStruct):
-#         cmd_data: bytes = field(XmpJson())
+#         cmd_data: bytes = field(XmpJson(min_len=2))
 #         """Set CMD Data
 #         """
 
     
-#     def set(self, cmd_data: bytes) -> Token[None]:
+#     def set(self, cmd_data: dict) -> Token[None]:
 #         """
 #         Set CMD Data
 #         :param cmd_data: CMD DATA
-#         :type cmd_data: bytes
+#         :type cmd_data: dict
 
 #         .. code-block:: json
 

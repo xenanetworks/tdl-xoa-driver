@@ -10,6 +10,7 @@ from typing import (
     TypeVar,
     cast,
 )
+import json
 
 FMT_ORDER_NETWORK = '!'
 FMT_BYTES_STRING = 's'
@@ -21,7 +22,7 @@ FMT_INT = 'i'
 FMT_U_INT = 'I'
 FMT_SHORT = 'h'
 FMT_U_SHORT = 'H'
-FMT_JSON = 'J'
+FMT_BYTES_JSON = 's'
 
 # region Base Type
 
@@ -175,8 +176,17 @@ class XmpSequence(XmpType[tuple]):
 class XmpJson(XmpType[bytes]):
     """Description class of XMP JSON type representation"""
 
-    def __init__(self) -> None:
-        self.data_format = FMT_JSON
+    __slots__ = ("min_len",)
+
+    def __init__(self, min_len: int | None = None) -> None:
+        self.data_format = FMT_BYTES_JSON
         self.repetitions = None
+        self.min_len = min_len
+
+    def client_format(self, val: bytes) -> dict[str, Any]:
+        return json.loads(val.decode())
+
+    def server_format(self, val: dict) -> bytes:
+        return json.dumps(val).encode()
 
 # endregion
