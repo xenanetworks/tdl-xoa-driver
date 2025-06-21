@@ -6,6 +6,7 @@ from ._constants import *
 import time
 from contextlib import suppress
 from xoa_driver import exceptions
+import json
 
 
 # CMD 0000h: Query Status
@@ -1312,7 +1313,7 @@ class CMD0103hWriteFirmwareBlockLPLReply:
 
         """
 
-async def cmd_0103h_write_firmware_block_lpl_cmd(port: PortL23, cdb_instance: int, block_address: int, firmware_block: str) -> None:
+async def cmd_0103h_write_firmware_block_lpl_cmd(port: PortL23, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
     """Send CMD 0103h Write Firmware Block LPL
 
     :param port: the port object to send the command to
@@ -1326,11 +1327,11 @@ async def cmd_0103h_write_firmware_block_lpl_cmd(port: PortL23, cdb_instance: in
     :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the “Start Command Payload Size”.
     :type block_address: int
     :param firmware_block: U8[116] One block of the firmware image. The actually needed length may be shorter than the available FirmwareBlock field size. This actual length of the block is defined in Byte 132 (LPLLength)
-    :type firmware_block: hex str
+    :type firmware_block: bytes
     """
     cmd_data = {
         "block_address": block_address,
-        "firmware_block": firmware_block
+        "firmware_block": "0x" + bytes.hex(firmware_block).upper()
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0103h_write_firmware_block_lpl.set(cmd_data=cmd_data)
 
@@ -1382,7 +1383,7 @@ class CMD0104hWriteFirmwareBlockEPLReply:
 
         """
 
-async def cmd_0104h_write_firmware_block_epl_cmd(port: PortL23, cdb_instance: int, block_address: int, firmware_block: str) -> None:
+async def cmd_0104h_write_firmware_block_epl_cmd(port: PortL23, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
     """Send CMD 0104h Write Firmware Block EPL
 
     :param port: the port object to send the command to
@@ -1401,7 +1402,7 @@ async def cmd_0104h_write_firmware_block_epl_cmd(port: PortL23, cdb_instance: in
 
     cmd_data = {
         "block_address": block_address,
-        "firmware_block": firmware_block
+        "firmware_block": "0x" + bytes.hex(firmware_block).upper()
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0104h_write_firmware_block_epl.set(cmd_data=cmd_data)
 
@@ -1455,7 +1456,7 @@ class CMD0105hReadFirmwareBlockLPLReply:
         self.base_address_block: str = reply["base_address_block"]
         """hex string, Base address of the data block within the firmware image.
         """
-        self.image_data: str = reply["image_data"]
+        self.image_data: bytes = bytes.fromhex(reply["image_data"].replace("0x", ""))
         """hex string, Up to 116 bytes.
         """
 
@@ -1532,8 +1533,8 @@ class CMD0106hReadFirmwareBlockEPLReply:
             * ``01 000101b``: CdbChkCode error
 
         """
-        self.image_data: str = reply["image_data"]
-        """Up to 128 Bytes. Actual Length specified in RPLLength
+        self.image_data: bytes = bytes.fromhex(reply["image_data"].replace("0x", ""))
+        """Up to 2048 Bytes. Actual Length specified in RPLLength
         """
 
 async def cmd_0106h_read_firmware_block_epl_cmd(port: PortL23, cdb_instance: int, block_address: int, length: int) -> None:
@@ -1925,7 +1926,7 @@ async def cmd_custom_cmd_reply(port: PortL23, cdb_instance: int) -> CustomCMDRep
     """
     while True:
         try:
-            resp = await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_custom_reply.get()
+            resp = await port.l1.transceiver.cmis.cdb(cdb_instance).custom_cmd.get()
             return CustomCMDReply(resp.reply)
         except exceptions.XmpPendingError:
             time.sleep(0.1)
@@ -1959,7 +1960,7 @@ async def cmd_custom_cmd_request(port: PortL23, cdb_instance: int, cmd_id: str, 
     :param data: ``CMD Data.Data``. The data to be sent in the command.
     :type data: hex str
     """
-    cmd_data = {
+    cmd = {
         "cmd_header": {
             "cmd_id": cmd_id,
             "epl_length": epl_length,
@@ -1971,7 +1972,14 @@ async def cmd_custom_cmd_request(port: PortL23, cdb_instance: int, cmd_id: str, 
             "data": data
         }
     }
-    await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_custom_request.set(cmd_data=cmd_data)
+    await port.l1.transceiver.cmis.cdb(cdb_instance).custom_cmd.set(cmd=cmd)
+
+
+
+        
+async def cdb_instances_supported_reply(port: PortL23) -> int:
+    resp = await port.l1.transceiver.cmis.cdb_instances_supported.get()
+    return resp.reply["cdb_instances_supported"]
 
 
 async def firmware_download_procedure(port: PortL23, cdb_instance: int, firmware_file: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
@@ -2004,8 +2012,7 @@ async def firmware_download_procedure(port: PortL23, cdb_instance: int, firmware
     :param use_abort_for_failure: should the procedure use CMD 0102h Abort Firmware Download to abort the firmware download on failure.
     :type use_abort_for_failure: bool
     """
-    reply_obj = await port.l1.transceiver.cmis.cdb_instances_supported.get()
-    cdb_instances_supported = reply_obj.reply["cdb_instances_supported"]
+    cdb_instances_supported = await cdb_instances_supported_reply(port)
     # Check if the specified CDB instance is supported
     if cdb_instance >= cdb_instances_supported:
         print(f"CDB instance {cdb_instance} is not supported. Only {cdb_instances_supported} CDB instances are supported.")
