@@ -1,17 +1,13 @@
 #: All available test module types.
-import sys
-
-if "xoa_driver.v2" in sys.modules:
-    raise ImportError("\33[31mOnly Single interface version is allowed to being use at the same time.\33[0m")
 
 import typing
 
-from .internals.hli_v1.modules.odin import *
-from .internals.hli_v1.modules.loki import *
-from .internals.hli_v1.modules.thor import *
-from .internals.hli_v1.modules.freya import *
-from .internals.hli_v1.modules.chimera import *
-from .internals.hli_v1.modules.vulcan import *
+from .internals.hli.modules.odin import *
+from .internals.hli.modules.loki import *
+from .internals.hli.modules.thor import *
+from .internals.hli.modules.freya import *
+from .internals.hli.modules.chimera import *
+from .internals.hli.modules.vulcan import *
 
 GenericModuleL23 = typing.Union[
     "MOdin1G3S2PT",

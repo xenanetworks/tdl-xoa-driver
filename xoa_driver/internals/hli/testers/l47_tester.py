@@ -10,10 +10,10 @@ from xoa_driver.internals.commands import (
 )
 from xoa_driver.internals.core.transporter.logger import CustomLogger
 from xoa_driver.internals.utils.managers import modules_manager as mm
-from xoa_driver.internals.hli_v1 import revisions
+from xoa_driver.internals.hli import revisions
 from xoa_driver.internals import exceptions
 if TYPE_CHECKING:
-    from xoa_driver.internals.hli_v1.modules import l47_base as ml47
+    from xoa_driver.internals.hli.modules import l47_base as ml47
 
 from xoa_driver.internals.state_storage import testers_state
 from ._base_tester import BaseTester

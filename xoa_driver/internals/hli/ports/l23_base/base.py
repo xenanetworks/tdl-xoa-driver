@@ -4,28 +4,28 @@ if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 from xoa_driver.internals.commands import *
 from xoa_driver.internals.utils import attributes as utils
-from xoa_driver.internals.hli_v1.ports import base_port
+from xoa_driver.internals.hli.ports import base_port
 from xoa_driver.internals.utils.indices import index_manager as idx_mgr
-from xoa_driver.internals.hli_v1.indices.streams.genuine_stream import GenuineStreamIdx
-from xoa_driver.internals.hli_v1.indices.filter.genuine_filter import GenuineFilterIdx
-from xoa_driver.internals.hli_v1.indices.port_dataset import PortDatasetIdx
+from xoa_driver.internals.hli.indices.streams.genuine_stream import GenuineStreamIdx
+from xoa_driver.internals.hli.indices.filter.genuine_filter import GenuineFilterIdx
+from xoa_driver.internals.hli.indices.port_dataset import PortDatasetIdx
 from xoa_driver.internals.state_storage import ports_state
-from xoa_driver.internals.hli_v1.indices.length_term import LengthTermIdx
-from xoa_driver.internals.hli_v1.indices.match_term import MatchTermIdx
-from xoa_driver.internals.hli_v1.indices.macsecscs.genuine_macsecsc import GenuineMacSecTxScIdx, GenuineMacSecRxScIdx
+from xoa_driver.internals.hli.indices.length_term import LengthTermIdx
+from xoa_driver.internals.hli.indices.match_term import MatchTermIdx
+from xoa_driver.internals.hli.indices.macsecscs.genuine_macsecsc import GenuineMacSecTxScIdx, GenuineMacSecRxScIdx
 
 from .port_capture import PortCapture
 from .port_statistics_rx import PortReceptionStatistics
 from .port_statistics_tx import PortTransmissionStatistics
 from .port_layer1 import PortLayer1
 
-LengthTermIndices = idx_mgr.IndexManager[LengthTermIdx]
-MatchTermIndices = idx_mgr.IndexManager[MatchTermIdx]
-StreamIndices = idx_mgr.IndexManager[GenuineStreamIdx]
-FilterIndices = idx_mgr.IndexManager[GenuineFilterIdx]
-PortDatasetIndices = idx_mgr.IndexManager[PortDatasetIdx]
-MacSecTxScIndices = idx_mgr.IndexManager[GenuineMacSecTxScIdx]
-MacSecRxScIndices = idx_mgr.IndexManager[GenuineMacSecRxScIdx]
+LengthTermIndices = idx_mgr.IndexManager[LengthTermIdx] # type: ignore
+MatchTermIndices = idx_mgr.IndexManager[MatchTermIdx] # type: ignore
+StreamIndices = idx_mgr.IndexManager[GenuineStreamIdx] # type: ignore
+FilterIndices = idx_mgr.IndexManager[GenuineFilterIdx] # type: ignore
+PortDatasetIndices = idx_mgr.IndexManager[PortDatasetIdx] # type: ignore
+MacSecTxScIndices = idx_mgr.IndexManager[GenuineMacSecTxScIdx] # type: ignore
+MacSecRxScIndices = idx_mgr.IndexManager[GenuineMacSecRxScIdx] # type: ignore
 
 class TxSinglePacket:
     """Single-packet transmission"""
@@ -552,7 +552,7 @@ class PortL23Base(base_port.BasePort[ports_state.PortL23LocalState]):
 
         self.streams: StreamIndices = idx_mgr.IndexManager(
             conn,
-            GenuineStreamIdx,
+            GenuineStreamIdx, # type: ignore
             module_id,
             port_id
         )
@@ -564,7 +564,7 @@ class PortL23Base(base_port.BasePort[ports_state.PortL23LocalState]):
 
         self.length_terms: LengthTermIndices = idx_mgr.IndexManager(
             conn,
-            LengthTermIdx,
+            LengthTermIdx, # type: ignore
             module_id,
             port_id
         )
@@ -576,7 +576,7 @@ class PortL23Base(base_port.BasePort[ports_state.PortL23LocalState]):
 
         self.match_terms: MatchTermIndices = idx_mgr.IndexManager(
             conn,
-            MatchTermIdx,
+            MatchTermIdx, # type: ignore
             module_id,
             port_id
         )
@@ -588,7 +588,7 @@ class PortL23Base(base_port.BasePort[ports_state.PortL23LocalState]):
 
         self.filters: FilterIndices = idx_mgr.IndexManager(
             conn,
-            GenuineFilterIdx,
+            GenuineFilterIdx, # type: ignore
             module_id,
             port_id
         )
@@ -600,7 +600,7 @@ class PortL23Base(base_port.BasePort[ports_state.PortL23LocalState]):
 
         self.datasets: PortDatasetIndices = idx_mgr.IndexManager(
             conn,
-            PortDatasetIdx,
+            PortDatasetIdx, # type: ignore
             module_id,
             port_id
         )
@@ -612,7 +612,7 @@ class PortL23Base(base_port.BasePort[ports_state.PortL23LocalState]):
 
         self.macsec_txscs: MacSecTxScIndices = idx_mgr.IndexManager(
             conn,
-            GenuineMacSecTxScIdx,
+            GenuineMacSecTxScIdx, # type: ignore
             module_id,
             port_id
         )
@@ -625,7 +625,7 @@ class PortL23Base(base_port.BasePort[ports_state.PortL23LocalState]):
 
         self.macsec_rxscs: MacSecRxScIndices = idx_mgr.IndexManager(
             conn,
-            GenuineMacSecRxScIdx,
+            GenuineMacSecRxScIdx, # type: ignore
             module_id,
             port_id
         )

@@ -1,6 +1,6 @@
 import typing
 from xoa_driver import ports
-from xoa_driver.internals.hli_v1 import revisions
+from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
 
 if typing.TYPE_CHECKING:

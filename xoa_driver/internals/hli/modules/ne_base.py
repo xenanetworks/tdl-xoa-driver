@@ -26,17 +26,17 @@ from xoa_driver.internals.commands import (
     M_RECONFIG_STATUS,
 )
 
-from xoa_driver.internals.hli_v1 import revisions
+from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
 from xoa_driver.internals.utils import attributes as utils
 from xoa_driver.internals.state_storage import modules_state
 from xoa_driver import ports
-from xoa_driver.internals.hli_v1.modules.l23_base import MediaModule, CfpModule
+from xoa_driver.internals.hli.modules.l23_base import MediaModule, CfpModule
 from . import base_module as bm
 
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli_v1.modules.l23_base import ModuleL23Base
+    from xoa_driver.internals.hli.modules.l23_base import ModuleL23Base
     from . import __interfaces as m_itf
 
 

@@ -26,10 +26,11 @@ async def establish_connection(transporter: "TransportationHandler", host: str, 
             __loop.create_connection(lambda: transporter, host=host, port=port),
             seconds_timeout
         )
-    except OSError:
-        raise exceptions.XoaConnectionError(host, port) from None
     except asyncio.exceptions.TimeoutError:
         raise exceptions.XoaConnectionTimeoutError(host, port, seconds_timeout) from None
+    except OSError:
+        raise exceptions.XoaConnectionError(host, port) from None
+    
 
 
 async def apply_iter(*cmd_tokens: Token[Any], return_exceptions: bool = False, token_timeout_sec: float | None = 5.0) -> AsyncGenerator[Any, None]:

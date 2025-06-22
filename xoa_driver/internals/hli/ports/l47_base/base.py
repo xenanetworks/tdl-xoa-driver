@@ -30,11 +30,11 @@ from xoa_driver.internals.commands import (
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 
-from xoa_driver.internals.hli_v1.ports import base_port
+from xoa_driver.internals.hli.ports import base_port
 from xoa_driver.internals.state_storage import ports_state
 from xoa_driver.internals.utils import attributes as utils
 from xoa_driver.internals.utils.indices import index_manager as im
-from xoa_driver.internals.hli_v1.indices.connection_group.cg import ConnectionGroupIdx
+from xoa_driver.internals.hli.indices.connection_group.cg import ConnectionGroupIdx
 
 from .counters import PCounters
 from .packet_engine import PacketEngine

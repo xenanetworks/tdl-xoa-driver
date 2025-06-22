@@ -18,7 +18,7 @@ from xoa_driver.internals.commands import (
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 
-from xoa_driver.internals.hli_v1.ports import base_port
+from xoa_driver.internals.hli.ports import base_port
 from xoa_driver.internals.utils import attributes as utils
 from xoa_driver.internals.state_storage import ports_state
 from .pe_custom_distribution import CustomDistributions
@@ -101,9 +101,17 @@ class PortNEBase(base_port.BasePort[ports_state.PortChimeraLocalState]):
         """
 
         self.impairment = ChimeraPE(self._conn, *self.kind)
-        """Chimera Port Emulation """
-
+        """Port-level network emulation settings
         
+        :type: ChimeraPE
+        """
+
+        self.emulate = P_EMULATE(conn, module_id, port_id)
+        """Chimera emulation control.
+
+        :type: P_EMULATE
+        """
+
 
         self.custom_distributions = CustomDistributions(conn, module_id, port_id)
         """Custom distributions."""

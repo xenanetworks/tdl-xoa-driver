@@ -36,7 +36,7 @@ from xoa_driver.internals.commands import (
 )
 
 from xoa_driver import ports
-from xoa_driver.internals.hli_v1 import revisions
+from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils import attributes as utils
 from xoa_driver.internals.utils.managers import ports_manager as pm
 from xoa_driver.internals.state_storage import modules_state
@@ -47,7 +47,7 @@ from . import __interfaces as m_itf
 
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli_v1.modules.ne_base import ModuleNEBase
+    from xoa_driver.internals.hli.modules.ne_base import ModuleNEBase
 
 
 class TXClock:

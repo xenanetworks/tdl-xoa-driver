@@ -1,17 +1,13 @@
 #: All available test port types.
-import sys
-
-if "xoa_driver.v2" in sys.modules:
-    raise ImportError("\33[31mOnly Single interface version is allowed to being use at the same time.\33[0m")
 
 import typing
 
-from xoa_driver.internals.hli_v1.ports.chimera import *
-from xoa_driver.internals.hli_v1.ports.odin import *
-from xoa_driver.internals.hli_v1.ports.loki import *
-from xoa_driver.internals.hli_v1.ports.thor import *
-from xoa_driver.internals.hli_v1.ports.freya import *
-from xoa_driver.internals.hli_v1.ports.vulcan import *
+from xoa_driver.internals.hli.ports.chimera import *
+from xoa_driver.internals.hli.ports.odin import *
+from xoa_driver.internals.hli.ports.loki import *
+from xoa_driver.internals.hli.ports.thor import *
+from xoa_driver.internals.hli.ports.freya import *
+from xoa_driver.internals.hli.ports.vulcan import *
 
 GenericPortL23 = typing.Union[
     "POdin1G3S2PT",

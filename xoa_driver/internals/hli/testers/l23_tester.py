@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 
 from xoa_driver.internals.core.transporter.logger import CustomLogger
 from xoa_driver.internals.state_storage import testers_state
-from xoa_driver.internals.hli_v1 import revisions
+from xoa_driver.internals.hli import revisions
 from xoa_driver.internals import exceptions
 
 

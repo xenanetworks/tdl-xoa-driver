@@ -388,7 +388,7 @@ async def get_mode(conn: "itf.IConnection", module_id: int, port_id: int, flow_i
     ).mode
     mode_type = mode_types[FilterMode(mode_raw)]
     return mode_type(
-        conn,
+        conn, # type: ignore
         module_id,
         port_id,
         flow_index,
