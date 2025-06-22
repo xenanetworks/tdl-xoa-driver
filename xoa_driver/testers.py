@@ -1,9 +1,9 @@
 #: All available tester types.
 
-from .internals.hli_v1.testers.l23_tester import L23Tester
-from .internals.hli_v1.testers.l23ve_tester import L23VeTester
-from .internals.hli_v1.testers.l47_tester import L47Tester
-from .internals.hli_v1.testers.l47ve_tester import L47VeTester
+from .internals.hli.testers.l23_tester import L23Tester
+from .internals.hli.testers.l23ve_tester import L23VeTester
+from .internals.hli.testers.l47_tester import L47Tester
+from .internals.hli.testers.l47ve_tester import L47VeTester
 
 import typing
 
