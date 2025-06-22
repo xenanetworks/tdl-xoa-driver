@@ -30,8 +30,7 @@ from xoa_driver.internals.commands import (
     PX_CDB_START_FW_DOWNLOAD,
     PX_CDB_WRITE_FW_BLOCK_EPL,
     PX_CDB_WRITE_FW_BLOCK_LPL,
-    PX_CUST_REPLY,
-    PX_CUST_REQUEST,
+    PX_CUST_CMD,
 )
 
 
@@ -243,9 +242,6 @@ class CDB():
         """
         
         # Custom Commands
-        self.cmd_custom_reply = PX_CUST_REPLY(conn, module_id, port_id, cdb_instance_id)
-        """Defines the custom reply to receiver for the CDB instance.
-        """
-        self.cmd_custom_request = PX_CUST_REQUEST(conn, module_id, port_id, cdb_instance_id)
-        """Defnees the custom request to be sent to the CDB instance.
+        self.custom_cmd = PX_CUST_CMD(conn, module_id, port_id, cdb_instance_id)
+        """Defnes the custom CDB commdand (CMD and Reply) to be sent to the CDB instance.
         """
