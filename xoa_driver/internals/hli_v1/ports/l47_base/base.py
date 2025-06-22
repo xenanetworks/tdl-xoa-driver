@@ -63,7 +63,7 @@ class PCapture:
         """
 
 
-class PortL47(base_port.BasePort["ports_state.PortL47LocalState"]):
+class PortL47Base(base_port.BasePort["ports_state.PortL47LocalState"]):
     """L47 Port"""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:

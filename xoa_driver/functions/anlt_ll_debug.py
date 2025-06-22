@@ -3,7 +3,7 @@ import asyncio
 import typing as t
 from functools import partial
 from xoa_driver import enums
-from xoa_driver.ports import PortL23
+from xoa_driver.ports import PortL23Base
 from xoa_driver.lli import commands
 from xoa_driver.misc import Hex
 from dataclasses import dataclass
@@ -47,7 +47,7 @@ class AnLtLowLevelInfo:
     tx_serdes: int
 
 
-async def init(port: PortL23, serdes: int) -> AnLtLowLevelInfo:
+async def init(port: PortL23Base, serdes: int) -> AnLtLowLevelInfo:
     """
     The init function initializes the communication parameters required to read the configuration of a Serializer/Deserializer. 
     It takes in a port object used for communication, and the index of the Serializer/Deserializer to read (serdes). 
@@ -79,7 +79,7 @@ async def init(port: PortL23, serdes: int) -> AnLtLowLevelInfo:
     return inf
 
 
-async def serdes_reset(port: PortL23, serdes: int, inf: t.Optional[AnLtLowLevelInfo] = None) -> None:
+async def serdes_reset(port: PortL23Base, serdes: int, inf: t.Optional[AnLtLowLevelInfo] = None) -> None:
     """
     Resets the Serializer/Deserializer specified by serdes.
 
@@ -122,7 +122,7 @@ async def serdes_reset(port: PortL23, serdes: int, inf: t.Optional[AnLtLowLevelI
     return None
 
 
-async def __get(port: PortL23, serdes: int, reg: AnLtD, inf: t.Optional[AnLtLowLevelInfo] = None) -> int:
+async def __get(port: PortL23Base, serdes: int, reg: AnLtD, inf: t.Optional[AnLtLowLevelInfo] = None) -> int:
     if inf is None:
         inf = await init(port, serdes)
     conn, mid, pid = get_ctx(port)
@@ -131,7 +131,7 @@ async def __get(port: PortL23, serdes: int, reg: AnLtD, inf: t.Optional[AnLtLowL
     return int((await r.get()).value, 16)
 
 
-async def __set(port: PortL23, serdes: int, reg: AnLtD, value: int, inf: t.Optional[AnLtLowLevelInfo] = None) -> None:
+async def __set(port: PortL23Base, serdes: int, reg: AnLtD, value: int, inf: t.Optional[AnLtLowLevelInfo] = None) -> None:
     if inf is None:
         inf = await init(port, serdes)
     conn, mid, pid = get_ctx(port)
@@ -199,7 +199,7 @@ xla_rd_page_set = partial(__set, reg=AnLtD.XLA_RD_PAGE)
 xla_rd_data_get = partial(__get, reg=AnLtD.XLA_RD_DATA)
 
 
-async def lt_prbs(port: PortL23, serdes: int, inf: t.Optional[AnLtLowLevelInfo] = None) -> dict[str, float]:
+async def lt_prbs(port: PortL23Base, serdes: int, inf: t.Optional[AnLtLowLevelInfo] = None) -> dict[str, float]:
     """Reads error statistics of an LT PRBS test.
 
     Args:
@@ -245,7 +245,7 @@ async def lt_prbs(port: PortL23, serdes: int, inf: t.Optional[AnLtLowLevelInfo] 
     return {"total_bits": total_bits, "error_bits": error_bits, "ber": float(ber)}
 
 
-async def xla_dump(port: PortL23, serdes: int, inf: t.Optional[AnLtLowLevelInfo] = None) -> t.Dict[str, str]:
+async def xla_dump(port: PortL23Base, serdes: int, inf: t.Optional[AnLtLowLevelInfo] = None) -> t.Dict[str, str]:
     """
     This method takes a PortL23 object representing the port for communication, an int serdes representing
     the data serializer for the connection, and an optional AnLtLowLevelInfo object named inf.
@@ -295,7 +295,7 @@ async def xla_dump(port: PortL23, serdes: int, inf: t.Optional[AnLtLowLevelInfo]
     return result
 
 
-async def px_get(port: PortL23, page_address: int, register_address: int) -> t.Tuple[bool, str]:
+async def px_get(port: PortL23Base, page_address: int, register_address: int) -> t.Tuple[bool, str]:
     """Reads the value of a register located at a specified page address using the PX API.
 
     Args:
@@ -319,7 +319,7 @@ async def px_get(port: PortL23, page_address: int, register_address: int) -> t.T
         return (True, resp.value)
 
 
-async def px_set(port: PortL23, page_address: int, register_address: int, value: int) -> None:
+async def px_set(port: PortL23Base, page_address: int, register_address: int, value: int) -> None:
     """
     Sets a register value in the given page address using the PortL23 object for communication.
 
@@ -346,7 +346,7 @@ async def px_set(port: PortL23, page_address: int, register_address: int, value:
     await port.l1.transceiver.access_rw(page_address, register_address).set(value_hexstr)
 
 
-async def xla_dump_ctrl(port: PortL23, on: bool) -> None:
+async def xla_dump_ctrl(port: PortL23Base, on: bool) -> None:
     """
     Enables or disables XLA mode on the given port by sending a command to set the AN_LT_XLA_MODE configuration
     option. 

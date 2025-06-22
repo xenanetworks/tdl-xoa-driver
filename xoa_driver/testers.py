@@ -9,7 +9,7 @@ from .internals.hli_v1.testers.l47_tester import L47Tester
 
 import typing
 
-GenericAnyTester = typing.Union[
+GenericTesterAny = typing.Union[
     "L23Tester",
     "L47Tester",
 ]
@@ -17,5 +17,5 @@ GenericAnyTester = typing.Union[
 __all__ = (
     "L23Tester",
     "L47Tester",
-    "GenericAnyTester",
+    "GenericTesterAny",
 )

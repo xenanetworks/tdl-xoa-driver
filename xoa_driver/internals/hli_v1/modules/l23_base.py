@@ -47,7 +47,7 @@ from . import __interfaces as m_itf
 
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli_v1.modules.module_chimera import ModuleChimera
+    from xoa_driver.internals.hli_v1.modules.ne_base import ModuleNEBase
 
 
 class TXClock:
@@ -115,7 +115,7 @@ class AdvancedTiming:
 
 class ExtendedToken:
     def __init__(
-        self, token: Token, module: typing.Union["ModuleL23", "ModuleChimera"]
+        self, token: Token, module: typing.Union["ModuleL23Base", "ModuleNEBase"]
     ) -> None:
         self.__token = token
         self.__module = module
@@ -134,7 +134,7 @@ class ExtendedToken:
 
 
 class MediaModule:
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
+    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23Base", "ModuleNEBase"]) -> None:
         self.__media = M_MEDIA(conn, module.module_id)
         self.__module = module
 
@@ -146,7 +146,7 @@ class MediaModule:
     
 
 class CfpModule:
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
+    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23Base", "ModuleNEBase"]) -> None:
         self.__cfpconfigext = M_CFPCONFIGEXT(conn, module.module_id)
         self.__module = module
     
@@ -160,7 +160,7 @@ class CfpModule:
 class CFP:
     """Test module CFP"""
 
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
+    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23Base", "ModuleNEBase"]) -> None:
         self.type = M_CFPTYPE(conn, module.module_id)
         """The transceiver's CFP type currently inserted.
 
@@ -172,7 +172,7 @@ class CFP:
 class ModuleConfig:
     """Test module CFP"""
 
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
+    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23Base", "ModuleNEBase"]) -> None:
         self.media = MediaModule(conn, module)
         """Test module's media type configuration."""
 
@@ -258,7 +258,7 @@ class MHealth:
         """Module cage insertion counter"""
 
 
-class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
+class ModuleL23Base(bm.BaseModule["modules_state.ModuleL23LocalState"]):
     """
     This is a conceptual class of L23 test module on a Valkyrie tester.
 
@@ -350,9 +350,9 @@ class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
         self.health = MHealth(conn, self.module_id)
         """Module health information"""
 
-        self.ports: pm.PortsManager["ports.PortL23"] = pm.PortsManager(
+        self.ports: pm.PortsManager["ports.PortL23Base"] = pm.PortsManager(
             conn=conn,
-            ports_type=ports.PortL23,
+            ports_type=ports.PortL23Base,
             module_id=self.module_id,
             ports_count=self.ports_count
         )

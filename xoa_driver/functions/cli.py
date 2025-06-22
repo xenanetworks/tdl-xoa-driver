@@ -7,9 +7,9 @@ import ipaddress
 from enum import Enum
 from xoa_driver.internals import commands
 from xoa_driver import enums
-from xoa_driver.testers import GenericAnyTester
-from xoa_driver.modules import GenericAnyModule
-from xoa_driver.ports import GenericAnyPort
+from xoa_driver.testers import GenericTesterAny
+from xoa_driver.modules import GenericModuleAny
+from xoa_driver.ports import GenericPortAny
 from xoa_driver.misc import ArpChunk, NdpChunk
 from xoa_driver.utils import apply_iter
 from xoa_driver.internals.core.token import Token
@@ -464,7 +464,7 @@ read_commands_from_file = CLIConverter.read_commands_from_file
 read_commands_from_string = CLIConverter.read_commands_from_string
 
 
-def upload_config_from(obj: GenericAnyTester | GenericAnyModule | GenericAnyPort, long_str: str,
+def upload_config_from(obj: GenericTesterAny | GenericModuleAny | GenericPortAny, long_str: str,
                        is_file: bool, mode: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> t.Generator[Token, None, None]:
     func = read_commands_from_file if is_file else read_commands_from_string
     for command in func(long_str, comment_start):
@@ -482,12 +482,12 @@ def upload_config_from(obj: GenericAnyTester | GenericAnyModule | GenericAnyPort
         yield Token(obj._conn, request)
 
 
-async def _helper(obj: GenericAnyTester | GenericAnyModule | GenericAnyPort, long_str: str, is_file: bool, mode: str, comment_start: tuple[str, ...]) -> None:
+async def _helper(obj: GenericTesterAny | GenericModuleAny | GenericPortAny, long_str: str, is_file: bool, mode: str, comment_start: tuple[str, ...]) -> None:
     async for f in apply_iter(*upload_config_from(obj, long_str, is_file, mode, comment_start), return_exceptions=True):
         pass
 
 
-async def tester_config_from_string(tester: GenericAnyTester, long_str: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
+async def tester_config_from_string(tester: GenericTesterAny, long_str: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
     """Send tester configuration from a string. The CLI commands must all start with `C_` prefix.
 
     :param tester: the tester object
@@ -500,7 +500,7 @@ async def tester_config_from_string(tester: GenericAnyTester, long_str: str, com
     await _helper(tester, long_str, False, "C", comment_start)
 
 
-async def tester_config_from_file(tester: GenericAnyTester, path: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
+async def tester_config_from_file(tester: GenericTesterAny, path: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
     """Send tester configuration from a configuration file. The CLI commands must all start with `C_` prefix.
 
     :param tester: the tester object
@@ -513,7 +513,7 @@ async def tester_config_from_file(tester: GenericAnyTester, path: str, comment_s
     await _helper(tester, path, True, "C", comment_start)
 
 
-async def module_config_from_string(module: GenericAnyModule, long_str: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
+async def module_config_from_string(module: GenericModuleAny, long_str: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
     """Send module configuration from a string. The CLI commands must all start with `M_` prefix.
 
     :param module: the module object
@@ -527,7 +527,7 @@ async def module_config_from_string(module: GenericAnyModule, long_str: str, com
     await _helper(module, long_str, False, "M", comment_start)
 
 
-async def module_config_from_file(module: GenericAnyModule, path: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
+async def module_config_from_file(module: GenericModuleAny, path: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
     """Send module configuration from a configuration file. The CLI commands must all start with `M_` prefix.
 
     :param module: the module object
@@ -541,7 +541,7 @@ async def module_config_from_file(module: GenericAnyModule, path: str, comment_s
     await _helper(module, path, True, "M", comment_start)
 
 
-async def port_config_from_string(port: GenericAnyPort, long_str: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
+async def port_config_from_string(port: GenericPortAny, long_str: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
     """Send port configuration from a string. The CLI commands must all start with `P_` prefix.
 
     :param port: the port object
@@ -555,7 +555,7 @@ async def port_config_from_string(port: GenericAnyPort, long_str: str, comment_s
     await _helper(port, long_str, False, "P", comment_start)
 
 
-async def port_config_from_file(port: GenericAnyPort, path: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
+async def port_config_from_file(port: GenericPortAny, path: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
     """Send port configuration from a port configuration file (.xpc file).
 
     :param port: the port object

@@ -26,9 +26,9 @@ from .internals.hli_v1.indices.match_term import MatchTermIdx as MatchTerm
 from .internals.hli_v1.indices.port_dataset import PortDatasetIdx as PortDataset
 from .internals.hli_v1.indices.streams.base_stream import BaseStreamIdx as BaseStream
 from .internals.hli_v1.indices.streams.genuine_stream import GenuineStreamIdx as GenuineStream
-from .internals.hli_v1.ports.port_l23.chimera_base.port_emulation import CFlow as ImpairmentFlow
-from .internals.hli_v1.ports.port_l23.chimera_base.filter_definition.general import ModeBasic as BasicImpairmentFlowFilter
-from .internals.hli_v1.ports.port_l23.chimera_base.filter_definition.general import ModeExtended as ExtendedImpairmentFlowFilter
+from .internals.hli_v1.ports.ne_base.port_emulation import CFlow as ImpairmentFlow
+from .internals.hli_v1.ports.ne_base.filter_definition.general import ModeBasic as BasicImpairmentFlowFilter
+from .internals.hli_v1.ports.ne_base.filter_definition.general import ModeExtended as ExtendedImpairmentFlowFilter
 from xoa_driver.internals.hli_v1.indices.macsecscs.genuine_macsecsc import GenuineMacSecTxScIdx, GenuineMacSecRxScIdx
 
 

@@ -6,17 +6,14 @@ if "xoa_driver.v2" in sys.modules:
 
 import typing
 
-from .internals.hli_v1.ports.port_l47.port_l47 import PortL47
-from .internals.hli_v1.ports.port_l23.chimera_base.port_chimera import PortChimera
-from .internals.hli_v1.ports.port_l23.l23_base.port_l23 import PortL23
+from xoa_driver.internals.hli_v1.ports.chimera import *
+from xoa_driver.internals.hli_v1.ports.odin import *
+from xoa_driver.internals.hli_v1.ports.loki import *
+from xoa_driver.internals.hli_v1.ports.thor import *
+from xoa_driver.internals.hli_v1.ports.freya import *
+from xoa_driver.internals.hli_v1.ports.vulcan import *
 
-from xoa_driver.internals.hli_v1.ports.port_l23.chimera import *
-from xoa_driver.internals.hli_v1.ports.port_l23.odin import *
-from xoa_driver.internals.hli_v1.ports.port_l23.loki import *
-from xoa_driver.internals.hli_v1.ports.port_l23.thor import *
-from xoa_driver.internals.hli_v1.ports.port_l23.freya import *
-
-GenericL23Port = typing.Union[
+GenericPortL23 = typing.Union[
     "POdin1G3S2PT",
     "POdin1G3S6P",
     "POdin1G3S6P_b",
@@ -77,23 +74,38 @@ GenericL23Port = typing.Union[
     "PFreya800G4S1POSFP_f",
 ]
 
-GenericChimeraPort = typing.Union[
+GenericPortNE = typing.Union[
     "PChi100G5S2P",
     "PChi100G5S2P_b",
     "PChi40G2S2P",
 ]
 
-GenericAnyPort = typing.Union[
-    "PortL47",
-    "PortChimera",
-    "GenericL23Port",
+GenericPortL47 = typing.Union[
+    "PVulcan28PE10G",
+    "PVulcan28PE10GCU",
+    "PVulcan28PE25G",
+    "PVulcan28PE40G",
+]
+
+GenericPortAny = typing.Union[
+    "PortL23Base",
+    "PortL47Base",
+    "PortNEBase",
+    "GenericPortL23",
+    "GenericPortNE",
+    "GenericPortL47",
 ]
 
 __all__ = (
-    "GenericL23Port",
-    "PortL47",
-    "PortChimera",
-    "GenericAnyPort",
+    "PortL23Base",
+    "PortL47Base",
+    "PortNEBase",
+
+    "GenericPortAny",
+    "GenericPortL23",
+    "GenericPortNE",
+    "GenericPortL47",
+    
     "POdin1G3S2PT",
     "POdin1G3S6P",
     "POdin1G3S6P_b",
@@ -152,4 +164,13 @@ __all__ = (
     "PFreya800G4S1POSFP_d",
     "PFreya800G4S1POSFP_e",
     "PFreya800G4S1POSFP_f",
+
+    "PChi100G5S2P",
+    "PChi100G5S2P_b",
+    "PChi40G2S2P",
+
+    "PVulcan28PE10G",
+    "PVulcan28PE10GCU",
+    "PVulcan28PE25G",
+    "PVulcan28PE40G",
 )

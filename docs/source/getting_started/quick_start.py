@@ -84,7 +84,7 @@ async def my_awesome_func(chassis: str, username: str, port_str1: str, port_str2
         # Simple batch configure the TX port
         await utils.apply(
             tx_port.comment.set(comment="this is tx port"),
-            tx_port.interframe_gap.set(min_byte_count=20),
+            tx_port.ifg.set(min_byte_count=20),
             tx_port.loop_back.set(mode=enums.LoopbackMode.NONE),
             tx_port.tx_config.packet_limit.set(packet_count_limit=1_000_000),
             tx_port.tx_config.enable.set(on_off=enums.OnOff.ON),

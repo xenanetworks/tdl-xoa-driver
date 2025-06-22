@@ -1,5 +1,5 @@
 from __future__ import annotations
-from xoa_driver.ports import PortL23
+from xoa_driver.ports import PortL23Base
 from ._utils import *
 from ._constants import *
 

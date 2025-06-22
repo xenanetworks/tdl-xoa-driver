@@ -1,6 +1,6 @@
 from __future__ import annotations
 import typing as t
-from xoa_driver.ports import PortL23
+from xoa_driver.ports import PortL23Base
 from ._utils import *
 from ._constants import *
 import time
@@ -44,7 +44,7 @@ class CMD0000hQueryStatusReply:
 
         """
 
-async def cmd_0000h_query_status_cmd(port: PortL23, cdb_instance: int, response_delay: int) -> None:
+async def cmd_0000h_query_status_cmd(port: PortL23Base, cdb_instance: int, response_delay: int) -> None:
     """Send CMD 0000h Query Status
 
     :param port: the port object to send the command to
@@ -64,7 +64,7 @@ async def cmd_0000h_query_status_cmd(port: PortL23, cdb_instance: int, response_
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0000h_query_status.set(cmd_data=cmd_data)
 
-async def cmd_0000h_query_status_reply(port: PortL23, cdb_instance: int) -> CMD0000hQueryStatusReply:
+async def cmd_0000h_query_status_reply(port: PortL23Base, cdb_instance: int) -> CMD0000hQueryStatusReply:
     """Read the module response to CMD 0000h Query Status
 
     :param port: the port object to read the response from
@@ -106,7 +106,7 @@ class CMD0001hEnterPasswordReply:
 
         """
 
-async def cmd_0001h_enter_password_cmd(port: PortL23, cdb_instance: int, password: str) -> None:
+async def cmd_0001h_enter_password_cmd(port: PortL23Base, cdb_instance: int, password: str) -> None:
     """Send CMD 0001h Enter Password
 
     :param port: the port object to send the command to
@@ -126,7 +126,7 @@ async def cmd_0001h_enter_password_cmd(port: PortL23, cdb_instance: int, passwor
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0000h_query_status.set(cmd_data=cmd_data)
 
-async def cmd_0001h_enter_password_reply(port: PortL23, cdb_instance: int) -> CMD0001hEnterPasswordReply:
+async def cmd_0001h_enter_password_reply(port: PortL23Base, cdb_instance: int) -> CMD0001hEnterPasswordReply:
     """Read the module response to CMD 0001h Enter Password
 
     :param port: the port object to read the response from
@@ -170,7 +170,7 @@ class CMD0002hChangePasswordReply:
 
         """
 
-async def cmd_0002h_change_password_cmd(port: PortL23, cdb_instance: int, new_password: str) -> None:
+async def cmd_0002h_change_password_cmd(port: PortL23Base, cdb_instance: int, new_password: str) -> None:
     """Send CMD 0002h Change Password
 
     :param port: the port object to send the command to
@@ -189,7 +189,7 @@ async def cmd_0002h_change_password_cmd(port: PortL23, cdb_instance: int, new_pa
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0002h_change_password.set(cmd_data=cmd_data)
 
-async def cmd_0002h_change_password_reply(port: PortL23, cdb_instance: int) -> CMD0002hChangePasswordReply:
+async def cmd_0002h_change_password_reply(port: PortL23Base, cdb_instance: int) -> CMD0002hChangePasswordReply:
     """Read the module response to CMD 0002h Change Password
 
     :param port: the port object to read the response from
@@ -231,7 +231,7 @@ class CMD0004hAbortProcessingReply:
 
         """
 
-async def cmd_0004h_abort_processing_cmd(port: PortL23, cdb_instance: int) -> None:
+async def cmd_0004h_abort_processing_cmd(port: PortL23Base, cdb_instance: int) -> None:
     """Send CMD 0004h Abort Processing
 
     :param port: the port object to send the command to
@@ -245,7 +245,7 @@ async def cmd_0004h_abort_processing_cmd(port: PortL23, cdb_instance: int) -> No
     """
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0004h_abort_processing.set()
 
-async def cmd_0004h_abort_processing_reply(port: PortL23, cdb_instance: int) -> CMD0004hAbortProcessingReply:
+async def cmd_0004h_abort_processing_reply(port: PortL23Base, cdb_instance: int) -> CMD0004hAbortProcessingReply:
     """Read the module response to CMD 0004h Abort Processing
 
     :param port: the port object to read the response from
@@ -354,7 +354,7 @@ class CMD0040hModuleFeaturesReply:
         """integer, U16 Maximum CDB command execution time in ms, of all supported CDB commands
         """
 
-async def cmd_0040h_module_features_cmd(port: PortL23, cdb_instance: int) -> None:
+async def cmd_0040h_module_features_cmd(port: PortL23Base, cdb_instance: int) -> None:
     """Send CMD 0040h Module Features
 
     :param port: the port object to send the command to
@@ -368,7 +368,7 @@ async def cmd_0040h_module_features_cmd(port: PortL23, cdb_instance: int) -> Non
     """
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0040h_module_features.set()
 
-async def cmd_0040h_module_features_reply(port: PortL23, cdb_instance: int) -> CMD0040hModuleFeaturesReply:
+async def cmd_0040h_module_features_reply(port: PortL23Base, cdb_instance: int) -> CMD0040hModuleFeaturesReply:
     """Read the module response to CMD 0040h Module Features
 
     :param port: the port object to read the response from
@@ -511,7 +511,7 @@ class CMD0041hFirmwareManagementFeaturesReply:
         """integer, U16 Maximum time in M ms for a CDB Copy command to complete execution
         """
 
-async def cmd_0041h_fw_mgmt_features_cmd(port: PortL23, cdb_instance: int) -> None:
+async def cmd_0041h_fw_mgmt_features_cmd(port: PortL23Base, cdb_instance: int) -> None:
     """Send CMD 0041h Firmware Management Features
 
     :param port: the port object to send the command to
@@ -525,7 +525,7 @@ async def cmd_0041h_fw_mgmt_features_cmd(port: PortL23, cdb_instance: int) -> No
     """
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0041h_fw_mgmt_features.set()
 
-async def cmd_0041h_fw_mgmt_features_reply(port: PortL23, cdb_instance: int) -> CMD0041hFirmwareManagementFeaturesReply:
+async def cmd_0041h_fw_mgmt_features_reply(port: PortL23Base, cdb_instance: int) -> CMD0041hFirmwareManagementFeaturesReply:
     """Read the module response to CMD 0041h Firmware Management Features
 
     :param port: the port object to read the response from
@@ -746,7 +746,7 @@ class CMD0044hSecFeaturesAndCapabilitiesReply:
 
         """
 
-async def cmd_0044h_sec_feat_capabilities_cmd(port: PortL23, cdb_instance: int) -> None:
+async def cmd_0044h_sec_feat_capabilities_cmd(port: PortL23Base, cdb_instance: int) -> None:
     """Send CMD 0044h Security Features and Capabilities
 
     :param port: the port object to send the command to
@@ -760,7 +760,7 @@ async def cmd_0044h_sec_feat_capabilities_cmd(port: PortL23, cdb_instance: int) 
     """
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0044h_sec_feat_capabilities.set()
 
-async def cmd_0044h_sec_feat_and_capabilities_reply(port: PortL23, cdb_instance: int) -> CMD0044hSecFeaturesAndCapabilitiesReply:
+async def cmd_0044h_sec_feat_and_capabilities_reply(port: PortL23Base, cdb_instance: int) -> CMD0044hSecFeaturesAndCapabilitiesReply:
     """Read the module response to CMD 0044h Security Features and Capabilities
 
     :param port: the port object to read the response from
@@ -803,7 +803,7 @@ class CMD0045hExternallyDefinedFeaturesReply:
         """Bit 0 = 0/1: CMIS-VCS not supported/supported
         """
 
-async def cmd_0045h_externally_defined_features_cmd(port: PortL23, cdb_instance: int) -> None:
+async def cmd_0045h_externally_defined_features_cmd(port: PortL23Base, cdb_instance: int) -> None:
     """Send CMD 0045h Externally Defined Features
 
     :param port: the port object to send the command to
@@ -817,7 +817,7 @@ async def cmd_0045h_externally_defined_features_cmd(port: PortL23, cdb_instance:
     """
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0045h_external_features.set()
 
-async def cmd_0045h_externally_defined_features_reply(port: PortL23, cdb_instance: int) -> CMD0045hExternallyDefinedFeaturesReply:
+async def cmd_0045h_externally_defined_features_reply(port: PortL23Base, cdb_instance: int) -> CMD0045hExternallyDefinedFeaturesReply:
     """Read the module response to CMD 0045h Externally Defined Features
 
     :param port: the port object to read the response from
@@ -902,7 +902,7 @@ class CMD0050hGetApplicationAttributesReply:
         """integer, U16: OpticalPowerRxLowWarningThreshold. Unit: 0.1uW.
         """
 
-async def cmd_0050h_get_application_attributes_cmd(port: PortL23, cdb_instance: int, application_number: int) -> None:
+async def cmd_0050h_get_application_attributes_cmd(port: PortL23Base, cdb_instance: int, application_number: int) -> None:
     """Send CMD 0050h Get Application Attributes
 
     :param port: the port object to send the command to
@@ -921,7 +921,7 @@ async def cmd_0050h_get_application_attributes_cmd(port: PortL23, cdb_instance: 
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0050h_get_app_attributes.set(cmd_data=cmd_data)
 
-async def cmd_0050h_get_application_attributes_reply(port: PortL23, cdb_instance: int) -> CMD0050hGetApplicationAttributesReply:
+async def cmd_0050h_get_application_attributes_reply(port: PortL23Base, cdb_instance: int) -> CMD0050hGetApplicationAttributesReply:
     """Read the module response to CMD 0050h Get Application Attributes
 
     :param port: the port object to read the response from
@@ -996,7 +996,7 @@ class CMD0051hGetInterfaceCodeDescriptionReply:
         """ integer, U16: Bits per Symbol.
         """
 
-async def cmd_0051h_get_interface_code_description_cmd(port: PortL23, cdb_instance: int, interface_id: str, interface_location: int) -> None:
+async def cmd_0051h_get_interface_code_description_cmd(port: PortL23Base, cdb_instance: int, interface_id: str, interface_location: int) -> None:
     """Send CMD 0051h Get Interface Code Description
 
     :param port: the port object to send the command to
@@ -1018,7 +1018,7 @@ async def cmd_0051h_get_interface_code_description_cmd(port: PortL23, cdb_instan
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0051h_get_if_code_descr.set(cmd_data=cmd_data)
 
-async def cmd_0051h_get_interface_code_description_reply(port: PortL23, cdb_instance: int) -> CMD0051hGetInterfaceCodeDescriptionReply:
+async def cmd_0051h_get_interface_code_description_reply(port: PortL23Base, cdb_instance: int) -> CMD0051hGetInterfaceCodeDescriptionReply:
     """Read the module response to CMD 0051h Get Interface Code Description
 
     :param port: the port object to read the response from
@@ -1119,7 +1119,7 @@ class CMD0100hGetFirmwareInfoReply:
         """string, Factory or Boot additional information (32-byte long ASCII string).
         """
 
-async def cmd_0100h_get_firmware_info_cmd(port: PortL23, cdb_instance: int) -> None:
+async def cmd_0100h_get_firmware_info_cmd(port: PortL23Base, cdb_instance: int) -> None:
     """Send CMD 0100h Get Firmware Info
 
     :param port: the port object to send the command to
@@ -1133,7 +1133,7 @@ async def cmd_0100h_get_firmware_info_cmd(port: PortL23, cdb_instance: int) -> N
     """
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0100h_get_firmware_info.set()
 
-async def cmd_0100h_get_firmware_info_reply(port: PortL23, cdb_instance: int) -> CMD0100hGetFirmwareInfoReply:
+async def cmd_0100h_get_firmware_info_reply(port: PortL23Base, cdb_instance: int) -> CMD0100hGetFirmwareInfoReply:
     """Read the module response to CMD 0100h Get Firmware Info
 
     :param port: the port object to read the response from
@@ -1181,7 +1181,7 @@ class CMD0101hStartFirmwareDownloadReply:
 
         """ 
 
-async def cmd_0101h_start_firmware_download_cmd(port: PortL23, cdb_instance: int, image_size: int, vendor_data: str) -> None:
+async def cmd_0101h_start_firmware_download_cmd(port: PortL23Base, cdb_instance: int, image_size: int, vendor_data: str) -> None:
     """Send CMD 0101h Start Firmware Download
 
     :param port: the port object to send the command to
@@ -1203,7 +1203,7 @@ async def cmd_0101h_start_firmware_download_cmd(port: PortL23, cdb_instance: int
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0101h_start_firmware_download.set(cmd_data=cmd_data)
 
-async def cmd_0101h_start_firmware_download_reply(port: PortL23, cdb_instance: int) -> CMD0101hStartFirmwareDownloadReply:
+async def cmd_0101h_start_firmware_download_reply(port: PortL23Base, cdb_instance: int) -> CMD0101hStartFirmwareDownloadReply:
     """Read the module response to CMD 0101h Start Firmware Download
 
     :param port: the port object to read the response from
@@ -1251,7 +1251,7 @@ class CMD0102hAbortFirmwareDownloadReply:
 
         """
 
-async def cmd_0102h_abort_firmware_download_cmd(port: PortL23, cdb_instance: int) -> None:
+async def cmd_0102h_abort_firmware_download_cmd(port: PortL23Base, cdb_instance: int) -> None:
     """Send CMD 0102h Abort Firmware Download
 
     :param port: the port object to send the command to
@@ -1265,7 +1265,7 @@ async def cmd_0102h_abort_firmware_download_cmd(port: PortL23, cdb_instance: int
     """
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0102h_abort_firmware_download.set()
 
-async def cmd_0102h_abort_firmware_download_reply(port: PortL23, cdb_instance: int) -> CMD0102hAbortFirmwareDownloadReply:
+async def cmd_0102h_abort_firmware_download_reply(port: PortL23Base, cdb_instance: int) -> CMD0102hAbortFirmwareDownloadReply:
     """Read the module response to CMD 0102h Abort Firmware Download
 
     :param port: the port object to read the response from
@@ -1313,7 +1313,7 @@ class CMD0103hWriteFirmwareBlockLPLReply:
 
         """
 
-async def cmd_0103h_write_firmware_block_lpl_cmd(port: PortL23, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
+async def cmd_0103h_write_firmware_block_lpl_cmd(port: PortL23Base, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
     """Send CMD 0103h Write Firmware Block LPL
 
     :param port: the port object to send the command to
@@ -1335,7 +1335,7 @@ async def cmd_0103h_write_firmware_block_lpl_cmd(port: PortL23, cdb_instance: in
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0103h_write_firmware_block_lpl.set(cmd_data=cmd_data)
 
-async def cmd_0103h_write_firmware_block_lpl_reply(port: PortL23, cdb_instance: int) -> CMD0103hWriteFirmwareBlockLPLReply:
+async def cmd_0103h_write_firmware_block_lpl_reply(port: PortL23Base, cdb_instance: int) -> CMD0103hWriteFirmwareBlockLPLReply:
     """Read the module response to CMD 0103h Write Firmware Block LPL
 
     :param port: the port object to read the response from
@@ -1383,7 +1383,7 @@ class CMD0104hWriteFirmwareBlockEPLReply:
 
         """
 
-async def cmd_0104h_write_firmware_block_epl_cmd(port: PortL23, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
+async def cmd_0104h_write_firmware_block_epl_cmd(port: PortL23Base, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
     """Send CMD 0104h Write Firmware Block EPL
 
     :param port: the port object to send the command to
@@ -1406,7 +1406,7 @@ async def cmd_0104h_write_firmware_block_epl_cmd(port: PortL23, cdb_instance: in
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0104h_write_firmware_block_epl.set(cmd_data=cmd_data)
 
-async def cmd_0104h_write_firmware_block_epl_reply(port: PortL23, cdb_instance: int) -> CMD0104hWriteFirmwareBlockEPLReply:
+async def cmd_0104h_write_firmware_block_epl_reply(port: PortL23Base, cdb_instance: int) -> CMD0104hWriteFirmwareBlockEPLReply:
     """Read the module response to CMD 0104h Write Firmware Block EPL
 
     :param port: the port object to read the response from
@@ -1460,7 +1460,7 @@ class CMD0105hReadFirmwareBlockLPLReply:
         """hex string, Up to 116 bytes.
         """
 
-async def cmd_0105h_read_firmware_block_lpl_cmd(port: PortL23, cdb_instance: int, block_address: int, length: int) -> None:
+async def cmd_0105h_read_firmware_block_lpl_cmd(port: PortL23Base, cdb_instance: int, block_address: int, length: int) -> None:
     """Send CMD 0105h Read Firmware Block LPL
 
     :param port: the port object to send the command to
@@ -1482,7 +1482,7 @@ async def cmd_0105h_read_firmware_block_lpl_cmd(port: PortL23, cdb_instance: int
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0105h_read_firmware_block_lpl.set(cmd_data=cmd_data)
 
-async def cmd_0105h_read_firmware_block_lpl_reply(port: PortL23, cdb_instance: int) -> CMD0105hReadFirmwareBlockLPLReply:
+async def cmd_0105h_read_firmware_block_lpl_reply(port: PortL23Base, cdb_instance: int) -> CMD0105hReadFirmwareBlockLPLReply:
     """Read the module response to CMD 0105h Read Firmware Block LPL
 
     :param port: the port object to read the response from
@@ -1537,7 +1537,7 @@ class CMD0106hReadFirmwareBlockEPLReply:
         """Up to 2048 Bytes. Actual Length specified in RPLLength
         """
 
-async def cmd_0106h_read_firmware_block_epl_cmd(port: PortL23, cdb_instance: int, block_address: int, length: int) -> None:
+async def cmd_0106h_read_firmware_block_epl_cmd(port: PortL23Base, cdb_instance: int, block_address: int, length: int) -> None:
     """Send CMD 0106h Read Firmware Block EPL
 
     :param port: the port object to send the command to
@@ -1559,7 +1559,7 @@ async def cmd_0106h_read_firmware_block_epl_cmd(port: PortL23, cdb_instance: int
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0106h_read_firmware_block_epl.set(cmd_data=cmd_data)
 
-async def cmd_0106h_read_firmware_block_epl_reply(port: PortL23, cdb_instance: int) -> CMD0106hReadFirmwareBlockEPLReply:
+async def cmd_0106h_read_firmware_block_epl_reply(port: PortL23Base, cdb_instance: int) -> CMD0106hReadFirmwareBlockEPLReply:
     """Read the module response to CMD 0106h Read Firmware Block EPL
 
     :param port: the port object to read the response from
@@ -1611,7 +1611,7 @@ class CMD0107hCompleteFirmwareDownloadReply:
 
         """
 
-async def cmd_0107h_complete_firmware_download_cmd(port: PortL23, cdb_instance: int) -> None:
+async def cmd_0107h_complete_firmware_download_cmd(port: PortL23Base, cdb_instance: int) -> None:
     """Send CMD 0107h Complete Firmware Download
 
     :param port: the port object to send the command to
@@ -1625,7 +1625,7 @@ async def cmd_0107h_complete_firmware_download_cmd(port: PortL23, cdb_instance: 
     """
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0107h_complete_firmware_download.set()
 
-async def cmd_0107h_complete_firmware_download_reply(port: PortL23, cdb_instance: int) -> CMD0107hCompleteFirmwareDownloadReply:
+async def cmd_0107h_complete_firmware_download_reply(port: PortL23Base, cdb_instance: int) -> CMD0107hCompleteFirmwareDownloadReply:
     """Read the module response to CMD 0107h Complete Firmware Download
 
     :param port: the port object to read the response from
@@ -1690,7 +1690,7 @@ class CMD0108hCopyFirmwareImageReply:
 
         """
 
-async def cmd_0108h_copy_firmware_image_cmd(port: PortL23, cdb_instance: int, copy_direction: str) -> None:
+async def cmd_0108h_copy_firmware_image_cmd(port: PortL23Base, cdb_instance: int, copy_direction: str) -> None:
     """Send CMD 0108h Copy Firmware Image
 
     :param port: the port object to send the command to
@@ -1713,7 +1713,7 @@ async def cmd_0108h_copy_firmware_image_cmd(port: PortL23, cdb_instance: int, co
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0108h_copy_firmware_image.set(cmd_data=cmd_data)
 
-async def cmd_0108h_copy_firmware_image_reply(port: PortL23, cdb_instance: int) -> CMD0108hCopyFirmwareImageReply:
+async def cmd_0108h_copy_firmware_image_reply(port: PortL23Base, cdb_instance: int) -> CMD0108hCopyFirmwareImageReply:
     """Read the module response to CMD 0108h Copy Firmware Image
 
     :param port: the port object to read the response from
@@ -1761,7 +1761,7 @@ class CMD0109hRunFirmwareImageReply:
 
         """
 
-async def cmd_0109h_run_firmware_image_cmd(port: PortL23, cdb_instance: int, image_to_run: int, delay_to_reset: int) -> None:
+async def cmd_0109h_run_firmware_image_cmd(port: PortL23Base, cdb_instance: int, image_to_run: int, delay_to_reset: int) -> None:
     """Send CMD 0109h Run Firmware Image
 
     :param port: the port object to send the command to
@@ -1789,7 +1789,7 @@ async def cmd_0109h_run_firmware_image_cmd(port: PortL23, cdb_instance: int, ima
     }
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_0109h_run_firmware_image.set(cmd_data=cmd_data)
 
-async def cmd_0109h_run_firmware_image_reply(port: PortL23, cdb_instance: int) -> CMD0109hRunFirmwareImageReply:
+async def cmd_0109h_run_firmware_image_reply(port: PortL23Base, cdb_instance: int) -> CMD0109hRunFirmwareImageReply:
     """Read the module response to CMD 0109h Run Firmware Image
 
     :param port: the port object to read the response from
@@ -1837,7 +1837,7 @@ class CMD010AhCommitFirmwareImageReply:
 
         """
 
-async def cmd_010ah_commit_firmware_image_cmd(port: PortL23, cdb_instance: int) -> None:
+async def cmd_010ah_commit_firmware_image_cmd(port: PortL23Base, cdb_instance: int) -> None:
     """Send CMD 010Ah Commit Firmware Image
 
     :param port: the port object to send the command to
@@ -1851,7 +1851,7 @@ async def cmd_010ah_commit_firmware_image_cmd(port: PortL23, cdb_instance: int) 
     """
     await port.l1.transceiver.cmis.cdb(cdb_instance).cmd_010ah_commit_firmware_image.set()
 
-async def cmd_010ah_commit_firmware_image_reply(port: PortL23, cdb_instance: int) -> CMD010AhCommitFirmwareImageReply:
+async def cmd_010ah_commit_firmware_image_reply(port: PortL23Base, cdb_instance: int) -> CMD010AhCommitFirmwareImageReply:
     """Read the module response to CMD 010Ah Commit Firmware Image
 
     :param port: the port object to read the response from
@@ -1910,7 +1910,7 @@ class CustomCMDReply:
 
         """
 
-async def cmd_custom_cmd_reply(port: PortL23, cdb_instance: int) -> CustomCMDReply:
+async def cmd_custom_cmd_reply(port: PortL23Base, cdb_instance: int) -> CustomCMDReply:
     """Read the module response to CMD 8000h-FFFFh Custom Command
 
     :param port: the port object to read the response from
@@ -1931,7 +1931,7 @@ async def cmd_custom_cmd_reply(port: PortL23, cdb_instance: int) -> CustomCMDRep
         except exceptions.XmpPendingError:
             time.sleep(0.1)
 
-async def cmd_custom_cmd_request(port: PortL23, cdb_instance: int, cmd_id: str, epl_length: int, lpl_length: int, rpl_length: int, rpl_check_code: int, data: str) -> None:
+async def cmd_custom_cmd_request(port: PortL23Base, cdb_instance: int, cmd_id: str, epl_length: int, lpl_length: int, rpl_length: int, rpl_check_code: int, data: str) -> None:
     """Send CMD 8000h-FFFFh Custom Command
 
     :param port: the port object to send the command to
@@ -1977,12 +1977,12 @@ async def cmd_custom_cmd_request(port: PortL23, cdb_instance: int, cmd_id: str, 
 
 
         
-async def cdb_instances_supported_reply(port: PortL23) -> int:
+async def cdb_instances_supported_reply(port: PortL23Base) -> int:
     resp = await port.l1.transceiver.cmis.cdb_instances_supported.get()
     return resp.reply["cdb_instances_supported"]
 
 
-async def firmware_download_procedure(port: PortL23, cdb_instance: int, firmware_file: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
+async def firmware_download_procedure(port: PortL23Base, cdb_instance: int, firmware_file: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
     """Specified in **OIF-CMIS-05.3**
 
     Start transceiver firmware update on the specified port.
@@ -2053,7 +2053,7 @@ async def firmware_download_procedure(port: PortL23, cdb_instance: int, firmware
 ##################
 # Helper functions
 ##################
-async def __write_data_block_loop(port: PortL23, cdb_instance: int, firmware_filename: str, firmware_header_size: int, erased_byte: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
+async def __write_data_block_loop(port: PortL23Base, cdb_instance: int, firmware_filename: str, firmware_header_size: int, erased_byte: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
     """Write data block loop
 
     :param port: the port object
@@ -2128,7 +2128,7 @@ async def __write_data_block_loop(port: PortL23, cdb_instance: int, firmware_fil
         return True
 
 
-async def __abort_firmware_download(port: PortL23, cdb_instance: int, use_abort_for_failure: bool) -> None:
+async def __abort_firmware_download(port: PortL23Base, cdb_instance: int, use_abort_for_failure: bool) -> None:
     """Abort firmware download
 
     :param port: the port object
@@ -2156,7 +2156,7 @@ async def __abort_firmware_download(port: PortL23, cdb_instance: int, use_abort_
     print(f"Firmware Update Failed.")
 
 
-async def __cmd_successful(cmd_name: str, port: PortL23, cdb_instance: int, timeout = 5.0) -> bool:
+async def __cmd_successful(cmd_name: str, port: PortL23Base, cdb_instance: int, timeout = 5.0) -> bool:
     """Check if the CDB command is successful.
 
     :param cmd_name: the function name of the command to check

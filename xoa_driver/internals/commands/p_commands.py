@@ -601,6 +601,35 @@ class P_CAPABILITIES:
         * Bit 0: Normal modifier (16/24-bit) supports little-endian
         * Bit 1: Extended modifier (32-bit) supports little-endian
         """
+
+        capture_bitmask: int = field(XmpInt(), min_version=472)
+        """
+        If all bits are 0, CAPTURE_NOT_SUPPORTED
+
+        // Bits [0:11] are for Start triggers
+        Bit 0: CAPTURE_START_ON
+        Bit 1: CAPTURE_START_FCSERROR
+        Bit 2: CAPTURE_START_FILTER
+        Bit 3: CAPTURE_START_PLDERROR
+        Bit 4-11: Reserved
+
+        // Bits [12:23] are for Stop triggers
+        Bit 12: CAPTURE_STOP_FULL
+        Bit 13: CAPTURE_STOP_FCSERROR
+        Bit 14: CAPTURE_STOP_FILTER
+        Bit 15: CAPTURE_STOP_PLDERROR
+        Bit 16: CAPTURE_STOP_USERSTOP
+        Bit 17-23: Reserved
+
+        // Bits [24:31] are for Keep modes
+        Bit 24: CAPTURE_KEEP_ALL
+        Bit 25: CAPTURE_KEEP_FCSERR
+        Bit 26: CAPTURE_KEEP_NOTPLD
+        Bit 27: CAPTURE_KEEP_TPLD
+        Bit 28: CAPTURE_KEEP_FILTER
+        Bit 29: CAPTURE_KEEP_PLDERR
+        Bit 30-31: Reserved
+        """
         
 
 
@@ -1682,6 +1711,10 @@ class P_AUTOTRAIN:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, interval=interval))
+    
+    set_off = functools.partialmethod(set, 0)
+    """Disable sending out training packets on the port.
+    """
 
 
 @register_command
@@ -1970,8 +2003,7 @@ class P_MIXWEIGHTS:
 @dataclass
 class P_MDIXMODE:
     """
-    Selects the MDI/MDIX behavior of copper interfaces (Currently supported on
-    M6SFP and M2SFPT).
+    Selects the MDI/MDIX behavior of copper interfaces.
     """
 
     code: typing.ClassVar[int] = 194
@@ -3844,18 +3876,22 @@ class P_FAULTSTATUS:
 class P_TPLDMODE:
     """
     Sets the size of the Xena Test Payload (TPLD) used to track streams, perform
-    latency measurements etc. Default is "Normal", which is a 20 byte TPLD. "Micro"
-    is a condensed version, which is useful when generating very small packets with
+    latency measurements etc. 
+
+    When the TPLDMODE is changed, it will affect ALL
+    streams on the port.
+    
+    * Default is "Normal", which is a 20 byte TPLD. 
+    * "Micro" is a condensed version, which is useful when generating very small packets with
     relatively long headers (like IPv6). It has the following characteristics
-    compared to the "normal" TPLD. When the TPLDMODE is changed, it will affect ALL
-    streams on the port. 1) Only 6 byte long. 2) Less accurate mechanism to separate
-    Xena-generated packets from other packets is the network - it is recommended not
-    to have too much other traffic going into the receive Xena port, when micro TPLD
-    is used. 3) No sequence checking (packet loss or packet misordering). The number
+    compared to the "normal" TPLD. 
+    
+    1) Only 6 byte long. 
+    2) Less accurate mechanism to separate Xena-generated packets from other packets is the network - it is recommended not to have too much other traffic going into the receive Xena port, when micro TPLD
+    is used.
+    3) No sequence checking (packet loss or packet misordering). The number
     of received packets for each stream can still be compared to the number of
-    transmitted packets to detect packet loss once traffic has been stopped. Note:
-    Currently not available on M6SFP, M2SFPT, M6RJ45+/M2RJ45+, M2CFP40, M1CFP100,
-    M2SFP+4SFP
+    transmitted packets to detect packet loss once traffic has been stopped.
     """
 
     code: typing.ClassVar[int] = 350
@@ -4241,6 +4277,9 @@ class P_TXRUNTLENGTH:
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, runt_length=runt_length))
 
+    set_off = functools.partialmethod(set, -1)
+    """Disable TX runt feature on the port."""
+
 
 @register_command
 @dataclass
@@ -4281,6 +4320,9 @@ class P_RXRUNTLENGTH:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, runt_length=runt_length))
+    
+    set_off = functools.partialmethod(set, -1)
+    """Disable RX runt length detection on the port."""
 
 
 @register_command

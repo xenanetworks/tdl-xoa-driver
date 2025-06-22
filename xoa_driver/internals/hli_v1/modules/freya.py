@@ -6,11 +6,13 @@ from xoa_driver.internals.utils.managers import ports_manager as pm
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     import __interfaces as m_itf
-from .module_l23 import ModuleL23
+from .l23_base import ModuleL23Base
+
+#region Freya 1S 1P
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P[a]")
-class MFreya800G1S1P_a(ModuleL23):
+class MFreya800G1S1P_a(ModuleL23Base):
     """Test module Freya-800G-1S-1P[a]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -25,7 +27,7 @@ class MFreya800G1S1P_a(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P[b]")
-class MFreya800G1S1P_b(ModuleL23):
+class MFreya800G1S1P_b(ModuleL23Base):
     """Test module Freya-800G-1S-1P[b]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -40,7 +42,7 @@ class MFreya800G1S1P_b(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P-OSFP[a]")
-class MFreya800G1S1POSFP_a(ModuleL23):
+class MFreya800G1S1POSFP_a(ModuleL23Base):
     """Test module Freya-800G-1S-1P-OSFP[a]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -55,7 +57,7 @@ class MFreya800G1S1POSFP_a(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P-OSFP[b]")
-class MFreya800G1S1POSFP_b(ModuleL23):
+class MFreya800G1S1POSFP_b(ModuleL23Base):
     """Test module Freya-800G-1S-1P-OSFP[b]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -73,7 +75,7 @@ class MFreya800G1S1POSFP_b(ModuleL23):
 #region Freya 1S 1P G1
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P[a] G1")
-class MFreya800G1S1P_a_g1(ModuleL23):
+class MFreya800G1S1P_a_g1(ModuleL23Base):
     """Test module Freya-800G-1S-1P[a] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -88,7 +90,7 @@ class MFreya800G1S1P_a_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P[b] G1")
-class MFreya800G1S1P_b_g1(ModuleL23):
+class MFreya800G1S1P_b_g1(ModuleL23Base):
     """Test module Freya-800G-1S-1P[b] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -103,7 +105,7 @@ class MFreya800G1S1P_b_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P-OSFP[a] G1")
-class MFreya800G1S1POSFP_a_g1(ModuleL23):
+class MFreya800G1S1POSFP_a_g1(ModuleL23Base):
     """Test module Freya-800G-1S-1P-OSFP[a] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -118,7 +120,7 @@ class MFreya800G1S1POSFP_a_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P-OSFP[b] G1")
-class MFreya800G1S1POSFP_b_g1(ModuleL23):
+class MFreya800G1S1POSFP_b_g1(ModuleL23Base):
     """Test module Freya-800G-1S-1P-OSFP[b] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -136,7 +138,7 @@ class MFreya800G1S1POSFP_b_g1(ModuleL23):
 #region Freya 1S 1P G2
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P[a] G2")
-class MFreya800G1S1P_a_g2(ModuleL23):
+class MFreya800G1S1P_a_g2(ModuleL23Base):
     """Test module Freya-800G-1S-1P[a] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -151,7 +153,7 @@ class MFreya800G1S1P_a_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P[b] G2")
-class MFreya800G1S1P_b_g2(ModuleL23):
+class MFreya800G1S1P_b_g2(ModuleL23Base):
     """Test module Freya-800G-1S-1P[b] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -166,7 +168,7 @@ class MFreya800G1S1P_b_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P-OSFP[a] G2")
-class MFreya800G1S1POSFP_a_g2(ModuleL23):
+class MFreya800G1S1POSFP_a_g2(ModuleL23Base):
     """Test module Freya-800G-1S-1P-OSFP[a] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -181,7 +183,7 @@ class MFreya800G1S1POSFP_a_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P-OSFP[b] G2")
-class MFreya800G1S1POSFP_b_g2(ModuleL23):
+class MFreya800G1S1POSFP_b_g2(ModuleL23Base):
     """Test module Freya-800G-1S-1P-OSFP[b] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -199,7 +201,7 @@ class MFreya800G1S1POSFP_b_g2(ModuleL23):
 #region Freya 1S 4P
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[a]")
-class MFreya800G4S1P_a(ModuleL23):
+class MFreya800G4S1P_a(ModuleL23Base):
     """Test module Freya-800G-4S-1P[a]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -214,7 +216,7 @@ class MFreya800G4S1P_a(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[b]")
-class MFreya800G4S1P_b(ModuleL23):
+class MFreya800G4S1P_b(ModuleL23Base):
     """Test module Freya-800G-4S-1P[b]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -229,7 +231,7 @@ class MFreya800G4S1P_b(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[c]")
-class MFreya800G4S1P_c(ModuleL23):
+class MFreya800G4S1P_c(ModuleL23Base):
     """Test module Freya-800G-4S-1P[c]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -244,7 +246,7 @@ class MFreya800G4S1P_c(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[d]")
-class MFreya800G4S1P_d(ModuleL23):
+class MFreya800G4S1P_d(ModuleL23Base):
     """Test module Freya-800G-4S-1P[d]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -259,7 +261,7 @@ class MFreya800G4S1P_d(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[e]")
-class MFreya800G4S1P_e(ModuleL23):
+class MFreya800G4S1P_e(ModuleL23Base):
     """Test module Freya-800G-4S-1P[e]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -274,7 +276,7 @@ class MFreya800G4S1P_e(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[f]")
-class MFreya800G4S1P_f(ModuleL23):
+class MFreya800G4S1P_f(ModuleL23Base):
     """Test module Freya-800G-4S-1P[f]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -289,7 +291,7 @@ class MFreya800G4S1P_f(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[a]")
-class MFreya800G4S1POSFP_a(ModuleL23):
+class MFreya800G4S1POSFP_a(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[a]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -305,7 +307,7 @@ class MFreya800G4S1POSFP_a(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[b]")
-class MFreya800G4S1POSFP_b(ModuleL23):
+class MFreya800G4S1POSFP_b(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[b]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -321,7 +323,7 @@ class MFreya800G4S1POSFP_b(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[c]")
-class MFreya800G4S1POSFP_c(ModuleL23):
+class MFreya800G4S1POSFP_c(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[c]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -337,7 +339,7 @@ class MFreya800G4S1POSFP_c(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[d]")
-class MFreya800G4S1POSFP_d(ModuleL23):
+class MFreya800G4S1POSFP_d(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[d]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -353,7 +355,7 @@ class MFreya800G4S1POSFP_d(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[e]")
-class MFreya800G4S1POSFP_e(ModuleL23):
+class MFreya800G4S1POSFP_e(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[e]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -369,7 +371,7 @@ class MFreya800G4S1POSFP_e(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[f]")
-class MFreya800G4S1POSFP_f(ModuleL23):
+class MFreya800G4S1POSFP_f(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[f]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -387,7 +389,7 @@ class MFreya800G4S1POSFP_f(ModuleL23):
 #region Freya 1S 4P G1
 
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[a] G1")
-class MFreya800G4S1P_a_g1(ModuleL23):
+class MFreya800G4S1P_a_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P[a] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -402,7 +404,7 @@ class MFreya800G4S1P_a_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[b] G1")
-class MFreya800G4S1P_b_g1(ModuleL23):
+class MFreya800G4S1P_b_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P[b] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -417,7 +419,7 @@ class MFreya800G4S1P_b_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[c] G1")
-class MFreya800G4S1P_c_g1(ModuleL23):
+class MFreya800G4S1P_c_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P[c] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -432,7 +434,7 @@ class MFreya800G4S1P_c_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[d] G1")
-class MFreya800G4S1P_d_g1(ModuleL23):
+class MFreya800G4S1P_d_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P[d] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -447,7 +449,7 @@ class MFreya800G4S1P_d_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[e] G1")
-class MFreya800G4S1P_e_g1(ModuleL23):
+class MFreya800G4S1P_e_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P[e] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -462,7 +464,7 @@ class MFreya800G4S1P_e_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[f] G1")
-class MFreya800G4S1P_f_g1(ModuleL23):
+class MFreya800G4S1P_f_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P[f] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -477,7 +479,7 @@ class MFreya800G4S1P_f_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[a] G1")
-class MFreya800G4S1POSFP_a_g1(ModuleL23):
+class MFreya800G4S1POSFP_a_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[a] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -492,7 +494,7 @@ class MFreya800G4S1POSFP_a_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[b] G1")
-class MFreya800G4S1POSFP_b_g1(ModuleL23):
+class MFreya800G4S1POSFP_b_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[b] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -507,7 +509,7 @@ class MFreya800G4S1POSFP_b_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[c] G1")
-class MFreya800G4S1POSFP_c_g1(ModuleL23):
+class MFreya800G4S1POSFP_c_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[c] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -522,7 +524,7 @@ class MFreya800G4S1POSFP_c_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[d] G1")
-class MFreya800G4S1POSFP_d_g1(ModuleL23):
+class MFreya800G4S1POSFP_d_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[d] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -537,7 +539,7 @@ class MFreya800G4S1POSFP_d_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[e] G1")
-class MFreya800G4S1POSFP_e_g1(ModuleL23):
+class MFreya800G4S1POSFP_e_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[e] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -552,7 +554,7 @@ class MFreya800G4S1POSFP_e_g1(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[f] G1")
-class MFreya800G4S1POSFP_f_g1(ModuleL23):
+class MFreya800G4S1POSFP_f_g1(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[f] G1"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -570,7 +572,7 @@ class MFreya800G4S1POSFP_f_g1(ModuleL23):
 #region Freya 1S 4P G2        
 
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[a] G2")
-class MFreya800G4S1P_a_g2(ModuleL23):
+class MFreya800G4S1P_a_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P[a] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -585,7 +587,7 @@ class MFreya800G4S1P_a_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[b] G2")
-class MFreya800G4S1P_b_g2(ModuleL23):
+class MFreya800G4S1P_b_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P[b] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -600,7 +602,7 @@ class MFreya800G4S1P_b_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[c] G2")
-class MFreya800G4S1P_c_g2(ModuleL23):
+class MFreya800G4S1P_c_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P[c] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -615,7 +617,7 @@ class MFreya800G4S1P_c_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[d] G2")
-class MFreya800G4S1P_d_g2(ModuleL23):
+class MFreya800G4S1P_d_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P[d] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -630,7 +632,7 @@ class MFreya800G4S1P_d_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[e] G2")
-class MFreya800G4S1P_e_g2(ModuleL23):
+class MFreya800G4S1P_e_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P[e] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -645,7 +647,7 @@ class MFreya800G4S1P_e_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[f] G2")
-class MFreya800G4S1P_f_g2(ModuleL23):
+class MFreya800G4S1P_f_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P[f] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -660,7 +662,7 @@ class MFreya800G4S1P_f_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[a] G2")
-class MFreya800G4S1POSFP_a_g2(ModuleL23):
+class MFreya800G4S1POSFP_a_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[a] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -675,7 +677,7 @@ class MFreya800G4S1POSFP_a_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[b] G2")
-class MFreya800G4S1POSFP_b_g2(ModuleL23):
+class MFreya800G4S1POSFP_b_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[b] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -690,7 +692,7 @@ class MFreya800G4S1POSFP_b_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[c] G2")
-class MFreya800G4S1POSFP_c_g2(ModuleL23):
+class MFreya800G4S1POSFP_c_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[c] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -705,7 +707,7 @@ class MFreya800G4S1POSFP_c_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[d] G2")
-class MFreya800G4S1POSFP_d_g2(ModuleL23):
+class MFreya800G4S1POSFP_d_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[d] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -720,7 +722,7 @@ class MFreya800G4S1POSFP_d_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[e] G2")
-class MFreya800G4S1POSFP_e_g2(ModuleL23):
+class MFreya800G4S1POSFP_e_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[e] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -735,7 +737,7 @@ class MFreya800G4S1POSFP_e_g2(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[f] G2")
-class MFreya800G4S1POSFP_f_g2(ModuleL23):
+class MFreya800G4S1POSFP_f_g2(ModuleL23Base):
     """Test module Freya-800G-4S-1P-OSFP[f] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -746,3 +748,5 @@ class MFreya800G4S1POSFP_f_g2(ModuleL23):
             ports_count=self.ports_count
         )
         """Port Index Manager of Freya-800G-4S-1P-OSFP[f] G2"""
+
+#endregion

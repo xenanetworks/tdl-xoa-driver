@@ -31,12 +31,12 @@ from xoa_driver.internals.utils.managers import ports_manager as pm
 from xoa_driver.internals.utils import attributes as utils
 from xoa_driver.internals.state_storage import modules_state
 from xoa_driver import ports
-from xoa_driver.internals.hli_v1.modules.module_l23 import MediaModule, CfpModule
+from xoa_driver.internals.hli_v1.modules.l23_base import MediaModule, CfpModule
 from . import base_module as bm
 
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli_v1.modules.module_l23 import ModuleL23
+    from xoa_driver.internals.hli_v1.modules.l23_base import ModuleL23Base
     from . import __interfaces as m_itf
 
 
@@ -65,7 +65,7 @@ class ChCFP:
     CFP test module (Chimera).
     """
 
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
+    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23Base", "ModuleNEBase"]) -> None:
         self.type = M_CFPTYPE(conn, module.module_id)
         """
         The transceiver's CFP type currently inserted.
@@ -77,7 +77,7 @@ class ChCFP:
 class ChConfig:
     """Configuration test module (Chimera)."""
 
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
+    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23Base", "ModuleNEBase"]) -> None:
         self.media = MediaModule(conn, module)
         """Test module's media type configuration."""
 
@@ -135,7 +135,7 @@ class ChTiming:
         :type: M_CLOCKSYNCSTATUS
         """
 
-class ModuleChimera(bm.BaseModule["modules_state.ModuleLocalState"]):
+class ModuleNEBase(bm.BaseModule["modules_state.ModuleLocalState"]):
     """
     This is a conceptual class of Chimera module.
     """
@@ -242,9 +242,9 @@ class ModuleChimera(bm.BaseModule["modules_state.ModuleLocalState"]):
         self.config = ChConfig(conn, self)
         """Test module's configuration."""
 
-        self.ports: pm.PortsManager["ports.PortChimera"] = pm.PortsManager(
+        self.ports: pm.PortsManager["ports.PortNEBase"] = pm.PortsManager(
             conn=conn,
-            ports_type=ports.PortChimera,
+            ports_type=ports.PortNEBase,
             module_id=self.module_id,
             ports_count=self.ports_count
         )
@@ -311,61 +311,3 @@ class ModuleChimera(bm.BaseModule["modules_state.ModuleLocalState"]):
 
     on_adv_timing_clock_tx_source_change = functools.partialmethod(utils.on_event, M_TXCLOCKSOURCE_NEW)
     """Register a callback to the event that the module's clock that drives the port TX rates changes."""
-
-
-
-@typing.final
-@revisions.register_chimera_module(rev="Chimera-100G-5S-2P")
-class MChi100G5S2P(ModuleChimera):
-    """Chimera module Chi-100G-5S-2P"""
-
-    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
-        super().__init__(conn, init_data)
-        self.ports: pm.PortsManager[ports.PChi100G5S2P] = pm.PortsManager(
-            conn=conn,
-            ports_type=ports.PChi100G5S2P,
-            module_id=self.module_id,
-            ports_count=self.ports_count
-        )
-        """Port index manager of Chi-100G-5S-2P
-
-        :type: PortsManager
-        """
-
-
-@typing.final
-@revisions.register_chimera_module(rev="Chimera-100G-5S-2P[b]")
-class MChi100G5S2P_b(ModuleChimera):
-    """Chimera module Chi-100G-5S-2P[b]"""
-
-    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
-        super().__init__(conn, init_data)
-        self.ports: pm.PortsManager[ports.PChi100G5S2P_b] = pm.PortsManager(
-            conn=conn,
-            ports_type=ports.PChi100G5S2P_b,
-            module_id=self.module_id,
-            ports_count=self.ports_count
-        )
-        """Port index manager of Chi-100G-5S-2P[b]
-
-        :type: PortsManager
-        """
-
-
-@typing.final
-@revisions.register_chimera_module(rev="Chimera-40G-5S-2P")
-class MChi40G2S2P(ModuleChimera):
-    """Chimera module Chi-40G-2S-2P"""
-
-    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
-        super().__init__(conn, init_data)
-        self.ports: pm.PortsManager[ports.PChi40G2S2P] = pm.PortsManager(
-            conn=conn,
-            ports_type=ports.PChi40G2S2P,
-            module_id=self.module_id,
-            ports_count=self.ports_count
-        )
-        """Port index manager of Chi-40G-2S-2P
-
-        :type: PortsManager
-        """

@@ -6,12 +6,12 @@ from xoa_driver.internals.utils.managers import ports_manager as pm
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     import __interfaces as m_itf
-from .module_l23 import ModuleL23
+from .l23_base import ModuleL23Base
 
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-3S-1P")
-class MLoki100G3S1P(ModuleL23):
+class MLoki100G3S1P(ModuleL23Base):
     """Test module Loki-100G-3S-1P"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -26,7 +26,7 @@ class MLoki100G3S1P(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-3S-1P[b]")
-class MLoki100G3S1P_b(ModuleL23):
+class MLoki100G3S1P_b(ModuleL23Base):
     """Test module Loki-100G-3S-1P[b]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -41,7 +41,7 @@ class MLoki100G3S1P_b(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-3S-1P-SE")
-class MLoki100G3S1PSE(ModuleL23):
+class MLoki100G3S1PSE(ModuleL23Base):
     """Test module Loki-100G-3S-1P-SE"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -56,7 +56,7 @@ class MLoki100G3S1PSE(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-3S-1P-B")
-class MLoki100G3S1PB(ModuleL23):
+class MLoki100G3S1PB(ModuleL23Base):
     """Test module Loki-100G-3S-1P-B"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -70,7 +70,7 @@ class MLoki100G3S1PB(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-3S-1P-B[b]")
-class MLoki100G3S1PB_b(ModuleL23):
+class MLoki100G3S1PB_b(ModuleL23Base):
     """Test module Loki-100G-3S-1P-B[b]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -85,7 +85,7 @@ class MLoki100G3S1PB_b(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-5S-1P")
-class MLoki100G5S1P(ModuleL23):
+class MLoki100G5S1P(ModuleL23Base):
     """Test module Loki-100G-5S-1P"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -100,7 +100,7 @@ class MLoki100G5S1P(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-100G-3S-1P")
-class MOdin100G3S1P(ModuleL23):
+class MOdin100G3S1P(ModuleL23Base):
     """Test module Odin-100G-3S-1P"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -115,7 +115,7 @@ class MOdin100G3S1P(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-5S-2P")
-class MLoki100G5S2P(ModuleL23):
+class MLoki100G5S2P(ModuleL23Base):
     """Test module Loki-100G-5S-2P"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)

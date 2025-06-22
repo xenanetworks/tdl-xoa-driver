@@ -11,6 +11,7 @@ from xoa_driver.internals.commands import (
     M_RESERVATION,
     M_RESERVEDBY,
     M_MEDIASUPPORT,
+    M_REVISION,
 )
 
 from xoa_driver.internals.utils import attributes as utils
@@ -91,10 +92,14 @@ class MediaInfo:
 class ModuleL23LocalState(ModuleLocalState):
     """L23 Module local state
     """
-    __slots__ = ("__media_info_list",)
+    __slots__ = (
+        "__media_info_list",
+        "revision"
+    )
 
     def __init__(self) -> None:
         self.__media_info_list: List["MediaInfo"] = []
+        self.revision: str = ""
 
     @property
     def media_info_list(self) -> List["MediaInfo"]:
@@ -117,12 +122,15 @@ class ModuleL23LocalState(ModuleLocalState):
             self.__media_info_list.append(mi)
 
     async def initiate(self, module) -> None:
-        m_support_resp, *_ = await asyncio.gather(
+        m_support_resp, m_rev, *_ = await asyncio.gather(
             M_MEDIASUPPORT(module._conn, module.module_id).get(),
+            M_REVISION(module._conn, module.module_id).get(),
             super().initiate(module)
         )
         self.media_info_list = m_support_resp.media_info_list
+        self.revision = m_rev.revision
 
     def register_subscriptions(self, module) -> None:
         super().register_subscriptions(module)
         module._conn.subscribe(M_MEDIASUPPORT, utils.Update(self, "media_info_list", "media_info_list", module._check_identity))
+        module._conn.subscribe(M_REVISION, utils.Update(self, "revision", "revision", module._check_identity))

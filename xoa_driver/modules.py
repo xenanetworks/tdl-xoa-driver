@@ -4,18 +4,16 @@ import sys
 if "xoa_driver.v2" in sys.modules:
     raise ImportError("\33[31mOnly Single interface version is allowed to being use at the same time.\33[0m")
 
-from .internals.hli_v1.modules.module_l23 import ModuleL23
-from .internals.hli_v1.modules.module_chimera import ModuleChimera
-from .internals.hli_v1.modules.module_l47 import ModuleL47
-
 import typing
 
 from .internals.hli_v1.modules.odin import *
 from .internals.hli_v1.modules.loki import *
 from .internals.hli_v1.modules.thor import *
 from .internals.hli_v1.modules.freya import *
+from .internals.hli_v1.modules.chimera import *
+from .internals.hli_v1.modules.vulcan import *
 
-GenericL23Module = typing.Union[
+GenericModuleL23 = typing.Union[
     "MOdin1G3S2PT",
     "MOdin1G3S6P",
     "MOdin1G3S6P_b",
@@ -106,17 +104,31 @@ GenericL23Module = typing.Union[
     "MFreya800G4S1POSFP_f_g2",
 ]
 
-GenericAnyModule = typing.Union[
+GenericModuleNE = typing.Union[
+    "MChi100G5S2P",
+    "MChi100G5S2P_b",
+    "MChi40G2S2P",
+]
+
+GenericModuleAny = typing.Union[
+    "ModuleL23Base",
+    "ModuleL47Base",
+    "ModuleNEBase",
+    
     "ModuleL47",
-    "ModuleChimera",
-    "GenericL23Module",
+    "GenericModuleNE",
+    "GenericModuleL23",
 ]
 
 __all__ = (
+    "ModuleL23Base",
+    "ModuleL47Base",
+    "ModuleNEBase",
+    
+    "GenericModuleAny",
+    "GenericModuleL23",
     "ModuleL47",
-    "ModuleChimera",
-    "GenericAnyModule",
-    "GenericL23Module",
+    
     "MOdin1G3S2PT",
     "MOdin1G3S6P",
     "MOdin1G3S6P_b",

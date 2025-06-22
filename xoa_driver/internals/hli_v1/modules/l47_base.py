@@ -278,8 +278,7 @@ class ModuleSystem:
         """
 
 
-@revisions.register_vulcan_module(rev="Xena L47 Module")
-class ModuleL47(bm.BaseModule["modules_state.ModuleLocalState"]):
+class ModuleL47Base(bm.BaseModule["modules_state.ModuleLocalState"]):
     """
     This is a conceptual class of L47 test module on a Vulcan tester.
     """
@@ -354,9 +353,9 @@ class ModuleL47(bm.BaseModule["modules_state.ModuleLocalState"]):
         :type: ~xoa_driver.internals.hli_v1.modules.module_l47.PacketEngine
         """
 
-        self.ports: pm.PortsManager[ports.PortL47] = pm.PortsManager(
+        self.ports: pm.PortsManager[ports.PortL47Base] = pm.PortsManager(
             conn=conn,
-            ports_type=ports.PortL47,
+            ports_type=ports.PortL47Base,
             module_id=self.module_id,
             ports_count=self.ports_count
         )

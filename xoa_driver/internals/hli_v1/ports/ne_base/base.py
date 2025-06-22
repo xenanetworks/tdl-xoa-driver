@@ -59,7 +59,7 @@ class PMAErrorInject:
         """
 
 
-class PortChimera(base_port.BasePort[ports_state.PortChimeraLocalState]):
+class PortNEBase(base_port.BasePort[ports_state.PortChimeraLocalState]):
     """Chimera port for traffic impairment."""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:

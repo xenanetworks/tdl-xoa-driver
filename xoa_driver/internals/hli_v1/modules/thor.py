@@ -6,12 +6,12 @@ from xoa_driver.internals.utils.managers import ports_manager as pm
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     import __interfaces as m_itf
-from .module_l23 import ModuleL23
+from .l23_base import ModuleL23Base
 
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-100G-5S-4P")
-class MThor100G5S4P(ModuleL23):
+class MThor100G5S4P(ModuleL23Base):
     """Test module Thor-100G-5S-4P"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -26,7 +26,7 @@ class MThor100G5S4P(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-400G-7S-1P")
-class MThor400G7S1P(ModuleL23):
+class MThor400G7S1P(ModuleL23Base):
     """Test module Thor-400G-7S-1P"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -40,7 +40,7 @@ class MThor400G7S1P(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-400G-7S-1P LE")
-class MThor400G7S1PLE(ModuleL23):
+class MThor400G7S1PLE(ModuleL23Base):
     """Test module Thor-400G-7S-1P LE"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -55,7 +55,7 @@ class MThor400G7S1PLE(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-400G-7S-1P[b]")
-class MThor400G7S1P_b(ModuleL23):
+class MThor400G7S1P_b(ModuleL23Base):
     """Test module Thor-400G-7S-1P[b]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -70,7 +70,7 @@ class MThor400G7S1P_b(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-400G-7S-1P[c]")
-class MThor400G7S1P_c(ModuleL23):
+class MThor400G7S1P_c(ModuleL23Base):
     """Test module Thor-400G-7S-1P[c]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
@@ -85,7 +85,7 @@ class MThor400G7S1P_c(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-400G-7S-1P[d]")
-class MThor400G7S1P_d(ModuleL23):
+class MThor400G7S1P_d(ModuleL23Base):
     """Test module Thor-400G-7S-1P[d]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)

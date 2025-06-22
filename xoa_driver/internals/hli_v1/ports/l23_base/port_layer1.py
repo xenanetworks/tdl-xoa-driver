@@ -32,6 +32,12 @@ class PhysicalCodingSublayer:
         :type: PcsPmaAlarms
         """
 
+        self.fec_mode = PP_FECMODE(conn, *port.kind)
+        """L23 port FEC mode.
+
+        :type: PP_FECMODE
+        """
+
         self.fec_rx_stats = FECStatistics(conn, *port.kind)
         """PCS/PMA RX
 

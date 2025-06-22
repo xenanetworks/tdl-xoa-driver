@@ -33,8 +33,8 @@ from xoa_driver.internals import exceptions
 
 TypeL23Manager = mm.ModulesManager[
     Union[
-        "modules.ModuleL23",
-        "modules.ModuleChimera",
+        "modules.ModuleL23Base",
+        "modules.ModuleNEBase",
     ]
 ]
 

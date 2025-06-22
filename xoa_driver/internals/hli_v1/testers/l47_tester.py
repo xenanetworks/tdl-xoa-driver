@@ -13,7 +13,7 @@ from xoa_driver.internals.utils.managers import modules_manager as mm
 from xoa_driver.internals.hli_v1 import revisions
 from xoa_driver.internals import exceptions
 if TYPE_CHECKING:
-    from xoa_driver.internals.hli_v1.modules import module_l47 as ml47
+    from xoa_driver.internals.hli_v1.modules import l47_base as ml47
 
 from xoa_driver.internals.state_storage import testers_state
 from ._base_tester import BaseTester
@@ -79,7 +79,7 @@ class L47Tester(BaseTester["testers_state.GenuineTesterLocalState"]):
         :type: ManagementInterface
         """
 
-        self.modules: mm.ModulesManager["ml47.ModuleL47"] = mm.ModulesManager(self._conn, get_module_type)
+        self.modules: mm.ModulesManager["ml47.ModuleL47Base"] = mm.ModulesManager(self._conn, get_module_type)
         """
         Module Index Manager of the tester.
 

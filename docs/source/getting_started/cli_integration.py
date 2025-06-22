@@ -107,7 +107,7 @@ async def cli_integration(chassis: str, username: str, port_str: str):
         # Release the module
         await mgmt.release_module(module_obj)
 
-        if isinstance(module_obj, modules.ModuleChimera):
+        if isinstance(module_obj, modules.ModuleNEBase):
             return None
         
         #######################################

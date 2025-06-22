@@ -318,7 +318,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.username
 
     # TX Clock Filter Loop Bandwidth
-    if not isinstance(module, modules.ModuleChimera):
+    if not isinstance(module, modules.ModuleNEBase):
         await module.advanced_timing.clock_tx.filter.set(filter_bandwidth=enums.LoopBandwidth.BW103HZ)
         await module.advanced_timing.clock_tx.filter.set_bw103hz()
         await module.advanced_timing.clock_tx.filter.set(filter_bandwidth=enums.LoopBandwidth.BW1683HZ)
@@ -334,7 +334,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         resp.filter_bandwidth
 
     # TX Clock Source
-    if not isinstance(module, modules.ModuleChimera):
+    if not isinstance(module, modules.ModuleNEBase):
         await module.advanced_timing.clock_tx.source.set(tx_clock=enums.TXClockSource.MODULELOCALCLOCK)
         await module.advanced_timing.clock_tx.source.set_modulelocalclock()
         await module.advanced_timing.clock_tx.source.set(tx_clock=enums.TXClockSource.P0RXCLK)
@@ -358,17 +358,17 @@ async def my_awesome_func(stop_event: asyncio.Event):
         resp.tx_clock
 
     # TX Clock Status
-    if not isinstance(module, modules.ModuleChimera):
+    if not isinstance(module, modules.ModuleNEBase):
         resp = await module.advanced_timing.clock_tx.status.get()
         resp.status
 
     # SMA Status
-    if not isinstance(module, modules.ModuleChimera):
+    if not isinstance(module, modules.ModuleNEBase):
         resp = await module.advanced_timing.sma.status.get()
         resp.status
 
     # SMA Input
-    if not isinstance(module, modules.ModuleChimera):
+    if not isinstance(module, modules.ModuleNEBase):
         await module.advanced_timing.sma.input.set(sma_in=enums.SMAInputFunction.NOT_USED)
         await module.advanced_timing.sma.input.set_notused()
         await module.advanced_timing.sma.input.set(sma_in=enums.SMAInputFunction.TX10MHZ)
@@ -380,7 +380,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         resp.sma_in
 
     # SMA Output
-    if not isinstance(module, modules.ModuleChimera):
+    if not isinstance(module, modules.ModuleNEBase):
         await module.advanced_timing.sma.output.set(sma_out=enums.SMAOutputFunction.DISABLED)
         await module.advanced_timing.sma.output.set_disabled()
         await module.advanced_timing.sma.output.set(sma_out=enums.SMAOutputFunction.P0RXCLK)
@@ -458,7 +458,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
 
     
     # Chimera - Bypass Mode
-    if isinstance(module, modules.ModuleChimera):
+    if isinstance(module, modules.ModuleNEBase):
         await module.emulator_bypass_mode.set(on_off=enums.OnOff.ON)
         await module.emulator_bypass_mode.set_on()
         await module.emulator_bypass_mode.set(on_off=enums.OnOff.OFF)
@@ -468,7 +468,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         resp.on_off
 
     # Chimera - Latency Mode
-    if isinstance(module, modules.ModuleChimera):
+    if isinstance(module, modules.ModuleNEBase):
         await module.latency_mode.set(mode=enums.ImpairmentLatencyMode.NORMAL)
         await module.latency_mode.set_normal()
         await module.latency_mode.set(mode=enums.ImpairmentLatencyMode.EXTENDED)
@@ -478,7 +478,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         resp.mode
 
     # Chimera - TX Clock Source
-    if isinstance(module, modules.ModuleChimera):
+    if isinstance(module, modules.ModuleNEBase):
         await module.tx_clock.source.set(tx_clock=enums.TXClockSource.MODULELOCALCLOCK)
         await module.tx_clock.source.set_modulelocalclock()
         await module.tx_clock.source.set(tx_clock=enums.TXClockSource.P0RXCLK)
@@ -502,7 +502,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         resp.tx_clock
 
     # Chimera - TX Clock Status
-    if isinstance(module, modules.ModuleChimera):
+    if isinstance(module, modules.ModuleNEBase):
         resp = await module.tx_clock.status.get()
         resp.status
     
@@ -518,7 +518,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
     # Reset
     await port.reset.set()
 
-    if isinstance(port, ports.PortChimera):
+    if isinstance(port, ports.PortNEBase):
         return
 
     # Flash
@@ -657,9 +657,9 @@ async def my_awesome_func(stop_event: asyncio.Event):
         print(f"Packet content # {i}: {resp.hex_data}")
 
     # Inter-frame Gap
-    await port.interframe_gap.set(min_byte_count=20)
+    await port.ifg.set(min_byte_count=20)
 
-    resp = await port.interframe_gap.get()
+    resp = await port.ifg.get()
     resp.min_byte_count
 
     # PAUSE Frames
@@ -826,11 +826,11 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.comment
 
     # Status
-    resp = await port.status.get()
+    resp = await port.power_rx.get()
     resp.optical_power
 
     # Latency Mode
-    if not isinstance(port, ports.PortChimera):
+    if not isinstance(port, ports.PortNEBase):
         await port.latency_config.mode.set(mode=enums.LatencyMode.FIRST2FIRST)
         await port.latency_config.mode.set_first2first()
         await port.latency_config.mode.set(mode=enums.LatencyMode.FIRST2LAST)
@@ -844,7 +844,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         resp.mode
 
     # Latency Offset
-    if not isinstance(port, ports.PortChimera):
+    if not isinstance(port, ports.PortNEBase):
         await port.latency_config.offset.set(offset=5)
 
         resp = await port.latency_config.offset.get()
@@ -2270,7 +2270,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
     #################################################
 
     # Configure Chimera port
-    if isinstance(module, modules.ModuleChimera):
+    if isinstance(module, modules.ModuleNEBase):
         port = module.ports.obtain(0)
 
         await port.pcs_pma.link_flap.params.set(duration=100, period=1000, repetition=0)

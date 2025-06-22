@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from xoa_driver.ports import GenericAnyPort
-from xoa_driver.modules import GenericAnyModule
+from xoa_driver.ports import GenericPortAny
+from xoa_driver.modules import GenericModuleAny
 
 
 class ConfigError(Exception):
@@ -15,21 +15,21 @@ class NotConnectedError(ConfigError):
 
 
 class NotSupportPcsPmaError(ConfigError):
-    def __init__(self, port: GenericAnyPort) -> None:
+    def __init__(self, port: GenericPortAny) -> None:
         module_id, port_id = port.kind.module_id, port.kind.port_id
         self.msg = f"This port {module_id}/{port_id} does not support pcs_pma!"
         super().__init__(self.msg)
 
 
 class NotSupportAutoNegError(ConfigError):
-    def __init__(self, port: GenericAnyPort) -> None:
+    def __init__(self, port: GenericPortAny) -> None:
         module_id, port_id = port.kind.module_id, port.kind.port_id
         self.msg = f"This port {module_id}/{port_id} does not support auto negotiation!"
         super().__init__(self.msg)
 
 
 class NotSupportLinkTrainError(ConfigError):
-    def __init__(self, port: GenericAnyPort) -> None:
+    def __init__(self, port: GenericPortAny) -> None:
         module_id, port_id = port.kind.module_id, port.kind.port_id
         self.msg = f"This port {module_id}/{port_id} does not support link training!"
         super().__init__(self.msg)
@@ -48,19 +48,19 @@ class NotRightLaneValueError(ConfigError):
 
 
 class NotSupportMedia(ConfigError):
-    def __init__(self, module: GenericAnyModule) -> None:
+    def __init__(self, module: GenericModuleAny) -> None:
         module_id = module.module_id
         self.msg = f"This module {module_id} does not support this media configuration!"
 
 
 class NotSupportPortSpeed(ConfigError):
-    def __init__(self, module: GenericAnyModule) -> None:
+    def __init__(self, module: GenericModuleAny) -> None:
         module_id = module.module_id
         self.msg = f"This module {module_id} does not support the port-speed configuration under its current media configuration!"
 
 
 class NotSupportMediaPortSpeed(ConfigError):
-    def __init__(self, module: GenericAnyModule) -> None:
+    def __init__(self, module: GenericModuleAny) -> None:
         module_id = module.module_id
         self.msg = f"This module {module_id} does not support this module configuration!"
 

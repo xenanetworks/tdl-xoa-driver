@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 import typing as t
 from xoa_driver import enums
 from xoa_driver.utils import apply
-from xoa_driver.ports import PortL23
+from xoa_driver.ports import PortL23Base
 from xoa_driver.lli import commands
 from xoa_driver.internals.core import interfaces as itf
 from xoa_driver.misc import Token
@@ -24,7 +24,7 @@ import asyncio
 
 @dataclass
 class DoAnlt:
-    port: PortL23
+    port: PortL23Base
     """port object"""
     should_do_an: bool
     """should the port do autoneg?"""
@@ -163,7 +163,7 @@ class DoAnlt:
 
 
 async def anlt_start(
-    port: PortL23,
+    port: PortL23Base,
     should_do_an: bool,
     should_do_lt: bool,
     an_allow_loopback: bool,
@@ -212,7 +212,7 @@ async def anlt_start(
     await anlt.run()
 
 
-async def autoneg_status(port: PortL23) -> dict[str, t.Any]:
+async def autoneg_status(port: PortL23Base) -> dict[str, t.Any]:
     """
     .. versionchanged:: 2.5
 
@@ -243,7 +243,7 @@ LinkTrainType = t.Union[
 
 
 async def __lt_coeff(
-    port: PortL23,
+    port: PortL23Base,
     serdes: int,
     arg: LinkTrainType,
     *,
@@ -262,7 +262,7 @@ async def __lt_coeff(
 
 
 async def lt_coeff_inc(
-    port: PortL23,
+    port: PortL23Base,
     serdes: int,
     emphasis: enums.LinkTrainCoeffs
 ) -> enums.LinkTrainCmdResults:
@@ -282,7 +282,7 @@ async def lt_coeff_inc(
 
 
 async def lt_coeff_dec(
-    port: PortL23,
+    port: PortL23Base,
     serdes: int,
     emphasis: enums.LinkTrainCoeffs
 ) -> enums.LinkTrainCmdResults:
@@ -302,7 +302,7 @@ async def lt_coeff_dec(
 
 
 async def lt_coeff_no_eq(
-    port: PortL23,
+    port: PortL23Base,
     serdes: int,
     emphasis: enums.LinkTrainCoeffs
 ) -> enums.LinkTrainCmdResults:
@@ -323,7 +323,7 @@ async def lt_coeff_no_eq(
 
 
 async def lt_preset(
-    port: PortL23,
+    port: PortL23Base,
     serdes: int,
     preset: enums.LinkTrainPresets
 ) -> enums.LinkTrainCmdResults:
@@ -343,7 +343,7 @@ async def lt_preset(
 
 
 async def lt_encoding(
-    port: PortL23,
+    port: PortL23Base,
     serdes: int,
     encoding: enums.LinkTrainEncoding
 ) -> enums.LinkTrainCmdResults:
@@ -362,7 +362,7 @@ async def lt_encoding(
     return await __lt_coeff(port, serdes, encoding, cmd=enums.LinkTrainCmd.CMD_ENCODING)
 
 
-async def lt_trained(port: PortL23, serdes: int) -> enums.LinkTrainCmdResults:
+async def lt_trained(port: PortL23Base, serdes: int) -> enums.LinkTrainCmdResults:
     """
     Tell the remote port that the current serdes is trained.
 
@@ -381,7 +381,7 @@ async def lt_trained(port: PortL23, serdes: int) -> enums.LinkTrainCmdResults:
     )
 
 
-async def lt_status(port: PortL23, serdes: int) -> dict[str, t.Any]:
+async def lt_status(port: PortL23Base, serdes: int) -> dict[str, t.Any]:
     """
     .. versionchanged:: 2.5
 
@@ -413,7 +413,7 @@ async def lt_status(port: PortL23, serdes: int) -> dict[str, t.Any]:
     )
 
 
-async def txtap_get(port: PortL23, serdes: int) -> dict[str, int]:
+async def txtap_get(port: PortL23Base, serdes: int) -> dict[str, int]:
     """
     Get the tap value of the local TX tap.
 
@@ -430,7 +430,7 @@ async def txtap_get(port: PortL23, serdes: int) -> dict[str, int]:
 
 
 async def txtap_set(
-    port: PortL23,
+    port: PortL23Base,
     serdes: int,
     pre3: int,
     pre2: int,
@@ -470,7 +470,7 @@ async def txtap_set(
     )
 
 
-async def anlt_link_recovery(port: PortL23, restart_link_down: bool, restart_lt_failure: bool) -> None:
+async def anlt_link_recovery(port: PortL23Base, restart_link_down: bool, restart_lt_failure: bool) -> None:
     """
     This command manages the auto-restart features.
 
@@ -495,7 +495,7 @@ async def anlt_link_recovery(port: PortL23, restart_link_down: bool, restart_lt_
     await cmd_.set(values=[param])
 
 
-async def anlt_status(port: PortL23) -> dict[str, t.Any]:
+async def anlt_status(port: PortL23Base) -> dict[str, t.Any]:
     """
     .. versionchanged:: 2.5
 
@@ -523,7 +523,7 @@ async def anlt_status(port: PortL23) -> dict[str, t.Any]:
     return dictionize_anlt_status(_link_recovery, _anlt_op, _linktrain_cfg, _capabilities, _allow_loopback)
 
 
-async def anlt_log(port: PortL23) -> str:
+async def anlt_log(port: PortL23Base) -> str:
     """
     Get the anlt log messages
 
@@ -537,7 +537,7 @@ async def anlt_log(port: PortL23) -> str:
     return log.log_string
 
 
-async def anlt_stop(port: PortL23) -> None:
+async def anlt_stop(port: PortL23Base) -> None:
     """
     .. versionchanged:: 2.5
 
@@ -554,7 +554,7 @@ async def anlt_stop(port: PortL23) -> None:
         )
 
 
-async def txtap_autotune(port: PortL23, serdes: int) -> None:
+async def txtap_autotune(port: PortL23Base, serdes: int) -> None:
     """
     Auto tune the tap value of the local TX tap.
 
@@ -571,7 +571,7 @@ async def txtap_autotune(port: PortL23, serdes: int) -> None:
     await phy_autotune.set(on_off=enums.OnOff.ON)
 
 
-async def lt_im_status(port: PortL23) -> dict[str, t.Any]:
+async def lt_im_status(port: PortL23Base) -> dict[str, t.Any]:
     """
     Get LT initial modulation config
 
@@ -593,7 +593,7 @@ async def lt_im_status(port: PortL23) -> dict[str, t.Any]:
     return dictionize_lt_im_status(capabilities, initial_mods)
 
 
-async def lt_algorithm_status(port: PortL23) -> dict[str, t.Any]:
+async def lt_algorithm_status(port: PortL23Base) -> dict[str, t.Any]:
     """
     Get LT initial modulation config
 
@@ -615,7 +615,7 @@ async def lt_algorithm_status(port: PortL23) -> dict[str, t.Any]:
     return dictionize_lt_algorithm_status(capabilities, algorithms)
 
 
-async def anlt_strict(port: PortL23, enable: bool) -> None:
+async def anlt_strict(port: PortL23Base, enable: bool) -> None:
     """
     Should ANLT strict mode be enabled
 
@@ -639,7 +639,7 @@ async def anlt_strict(port: PortL23, enable: bool) -> None:
         ).set(values=[param])
 
 
-async def anlt_log_control(port: PortL23, types: t.List[enums.AnLtLogControl]) -> None:
+async def anlt_log_control(port: PortL23Base, types: t.List[enums.AnLtLogControl]) -> None:
     """
     Control what should be logged for ANLT by xenaserver
 
@@ -665,7 +665,7 @@ async def anlt_log_control(port: PortL23, types: t.List[enums.AnLtLogControl]) -
             enums.Layer1ConfigType.ANLT_LOG_CONTROL
         ).set(values=[param])
 
-async def anlt_log_control_get(port: PortL23) -> dict[str, bool]:
+async def anlt_log_control_get(port: PortL23Base) -> dict[str, bool]:
     """
     Get ANLT log control config
 
