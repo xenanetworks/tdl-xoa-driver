@@ -9,7 +9,7 @@ if typing.TYPE_CHECKING:
 from .l47_base import ModuleL47Base
 
 @revisions.register_vulcan_module(rev="Xena L47 Module")
-class ModuleL47(ModuleL47Base):
+class MVulcan(ModuleL47Base):
     """Test module Xena L47 Module"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)

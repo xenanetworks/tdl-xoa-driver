@@ -10,6 +10,7 @@ from .internals.hli.modules.chimera import *
 from .internals.hli.modules.vulcan import *
 
 GenericModuleL23 = typing.Union[
+    "ModuleL23Base",
     "MOdin1G3S2PT",
     "MOdin1G3S6P",
     "MOdin1G3S6P_b",
@@ -101,6 +102,7 @@ GenericModuleL23 = typing.Union[
 ]
 
 GenericModuleNE = typing.Union[
+    "ModuleNEBase",
     "MChi100G5S2P",
     "MChi100G5S2P_b",
     "MChi40G2S2P",
@@ -111,7 +113,7 @@ GenericModuleAny = typing.Union[
     "ModuleL47Base",
     "ModuleNEBase",
     
-    "ModuleL47",
+    "MVulcan",
     "GenericModuleNE",
     "GenericModuleL23",
 ]
@@ -120,10 +122,6 @@ __all__ = (
     "ModuleL23Base",
     "ModuleL47Base",
     "ModuleNEBase",
-    
-    "GenericModuleAny",
-    "GenericModuleL23",
-    "ModuleL47",
     
     "MOdin1G3S2PT",
     "MOdin1G3S6P",
@@ -213,4 +211,13 @@ __all__ = (
     "MFreya800G4S1POSFP_d_g2",
     "MFreya800G4S1POSFP_e_g2",
     "MFreya800G4S1POSFP_f_g2",
+
+    "MChi100G5S2P",
+    "MChi100G5S2P_b",
+    "MChi40G2S2P",
+
+    "MVulcan",
+
+    "GenericModuleAny",
+    "GenericModuleL23",
 )
