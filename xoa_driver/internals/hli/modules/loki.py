@@ -99,21 +99,6 @@ class MLoki100G5S1P(ModuleL23Base):
 
 
 @typing.final
-@revisions.register_valkyrie_module(rev="Odin-100G-3S-1P")
-class MOdin100G3S1P(ModuleL23Base):
-    """Test module Odin-100G-3S-1P"""
-    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
-        super().__init__(conn, init_data)
-        self.ports: pm.PortsManager[ports.POdin100G3S1P] = pm.PortsManager(
-            conn=conn,
-            ports_type=ports.POdin100G3S1P,
-            module_id=self.module_id,
-            ports_count=self.ports_count
-        )
-        """Port Index Manager of Odin-100G-3S-1P"""
-
-
-@typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-5S-2P")
 class MLoki100G5S2P(ModuleL23Base):
     """Test module Loki-100G-5S-2P"""

@@ -6,8 +6,8 @@ from .internals.hli.testers.l47_tester import L47Tester
 import typing
 
 GenericTesterAny = typing.Union[
-    "L23Tester",
-    "L47Tester",
+    L23Tester,
+    L47Tester,
 ]
 
 __all__ = (

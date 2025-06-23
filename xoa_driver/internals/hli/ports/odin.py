@@ -146,3 +146,8 @@ class POdin10G4S2PCombi_b(PortL23Base):
     """L23 port on Odin-10G-4S-2P-Combi_b module.
     """
     ...
+
+class POdin100G3S1P(PortL23Base):
+    """L23 port on Odin-100G-3S-1P module.
+    """
+    ...
