@@ -2,7 +2,7 @@ import warnings
 from functools import partial
 
 __all__ = (
-    "depricated",
+    "deprecated",
     "resource"
 )
 
@@ -28,5 +28,5 @@ def formatter(message, category, filename, lineno, *_) -> str:
 warnings.formatwarning = formatter
 
 
-depricated = partial(warnings.warn, category=XoaDeprecationWarning)
-resource = partial(warnings.warn, category=XoaResourceWarning)
+deprecated = partial(warnings.warn, stacklevel=2, category=XoaDeprecationWarning)
+resource = partial(warnings.warn, stacklevel=2, category=XoaResourceWarning)
