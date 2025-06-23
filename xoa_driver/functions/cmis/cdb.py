@@ -8,7 +8,6 @@ from contextlib import suppress
 from xoa_driver import exceptions
 import json
 
-
 # CMD 0000h: Query Status
 class CMD0000hQueryStatusReply:
     """REPLY message of CMD 0000h Query Status
@@ -1976,12 +1975,6 @@ async def cmd_custom_cmd_request(port: Z800FreyaPort, cdb_instance: int, cmd_id:
 
 
 
-        
-async def cdb_instances_supported_reply(port: Z800FreyaPort) -> int:
-    resp = await port.transceiver.cmis.cdb_instances_supported.get()
-    return resp.reply["cdb_instances_supported"]
-
-
 async def firmware_download_procedure(port: Z800FreyaPort, cdb_instance: int, firmware_file: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
     """Specified in **OIF-CMIS-05.3**
 
@@ -2012,7 +2005,7 @@ async def firmware_download_procedure(port: Z800FreyaPort, cdb_instance: int, fi
     :param use_abort_for_failure: should the procedure use CMD 0102h Abort Firmware Download to abort the firmware download on failure.
     :type use_abort_for_failure: bool
     """
-    cdb_instances_supported = await cdb_instances_supported_reply(port)
+    cdb_instances_supported = await _cdb_instances_supported_reply(port)
     # Check if the specified CDB instance is supported
     if cdb_instance >= cdb_instances_supported:
         print(f"CDB instance {cdb_instance} is not supported. Only {cdb_instances_supported} CDB instances are supported.")
@@ -2053,6 +2046,11 @@ async def firmware_download_procedure(port: Z800FreyaPort, cdb_instance: int, fi
 ##################
 # Helper functions
 ##################
+
+async def _cdb_instances_supported_reply(port: Z800FreyaPort) -> int:
+    resp = await port.transceiver.cmis.cdb_instances_supported.get()
+    return resp.reply["cdb_instances_supported"]
+
 async def __write_data_block_loop(port: Z800FreyaPort, cdb_instance: int, firmware_filename: str, firmware_header_size: int, erased_byte: str, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
     """Write data block loop
 

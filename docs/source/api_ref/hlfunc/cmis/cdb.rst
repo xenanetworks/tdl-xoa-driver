@@ -278,4 +278,4 @@ CMD 8000h-FFFFh: Custom Command
 CMIS Firmware Download Procedure using CDB
 ------------------------------------------------
 
-.. autofunction:: start_firmware_update
+.. autofunction:: firmware_download_procedure
