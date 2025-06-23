@@ -16,7 +16,6 @@ from xoa_driver.internals.commands import enums
 
 from xoa_driver.internals.utils import attributes as utils
 from ._speed_detector import SpeedDetector
-from ..hli.ports.l23_base.base import PortL23Base
 
 
 class PortLocalState:
