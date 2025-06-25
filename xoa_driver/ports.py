@@ -81,7 +81,7 @@ from xoa_driver.internals.hli.ports.vulcan import (
     PVulcan28PE40G,
 )
 
-GenericPortL23 = typing.Union[
+GenericL23Port = typing.Union[
     "PortL23Base",
     "POdin1G3S2PT",
     "POdin1G3S6P",
@@ -143,14 +143,14 @@ GenericPortL23 = typing.Union[
     "PFreya800G4S1POSFP_f",
 ]
 
-GenericPortNE = typing.Union[
+GenericNEPort = typing.Union[
     "PortNEBase",
     "PChi100G5S2P",
     "PChi100G5S2P_b",
     "PChi40G2S2P",
 ]
 
-GenericPortL47 = typing.Union[
+GenericL47Port = typing.Union[
     "PortL47Base",
     "PVulcan28PE10G",
     "PVulcan28PE10GCU",
@@ -158,24 +158,19 @@ GenericPortL47 = typing.Union[
     "PVulcan28PE40G",
 ]
 
-GenericPortAny = typing.Union[
+GenericAnyPort = typing.Union[
     "PortL23Base",
     "PortL47Base",
     "PortNEBase",
-    "GenericPortL23",
-    "GenericPortNE",
-    "GenericPortL47",
+    "GenericL23Port",
+    "GenericNEPort",
+    "GenericL47Port",
 ]
 
 __all__ = (
     "PortL23Base",
     "PortL47Base",
     "PortNEBase",
-
-    "GenericPortAny",
-    "GenericPortL23",
-    "GenericPortNE",
-    "GenericPortL47",
     
     "POdin1G3S2PT",
     "POdin1G3S6P",
@@ -245,8 +240,8 @@ __all__ = (
     "PVulcan28PE25G",
     "PVulcan28PE40G",
 
-    "GenericPortL23",
-    "GenericPortNE",
-    "GenericPortL47",
-    "GenericPortAny",
+    "GenericL23Port",
+    "GenericNEPort",
+    "GenericL47Port",
+    "GenericAnyPort",
 )

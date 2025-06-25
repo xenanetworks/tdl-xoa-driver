@@ -1,13 +1,13 @@
 from __future__ import annotations
 from typing import Any
 
-from xoa_driver.ports import GenericPortAny
+from xoa_driver.ports import GenericAnyPort
 from xoa_driver.internals.core import interfaces as itf
 from xoa_driver.lli import commands
 from xoa_driver import enums
 
 
-def get_ctx(port: GenericPortAny) -> tuple["itf.IConnection", int, int]:
+def get_ctx(port: GenericAnyPort) -> tuple["itf.IConnection", int, int]:
     kind0, kind1 = port.kind
     return (port._conn, kind0, kind1)
 

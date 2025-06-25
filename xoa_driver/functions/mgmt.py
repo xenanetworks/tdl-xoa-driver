@@ -364,7 +364,7 @@ async def get_module_cage_insertion_count(module: ModuleL23Base, cage_index: int
 # region Ports
 
 
-def get_all_ports(tester: GenericTesterAny) -> tuple[GenericPortAny, ...]:
+def get_all_ports(tester: GenericTesterAny) -> tuple[GenericAnyPort, ...]:
     """
     Get all ports of the tester
 
@@ -377,7 +377,7 @@ def get_all_ports(tester: GenericTesterAny) -> tuple[GenericPortAny, ...]:
     return tuple(chain.from_iterable(all_ports_))
 
 
-def get_ports(tester: GenericTesterAny, module_id: int) -> tuple[GenericPortAny, ...]:
+def get_ports(tester: GenericTesterAny, module_id: int) -> tuple[GenericAnyPort, ...]:
     """
     Get all ports of the module
 
@@ -392,7 +392,7 @@ def get_ports(tester: GenericTesterAny, module_id: int) -> tuple[GenericPortAny,
     return tuple(module.ports)
 
 
-def get_port(tester: GenericTesterAny, module_id: int, port_id: int) -> GenericPortAny:
+def get_port(tester: GenericTesterAny, module_id: int, port_id: int) -> GenericAnyPort:
     """
     Get a port of the module
 
@@ -410,7 +410,7 @@ def get_port(tester: GenericTesterAny, module_id: int, port_id: int) -> GenericP
     return module.ports.obtain(port_id)
 
 
-async def reserve_port(port: GenericPortAny, force: bool = True, reset: bool = False) -> None:
+async def reserve_port(port: GenericAnyPort, force: bool = True, reset: bool = False) -> None:
     """
     Reserve a port regardless whether it is owned by others or not.
 
@@ -433,7 +433,7 @@ async def reserve_port(port: GenericPortAny, force: bool = True, reset: bool = F
         await port.reset.set()
 
 
-async def release_port(port: GenericPortAny) -> None:
+async def release_port(port: GenericAnyPort) -> None:
     """
     Free a port. If the port is reserved by you, release the port. If the port is reserved by others, relinquish the port. The port should have no owner afterwards.
 
@@ -449,7 +449,7 @@ async def release_port(port: GenericPortAny) -> None:
         await port.reservation.set_release()
 
 
-async def release_ports(*ports: GenericPortAny) -> None:
+async def release_ports(*ports: GenericAnyPort) -> None:
     """
     Free a list of ports. If the port is reserved by you, release the port. If the port is reserved by others, relinquish the port. The port should have no owner afterwards.
 

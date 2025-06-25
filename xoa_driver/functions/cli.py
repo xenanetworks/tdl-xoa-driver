@@ -9,7 +9,7 @@ from xoa_driver.internals import commands
 from xoa_driver import enums
 from xoa_driver.testers import GenericTesterAny
 from xoa_driver.modules import GenericModuleAny
-from xoa_driver.ports import GenericPortAny
+from xoa_driver.ports import GenericAnyPort
 from xoa_driver.misc import ArpChunk, NdpChunk
 from xoa_driver.utils import apply_iter
 from xoa_driver.internals.core.token import Token
@@ -464,7 +464,7 @@ read_commands_from_file = CLIConverter.read_commands_from_file
 read_commands_from_string = CLIConverter.read_commands_from_string
 
 
-def upload_config_from(obj: GenericTesterAny | GenericModuleAny | GenericPortAny, long_str: str,
+def upload_config_from(obj: GenericTesterAny | GenericModuleAny | GenericAnyPort, long_str: str,
                        is_file: bool, mode: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> t.Generator[Token, None, None]:
     func = read_commands_from_file if is_file else read_commands_from_string
     for command in func(long_str, comment_start):
@@ -482,7 +482,7 @@ def upload_config_from(obj: GenericTesterAny | GenericModuleAny | GenericPortAny
         yield Token(obj._conn, request)
 
 
-async def _helper(obj: GenericTesterAny | GenericModuleAny | GenericPortAny, long_str: str, is_file: bool, mode: str, comment_start: tuple[str, ...]) -> None:
+async def _helper(obj: GenericTesterAny | GenericModuleAny | GenericAnyPort, long_str: str, is_file: bool, mode: str, comment_start: tuple[str, ...]) -> None:
     async for f in apply_iter(*upload_config_from(obj, long_str, is_file, mode, comment_start), return_exceptions=True):
         pass
 
@@ -541,7 +541,7 @@ async def module_config_from_file(module: GenericModuleAny, path: str, comment_s
     await _helper(module, path, True, "M", comment_start)
 
 
-async def port_config_from_string(port: GenericPortAny, long_str: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
+async def port_config_from_string(port: GenericAnyPort, long_str: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
     """Send port configuration from a string. The CLI commands must all start with `P_` prefix.
 
     :param port: the port object
@@ -555,7 +555,7 @@ async def port_config_from_string(port: GenericPortAny, long_str: str, comment_s
     await _helper(port, long_str, False, "P", comment_start)
 
 
-async def port_config_from_file(port: GenericPortAny, path: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
+async def port_config_from_file(port: GenericAnyPort, path: str, comment_start: tuple[str, ...] = (";", "#", "//")) -> None:
     """Send port configuration from a port configuration file (.xpc file).
 
     :param port: the port object
