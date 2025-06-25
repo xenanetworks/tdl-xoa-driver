@@ -18,7 +18,7 @@ import json
 
 
 # region Testers
-async def reserve_tester(tester: GenericTesterAny, force: bool = True) -> None:
+async def reserve_tester(tester: GenericAnyTester, force: bool = True) -> None:
     """
     Reserve a tester regardless whether it is owned by others or not.
 
@@ -39,7 +39,7 @@ async def reserve_tester(tester: GenericTesterAny, force: bool = True) -> None:
 
 
 async def release_tester(
-        tester: GenericTesterAny, 
+        tester: GenericAnyTester, 
         should_release_modules_ports: bool = False,
         ) -> None:
     """
@@ -83,7 +83,7 @@ async def get_chassis_sys_uptime_sec(tester: L23Tester) -> int:
 # region Modules
 
 
-def get_module(tester: GenericTesterAny, module_id: int) -> GenericModuleAny:
+def get_module(tester: GenericAnyTester, module_id: int) -> GenericAnyModule:
     """
     Get a module object of the tester.
 
@@ -98,7 +98,7 @@ def get_module(tester: GenericTesterAny, module_id: int) -> GenericModuleAny:
     return tester.modules.obtain(module_id)
 
 
-def get_modules(tester: GenericTesterAny) -> tuple[GenericModuleAny, ...]:
+def get_modules(tester: GenericAnyTester) -> tuple[GenericAnyModule, ...]:
     """
     Get all modules of the tester
 
@@ -110,7 +110,7 @@ def get_modules(tester: GenericTesterAny) -> tuple[GenericModuleAny, ...]:
     return tuple(tester.modules)
 
 
-async def reserve_module(module: GenericModuleAny, force: bool = True) -> None:
+async def reserve_module(module: GenericAnyModule, force: bool = True) -> None:
     """
     Reserve a module regardless whether it is owned by others or not.
 
@@ -130,7 +130,7 @@ async def reserve_module(module: GenericModuleAny, force: bool = True) -> None:
 
 
 async def release_module(
-    module: GenericModuleAny, should_release_ports: bool = False
+    module: GenericAnyModule, should_release_ports: bool = False
 ) -> None:
     """
     Free a module. If the module is reserved by you, release the module. If the module is reserved by others, relinquish the module. The module should have no owner afterwards.
@@ -305,7 +305,7 @@ async def set_module_config(
     raise NotSupportMediaPortSpeed(module)
 
 
-async def get_module_eol_date(module: GenericModuleAny) -> str:
+async def get_module_eol_date(module: GenericAnyModule) -> str:
     """
     Get module's End-of-Life date
 
@@ -319,7 +319,7 @@ async def get_module_eol_date(module: GenericModuleAny) -> str:
     return MODULE_EOL_INFO.get(module_key, "2999-01-01")
 
 
-async def get_module_eol_days(module: GenericModuleAny) -> int:
+async def get_module_eol_days(module: GenericAnyModule) -> int:
     """
     Get days until module's End-of-Life date
 
@@ -364,7 +364,7 @@ async def get_module_cage_insertion_count(module: ModuleL23Base, cage_index: int
 # region Ports
 
 
-def get_all_ports(tester: GenericTesterAny) -> tuple[GenericAnyPort, ...]:
+def get_all_ports(tester: GenericAnyTester) -> tuple[GenericAnyPort, ...]:
     """
     Get all ports of the tester
 
@@ -377,7 +377,7 @@ def get_all_ports(tester: GenericTesterAny) -> tuple[GenericAnyPort, ...]:
     return tuple(chain.from_iterable(all_ports_))
 
 
-def get_ports(tester: GenericTesterAny, module_id: int) -> tuple[GenericAnyPort, ...]:
+def get_ports(tester: GenericAnyTester, module_id: int) -> tuple[GenericAnyPort, ...]:
     """
     Get all ports of the module
 
@@ -392,7 +392,7 @@ def get_ports(tester: GenericTesterAny, module_id: int) -> tuple[GenericAnyPort,
     return tuple(module.ports)
 
 
-def get_port(tester: GenericTesterAny, module_id: int, port_id: int) -> GenericAnyPort:
+def get_port(tester: GenericAnyTester, module_id: int, port_id: int) -> GenericAnyPort:
     """
     Get a port of the module
 

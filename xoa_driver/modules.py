@@ -107,7 +107,7 @@ from .internals.hli.modules.vulcan import (
     MVulcan,
 )
 
-GenericModuleL23 = typing.Union[
+GenericL23Module = typing.Union[
     ModuleL23Base,
     MOdin1G3S2PT,
     MOdin1G3S6P,
@@ -199,21 +199,21 @@ GenericModuleL23 = typing.Union[
     MFreya800G4S1POSFP_f_g2,
 ]
 
-GenericModuleNE = typing.Union[
+GenericNEModule = typing.Union[
     ModuleNEBase,
     MChi100G5S2P,
     MChi100G5S2P_b,
     MChi40G2S2P,
 ]
 
-GenericModuleAny = typing.Union[
+GenericAnyModule = typing.Union[
     ModuleL23Base,
     ModuleL47Base,
     ModuleNEBase,
     
     MVulcan,
-    GenericModuleNE,
-    GenericModuleL23,
+    GenericNEModule,
+    GenericL23Module,
 ]
 
 __all__ = (
@@ -316,7 +316,7 @@ __all__ = (
 
     "MVulcan",
 
-    "GenericModuleL23",
-    "GenericModuleNE",
-    "GenericModuleAny",
+    "GenericL23Module",
+    "GenericNEModule",
+    "GenericAnyModule",
 )
