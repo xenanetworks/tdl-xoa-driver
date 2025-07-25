@@ -9,8 +9,10 @@ def check_cdb_status(cdb_status: str) -> CdbCommandCoarseStatus:
         return CdbCommandCoarseStatus.IN_PROGRESS
     elif cdb_status_int & 0xC0 == 0x40:
         return CdbCommandCoarseStatus.FAILED
-    elif cdb_status_int & 0xC0 == 0x00:
+    elif cdb_status_int & 0x01 == 0x01:
         return CdbCommandCoarseStatus.SUCCESS
+    elif cdb_status_int == 0x00:
+        return CdbCommandCoarseStatus.NA
     else:
         raise ValueError(f"Invalid CDB status: {cdb_status}")
     

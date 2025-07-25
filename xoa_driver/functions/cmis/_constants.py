@@ -19,6 +19,7 @@ class CdbCommandCoarseStatus(IntEnum):
 
     Coarse query results that are encoded by the pair of bit 7 (CdbIsBusy) and bit 6 (CdbHasFailed).
     """
-    SUCCESS = 0x00
+    NA          = 0x00
+    SUCCESS     = 0x01
     IN_PROGRESS = 0x80
-    FAILED = 0x40
+    FAILED      = 0x40
