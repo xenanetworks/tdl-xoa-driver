@@ -61,4 +61,4 @@ class MatchTermIdx(BaseIndex):
     @classmethod
     async def _new(cls: Type[MT], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> MT:
         await PM_CREATE(conn, *kind).set()
-        return cls(conn, kind, observer)
+        return cls(conn, kind, observer) # type: ignore

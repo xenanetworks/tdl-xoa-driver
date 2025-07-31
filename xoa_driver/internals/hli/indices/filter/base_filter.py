@@ -62,4 +62,4 @@ class BaseFilterIdx(BaseIndex):
     @classmethod
     async def _new(cls: Type[FT], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> FT:
         await PF_CREATE(conn, *kind).set()
-        return cls(conn, kind, observer)
+        return cls(conn, kind, observer) # type: ignore

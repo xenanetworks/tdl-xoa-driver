@@ -46,4 +46,4 @@ class LengthTermIdx(BaseIndex):
     @classmethod
     async def _new(cls: Type[LT], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> LT:
         await PL_CREATE(conn, *kind).set()
-        return cls(conn, kind, observer)
+        return cls(conn, kind, observer) # type: ignore

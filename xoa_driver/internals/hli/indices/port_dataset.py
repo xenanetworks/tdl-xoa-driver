@@ -69,4 +69,4 @@ class PortDatasetIdx(BaseIndex):
     @classmethod
     async def _new(cls: Type[PD], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> PD:
         await PD_CREATE(conn, *kind).set()
-        return cls(conn, kind, observer)
+        return cls(conn, kind, observer) # type: ignore

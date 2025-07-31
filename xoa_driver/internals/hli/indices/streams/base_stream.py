@@ -401,5 +401,5 @@ class BaseStreamIdx(BaseIndex):
     @classmethod
     async def _new(cls: Type[BS], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> BS:
         await PS_CREATE(conn, *kind).set()
-        return cls(conn, kind, observer)
+        return cls(conn, kind, observer) # type: ignore
 

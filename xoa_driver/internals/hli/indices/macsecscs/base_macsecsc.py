@@ -190,7 +190,7 @@ class BaseMacSecTxScIdx(BaseIndex):
     @classmethod
     async def _new(cls: Type[BS], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> BS:
         await P_MACSEC_TXSC_CREATE(conn, *kind).set()
-        return cls(conn, kind, observer)
+        return cls(conn, kind, observer) # type: ignore
 
 
 class BaseMacSecRxScIdx(BaseIndex):
@@ -221,4 +221,4 @@ class BaseMacSecRxScIdx(BaseIndex):
     @classmethod
     async def _new(cls: Type[BS], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> BS:
         await P_MACSEC_RXSC_CREATE(conn, *kind).set()
-        return cls(conn, kind, observer)
+        return cls(conn, kind, observer) # type: ignore
