@@ -31,7 +31,7 @@ Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_com
     resp.offset
 
 
-Byte Count
+CDF Count
 -------------------------
 This command is part of the Custom Data Field (CDF) feature. It controls the
 number of custom data fields available for each stream. You can set a different number
