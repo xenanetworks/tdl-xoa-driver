@@ -34,6 +34,15 @@ class CMD0000hQueryStatusReply:
         * ``01 000101b``: CdbChkCode error
 
         """
+        
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
         self.status: str = reply["status"]
         """hex string
 
@@ -106,6 +115,14 @@ class CMD0001hEnterPasswordReply:
 
         """
 
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
 async def cmd_0001h_enter_password_cmd(port: Z800FreyaPort, cdb_instance: int, password: str) -> None:
     """Send CMD 0001h Enter Password
 
@@ -170,6 +187,14 @@ class CMD0002hChangePasswordReply:
 
         """
 
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
 async def cmd_0002h_change_password_cmd(port: Z800FreyaPort, cdb_instance: int, new_password: str) -> None:
     """Send CMD 0002h Change Password
 
@@ -231,6 +256,14 @@ class CMD0004hAbortProcessingReply:
 
         """
 
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
 async def cmd_0004h_abort_processing_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
     """Send CMD 0004h Abort Processing
 
@@ -286,6 +319,15 @@ class CMD0040hModuleFeaturesReply:
             * ``01 000101b``: CdbChkCode error
 
         """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
         self.cmd_support_0000h_0007h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][2:4]
         """Support mask for CMD 0000h to CMD 0007h"""
         self.cmd_support_0008h_000fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][4:6]
@@ -410,6 +452,15 @@ class CMD0041hFirmwareManagementFeaturesReply:
             * ``01 000101b``: CdbChkCode error
 
         """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
         self.image_readback: int = 1 if int(reply["feature_support_mask"], 16) & 0x80 else 0
         """
         * 0b = Full Image Readback Not Supported
@@ -565,6 +616,15 @@ class CMD0044hSecFeaturesAndCapabilitiesReply:
             * ``01 000101b``: CdbChkCode error
 
         """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
         self.cmd_support_0400h_0407h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][2:4]
         """
         CMD 0400h-0407h support.
@@ -799,6 +859,15 @@ class CMD0045hExternallyDefinedFeaturesReply:
             * ``01 000101b``: CdbChkCode error
 
         """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
         self.supplement_support: str = reply["supplement_support"]
         """Bit 0 = 0/1: CMIS-VCS not supported/supported
         """
@@ -863,6 +932,15 @@ class CMD0050hGetApplicationAttributesReply:
             * ``01 000101b``: CdbChkCode error
 
         """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
         self.application_number: int = reply["application_number"]
         """integer, U16 Application number. 
         
@@ -968,6 +1046,15 @@ class CMD0051hGetInterfaceCodeDescriptionReply:
             * ``01 000101b``: CdbChkCode error
 
         """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
         self.interface_id: str = reply["interface_id"]
         """hex string, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
         """
@@ -1049,6 +1136,15 @@ class CMD0100hGetFirmwareInfoReply:
         """
         hex string, provides the status of the most recently triggered CDB command.
         """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
         self.firmware_status: int = reply["firmware_status"]
         """
         integer, Firmware Status.
@@ -1179,7 +1275,15 @@ class CMD0101hStartFirmwareDownloadReply:
             * ``01 000010b``: Parameter range error or not supported
             * ``01 000101b``: CdbChkCode error
 
-        """ 
+        """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
 
 async def cmd_0101h_start_firmware_download_cmd(port: Z800FreyaPort, cdb_instance: int, image_size: int, vendor_data: str) -> None:
     """Send CMD 0101h Start Firmware Download
@@ -1251,6 +1355,14 @@ class CMD0102hAbortFirmwareDownloadReply:
 
         """
 
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
 async def cmd_0102h_abort_firmware_download_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
     """Send CMD 0102h Abort Firmware Download
 
@@ -1310,6 +1422,14 @@ class CMD0103hWriteFirmwareBlockLPLReply:
             * ``01 000000b``: Failed, no specific failure
             * ``01 000010b``: Parameter range error or not supported
             * ``01 000101b``: CdbChkCode error
+
+        """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
 
         """
 
@@ -1383,6 +1503,14 @@ class CMD0104hWriteFirmwareBlockEPLReply:
 
         """
 
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
 async def cmd_0104h_write_firmware_block_epl_cmd(port: Z800FreyaPort, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
     """Send CMD 0104h Write Firmware Block EPL
 
@@ -1451,6 +1579,13 @@ class CMD0105hReadFirmwareBlockLPLReply:
             * ``01 000000b``: Failed, no specific failure
             * ``01 000010b``: Parameter range error or not supported
             * ``01 000101b``: CdbChkCode error
+
+        """
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
 
         """
         self.base_address_block: str = reply["base_address_block"]
@@ -1533,6 +1668,13 @@ class CMD0106hReadFirmwareBlockEPLReply:
             * ``01 000101b``: CdbChkCode error
 
         """
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
         self.image_data: bytes = bytes.fromhex(reply["image_data"].replace("0x", ""))
         """Up to 2048 Bytes. Actual Length specified in RPLLength
         """
@@ -1611,6 +1753,14 @@ class CMD0107hCompleteFirmwareDownloadReply:
 
         """
 
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
 async def cmd_0107h_complete_firmware_download_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
     """Send CMD 0107h Complete Firmware Download
 
@@ -1670,6 +1820,13 @@ class CMD0108hCopyFirmwareImageReply:
             * ``01 000000b``: Failed, no specific failure
             * ``01 000010b``: Parameter range error or not supported
             * ``01 000101b``: CdbChkCode error
+
+        """
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
 
         """
         self.length: int = reply["length"]
@@ -1761,6 +1918,14 @@ class CMD0109hRunFirmwareImageReply:
 
         """
 
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
+
+        """
+
 async def cmd_0109h_run_firmware_image_cmd(port: Z800FreyaPort, cdb_instance: int, image_to_run: int, delay_to_reset: int) -> None:
     """Send CMD 0109h Run Firmware Image
 
@@ -1834,6 +1999,14 @@ class CMD010AhCommitFirmwareImageReply:
             * ``01 000000b``: Failed, no specific failure
             * ``01 000010b``: Parameter range error or not supported
             * ``01 000101b``: CdbChkCode error
+
+        """
+
+        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
+        """
+        Latched Flag to indicate completion of a CDB command for CDB instance.
+
+        Set by module when the CDB command is complete.
 
         """
 
