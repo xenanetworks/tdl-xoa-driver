@@ -2261,7 +2261,7 @@ async def __write_data_block_loop(port: Z800FreyaPort, cdb_instance: int, firmwa
 
         # Send the header data using CMD 0101h: (Start Firmware Download), and wait for SUCCESS response
         await cmd_0101h_start_firmware_download_cmd(port, cdb_instance, firmware_header_size, firmware_header_data)
-        if await __cmd_successful("cmd_0101h_start_firmware_download_cmd", port, cdb_instance) == False:
+        if await __is_cmd_successful("cmd_0101h_start_firmware_download_cmd", port, cdb_instance) == False:
             print(f"CMD 0101h: (Start Firmware Download) failed to become SUCCESS.")
 
         addr = 0
@@ -2280,7 +2280,7 @@ async def __write_data_block_loop(port: Z800FreyaPort, cdb_instance: int, firmwa
                 # Send the data block
                 func = write_func_map["write_func"]
                 await func(port, cdb_instance, addr, data_block_hex)
-                if await __cmd_successful(str(write_func_map["write_func"]), port, cdb_instance) == False:
+                if await __is_cmd_successful(str(write_func_map["write_func"]), port, cdb_instance) == False:
                     print(f"{write_func_map['description']} failed.")
                     await __abort_firmware_download(port, cdb_instance, use_abort_for_failure)
                     return False
@@ -2290,7 +2290,7 @@ async def __write_data_block_loop(port: Z800FreyaPort, cdb_instance: int, firmwa
 
         # Send CMD 0107h: (Complete Firmware Download) to complete the firmware download
         await cmd_0107h_complete_firmware_download_cmd(port, cdb_instance)
-        if await __cmd_successful("cmd_0107h_complete_firmware_download_cmd", port, cdb_instance) == False:
+        if await __is_cmd_successful("cmd_0107h_complete_firmware_download_cmd", port, cdb_instance) == False:
             print(f"CMD 0107h: (Complete Firmware Download) failed.")
             print(f"Firmware Update Failed.")
             return False
@@ -2312,14 +2312,14 @@ async def __abort_firmware_download(port: Z800FreyaPort, cdb_instance: int, use_
     if use_abort_for_failure == True:
         # Send CMD 0102h: (Abort Firmware Download) to abort the firmware download
         await cmd_0102h_abort_firmware_download_cmd(port, cdb_instance)
-        if await __cmd_successful("cmd_0102h_abort_firmware_download_cmd", port, cdb_instance) == False:
+        if await __is_cmd_successful("cmd_0102h_abort_firmware_download_cmd", port, cdb_instance) == False:
             print(f"CMD 0102h: (Abort Firmware Download) failed.")
         else:
             print(f"CMD 0102h: (Abort Firmware Download) successful.")
     else:
         # Send CMD 0107h: (Complete Firmware Download) to complete the firmware download
         await cmd_0107h_complete_firmware_download_cmd(port, cdb_instance)
-        if await __cmd_successful("cmd_0107h_complete_firmware_download_cmd", port, cdb_instance) == False:
+        if await __is_cmd_successful("cmd_0107h_complete_firmware_download_cmd", port, cdb_instance) == False:
             print(f"CMD 0107h: (Complete Firmware Download) failed.")
         else:
             print(f"CMD 0107h: (Complete Firmware Download) successful.")
@@ -2327,7 +2327,7 @@ async def __abort_firmware_download(port: Z800FreyaPort, cdb_instance: int, use_
     print(f"Firmware Update Failed.")
 
 
-async def __cmd_successful(cmd_name: str, port: Z800FreyaPort, cdb_instance: int, timeout = 5.0) -> bool:
+async def __is_cmd_successful(cmd_name: str, port: Z800FreyaPort, cdb_instance: int, timeout = 5.0) -> bool:
     """Check if the CDB command is successful.
 
     :param cmd_name: the function name of the command to check
