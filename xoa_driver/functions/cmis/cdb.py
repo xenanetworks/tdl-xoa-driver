@@ -2353,10 +2353,11 @@ async def __cmd_successful(cmd_name: str, port: Z800FreyaPort, cdb_instance: int
     start = time.time()
     while time.time() - start < timeout:
         reply_obj = await func_map[cmd_name](port, cdb_instance)
-        if check_cdb_status(reply_obj.cdb_status) == CdbCommandCoarseStatus.SUCCESS:
-            return True
-        elif check_cdb_status(reply_obj.cdb_status) == CdbCommandCoarseStatus.FAILED:
-            return False
+        if reply_obj.cdb_cmd_complete_flag == True:
+            if check_cdb_status(reply_obj.cdb_status) == CdbCommandCoarseStatus.SUCCESS:
+                return True
+            elif check_cdb_status(reply_obj.cdb_status) == CdbCommandCoarseStatus.FAILED:
+                return False
         else:
             time.sleep(timeout/100)
     return False
