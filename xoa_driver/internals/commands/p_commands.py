@@ -3638,17 +3638,17 @@ class P_LPPARTNERAUTONEG:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        cap_100base_tx: YesNo = field(XmpByte())
+        can_100base_tx: YesNo = field(XmpByte())
         """coded byte, specifying whether the link partner is capable of 100BASE-TX."""
-        cap_1000base_t: YesNo = field(XmpByte())
+        can_1000base_t: YesNo = field(XmpByte())
         """coded byte. specifying whether the link partner is capable of 1000BASE-T."""
-        cap_10gbase_t: YesNo = field(XmpByte())
+        can_10gbase_t: YesNo = field(XmpByte())
         """coded byte. specifying whether the link partner is capable of 10GBASE-T."""
-        cap_100base_kx: YesNo = field(XmpByte())
-        """coded byte. specifying whether the link partner is capable of 100BASE-KX."""
-        cap_10gbase_kx4: YesNo = field(XmpByte())
-        """coded byte. specifying whether the link partner is capable of 10GBASE-KX4."""
-        cap_10gbase_kr: YesNo = field(XmpByte())
+        can_2p5gbase_t: YesNo = field(XmpByte())
+        """coded byte. specifying whether the link partner is capable of 2.5GBASE-T."""
+        can_5gbase_t: YesNo = field(XmpByte())
+        """coded byte. specifying whether the link partner is capable of 5GBASE-T."""
+        can_10gbase_kr: YesNo = field(XmpByte())
         """coded byte. specifying whether the link partner is capable of 10GBASE-KR."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -3656,8 +3656,8 @@ class P_LPPARTNERAUTONEG:
             * whether the link partner is capable of 100BASE-TX
             * whether the link partner is capable of 1000BASE-T
             * whether the link partner is capable of 10GBASE-T
-            * whether the link partner is capable of 100BASE-KX
-            * whether the link partner is capable of 10GBASE-KX4
+            * whether the link partner is capable of 2.5GBASE-T
+            * whether the link partner is capable of 5GBASE-T
             * whether the link partner is capable of 10GBASE-KR
 
         :return: the the Energy Efficient Ethernet (EEE) capabilities advertised during auto-negotiation by the far side (link partner)
