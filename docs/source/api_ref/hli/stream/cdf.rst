@@ -45,9 +45,29 @@ Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_com
 
 .. code-block:: python
 
-    # Byte Count
+    # CDF Count
     await stream.cdf.count.set(cdf_count=1)
     
     resp = await stream.cdf.count.get()
     resp.cdf_count
+
+
+CDF Data
+-------------------------
+This command is part of the Custom Data Field (CDF) feature. It controls the
+actual field data for a single field. It is possible to define fields with
+different data lengths for each stream. If the length of a data field exceeds
+(packet length - CDF offset) defined for the stream the field data will be
+truncated when transmitted. The feature requires that the :class:`~xoa_driver.internals.commands.p_commands.P_PAYLOADMODE` command on the parent port has been set to CDF. This enables the feature for
+all streams on this port.
+
+Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_commands.PS_CDFDATA`
+
+.. code-block:: python
+
+    # CDF Data
+    await stream_obj.cdf.data(0).set(hex_data=Hex("AABBCCDD"))
+    
+    resp = await stream_obj.cdf.data(0).get()
+    resp.hex_data
 
