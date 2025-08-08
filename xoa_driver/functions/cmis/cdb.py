@@ -141,7 +141,7 @@ async def cmd_0001h_enter_password_cmd(port: Z800FreyaPort, cdb_instance: int, p
     cmd_data = {
         "password": password
     }
-    await port.transceiver.cmis.cdb(cdb_instance).cmd_0000h_query_status.set(cmd_data=cmd_data)
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0001h_enter_password.set(cmd_data=cmd_data)
 
 async def cmd_0001h_enter_password_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0001hEnterPasswordReply:
     """Read the module response to CMD 0001h Enter Password
