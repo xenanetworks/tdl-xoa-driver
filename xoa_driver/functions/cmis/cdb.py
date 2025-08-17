@@ -9,11 +9,23 @@ from xoa_driver import exceptions
 import json
 
 
+class CMDBaseReply:
+    def __init__(self, reply: t.Dict[str, t.Any]):
+        self.cdb_io_status: int = reply.get("cdb_io_status", 0)
+        """integer, indicates the CDB IO status.
+        
+        * 0: Idle, transceiver is not processing a CDB command.
+        * 1: Finished, transceiver has finished processing a CDB command. It is ready to accept a new CDB command.
+        * 2: Timeout, transceiver has timed out while processing a CDB command. It is ready to accept a new CDB command.
+        * 3: In progress: transceiver is currently processing a CDB command. It is not ready to accept a new CDB command.
+        """
+
 # CMD 0000h: Query Status
-class CMD0000hQueryStatusReply:
+class CMD0000hQueryStatusReply(CMDBaseReply):
     """REPLY message of CMD 0000h Query Status
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """
         hex string, provides the status of the most recently triggered CDB command.
@@ -95,10 +107,11 @@ async def cmd_0000h_query_status_reply(port: Z800FreyaPort, cdb_instance: int) -
             time.sleep(0.1)
 
 # CMD 0001h: Enter Password
-class CMD0001hEnterPasswordReply:
+class CMD0001hEnterPasswordReply(CMDBaseReply):
     """REPLY message of CMD 0001h Enter Password
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """
         hex string, provides the status of the most recently triggered CDB command.
@@ -141,7 +154,7 @@ async def cmd_0001h_enter_password_cmd(port: Z800FreyaPort, cdb_instance: int, p
     cmd_data = {
         "password": password
     }
-    await port.transceiver.cmis.cdb(cdb_instance).cmd_0000h_query_status.set(cmd_data=cmd_data)
+    await port.transceiver.cmis.cdb(cdb_instance).cmd_0001h_enter_password.set(cmd_data=cmd_data)
 
 async def cmd_0001h_enter_password_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0001hEnterPasswordReply:
     """Read the module response to CMD 0001h Enter Password
@@ -166,10 +179,11 @@ async def cmd_0001h_enter_password_reply(port: Z800FreyaPort, cdb_instance: int)
     
 
 # CMD 0002h: Change Password
-class CMD0002hChangePasswordReply:
+class CMD0002hChangePasswordReply(CMDBaseReply):
     """REPLY message of CMD 0002h Change Password
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """
         hex string, provides the status of the most recently triggered CDB command.
@@ -237,10 +251,11 @@ async def cmd_0002h_change_password_reply(port: Z800FreyaPort, cdb_instance: int
 
 
 # CMD 0004h: Abort Processing
-class CMD0004hAbortProcessingReply:
+class CMD0004hAbortProcessingReply(CMDBaseReply):
     """REPLY message of CMD 0004h Abort Processing
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """
         hex string, provides the status of the most recently triggered CDB command.
@@ -301,10 +316,11 @@ async def cmd_0004h_abort_processing_reply(port: Z800FreyaPort, cdb_instance: in
 
 
 # CMD 0040h: Module Features
-class CMD0040hModuleFeaturesReply:
+class CMD0040hModuleFeaturesReply(CMDBaseReply):
     """REPLY message of CMD 0040h Module Features
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """
         hex string, provides the status of the most recently triggered CDB command.
@@ -433,10 +449,11 @@ async def cmd_0040h_module_features_reply(port: Z800FreyaPort, cdb_instance: int
 
 
 # CMD 0041h: Firmware Management Features
-class CMD0041hFirmwareManagementFeaturesReply:
+class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
     """REPLY message of CMD 0041h Firmware Management Features
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """
         hex string, provides the status of the most recently triggered CDB command.
@@ -599,10 +616,11 @@ async def cmd_0041h_fw_mgmt_features_reply(port: Z800FreyaPort, cdb_instance: in
 
 
 # CMD 0044h: Security Features and Capabilities
-class CMD0044hSecFeaturesAndCapabilitiesReply:
+class CMD0044hSecFeaturesAndCapabilitiesReply(CMDBaseReply):
     """REPLY message of CMD 0044h Security Features and Capabilities
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -842,10 +860,11 @@ async def cmd_0044h_sec_feat_and_capabilities_reply(port: Z800FreyaPort, cdb_ins
             time.sleep(0.1)
 
 # CMD 0045h: Externally Defined Features
-class CMD0045hExternallyDefinedFeaturesReply:
+class CMD0045hExternallyDefinedFeaturesReply(CMDBaseReply):
     """REPLY message of CMD 0045h Externally Defined Features
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
         
@@ -908,10 +927,11 @@ async def cmd_0045h_externally_defined_features_reply(port: Z800FreyaPort, cdb_i
             time.sleep(0.1)
 
 # CMD 0050h: Get Application Attributes
-class CMD0050hGetApplicationAttributesReply:
+class CMD0050hGetApplicationAttributesReply(CMDBaseReply):
     """REPLY message of CMD 0050h Get Application Attributes
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1015,17 +1035,18 @@ async def cmd_0050h_get_application_attributes_reply(port: Z800FreyaPort, cdb_in
     """
     while True:
         try:
-            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0045h_external_features.get()
+            resp = await port.transceiver.cmis.cdb(cdb_instance).cmd_0050h_get_app_attributes.get()
             return CMD0050hGetApplicationAttributesReply(resp.reply)
         except exceptions.XmpPendingError:
             time.sleep(0.1)
         
 
 # CMD 0051h: Get Interface Code Description
-class CMD0051hGetInterfaceCodeDescriptionReply:
+class CMD0051hGetInterfaceCodeDescriptionReply(CMDBaseReply):
     """REPLY message of CMD 0051h Get Interface Code Description
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1128,10 +1149,11 @@ async def cmd_0051h_get_interface_code_description_reply(port: Z800FreyaPort, cd
 
 
 # CMD 0100h: Get Firmware Info
-class CMD0100hGetFirmwareInfoReply:
+class CMD0100hGetFirmwareInfoReply(CMDBaseReply):
     """REPLY message of CMD 0100h Get Firmware Info
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """
         hex string, provides the status of the most recently triggered CDB command.
@@ -1252,10 +1274,11 @@ async def cmd_0100h_get_firmware_info_reply(port: Z800FreyaPort, cdb_instance: i
 
 
 # CMD 0101h: Start Firmware Download
-class CMD0101hStartFirmwareDownloadReply:
+class CMD0101hStartFirmwareDownloadReply(CMDBaseReply):
     """REPLY message of CMD 0101h Start Firmware Download
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1330,10 +1353,11 @@ async def cmd_0101h_start_firmware_download_reply(port: Z800FreyaPort, cdb_insta
 
 
 # CMD 0102h: Abort Firmware Download
-class CMD0102hAbortFirmwareDownloadReply:
+class CMD0102hAbortFirmwareDownloadReply(CMDBaseReply):
     """REPLY message of CMD 0102h Abort Firmware Download
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
         
@@ -1400,10 +1424,11 @@ async def cmd_0102h_abort_firmware_download_reply(port: Z800FreyaPort, cdb_insta
 
 
 # CMD 0103h: Write Firmware Block LPL
-class CMD0103hWriteFirmwareBlockLPLReply:
+class CMD0103hWriteFirmwareBlockLPLReply(CMDBaseReply):
     """REPLY message of CMD 0103h Write Firmware Block LPL
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1478,10 +1503,11 @@ async def cmd_0103h_write_firmware_block_lpl_reply(port: Z800FreyaPort, cdb_inst
 
 
 # CMD 0104h: Write Firmware Block EPL
-class CMD0104hWriteFirmwareBlockEPLReply:
+class CMD0104hWriteFirmwareBlockEPLReply(CMDBaseReply):
     """REPLY message of CMD 0104h Write Firmware Block EPL
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1557,10 +1583,11 @@ async def cmd_0104h_write_firmware_block_epl_reply(port: Z800FreyaPort, cdb_inst
 
 
 # CMD 0105h: Read Firmware Block LPL
-class CMD0105hReadFirmwareBlockLPLReply:
+class CMD0105hReadFirmwareBlockLPLReply(CMDBaseReply):
     """REPLY message of CMD 0105h Read Firmware Block LPL
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1644,10 +1671,11 @@ async def cmd_0105h_read_firmware_block_lpl_reply(port: Z800FreyaPort, cdb_insta
     
 
 # CMD 0106h: Read Firmware Block EPL
-class CMD0106hReadFirmwareBlockEPLReply:
+class CMD0106hReadFirmwareBlockEPLReply(CMDBaseReply):
     """REPLY message of CMD 0106h Read Firmware Block EPL
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1728,10 +1756,11 @@ async def cmd_0106h_read_firmware_block_epl_reply(port: Z800FreyaPort, cdb_insta
 
 
 # CMD 0107h: Complete Firmware Download
-class CMD0107hCompleteFirmwareDownloadReply:
+class CMD0107hCompleteFirmwareDownloadReply(CMDBaseReply):
     """REPLY message of CMD 0107h Complete Firmware Download
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1798,10 +1827,11 @@ async def cmd_0107h_complete_firmware_download_reply(port: Z800FreyaPort, cdb_in
 
 
 # CMD 0108h: Copy Firmware Image
-class CMD0108hCopyFirmwareImageReply:
+class CMD0108hCopyFirmwareImageReply(CMDBaseReply):
     """REPLY message of CMD 0108h Copy Firmware Image
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1893,10 +1923,11 @@ async def cmd_0108h_copy_firmware_image_reply(port: Z800FreyaPort, cdb_instance:
 
 
 # CMD 0109h: Run Firmware Image
-class CMD0109hRunFirmwareImageReply:
+class CMD0109hRunFirmwareImageReply(CMDBaseReply):
     """REPLY message of CMD 0109h Run Firmware Image
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -1977,10 +2008,11 @@ async def cmd_0109h_run_firmware_image_reply(port: Z800FreyaPort, cdb_instance: 
 
 
 # CMD 010Ah: Commit Firmware Image
-class CMD010AhCommitFirmwareImageReply:
+class CMD010AhCommitFirmwareImageReply(CMDBaseReply):
     """REPLY message of CMD 010Ah Commit Firmware Image
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_status: str = reply["cdb_status"]
         """hex string, provides the status of the most recently triggered CDB command.
 
@@ -2048,10 +2080,11 @@ async def cmd_010ah_commit_firmware_image_reply(port: Z800FreyaPort, cdb_instanc
 
 # CMD 8000h-FFFFh: Custom Command
 
-class CustomCMDReply:
+class CustomCMDReply(CMDBaseReply):
     """Defines the custom reply to receiver for the CDB instance.
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
         self.cdb_cmd_complete_flag: str = reply["reply_status"]["cdb_cmd_complete_flag"]
         """hex string, REPLY Status.CdbCmdCompleteFlag. 
         

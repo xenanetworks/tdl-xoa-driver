@@ -390,7 +390,7 @@ class PX_CDB_ABORT_PROCESSING:
         Set CMD Data
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=b'{}'))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data='{}'))
 
 
 @register_command
@@ -646,7 +646,7 @@ class PX_CDB_EXTERNAL_FEATURES:
         Set CMD Data
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=b'{}'))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data='{}'))
 
 
 @register_command
@@ -719,7 +719,7 @@ class PX_CDB_FW_MGMT_FEATURES:
         Set CMD Data
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=b'{}'))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data='{}'))
 
 
 @register_command
@@ -950,7 +950,7 @@ class PX_CDB_MODULE_FEATURES:
         Set CMD Data
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=b'{}'))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data='{}'))
     
 @register_command
 @dataclass
@@ -1024,7 +1024,7 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
         Set CMD Data
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=b'{}'))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data='{}'))
 
 
 @register_command
@@ -1072,7 +1072,7 @@ class PX_CDB_ABORT_FW_DOWNLOAD:
         Set CMD Data
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=b'{}'))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data='{}'))
     
 
 @register_command
@@ -1120,7 +1120,7 @@ class PX_CDB_COMMIT_FW_IMAGE:
         Set CMD Data
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=b'{}'))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data='{}'))
 
 
 @register_command
@@ -1168,7 +1168,7 @@ class PX_CDB_COMPLETE_FW_DOWNLOAD:
         Set CMD Data
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=b'{}'))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data='{}'))
     
 
 @register_command
@@ -1346,7 +1346,7 @@ class PX_CDB_GET_FW_INFO:
         Set CMD Data
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data=b'{}'))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._cdb_instance_xindex], cmd_data='{}'))
 
 
 @register_command
