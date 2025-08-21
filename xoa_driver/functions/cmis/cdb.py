@@ -2115,6 +2115,17 @@ class CustomCMDReply(CMDBaseReply):
         The actual data to be sent in the reply.
 
         """
+        self.cdb_io_status: str = reply["reply_status"]["cdb_io_status"]
+        """integer, REPLY Status.CdbIOStatus
+
+        Provides the status of the CDB IO operation.
+
+        * 0 = IDLE
+        * 1 = FINISHED
+        * 2 = TIMEOUT
+        * 3 = PENDING
+
+        """
 
 async def cmd_custom_cmd_reply(port: Z800FreyaPort, cdb_instance: int) -> CustomCMDReply:
     """Read the module response to CMD 8000h-FFFFh Custom Command
