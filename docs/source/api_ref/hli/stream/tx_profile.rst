@@ -3,8 +3,10 @@ TX Profile
 
 Rate Fraction
 ---------------
-The rate of the traffic transmitted for a stream expressed in millionths of the
-effective rate for the port. The bandwidth consumption includes the inter-frame
+The rate of the traffic transmitted for a stream expressed in **millionths of the
+effective rate** for the port. 
+
+The bandwidth consumption includes the inter-frame
 gap and is independent of the length of the packets generated for the stream.
 The sum of the bandwidth consumption for all the enabled streams must not exceed
 the effective rate for the port. Setting this command also instructs the
@@ -25,8 +27,10 @@ Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_com
 
 Packet Rate
 -------------------------
-The rate of the traffic transmitted for a stream expressed in packets per
-second. The bandwidth consumption is heavily dependent on the length of the
+The rate of the traffic transmitted for a stream expressed in **packets per
+second**. 
+
+The bandwidth consumption is heavily dependent on the length of the
 packets generated for the stream, and also on the inter-frame gap for the port.
 The sum of the bandwidth consumption for all the enabled streams must not exceed
 the effective rate for the port. Setting this command also instructs the
@@ -47,9 +51,11 @@ Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_com
 
 Bit Rate L2
 --------------------------
-The rate of the traffic transmitted for a stream, expressed in units of bits-
-per-second at layer-2, thus including the Ethernet header but excluding the
-inter-frame gap. The bandwidth consumption is somewhat dependent on the length
+The rate of the traffic transmitted for a stream, expressed in **units of bits-
+per-second at layer-2**, thus including the Ethernet header but excluding the
+inter-frame gap.
+
+The bandwidth consumption is somewhat dependent on the length
 of the packets generated for the stream, and also on the inter-frame gap for the
 port. The sum of the bandwidth consumption for all the enabled streams must not
 exceed the effective rate for the port. Setting this command also instructs
@@ -70,8 +76,10 @@ Corresponding low-level API class: :class:`~xoa_driver.internals.commands.ps_com
 
 Packet Limit
 --------------------------
-The rate of the traffic transmitted for a stream expressed in packets per
-second. The bandwidth consumption is heavily dependent on the length of the
+The rate of the traffic transmitted for a stream expressed in **packets per
+second**.
+
+The bandwidth consumption is heavily dependent on the length of the
 packets generated for the stream, and also on the inter-frame gap for the port.
 The sum of the bandwidth consumption for all the enabled streams must not exceed
 the effective rate for the port. Setting this command also instructs the
@@ -94,6 +102,7 @@ Burst Size and Density
 --------------------------
 The burstiness of the traffic transmitted for a stream, expressed in terms of
 the number of packets in each burst, and how densely they are packed together.
+
 The burstiness does not affect the bandwidth consumed by the stream, only the
 spacing between the packets. A density value of 100 means that the packets are
 packed tightly together, only spaced by the minimum inter-frame gap. A value of
