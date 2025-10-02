@@ -166,13 +166,13 @@ class PT_EXTRA:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        tx_arp_req_count: int = field(XmpLong())
+        tx_arp_request_count: int = field(XmpLong())
         """long integer, number of ARP requests transmitted"""
-        tx_arp_res_count: int = field(XmpLong())
+        tx_arp_reply_count: int = field(XmpLong())
         """long integer, number of ARP responses transmitted"""
-        tx_ping_req_count: int = field(XmpLong())
+        tx_ping_request_count: int = field(XmpLong())
         """long integer, number of PING requests transmitted"""
-        tx_ping_res_count: int = field(XmpLong())
+        tx_ping_reply_count: int = field(XmpLong())
         """long integer, number of PING responses transmitted"""
         tx_fcs_inj_count: int = field(XmpLong())
         """long integer, number of FCS errors injected"""
