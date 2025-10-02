@@ -57,7 +57,17 @@ Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pt_com
 
     # TX Statistics - Extra Counter
     resp = await port.statistics.tx.extra.get()
-    resp.tx_arp_req_count
+    resp.tx_arp_request_count
+    resp.tx_arp_reply_count
+    resp.tx_ping_request_count
+    resp.tx_ping_reply_count
+    resp.tx_fcs_inj_count
+    resp.tx_seq_inj_count
+    resp.tx_mis_inj_count
+    resp.tx_pld_inj_count
+    resp.tx_tpld_inj_count
+    resp.tx_mac_train_count
+    resp.tx_igmp_join_count
 
 
 Stream Counter
