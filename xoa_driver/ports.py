@@ -1,37 +1,33 @@
 #: All available test port types.
-import sys
-
-if "xoa_driver.v2" in sys.modules:
-    raise ImportError("\33[31mOnly Single interface version is allowed to being use at the same time.\33[0m")
 
 import typing
 
-from .internals.hli_v1.ports.port_l47.main import PortL47
+from .internals.hli.ports.port_l47.main import PortL47
 
-from .internals.hli_v1.ports.port_l23.port_l23ve import PortL23VE
-from .internals.hli_v1.ports.port_l23.chimera.port_chimera import (
+from .internals.hli.ports.port_l23.port_l23ve import PortL23VE
+from .internals.hli.ports.port_l23.chimera.port_chimera import (
     PortChimera,
     PChi100G5S2P,
     PChi100G5S2P_b,
     PChi40G2S2P,
 )
 
-from .internals.hli_v1.ports.port_l23.bases.port_l23 import BasePortL23
-from xoa_driver.internals.hli_v1.ports.port_l23.family_combi import (
+from .internals.hli.ports.port_l23.bases.port_l23 import BasePortL23
+from xoa_driver.internals.hli.ports.port_l23.family_combi import (
     POdin1G4S4PCombi,
     POdin1G4S4PCombi_b,
     POdin10G4S2PCombi,
     POdin10G4S2PCombi_b,
 )
 
-from xoa_driver.internals.hli_v1.ports.port_l23.family_d import (
+from xoa_driver.internals.hli.ports.port_l23.family_d import (
     POdin1G3S2PT,
     POdin1G3S6P,
     POdin1G3S6P_b,
     POdin1G3S6PE,
 )
 
-from xoa_driver.internals.hli_v1.ports.port_l23.family_e import (
+from xoa_driver.internals.hli.ports.port_l23.family_e import (
     POdin5G4S6PCU,
     POdin10G3S2PCU,
     POdin10G3S6PCU,
@@ -39,7 +35,7 @@ from xoa_driver.internals.hli_v1.ports.port_l23.family_e import (
     POdin10G5S6PCU_b,
 )
 
-from xoa_driver.internals.hli_v1.ports.port_l23.family_f import (
+from xoa_driver.internals.hli.ports.port_l23.family_f import (
     POdin10G1S2P,
     POdin10G1S2P_b,
     POdin10G1S2P_c,
@@ -53,32 +49,33 @@ from xoa_driver.internals.hli_v1.ports.port_l23.family_f import (
     POdin10G6S6P_a,
 )
 
-from xoa_driver.internals.hli_v1.ports.port_l23.family_g import (
+from xoa_driver.internals.hli.ports.port_l23.family_g import (
     PLoki100G3S1P,
     PLoki100G3S1P_b,
     PLoki100G3S1PSE,
     PLoki100G3S1PB,
     PLoki100G3S1PB_b,
+    PLoki100G5S4P_a,
 )
 
-from xoa_driver.internals.hli_v1.ports.port_l23.family_h import (
+from xoa_driver.internals.hli.ports.port_l23.family_h import (
     PLoki100G5S1P,
     POdin100G3S1P,
 )
 
-from xoa_driver.internals.hli_v1.ports.port_l23.family_i import PLoki100G5S2P
-from xoa_driver.internals.hli_v1.ports.port_l23.family_j import PThor100G5S4P
-from xoa_driver.internals.hli_v1.ports.port_l23.family_k import (
+from xoa_driver.internals.hli.ports.port_l23.family_i import PLoki100G5S2P
+from xoa_driver.internals.hli.ports.port_l23.family_j import PThor100G5S4P
+from xoa_driver.internals.hli.ports.port_l23.family_k import (
     PThor400G7S1P,
     PThor400G7S1PLE,
 )
-from xoa_driver.internals.hli_v1.ports.port_l23.family_l import (
+from xoa_driver.internals.hli.ports.port_l23.family_l import (
     PThor400G7S1P_b,
     PThor400G7S1P_c,
     PThor400G7S1P_d,
 )
 
-from xoa_driver.internals.hli_v1.ports.port_l23.family_l1 import (
+from xoa_driver.internals.hli.ports.port_l23.family_l1 import (
     PFreya800G1S1P_a,
     PFreya800G1S1P_b,
     PFreya800G1S1POSFP_a,
@@ -97,7 +94,7 @@ from xoa_driver.internals.hli_v1.ports.port_l23.family_l1 import (
     PFreya800G4S1POSFP_f,
 )
 
-from xoa_driver.internals.hli_v1.ports.port_l23.family_m import POdin1G3S6PT1RJ45
+from xoa_driver.internals.hli.ports.port_l23.family_m import POdin1G3S6PT1RJ45
 
 Z10OdinPort = typing.Union[
     POdin1G3S2PT,
@@ -136,6 +133,7 @@ Z100LokiPort = typing.Union[
     PLoki100G3S1PB_b,
     PLoki100G5S1P,
     PLoki100G5S2P,
+    PLoki100G5S4P_a,
 ]
 
 Z400ThorPort = typing.Union[
@@ -213,6 +211,7 @@ GenericL23Port = typing.Union[
     "PLoki100G3S1PB_b",
     "PLoki100G5S1P",
     "PLoki100G5S2P",
+    "PLoki100G5S4P_a",
 
     "PThor100G5S4P",
     "PThor400G7S1P",
@@ -294,6 +293,7 @@ __all__ = (
     "PLoki100G3S1PB_b",
     "PLoki100G5S1P",
     "PLoki100G5S2P",
+    "PLoki100G5S4P_a",
 
     "Z400ThorPort",
     "PThor100G5S4P",

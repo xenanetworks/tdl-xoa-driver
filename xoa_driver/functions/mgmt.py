@@ -3,8 +3,8 @@ import asyncio
 import typing as t
 from xoa_driver import enums, testers
 from xoa_driver.utils import apply
-from xoa_driver.internals.hli_v2.ports.port_l23.family_l import FamilyL
-from xoa_driver.internals.hli_v2.ports.port_l23.family_l1 import FamilyL1
+from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
+from xoa_driver.internals.hli.ports.port_l23.family_l1 import FamilyFreya
 from xoa_driver.ports import GenericAnyPort
 from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule
 from xoa_driver.testers import GenericAnyTester, L23Tester
@@ -18,8 +18,8 @@ from itertools import chain  # type: ignore[Pylance false warning]
 from datetime import datetime
 import json
 
-PcsPmaSupported = (FamilyL, FamilyL1)
-AutoNegSupported = (FamilyL, FamilyL1)
+PcsPmaSupported = (FamilyL, FamilyFreya)
+AutoNegSupported = (FamilyL, FamilyFreya)
 LinkTrainingSupported = FamilyL
 
 

@@ -3,8 +3,8 @@ from dataclasses import dataclass, field
 import typing as t
 from xoa_driver import enums
 from xoa_driver.utils import apply
-from xoa_driver.internals.hli_v1.ports.port_l23.family_l import FamilyL
-from xoa_driver.internals.hli_v1.ports.port_l23.family_l1 import FamilyFreya
+from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
+from xoa_driver.internals.hli.ports.port_l23.family_l1 import FamilyFreya
 from xoa_driver.ports import GenericL23Port
 from xoa_driver.lli import commands
 from xoa_driver.internals.core import interfaces as itf

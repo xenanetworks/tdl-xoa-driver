@@ -38,6 +38,7 @@ from .types import (
     # Preconverted Dynamic
     XmpStr,
     XmpSequence,
+    XmpJson,
 )
 
 
@@ -53,6 +54,7 @@ TYPES_FIXED = (
 TYPES_COMBI = (XmpHex,)
 TYPES_DYNAMIC = (XmpStr,)
 TYPES_COMPOSED = (XmpSequence,)
+TYPES_JSON = (XmpJson,)
 
 # Important: The instances of the FieldSpecs will live as a class variables
 # which mean wea are not able to update its attributes during runtime.
@@ -194,6 +196,43 @@ class HexSpec(FieldSpecs):
         return next(iter(struct.unpack_from(format, buffer, offset)), b"")
 
 
+class JsonSpec(FieldSpecs):
+    xmp_type: XmpJson
+
+    def __init__(
+        self,
+        xmp_type: XmpJson,
+        min_version: int | None = None,
+        max_version: int | None = None,
+        deprecated: bool = False,
+        deprecation_reason: str | None = None,
+    ) -> None:
+        super().__init__(xmp_type, min_version, max_version, deprecated, deprecation_reason)
+
+    @property
+    def is_dynamic(self) -> bool:
+        return True
+
+    def format(self, bsize: int | None = None) -> str:
+        return _build_format(self.xmp_type.data_format, bsize)
+
+    def calc_bsize(self, buff: memoryview | None = None, left_offset: int = 0) -> int | None:
+        if buff is None:
+            return None
+        return len(buff[left_offset:])
+
+    def get_context_formatter(self, client_type: Type[Any], is_response: bool) -> Callable[[Any], Any]:
+        if is_response:
+            return self.xmp_type.client_format
+        return self.xmp_type.server_format
+
+    def pack(self, format: str, val: bytes) -> bytes:
+        return val
+    
+    def unpack(self, format: str, buffer: memoryview, offset: int) -> Any:
+        return next(iter(struct.unpack_from(format, buffer, offset)), b"")
+    
+
 def _prepare_client_chunks(client_type: Type[Any], xmp_types_chunks: tuple) -> Callable[[Any], List[Tuple[Any, ...]]]:
     """Selecting the function for parsing data chunks from XMP types to Python types"""
     def converted_dcls(val_):
@@ -284,6 +323,8 @@ def field(
         specs_type = FieldSpecs
     elif isinstance(xmp_type, TYPES_COMBI):
         specs_type = HexSpec
+    elif isinstance(xmp_type, TYPES_JSON):
+        specs_type = JsonSpec
     else:
         return None
 
