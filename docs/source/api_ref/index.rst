@@ -4,6 +4,6 @@ API Reference
 .. toctree::
     :maxdepth: 2
     
-    hlfunc/index
-    hlapiv1/index
-    llapi/index
+    hlfuncs/index
+    hli/index
+    lli/index

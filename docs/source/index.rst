@@ -1,5 +1,5 @@
 ============================================
-Welcome to TDL XOA Driver Documentation
+Welcome to TDL XOA Python API User Manual
 ============================================
 
 :Version: |version|
@@ -16,17 +16,24 @@ This documentation covers how to use the XOA Driver, including how to install it
 .. toctree::
    :numbered: 3
    :maxdepth: 1
-   :caption: Table of Content
+   :caption: API User Guide
 
    introduction
    getting_started/index
-   code_example/index
-   understand_xoa_python/index
+   script_example
+   api_structure/index
    test_resource_mgt
    command_grouping
    status_msg_exceptions
-   api_ref/index   
    glossary
+
+.. toctree::
+   :numbered: 3
+   :maxdepth: 1
+   :caption: API Reference Guide
+
+   api_ref/index
+   
 
 
 Indices and Tables

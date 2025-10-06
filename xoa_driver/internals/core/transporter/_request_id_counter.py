@@ -12,7 +12,7 @@ class ReservedRequestID(IntEnum):
 
 
 class RequestIdCounter:
-    """Aggrigator of request ID."""
+    """Aggregator of request ID."""
     __slots__ = ("__req_id", "__lock",)
 
     def __init__(self) -> None:

@@ -3,9 +3,9 @@ import asyncio
 import typing as t
 from xoa_driver import enums, testers
 from xoa_driver.utils import apply
-from xoa_driver.internals.hli_v2.ports.port_l23.family_l import FamilyL
-from xoa_driver.internals.hli_v2.ports.port_l23.family_l1 import FamilyL1
-from xoa_driver.ports import GenericAnyPort
+from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
+from xoa_driver.internals.hli.ports.port_l23.family_l1 import FamilyFreya
+from xoa_driver.ports import GenericAnyPort, GenericL23Port
 from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule
 from xoa_driver.testers import GenericAnyTester, L23Tester
 from .exceptions import (
@@ -18,8 +18,8 @@ from itertools import chain  # type: ignore[Pylance false warning]
 from datetime import datetime
 import json
 
-PcsPmaSupported = (FamilyL, FamilyL1)
-AutoNegSupported = (FamilyL, FamilyL1)
+PcsPmaSupported = (FamilyL, FamilyFreya)
+AutoNegSupported = (FamilyL, FamilyFreya)
 LinkTrainingSupported = FamilyL
 
 
@@ -35,13 +35,8 @@ async def reserve_tester(tester: GenericAnyTester, force: bool = True) -> None:
     :return:
     :rtype: None
     """
-    r = await tester.reservation.get()
-    if force and r.operation == enums.ReservedStatus.RESERVED_BY_OTHER:
-        await tester.reservation.set_relinquish()
-        await asyncio.gather(*(release_module(m, True) for m in tester.modules))
-        await tester.reservation.set_reserve()
-    elif r.operation == enums.ReservedStatus.RELEASED:
-        await tester.reservation.set_reserve()
+    await release_tester(tester, force)
+    await tester.reservation.set_reserve()
 
 
 async def release_tester(
@@ -127,12 +122,8 @@ async def reserve_module(module: GenericAnyModule, force: bool = True) -> None:
     :return:
     :rtype: None
     """
-    r = await module.reservation.get()
-    if force and r.operation == enums.ReservedStatus.RESERVED_BY_OTHER:
-        await release_module(module, True)
-        await module.reservation.set_reserve()
-    elif r.operation == enums.ReservedStatus.RELEASED:
-        await module.reservation.set_reserve()
+    await release_module(module, force)
+    await module.reservation.set_reserve()
 
 
 async def release_module(
@@ -470,12 +461,12 @@ async def release_ports(*ports: GenericAnyPort) -> None:
 
 
 # region Streams
-async def remove_streams(port: GenericAnyPort) -> None:
+async def remove_streams(port: GenericL23Port) -> None:
     """
     Remove all streams on a port witout resetting the port.
 
     :param port: The port object
-    :type port: GenericAnyPort
+    :type port: GenericL23Port
     """
     await port.streams.server_sync()
     await asyncio.gather(*(s.delete() for s in port.streams))

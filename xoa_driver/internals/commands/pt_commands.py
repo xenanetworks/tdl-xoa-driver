@@ -166,8 +166,28 @@ class PT_EXTRA:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        tx_arp_req_count: typing.List[int] = field(XmpSequence(types_chunk=[XmpLong()]))
+        tx_arp_request_count: int = field(XmpLong())
         """long integer, number of ARP requests transmitted"""
+        tx_arp_reply_count: int = field(XmpLong())
+        """long integer, number of ARP responses transmitted"""
+        tx_ping_request_count: int = field(XmpLong())
+        """long integer, number of PING requests transmitted"""
+        tx_ping_reply_count: int = field(XmpLong())
+        """long integer, number of PING responses transmitted"""
+        tx_fcs_inj_count: int = field(XmpLong())
+        """long integer, number of FCS errors injected"""
+        tx_seq_inj_count: int = field(XmpLong())
+        """long integer, number of sequence mismatch errors injected"""
+        tx_mis_inj_count: int = field(XmpLong())
+        """long integer, number of packet misordering errors injected"""
+        tx_pld_inj_count: int = field(XmpLong())
+        """long integer, number of payload errors injected"""
+        tx_tpld_inj_count: int = field(XmpLong())
+        """long integer, number of payload integrity errors injected"""
+        tx_mac_train_count: int = field(XmpLong())
+        """long integer, number of MAC learning (training) packets transmitted"""
+        tx_igmp_join_count: int = field(XmpLong())
+        """long integer, number of IGMP JOIN packets transmitted"""
 
     def get(self) -> Token[GetDataAttr]:
         """Get additional statistics for packets transmitted on a port.

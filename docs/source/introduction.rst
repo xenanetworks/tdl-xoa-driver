@@ -22,13 +22,35 @@ XOA CLI is a command-line interface for managing Xena Networks test equipment an
 
 The XOA Driver and XOA CLI are both tools for automating network testing tasks using Xena test equipment, but they differ in several ways:
 
-* Interface: The XOA Driver provides a Pythonic interface to interact with Xena test equipment, while the XOA CLI provides a command-line interface to interact with Xena test equipment.
 
-* Programming: The XOA Driver is a library that can be used with the Python programming language to create and execute complex test scenarios, generate and analyze traffic, and perform detailed analysis of network performance and behavior. The XOA CLI is a standalone tool that can be used to interact with Xena test equipment through the command line, without the need for programming.
+.. list-table:: Python API vs. CLI
+    :widths: 20 20 20
+    :header-rows: 1
+    :stub-columns: 1
 
-* Functionality: While both tools can be used to create and execute test scenarios, generate and analyze traffic, and perform detailed analysis of network performance and behavior, the XOA Driver provides a more comprehensive and flexible set of functions for interacting with Xena test equipment. The XOA CLI provides a subset of the functionality available through the XOA Driver.
+    * - 
+      - XOA Driver
+      - XOA CLI
+    * - Interface
+      - Pythonic interface to 
+        communicate with chassis.
+      - Command-line interface 
+        to communicate with chassis.
+    * - Programming
+      - Enable you to create and 
+        execute complex test scenarios 
+        using Python.
+      - Allow quick CLI access for 
+        simple tasks.
+    * - Functionality
+      - Provides extensive functionalities 
+        in addition to core functionalities.
+      - Only the core functionalities.
+    * - Ease of Use
+      - User-friendly and intuitive 
+        interface for developers.
+      - Require CLI reference.
 
-* Ease of use: The XOA Driver provides a more user-friendly and intuitive interface for interacting with Xena test equipment, while the XOA CLI can be more complex and requires knowledge of the command line interface.
 
 Synergy Between XOA Driver and CLI
 ------------------------------------------
