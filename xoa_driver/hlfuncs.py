@@ -6,7 +6,6 @@ from xoa_driver.functions import (
     anlt_ll_debug,
     exceptions,
     headers,
-    cmis,
 )
 
 __all__ = (
@@ -16,5 +15,4 @@ __all__ = (
     "exceptions",
     "cli",
     "headers",
-    "cmis",
 )
