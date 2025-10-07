@@ -20,6 +20,7 @@ This documentation covers how to use the XOA Driver, including how to install it
 
    introduction
    getting_started/index
+   script_example
    api_structure/index
    test_resource_mgt
    command_grouping
@@ -32,7 +33,6 @@ This documentation covers how to use the XOA Driver, including how to install it
    :caption: API Reference Guide
 
    api_ref/index
-   code_example/index
    
 
 
