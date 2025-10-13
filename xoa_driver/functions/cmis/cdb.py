@@ -19,9 +19,9 @@ class CMDBaseReply:
         * 2: Timeout, transceiver has timed out while processing a CDB command. It is ready to accept a new CDB command.
         * 3: In progress: transceiver is currently processing a CDB command. It is not ready to accept a new CDB command.
         """
-        self.cdb_status: str = f"0x{reply['cdb_status']:02X}"
+        self.cdb_status: int = reply['cdb_status']
         """
-        hex string, provides the status of the most recently triggered CDB command.
+        integer, provides the status of the most recently triggered CDB command.
 
         In Progress
 
@@ -53,8 +53,8 @@ class CMD0000hQueryStatusReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.status: str = f"0x{reply['status']:02X}"
-        """hex string
+        self.status: int = reply['status']
+        """integer
 
             * ``0000 0000b``: Module Boot Up.
             * ``0000 0001b``: Host Password Accepted.
@@ -115,14 +115,15 @@ async def cmd_0001h_enter_password_cmd(port: Z800FreyaPort, cdb_instance: int, p
 
     :param port: the port object to send the command to
     :type port: Z800FreyaPort
-    :param cdb_instance: CDB instance number.
+
+        :param cdb_instance: CDB instance number.
     
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
     
     :type cdb_instance: int
     :param password: password to be entered
-    :type password: hex str
+    :type password: int
     """
 
     cmd_data = {
@@ -171,7 +172,7 @@ async def cmd_0002h_change_password_cmd(port: Z800FreyaPort, cdb_instance: int, 
     
     :type cdb_instance: int
     :param new_password: new password to be entered
-    :type new_password: hex str
+    :type new_password: int
     """
     cmd_data = {
         "new_password": new_password
@@ -250,72 +251,72 @@ class CMD0040hModuleFeaturesReply(CMDBaseReply):
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
 
-        # Parse cmd_support_mask as a list of integers and convert to hex strings
+        # Parse cmd_support_mask as a list of integers
         mask_data = reply["cmd_support_mask"]
         
-        self.cmd_support_0000h_0007h: str = f"{mask_data[0]:02X}"
+        self.cmd_support_0000h_0007h: int = mask_data[0]
         """Support mask for CMD 0000h to CMD 0007h"""
-        self.cmd_support_0008h_000fh: str = f"{mask_data[1]:02X}"
+        self.cmd_support_0008h_000fh: int = mask_data[1]
         """Support mask for CMD 0008h to CMD 000fh"""
-        self.cmd_support_0010h_0017h: str = f"{mask_data[2]:02X}"
+        self.cmd_support_0010h_0017h: int = mask_data[2]
         """Support mask for CMD 0010h to CMD 0017h"""
-        self.cmd_support_0018h_001fh: str = f"{mask_data[3]:02X}"
+        self.cmd_support_0018h_001fh: int = mask_data[3]
         """Support mask for CMD 0018h to CMD 001fh"""
-        self.cmd_support_0020h_0027h: str = f"{mask_data[4]:02X}"
+        self.cmd_support_0020h_0027h: int = mask_data[4]
         """Support mask for CMD 0020h to CMD 0027h"""
-        self.cmd_support_0028h_002fh: str = f"{mask_data[5]:02X}"
+        self.cmd_support_0028h_002fh: int = mask_data[5]
         """Support mask for CMD 0028h to CMD 002fh"""
-        self.cmd_support_0030h_0037h: str = f"{mask_data[6]:02X}"
+        self.cmd_support_0030h_0037h: int = mask_data[6]
         """Support mask for CMD 0030h to CMD 0037h"""
-        self.cmd_support_0038h_003fh: str = f"{mask_data[7]:02X}"
+        self.cmd_support_0038h_003fh: int = mask_data[7]
         """Support mask for CMD 0038h to CMD 003fh"""
-        self.cmd_support_0040h_0047h: str = f"{mask_data[8]:02X}"
+        self.cmd_support_0040h_0047h: int = mask_data[8]
         """Support mask for CMD 0040h to CMD 0047h"""
-        self.cmd_support_0048h_004fh: str = f"{mask_data[9]:02X}"
+        self.cmd_support_0048h_004fh: int = mask_data[9]
         """Support mask for CMD 0048h to CMD 004fh"""
-        self.cmd_support_0050h_0057h: str = f"{mask_data[10]:02X}"
+        self.cmd_support_0050h_0057h: int = mask_data[10]
         """Support mask for CMD 0050h to CMD 0057h"""
-        self.cmd_support_0058h_005fh: str = f"{mask_data[11]:02X}"
+        self.cmd_support_0058h_005fh: int = mask_data[11]
         """Support mask for CMD 0058h to CMD 005fh"""
-        self.cmd_support_0060h_0067h: str = f"{mask_data[12]:02X}"
+        self.cmd_support_0060h_0067h: int = mask_data[12]
         """Support mask for CMD 0060h to CMD 0067h"""
-        self.cmd_support_0068h_006fh: str = f"{mask_data[13]:02X}"
+        self.cmd_support_0068h_006fh: int = mask_data[13]
         """Support mask for CMD 0068h to CMD 006fh"""
-        self.cmd_support_0070h_0077h: str = f"{mask_data[14]:02X}"
+        self.cmd_support_0070h_0077h: int = mask_data[14]
         """Support mask for CMD 0070h to CMD 0077h"""
-        self.cmd_support_0078h_007fh: str = f"{mask_data[15]:02X}"
+        self.cmd_support_0078h_007fh: int = mask_data[15]
         """Support mask for CMD 0078h to CMD 007fh"""
-        self.cmd_support_0080h_0087h: str = f"{mask_data[16]:02X}"
+        self.cmd_support_0080h_0087h: int = mask_data[16]
         """Support mask for CMD 0080h to CMD 0087h"""
-        self.cmd_support_0088h_008fh: str = f"{mask_data[17]:02X}"
+        self.cmd_support_0088h_008fh: int = mask_data[17]
         """Support mask for CMD 0088h to CMD 008fh"""
-        self.cmd_support_0090h_0097h: str = f"{mask_data[18]:02X}"
+        self.cmd_support_0090h_0097h: int = mask_data[18]
         """Support mask for CMD 0090h to CMD 0097h"""
-        self.cmd_support_0098h_009fh: str = f"{mask_data[19]:02X}"
+        self.cmd_support_0098h_009fh: int = mask_data[19]
         """Support mask for CMD 0098h to CMD 009fh"""
-        self.cmd_support_00a0h_00a7h: str = f"{mask_data[20]:02X}"
+        self.cmd_support_00a0h_00a7h: int = mask_data[20]
         """Support mask for CMD 00a0h to CMD 00a7h"""
-        self.cmd_support_00a8h_00afh: str = f"{mask_data[21]:02X}"
+        self.cmd_support_00a8h_00afh: int = mask_data[21]
         """Support mask for CMD 00a8h to CMD 00afh"""
-        self.cmd_support_00b0h_00b7h: str = f"{mask_data[22]:02X}"
+        self.cmd_support_00b0h_00b7h: int = mask_data[22]
         """Support mask for CMD 00b0h to CMD 00b7h"""
-        self.cmd_support_00b8h_00bfh: str = f"{mask_data[23]:02X}"
+        self.cmd_support_00b8h_00bfh: int = mask_data[23]
         """Support mask for CMD 00b8h to CMD 00bfh"""
-        self.cmd_support_00c0h_00c7h: str = f"{mask_data[24]:02X}"
+        self.cmd_support_00c0h_00c7h: int = mask_data[24]
         """Support mask for CMD 00c0h to CMD 00c7h"""
-        self.cmd_support_00c8h_00cfh: str = f"{mask_data[25]:02X}"
+        self.cmd_support_00c8h_00cfh: int = mask_data[25]
         """Support mask for CMD 00c8h to CMD 00cfh"""
-        self.cmd_support_00d0h_00d7h: str = f"{mask_data[26]:02X}"
+        self.cmd_support_00d0h_00d7h: int = mask_data[26]
         """Support mask for CMD 00d0h to CMD 00d7h"""
-        self.cmd_support_00d8h_00dfh: str = f"{mask_data[27]:02X}"
+        self.cmd_support_00d8h_00dfh: int = mask_data[27]
         """Support mask for CMD 00d8h to CMD 00dfh"""
-        self.cmd_support_00e0h_00e7h: str = f"{mask_data[28]:02X}"
+        self.cmd_support_00e0h_00e7h: int = mask_data[28]
         """Support mask for CMD 00e0h to CMD 00e7h"""
-        self.cmd_support_00e8h_00efh: str = f"{mask_data[29]:02X}"
+        self.cmd_support_00e8h_00efh: int = mask_data[29]
         """Support mask for CMD 00e8h to CMD 00efh"""
-        self.cmd_support_00f0h_00f7h: str = f"{mask_data[30]:02X}"
+        self.cmd_support_00f0h_00f7h: int = mask_data[30]
         """Support mask for CMD 00f0h to CMD 00f7h"""
-        self.cmd_support_00f8h_00ffh: str = f"{mask_data[31]:02X}"
+        self.cmd_support_00f8h_00ffh: int = mask_data[31]
         """Support mask for CMD 00f8h to CMD 00ffh"""
         self.max_completion_time: int = reply["max_completion_time"]
         """integer, U16 Maximum CDB command execution time in ms, of all supported CDB commands
@@ -399,8 +400,8 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         self.start_cmd_payload_size: int = reply["start_cmd_payload_size"]
         """integer, This defines the number of bytes that the host must extract from the beginning of the vendor-delivered binary firmware image file and send to the module in CMD 0101h (Start)
         """
-        self.erased_byte: str = f"0x{reply["erased_byte"]:02X}"
-        """hex string, This is the value representing an erased byte. The purpose of advertising this byte is to optionally reduce download time by allowing the host to skip sending blocks of the image containing ErasedByte values only.
+        self.erased_byte: int = reply["erased_byte"]
+        """integer, This is the value representing an erased byte. The purpose of advertising this byte is to optionally reduce download time by allowing the host to skip sending blocks of the image containing ErasedByte values only.
         """
         self.read_write_length_ext: int = reply["read_write_length_ext"]
         """integer, specifies the allowable additional number of byte octets in a READ or a WRITE, specifically for Firmware Management Commands (IDs 0100h-01FFh) as follows:
@@ -424,8 +425,8 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         * i:     8 * 16 = 128 bytes (16 ≤ i ≤ 256)
 
         """
-        self.write_mechanism: str = f"0x{reply['write_mechanism']:02X}"
-        """hex string, Firmware update supported mechanism
+        self.write_mechanism: int = reply['write_mechanism']
+        """integer, Firmware update supported mechanism
 
         * 00h: None Supported.
         * 01h: Write to LPL supported.
@@ -433,8 +434,8 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         * 11h: Both Write to LPL and EPL supported.
 
         """
-        self.read_mechanism: str = f"0x{reply['read_mechanism']:02X}"
-        """hex string, Firmware read / readback support mechanism.
+        self.read_mechanism: int = reply['read_mechanism']
+        """integer, Firmware read / readback support mechanism.
 
         * 00h: None Supported.
         * 01h: Read via LPL supported.
@@ -508,10 +509,10 @@ class CMD0044hSecFeaturesAndCapabilitiesReply(CMDBaseReply):
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
 
-        # Parse cmd_support_mask as a list of integers and convert to hex strings with 0x prefix
+        # Parse cmd_support_mask as a list of integers
         mask_data = reply["cmd_support_mask"]
         
-        self.cmd_support_0400h_0407h: str = f"0x{mask_data[0]:02X}"
+        self.cmd_support_0400h_0407h: int = mask_data[0]
         """
         CMD 0400h-0407h support.
 
@@ -522,97 +523,97 @@ class CMD0044hSecFeaturesAndCapabilitiesReply(CMDBaseReply):
         * D7: CMD 0407h is supported
 
         """
-        self.cmd_support_0408h_040fh: str = f"0x{mask_data[1]:02X}"
+        self.cmd_support_0408h_040fh: int = mask_data[1]
         """CMD 0408h-040Fh support
         """
-        self.cmd_support_0410h_0417h: str = f"0x{mask_data[2]:02X}"
+        self.cmd_support_0410h_0417h: int = mask_data[2]
         """CMD 0410h-0417h support
         """
-        self.cmd_support_0418h_041fh: str = f"0x{mask_data[3]:02X}"
+        self.cmd_support_0418h_041fh: int = mask_data[3]
         """CMD 0418h-041Fh support
         """
-        self.cmd_support_0420h_0427h: str = f"0x{mask_data[4]:02X}"
+        self.cmd_support_0420h_0427h: int = mask_data[4]
         """CMD 0420h-0427h support
         """
-        self.cmd_support_0428h_042fh: str = f"0x{mask_data[5]:02X}"
+        self.cmd_support_0428h_042fh: int = mask_data[5]
         """CMD 0428h-042Fh support
         """
-        self.cmd_support_0430h_0437h: str = f"0x{mask_data[6]:02X}"
+        self.cmd_support_0430h_0437h: int = mask_data[6]
         """CMD 0430h-0437h support
         """
-        self.cmd_support_0438h_043fh: str = f"0x{mask_data[7]:02X}"
+        self.cmd_support_0438h_043fh: int = mask_data[7]
         """CMD 0438h-043Fh support
         """
-        self.cmd_support_0440h_0447h: str = f"0x{mask_data[8]:02X}"
+        self.cmd_support_0440h_0447h: int = mask_data[8]
         """CMD 0440h-0447h support
         """
-        self.cmd_support_0448h_044fh: str = f"0x{mask_data[9]:02X}"
+        self.cmd_support_0448h_044fh: int = mask_data[9]
         """CMD 0448h-044Fh support
         """
-        self.cmd_support_0450h_0457h: str = f"0x{mask_data[10]:02X}"
+        self.cmd_support_0450h_0457h: int = mask_data[10]
         """CMD 0450h-0457h support
         """
-        self.cmd_support_0458h_045fh: str = f"0x{mask_data[11]:02X}"
+        self.cmd_support_0458h_045fh: int = mask_data[11]
         """CMD 0458h-045Fh support
         """
-        self.cmd_support_0460h_0467h: str = f"0x{mask_data[12]:02X}"
+        self.cmd_support_0460h_0467h: int = mask_data[12]
         """CMD 0460h-0467h support
         """
-        self.cmd_support_0468h_046fh: str = f"0x{mask_data[13]:02X}"
+        self.cmd_support_0468h_046fh: int = mask_data[13]
         """CMD 0468h-046Fh support
         """
-        self.cmd_support_0470h_0477h: str = f"0x{mask_data[14]:02X}"
+        self.cmd_support_0470h_0477h: int = mask_data[14]
         """CMD 0470h-0477h support
         """
-        self.cmd_support_0478h_047fh: str = f"0x{mask_data[15]:02X}"
+        self.cmd_support_0478h_047fh: int = mask_data[15]
         """CMD 0478h-047Fh support
         """
-        self.cmd_support_0480h_0487h: str = f"0x{mask_data[16]:02X}"
+        self.cmd_support_0480h_0487h: int = mask_data[16]
         """CMD 0480h-0487h support
         """
-        self.cmd_support_0488h_048fh: str = f"0x{mask_data[17]:02X}"
+        self.cmd_support_0488h_048fh: int = mask_data[17]
         """CMD 0488h-048Fh support
         """
-        self.cmd_support_0490h_0497h: str = f"0x{mask_data[18]:02X}"
+        self.cmd_support_0490h_0497h: int = mask_data[18]
         """CMD 0490h-0497h support
         """
-        self.cmd_support_0498h_049fh: str = f"0x{mask_data[19]:02X}"
+        self.cmd_support_0498h_049fh: int = mask_data[19]
         """CMD 0498h-049Fh support
         """
-        self.cmd_support_04a0h_04a7h: str = f"0x{mask_data[20]:02X}"
+        self.cmd_support_04a0h_04a7h: int = mask_data[20]
         """CMD 04a0h-04a7h support
         """
-        self.cmd_support_04a8h_04afh: str = f"0x{mask_data[21]:02X}"
+        self.cmd_support_04a8h_04afh: int = mask_data[21]
         """CMD 04a8h-04afh support
         """
-        self.cmd_support_04b0h_04b7h: str = f"0x{mask_data[22]:02X}"
+        self.cmd_support_04b0h_04b7h: int = mask_data[22]
         """CMD 04b0h-04b7h support
         """
-        self.cmd_support_04b8h_04bfh: str = f"0x{mask_data[23]:02X}"
+        self.cmd_support_04b8h_04bfh: int = mask_data[23]
         """CMD 04b8h-04bfh support
         """
-        self.cmd_support_04c0h_04c7h: str = f"0x{mask_data[24]:02X}"
+        self.cmd_support_04c0h_04c7h: int = mask_data[24]
         """CMD 04c0h-04c7h support
         """
-        self.cmd_support_04c8h_04cfh: str = f"0x{mask_data[25]:02X}"
+        self.cmd_support_04c8h_04cfh: int = mask_data[25]
         """CMD 04c8h-04cfh support
         """
-        self.cmd_support_04d0h_04d7h: str = f"0x{mask_data[26]:02X}"
+        self.cmd_support_04d0h_04d7h: int = mask_data[26]
         """CMD 04d0h-04d7h support
         """
-        self.cmd_support_04d8h_04dfh: str = f"0x{mask_data[27]:02X}"
+        self.cmd_support_04d8h_04dfh: int = mask_data[27]
         """CMD 04d8h-04dfh support
         """
-        self.cmd_support_04e0h_04e7h: str = f"0x{mask_data[28]:02X}"
+        self.cmd_support_04e0h_04e7h: int = mask_data[28]
         """CMD 04e0h-04e7h support
         """
-        self.cmd_support_04e8h_04efh: str = f"0x{mask_data[29]:02X}"
+        self.cmd_support_04e8h_04efh: int = mask_data[29]
         """CMD 04e8h-04efh support
         """
-        self.cmd_support_04f0h_04f7h: str = f"0x{mask_data[30]:02X}"
+        self.cmd_support_04f0h_04f7h: int = mask_data[30]
         """CMD 04f0h-04f7h support
         """
-        self.cmd_support_04f8h_04ffh: str = f"0x{mask_data[31]:02X}"
+        self.cmd_support_04f8h_04ffh: int = mask_data[31]
         """CMD 04f8h-04ffh support
         """
         self.num_certificates: int = reply["num_certificates"]
@@ -734,7 +735,7 @@ class CMD0045hExternallyDefinedFeaturesReply(CMDBaseReply):
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
 
-        self.supplement_support: str = f"0x{reply['supplement_support']:02X}"
+        self.supplement_support: int = reply['supplement_support']
         """Bit 0 = 0/1: CMIS-VCS not supported/supported
         """
 
@@ -867,10 +868,10 @@ class CMD0051hGetInterfaceCodeDescriptionReply(CMDBaseReply):
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
 
-        self.interface_id: str = f"0x{reply['interface_id']:02X}"
-        """hex string, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
+        self.interface_id: int = reply['interface_id']
+        """integer, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
         """
-        self.interface_location: str = f"0x{reply['interface_location']:02X}"
+        self.interface_location: int = reply['interface_location']
         """integer, 0: media side. 1: host side.
         """
         self.interfacre_name: str = reply["interfacre_name"]
@@ -895,7 +896,7 @@ class CMD0051hGetInterfaceCodeDescriptionReply(CMDBaseReply):
         """ integer, U16: Bits per Symbol.
         """
 
-async def cmd_0051h_get_interface_code_description_cmd(port: Z800FreyaPort, cdb_instance: int, interface_id: str, interface_location: int) -> None:
+async def cmd_0051h_get_interface_code_description_cmd(port: Z800FreyaPort, cdb_instance: int, interface_id: int, interface_location: int) -> None:
     """Send CMD 0051h Get Interface Code Description
 
     :param port: the port object to send the command to
@@ -913,7 +914,7 @@ async def cmd_0051h_get_interface_code_description_cmd(port: Z800FreyaPort, cdb_
     """
     cmd_data = {
         "interface_id": interface_id,
-        "interface_location": "0x{:02x}".format(interface_location)
+        "interface_location": interface_location
     }
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0051h_get_if_code_descr.set(cmd_data=cmd_data)
 
@@ -1421,22 +1422,22 @@ class CMD0108hCopyFirmwareImageReply(CMDBaseReply):
         self.length: int = reply["length"]
         """integer, number of bytes copied.
         """
-        self.copy_direction: str = f"0x{reply['copy_direction']:02X}"
-        """hex string, copy direction.
+        self.copy_direction: str = reply['copy_direction']
+        """int, copy direction.
 
         * ``0xAB``, Copy Image A into Image B
         * ``0xBA``,Copy Image B into Image A
 
         """
-        self.copy_status: str = f"0x{reply['copy_status']:02X}"
-        """hex string, copy status.
+        self.copy_status: str = reply['copy_status']
+        """int, copy status.
 
         * ``0x00``, Copy Successful
         * ``0x01``, Copy Failed
 
         """
 
-async def cmd_0108h_copy_firmware_image_cmd(port: Z800FreyaPort, cdb_instance: int, copy_direction: str) -> None:
+async def cmd_0108h_copy_firmware_image_cmd(port: Z800FreyaPort, cdb_instance: int, copy_direction: int) -> None:
     """Send CMD 0108h Copy Firmware Image
 
     :param port: the port object to send the command to
