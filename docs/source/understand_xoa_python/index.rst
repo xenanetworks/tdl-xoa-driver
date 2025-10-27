@@ -1,4 +1,4 @@
-Understanding XOA Driver
+Understanding XOA Python API
 ============================
 
 .. toctree::

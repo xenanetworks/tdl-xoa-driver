@@ -1,7 +1,7 @@
 API Structure
 ==================================
 
-XOA Driver consists of three layers on top of the Xena proprietary binary API, as shown below.
+XOA Python API consists of three layers on top of the Xena proprietary binary API, as shown below.
 
     :term:`High-level Functions (HL-FUNC)<HL-FUNC>` provides high-level abstraction functions
 
@@ -13,7 +13,7 @@ XOA Driver consists of three layers on top of the Xena proprietary binary API, a
     :scale: 100 %
     :align: center
 
-    XOA Driver Stack View
+    XOA Python API Stack View
 
 Descriptions of each layer (from bottom to top) are shown below.
 
