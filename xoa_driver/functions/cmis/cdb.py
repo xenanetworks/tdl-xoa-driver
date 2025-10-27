@@ -252,72 +252,8 @@ class CMD0040hModuleFeaturesReply(CMDBaseReply):
         super().__init__(reply)
 
         # Parse cmd_support_mask as a list of integers
-        mask_data = reply["cmd_support_mask"]
-        
-        self.cmd_support_0000h_0007h: int = mask_data[0]
-        """Support mask for CMD 0000h to CMD 0007h"""
-        self.cmd_support_0008h_000fh: int = mask_data[1]
-        """Support mask for CMD 0008h to CMD 000fh"""
-        self.cmd_support_0010h_0017h: int = mask_data[2]
-        """Support mask for CMD 0010h to CMD 0017h"""
-        self.cmd_support_0018h_001fh: int = mask_data[3]
-        """Support mask for CMD 0018h to CMD 001fh"""
-        self.cmd_support_0020h_0027h: int = mask_data[4]
-        """Support mask for CMD 0020h to CMD 0027h"""
-        self.cmd_support_0028h_002fh: int = mask_data[5]
-        """Support mask for CMD 0028h to CMD 002fh"""
-        self.cmd_support_0030h_0037h: int = mask_data[6]
-        """Support mask for CMD 0030h to CMD 0037h"""
-        self.cmd_support_0038h_003fh: int = mask_data[7]
-        """Support mask for CMD 0038h to CMD 003fh"""
-        self.cmd_support_0040h_0047h: int = mask_data[8]
-        """Support mask for CMD 0040h to CMD 0047h"""
-        self.cmd_support_0048h_004fh: int = mask_data[9]
-        """Support mask for CMD 0048h to CMD 004fh"""
-        self.cmd_support_0050h_0057h: int = mask_data[10]
-        """Support mask for CMD 0050h to CMD 0057h"""
-        self.cmd_support_0058h_005fh: int = mask_data[11]
-        """Support mask for CMD 0058h to CMD 005fh"""
-        self.cmd_support_0060h_0067h: int = mask_data[12]
-        """Support mask for CMD 0060h to CMD 0067h"""
-        self.cmd_support_0068h_006fh: int = mask_data[13]
-        """Support mask for CMD 0068h to CMD 006fh"""
-        self.cmd_support_0070h_0077h: int = mask_data[14]
-        """Support mask for CMD 0070h to CMD 0077h"""
-        self.cmd_support_0078h_007fh: int = mask_data[15]
-        """Support mask for CMD 0078h to CMD 007fh"""
-        self.cmd_support_0080h_0087h: int = mask_data[16]
-        """Support mask for CMD 0080h to CMD 0087h"""
-        self.cmd_support_0088h_008fh: int = mask_data[17]
-        """Support mask for CMD 0088h to CMD 008fh"""
-        self.cmd_support_0090h_0097h: int = mask_data[18]
-        """Support mask for CMD 0090h to CMD 0097h"""
-        self.cmd_support_0098h_009fh: int = mask_data[19]
-        """Support mask for CMD 0098h to CMD 009fh"""
-        self.cmd_support_00a0h_00a7h: int = mask_data[20]
-        """Support mask for CMD 00a0h to CMD 00a7h"""
-        self.cmd_support_00a8h_00afh: int = mask_data[21]
-        """Support mask for CMD 00a8h to CMD 00afh"""
-        self.cmd_support_00b0h_00b7h: int = mask_data[22]
-        """Support mask for CMD 00b0h to CMD 00b7h"""
-        self.cmd_support_00b8h_00bfh: int = mask_data[23]
-        """Support mask for CMD 00b8h to CMD 00bfh"""
-        self.cmd_support_00c0h_00c7h: int = mask_data[24]
-        """Support mask for CMD 00c0h to CMD 00c7h"""
-        self.cmd_support_00c8h_00cfh: int = mask_data[25]
-        """Support mask for CMD 00c8h to CMD 00cfh"""
-        self.cmd_support_00d0h_00d7h: int = mask_data[26]
-        """Support mask for CMD 00d0h to CMD 00d7h"""
-        self.cmd_support_00d8h_00dfh: int = mask_data[27]
-        """Support mask for CMD 00d8h to CMD 00dfh"""
-        self.cmd_support_00e0h_00e7h: int = mask_data[28]
-        """Support mask for CMD 00e0h to CMD 00e7h"""
-        self.cmd_support_00e8h_00efh: int = mask_data[29]
-        """Support mask for CMD 00e8h to CMD 00efh"""
-        self.cmd_support_00f0h_00f7h: int = mask_data[30]
-        """Support mask for CMD 00f0h to CMD 00f7h"""
-        self.cmd_support_00f8h_00ffh: int = mask_data[31]
-        """Support mask for CMD 00f8h to CMD 00ffh"""
+        self.cmd_support = reply["cmd_support_mask"]
+
         self.max_completion_time: int = reply["max_completion_time"]
         """integer, U16 Maximum CDB command execution time in ms, of all supported CDB commands
         """
@@ -510,112 +446,19 @@ class CMD0044hSecFeaturesAndCapabilitiesReply(CMDBaseReply):
         super().__init__(reply)
 
         # Parse cmd_support_mask as a list of integers
-        mask_data = reply["cmd_support_mask"]
-        
-        self.cmd_support_0400h_0407h: int = mask_data[0]
-        """
-        CMD 0400h-0407h support.
+        self.cmd_support = reply["cmd_support_mask"]
 
-        Each bit represents a mask. If a bit is set, the corresponding command is supported
+        """
+        CMD 0400h-04FFh support.
+
+        Each integer represents a mask. If an integer is set, the corresponding command is supported
         
         * D0: CMD 0400h is supported.
         * ..
-        * D7: CMD 0407h is supported
+        * D255: CMD 04FFh is supported
 
         """
-        self.cmd_support_0408h_040fh: int = mask_data[1]
-        """CMD 0408h-040Fh support
-        """
-        self.cmd_support_0410h_0417h: int = mask_data[2]
-        """CMD 0410h-0417h support
-        """
-        self.cmd_support_0418h_041fh: int = mask_data[3]
-        """CMD 0418h-041Fh support
-        """
-        self.cmd_support_0420h_0427h: int = mask_data[4]
-        """CMD 0420h-0427h support
-        """
-        self.cmd_support_0428h_042fh: int = mask_data[5]
-        """CMD 0428h-042Fh support
-        """
-        self.cmd_support_0430h_0437h: int = mask_data[6]
-        """CMD 0430h-0437h support
-        """
-        self.cmd_support_0438h_043fh: int = mask_data[7]
-        """CMD 0438h-043Fh support
-        """
-        self.cmd_support_0440h_0447h: int = mask_data[8]
-        """CMD 0440h-0447h support
-        """
-        self.cmd_support_0448h_044fh: int = mask_data[9]
-        """CMD 0448h-044Fh support
-        """
-        self.cmd_support_0450h_0457h: int = mask_data[10]
-        """CMD 0450h-0457h support
-        """
-        self.cmd_support_0458h_045fh: int = mask_data[11]
-        """CMD 0458h-045Fh support
-        """
-        self.cmd_support_0460h_0467h: int = mask_data[12]
-        """CMD 0460h-0467h support
-        """
-        self.cmd_support_0468h_046fh: int = mask_data[13]
-        """CMD 0468h-046Fh support
-        """
-        self.cmd_support_0470h_0477h: int = mask_data[14]
-        """CMD 0470h-0477h support
-        """
-        self.cmd_support_0478h_047fh: int = mask_data[15]
-        """CMD 0478h-047Fh support
-        """
-        self.cmd_support_0480h_0487h: int = mask_data[16]
-        """CMD 0480h-0487h support
-        """
-        self.cmd_support_0488h_048fh: int = mask_data[17]
-        """CMD 0488h-048Fh support
-        """
-        self.cmd_support_0490h_0497h: int = mask_data[18]
-        """CMD 0490h-0497h support
-        """
-        self.cmd_support_0498h_049fh: int = mask_data[19]
-        """CMD 0498h-049Fh support
-        """
-        self.cmd_support_04a0h_04a7h: int = mask_data[20]
-        """CMD 04a0h-04a7h support
-        """
-        self.cmd_support_04a8h_04afh: int = mask_data[21]
-        """CMD 04a8h-04afh support
-        """
-        self.cmd_support_04b0h_04b7h: int = mask_data[22]
-        """CMD 04b0h-04b7h support
-        """
-        self.cmd_support_04b8h_04bfh: int = mask_data[23]
-        """CMD 04b8h-04bfh support
-        """
-        self.cmd_support_04c0h_04c7h: int = mask_data[24]
-        """CMD 04c0h-04c7h support
-        """
-        self.cmd_support_04c8h_04cfh: int = mask_data[25]
-        """CMD 04c8h-04cfh support
-        """
-        self.cmd_support_04d0h_04d7h: int = mask_data[26]
-        """CMD 04d0h-04d7h support
-        """
-        self.cmd_support_04d8h_04dfh: int = mask_data[27]
-        """CMD 04d8h-04dfh support
-        """
-        self.cmd_support_04e0h_04e7h: int = mask_data[28]
-        """CMD 04e0h-04e7h support
-        """
-        self.cmd_support_04e8h_04efh: int = mask_data[29]
-        """CMD 04e8h-04efh support
-        """
-        self.cmd_support_04f0h_04f7h: int = mask_data[30]
-        """CMD 04f0h-04f7h support
-        """
-        self.cmd_support_04f8h_04ffh: int = mask_data[31]
-        """CMD 04f8h-04ffh support
-        """
+       
         self.num_certificates: int = reply["num_certificates"]
         """integer, Number of public certificates the host may obtain from the module. 
         
@@ -1584,11 +1427,30 @@ async def cmd_010ah_commit_firmware_image_reply(port: Z800FreyaPort, cdb_instanc
 
 # CMD 8000h-FFFFh: Custom Command
 
-class CustomCMDReply(CMDBaseReply):
+class CustomCMDReply():
     """Defines the custom reply to receiver for the CDB instance.
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
-        super().__init__(reply)
+        self.cdb_io_status: int = reply["reply_status"]["cdb_io_status"]
+        """integer, indicates the CDB IO status.
+
+        * 0: Idle, transceiver is not processing a CDB command.
+        * 1: Finished, transceiver has finished processing a CDB command. It is ready to accept a new CDB command.
+        * 2: Timeout, transceiver has timed out while processing a CDB command. It is ready to accept a new CDB command.
+        * 3: In progress: transceiver is currently processing a CDB command. It is not ready to accept a new CDB command.
+        """
+        self.cdb_cmd_complete_flag: bool = reply["reply_status"]["cdb_cmd_complete_flag"]
+        """Integer, REPLY Status.CdbCmdCompleteFlag. 
+        
+        Indicates whether the CDB command is complete.
+
+        """
+        self.cdb_status: int = reply["reply_status"]["cdb_status"]
+        """Integer, REPLY Status.CdbStatus. 
+        
+        Provides the status of the most recently triggered CDB command.
+
+        """
         self.rpl_length: int = reply["reply_header"]["rpl_length"]
         """integer, REPLY Header.RPLLength.
 
