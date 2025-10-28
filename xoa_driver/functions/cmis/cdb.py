@@ -301,13 +301,13 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
 
-        self.image_readback: int = reply["feature_support_mask"]
+        self.image_readback: int = reply["feature_support_mask"] >> 7  & 1
         """
         * 0b = Full Image Readback Not Supported
         * 1b = Full Image Readback Supported
 
         """
-        self.max_duration_coding: int = reply["feature_support_mask"]
+        self.max_duration_coding: int = reply["feature_support_mask"] >> 3  & 1
         """
         * 0b = max duration multiplier M is 1
         * 1b = max duration multiplier M is 10
@@ -315,19 +315,19 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         This bit encodes a multiplier value M which governs the interpretation of values found in the U16 array of advertised max durations in Bytes 144-153 of this message: These advertised values are multiplied by M.
 
         """
-        self.skipping_erased_blocks: int = reply["feature_support_mask"]
+        self.skipping_erased_blocks: int = reply["feature_support_mask"] >> 2  & 1
         """
         * 0b = Skipping erased blocks Not Supported
         * 1b = Skipping erased blocks Supported
 
         """
-        self.copy_cmd: int = reply["feature_support_mask"]
+        self.copy_cmd: int = reply["feature_support_mask"] >> 1 & 1
         """
         * 0b = CMD 0108h (Copy image) Not Supported
         * 1b = CMD 0108h (Copy image) Supported
 
         """
-        self.abort_cmd: int = reply["feature_support_mask"]
+        self.abort_cmd: int = reply["feature_support_mask"] & 1
         """
         * 0b = CMD 0102h (Abort) Not Supported
         * 1b = CMD 0102h (Abort) Supported
