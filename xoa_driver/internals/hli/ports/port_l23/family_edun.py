@@ -20,7 +20,7 @@ from .pcs_pma_l import PcsPma as PcsPma3
 from .freya_l1 import Layer1
 
 class PcsPma(PcsPma1, PcsPma2, PcsPma3):
-    """Freya PCS/PMA
+    """Edun PCS/PMA
     """
     def __init__(self, conn: "itf.IConnection", port) -> None:
         PcsPma1.__init__(self, conn, port)
@@ -28,7 +28,7 @@ class PcsPma(PcsPma1, PcsPma2, PcsPma3):
         PcsPma3.__init__(self, conn, port)
 
 class L1(Layer1):
-    """Freya L1
+    """Edun L1
     """
     def __init__(self, conn: "itf.IConnection", port) -> None:
         Layer1.__init__(self, conn, port)
