@@ -93,7 +93,6 @@ from xoa_driver.internals.hli.ports.port_l23.family_l1 import (
     PFreya800G4S1POSFP_d,
     PFreya800G4S1POSFP_e,
     PFreya800G4S1POSFP_f,
-    PFreya800G4S2POSFP_a,
 )
 
 from xoa_driver.internals.hli.ports.port_l23.family_m import POdin1G3S6PT1RJ45
@@ -169,7 +168,6 @@ Z800FreyaPort = typing.Union[
     PFreya800G4S1POSFP_d,
     PFreya800G4S1POSFP_e,
     PFreya800G4S1POSFP_f,
-    PFreya800G4S2POSFP_a,
 ]
 
 Z1600EdunPort = PEdun800G3S1PSMPX_a
@@ -251,7 +249,6 @@ GenericL23Port = typing.Union[
     "PFreya800G4S1POSFP_d",
     "PFreya800G4S1POSFP_e",
     "PFreya800G4S1POSFP_f",
-    "PFreya800G4S2POSFP_a",
 
     "PEdun800G3S1PSMPX_a",
 ]
@@ -339,7 +336,6 @@ __all__ = (
     "PFreya800G4S1POSFP_d",
     "PFreya800G4S1POSFP_e",
     "PFreya800G4S1POSFP_f",
-    "PFreya800G4S2POSFP_a",
 
     "Z1600EdunPort",
     "PEdun800G3S1PSMPX_a",
