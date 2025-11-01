@@ -1,6 +1,6 @@
 from __future__ import annotations
 import typing as t
-from xoa_driver.ports import Z800FreyaPort
+from xoa_driver.ports import Z800FreyaPort, GenericL23Port
 from ._utils import *
 from ._constants import *
 import time
@@ -156,7 +156,7 @@ async def cmd_0001h_enter_password_cmd(port: Z800FreyaPort, cdb_instance: int, p
     }
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0001h_enter_password.set(cmd_data=cmd_data)
 
-async def cmd_0001h_enter_password_reply(port: Z800FreyaPort, cdb_instance: int) -> CMD0001hEnterPasswordReply:
+async def cmd_0001h_enter_password_reply(port: GenericL23Port, cdb_instance: int) -> CMD0001hEnterPasswordReply:
     """Read the module response to CMD 0001h Enter Password
 
     :param port: the port object to read the response from
