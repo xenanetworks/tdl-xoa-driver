@@ -7,7 +7,6 @@ from xoa_driver.functions import (
     exceptions,
     headers,
     cmis,
-    xoa_cli,
 )
 
 __all__ = (
@@ -18,5 +17,4 @@ __all__ = (
     "cli",
     "headers",
     "cmis",
-    "xoa_cli",
 )

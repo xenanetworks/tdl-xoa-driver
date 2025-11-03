@@ -7,7 +7,7 @@ import logging
 
 from typing import Optional, Callable, Union, List, Dict, Any
 
-from .socket_driver import SimpleSocket
+from ._socket_driver import SimpleSocket
 
 LOGFILE = "XENALOG"
 
