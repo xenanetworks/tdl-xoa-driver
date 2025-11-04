@@ -1,5 +1,7 @@
 #: Available enums used by commands and server response status.
 
+"""Enums used in XOA Python API."""
+
 from .internals.commands.enums import (
     AlgorithmMethod,
     AlignLockStatus,

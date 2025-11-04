@@ -1,4 +1,5 @@
 #: All available test module types.
+"""Xena test module types."""
 
 from .internals.hli.modules.modules_l23.module_l23_base import ModuleL23
 from .internals.hli.modules.modules_l23.family_d import (

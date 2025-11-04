@@ -1,4 +1,6 @@
 #: High-level functions
+"""High-level functions."""
+
 from xoa_driver.functions import (
     anlt,
     cli,

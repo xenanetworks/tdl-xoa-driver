@@ -1,5 +1,6 @@
 #: Other types which are used by ports or as a parameter to attribute set method.
 
+"""Other types used in Xena test ports."""
 
 from .internals.core.token import Token
 from .internals.core.transporter.protocol.payload.types import Hex
