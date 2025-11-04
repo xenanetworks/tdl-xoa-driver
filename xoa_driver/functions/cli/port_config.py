@@ -89,10 +89,3 @@ async def port_config_from_file(tester: testers.L23Tester, port: ports.GenericL2
     :type load_path: str
     """
     await load_port_config(tester, port, path)
-
-
-__all__ = (
-    "save_port_config",
-    "load_port_config",
-    "port_config_from_file",
-)
