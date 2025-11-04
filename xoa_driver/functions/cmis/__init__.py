@@ -1,4 +1,8 @@
-# importing commands subsets
-from .cdb import *
-from ._utils import *
-from ._constants import *
+"""The cmis high-level function module."""
+
+# importing all commands
+from . import cdb
+
+__all__ = (
+    "cdb",
+)
