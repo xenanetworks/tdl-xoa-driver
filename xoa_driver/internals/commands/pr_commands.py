@@ -532,12 +532,13 @@ class PR_TOTALEXT:
         packet_count_since_cleared: int = field(XmpLong())
         """long integer, number of packets received since statistics were cleared."""
         fcs_error_count: int = field(XmpLong())
-
+        """long integer, number of Rx packets with a bad FCS."""
         oversize_count: int = field(XmpLong())
-
+        """long integer, number of oversize packets (>1518 bytes) received since last clear (-1 if this counter is not supported by the tester)."""
         undersize_count: int = field(XmpLong())
-
+        """long integer, number of undersize packets (<64 bytes) received since last clear (-1 if this counter is not supported by the tester)."""
         jabber_count: int = field(XmpLong())
+        """long integer, number of jabber packets (oversized with a bad FCS) received since last clear (-1 if this counter is not supported by the tester)."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get statistics concerning all the packets received on a port.
@@ -548,10 +549,10 @@ class PR_TOTALEXT:
             number of packets received in the last second,
             number of bytes received since statistics were cleared,
             number of packets received since statistics were cleared,
-            number of packets received with fcs error frames,
-            number of oversize packets received since last clear (-1 if this counter is not supported by the tester),
-            number of undersize packets received since last clear (-1 if this counter is not supported by the tester),
-            number of jabber packets received since last clear (-1 if this counter is not supported by the tester).
+            number of packets received with a bad FCS,
+            number of oversize packets (>1518 bytes) received since last clear (-1 if this counter is not supported by the tester),
+            number of undersize packets (<64 bytes) received since last clear (-1 if this counter is not supported by the tester),
+            number of jabber packets (oversized with a bad FCS) received since last clear (-1 if this counter is not supported by the tester).
 
         :rtype: PR_TOTALEXT.GetDataAttr
         """
