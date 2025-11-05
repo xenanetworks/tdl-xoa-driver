@@ -3,7 +3,7 @@
 
 from xoa_driver.functions import (
     anlt,
-    cli,
+    cli as config_io,
     mgmt,
     anlt_ll_debug,
     exceptions,
@@ -16,7 +16,7 @@ __all__ = (
     "mgmt",
     "anlt_ll_debug",
     "exceptions",
-    "cli",
+    "config_io",
     "headers",
     "cmis",
 )

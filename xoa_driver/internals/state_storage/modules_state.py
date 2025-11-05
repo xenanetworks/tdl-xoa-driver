@@ -23,26 +23,46 @@ class ModuleLocalState:
         "reservation",
         "reserved_by",
         "model",
+        "model_name",
+        "serial_number",
+        "version_string",
+        "revision",
     )
 
     def __init__(self) -> None:
         self.reservation: enums.ReservedStatus = enums.ReservedStatus.RELEASED
         self.reserved_by: str = ""
         self.model: str = ""
+        self.model_name: str = ""
+        self.serial_number: str = ""
+        self.version_string: str = ""
+        self.revision: str = ""
 
     async def initiate(self, module) -> None:
         (
             reservation_r,
             reserved_by_r,
             model_r,
+            model_name_r,
+            serial_number_r,
+            version_string_r,
+            revision_r,
         ) = await funcs.apply(
             module.reservation.get(),
             module.reserved_by.get(),
             module.model.get(),
+            module.model_name.get(),
+            module.serial_number.get(),
+            module.version_str.get(),
+            module.revision.get(),
         )
         self.reservation = enums.ReservedStatus(reservation_r.operation)
         self.reserved_by = reserved_by_r.username
         self.model = model_r.model
+        self.model_name = enums.ModuleModelName(model_name_r.name).name
+        self.serial_number = serial_number_r.serial_number
+        self.version_string = version_string_r.version_str
+        self.revision = revision_r.revision
 
     def register_subscriptions(self, module) -> None:
         module._conn.subscribe(M_RESERVEDBY, utils.Update(self, "reserved_by", "username", module._check_identity))
