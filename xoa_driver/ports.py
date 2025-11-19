@@ -98,7 +98,8 @@ from xoa_driver.internals.hli.ports.port_l23.family_l1 import (
 from xoa_driver.internals.hli.ports.port_l23.family_m import POdin1G3S6PT1RJ45
 
 from xoa_driver.internals.hli.ports.port_l23.family_edun import (
-    PEdun800G3S1PSMPX_a
+    PEdun800G3S1PSMPX_a,
+    PEdun1600G4S1POSFP_a
 )
 
 Z10OdinPort = typing.Union[
@@ -170,11 +171,10 @@ Z800FreyaPort = typing.Union[
     PFreya800G4S1POSFP_f,
 ]
 
-Z1600EdunPort = PEdun800G3S1PSMPX_a
-
-# Z1600EdunPort = typing.Union[
-#     PEdun800G3S1PSMPX_a,
-# ]
+Z1600EdunPort = typing.Union[
+    PEdun800G3S1PSMPX_a,
+    PEdun1600G4S1POSFP_a
+]
 
 E100ChimeraPort = typing.Union[
     PortChimera,
@@ -251,6 +251,7 @@ GenericL23Port = typing.Union[
     "PFreya800G4S1POSFP_f",
 
     "PEdun800G3S1PSMPX_a",
+    "PEdun1600G4S1POSFP_a",
 ]
 
 GenericAnyPort = typing.Union[
@@ -339,6 +340,7 @@ __all__ = (
 
     "Z1600EdunPort",
     "PEdun800G3S1PSMPX_a",
+    "PEdun1600G4S1POSFP_a",
 
     "E100ChimeraPort",
     "PortChimera",
