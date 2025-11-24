@@ -1,10 +1,10 @@
 import asyncio
-from xoa_driver import testers, modules, ports, __version__
+from xoa_driver import testers, ports
 from ._cli_manager import XOACLIManager
-from typing import Optional, Callable, Union, List, Dict, Any
+from ._config_block import *
 
 async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port, path: str) -> str:
-    """Save port configuration to the specifiied filepath
+    """Save configuration from the test port to the specified filepath
 
     :param tester: Chassis object
     :type tester: testers.L23Tester
@@ -20,7 +20,7 @@ async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     resp = await tester.password.get()
     tester_password = resp.password
     port_index = f"{port.kind.module_id}/{port.kind.port_id}"
-    module_obj = tester.modules.obtain(port.kind.module_id)
+    module = tester.modules.obtain(port.kind.module_id)
     
     # Connect to the tester on tcp port 22611
     xm = XOACLIManager(host=tester_ip, debug=False, halt_on_error=False)
@@ -28,30 +28,32 @@ async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     # Log on and set username
     xm.logon_set_owner(tester_password)
 
-    file_header_dict = {}
-    resp = await tester.name.get()
-    file_header_dict["xoa_driver_version"] = __version__
-    file_header_dict["chassis_name"] = tester.info.name
-    file_header_dict["chassis_sn"] = tester.info.serial_number
-    file_header_dict["chassis_version_str"] = tester.info.version_string
-    file_header_dict["module_name"] = module_obj.info.model_name
-    file_header_dict["module_model"] = module_obj.info.model
-    file_header_dict["module_sn"] = module_obj.info.serial_number
-    file_header_dict["module_version_str"] = module_obj.info.version_string
-    file_header_dict["module_revision"] = module_obj.info.revision
-    file_header_dict["port_id"] = port_index
-    
     # Get full port configuration
-    resp = xm.get_port_full_config(port_index, file_headers=file_header_dict)
+    raw_resp = xm.get_port_full_config_raw(port_index)
+
+    # Create config block
+    port_config_block = ConfigBlock()
+    # Fill in metadata
+    port_config_block.type = ConfigMetadataType.PORT
+    port_config_block.chassis_name = tester.info.name
+    port_config_block.chassis_sn = str(tester.info.serial_number)
+    port_config_block.chassis_version_str = tester.info.version_string
+    port_config_block.module_name = module.info.model_name
+    port_config_block.module_model = module.info.model
+    port_config_block.module_sn = module.info.serial_number
+    port_config_block.module_version_str = module.info.version_string
+    port_config_block.module_revision = module.info.revision
+    port_config_block.port_id = port_index
+    port_config_block.commands = raw_resp[0]
 
     # Save configuration to file
+    result = port_config_block.config_block_str
     with open(path, 'w+', newline='') as xpcfile:
-        xpcfile.write(resp[0])
-
-    return resp[0]
+        xpcfile.write(result)
+    return result
 
 async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port, path: str) -> None:
-    """Load port configuration from the specifiied filepath
+    """Load configuration to the test port from the specified filepath
 
     :param tester: Chassis object
     :type tester: testers.L23Tester
@@ -78,15 +80,15 @@ async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     # Read configuration from file
     with open(path, 'r', newline='') as xpcfile:
         config_data = xpcfile.read()
-    
-    # Convert configuration data to command list
-    commands = xm.config_data_to_command_list(config_data)
-    
-    # Send each command to the tester
-    for command in commands:
-        if command.strip():  # Ensure the command is not empty
-            xm.send(cmd=command, sync_on=False)
-    
+
+    # Deserialize config block and send CLI commands
+    config_block = ConfigBlock()
+    config_block.config_block_str = config_data
+    cli_cmds = config_block.commands
+    for cmd in cli_cmds:
+        if cmd.strip():  # Ensure the command is not empty
+            xm.send(cmd=f"{port_index} {cmd}", sync_on=False)
+
     # Free the port after applying configuration
     xm.free_port(port_index)
 
@@ -101,3 +103,5 @@ async def port_config_from_file(tester: testers.L23Tester, port: ports.GenericL2
     :type load_path: str
     """
     await load_port_config(tester, port, path)
+
+

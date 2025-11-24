@@ -10,6 +10,6 @@ HL-FUNC consists of sub-libraries where functions are grouped based on functiona
 
     mgmt/index
     anlt/index
-    cli/index
+    config_io/index
     headers/index
     cmis/index
