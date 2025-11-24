@@ -1,5 +1,7 @@
 #: Helper functions
 
+"""Helper functions."""
+
 from xoa_driver.internals.core.funcs import (
     apply,
     apply_iter,

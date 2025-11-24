@@ -1,5 +1,7 @@
 #: All available tester types.
 
+"""Xena chassis types."""
+
 from .internals.hli.testers.l23_tester import L23Tester
 from .internals.hli.testers.l23ve_tester import L23VeTester
 from .internals.hli.testers.l47_tester import L47Tester

@@ -1,3 +1,8 @@
+"""
+The resource management high-level function module, 
+including testers, modules, ports, and streams.
+"""
+
 from __future__ import annotations
 import asyncio
 import typing as t
@@ -5,7 +10,7 @@ from xoa_driver import enums, testers
 from xoa_driver.utils import apply
 from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
 from xoa_driver.internals.hli.ports.port_l23.family_l1 import FamilyFreya
-from xoa_driver.ports import GenericAnyPort
+from xoa_driver.ports import GenericAnyPort, GenericL23Port
 from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule
 from xoa_driver.testers import GenericAnyTester, L23Tester
 from .exceptions import (
@@ -470,12 +475,12 @@ async def release_ports(*ports: GenericAnyPort) -> None:
 
 
 # region Streams
-async def remove_streams(port: GenericAnyPort) -> None:
+async def remove_streams(port: GenericL23Port) -> None:
     """
     Remove all streams on a port witout resetting the port.
 
     :param port: The port object
-    :type port: GenericAnyPort
+    :type port: GenericL23Port
     """
     await port.streams.server_sync()
     await asyncio.gather(*(s.delete() for s in port.streams))

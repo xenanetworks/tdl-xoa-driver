@@ -1,3 +1,5 @@
+"""The packet headers high-level function module."""
+
 from ipaddress import IPv4Address, IPv6Address
 from binascii import hexlify
 from xoa_driver.misc import Hex
