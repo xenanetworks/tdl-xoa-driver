@@ -1,7 +1,7 @@
 Quick Start
 ===================
 
-The XOA Driver offers more than just object-oriented APIs and functions for executing test scripts. It also provides a seamless integration with `XOA CLI commands <https://docs.xenanetworks.com/projects/tdl-xoa-cli>`_ and port configuration files from XenaManager, enabling you to effortlessly work with them.
+The XOA Python API offers more than just object-oriented APIs and functions for executing test scripts. It also provides a seamless integration with `XOA CLI commands <https://docs.xenanetworks.com/projects/tdl-xoa-cli>`_ and port configuration files from XenaManager, enabling you to effortlessly work with them.
 
 Basic Example
 -----------------------------
@@ -100,7 +100,7 @@ At last, release the ports as a good practice, so your team members know the por
 Integrate with CLI and XenaManager
 --------------------------------------
 
-The simple code example demonstrates how to use XOA Driver :
+The simple code example demonstrates how to use XOA Python API :
 
 * Establish connection to a Xena tester.
 * Reserve a port.
@@ -125,7 +125,7 @@ You can use :guilabel:`Save Port Configuration` in XenaManager to download port 
     :language: python
     :lines: 122-125
 
-In addition to set port configuration from an `xpc` file, you can also send CLI commands using XOA Driver. 
+In addition to set port configuration from an `xpc` file, you can also send CLI commands using XOA Python API. 
 
 .. literalinclude:: cli_integration.py
     :language: python

@@ -1,7 +1,7 @@
 Status Messages and Exceptions
 ========================================
 
-When you do a ``set`` operation, XOA Driver converts it into a request message (binary encoded) and send to the server on the tester. Upon receiving the message, the server tries to execute it and returns a **status message** for you to check whether the ``set`` operation is successful. The returned message may cause an **exception** if it is not an ``<OK>``. 
+When you do a ``set`` operation, XOA Python API converts it into a request message (binary encoded) and send to the server on the tester. Upon receiving the message, the server tries to execute it and returns a **status message** for you to check whether the ``set`` operation is successful. The returned message may cause an **exception** if it is not an ``<OK>``. 
 
 
 Status Messages
@@ -9,7 +9,7 @@ Status Messages
 
 The ``set`` operations themselves simply produce a reply from the tester of: ``<OK>``
 
-In case something is unacceptable to the tester, it will return one of the following status messages. In XOA Driver, all of them are considered as ``BadStatus``.
+In case something is unacceptable to the tester, it will return one of the following status messages. In XOA Python API, all of them are considered as ``BadStatus``.
 
 * ``<NOCONNECTIONS>`` Chassis has no available connection slots.
 * ``<NOTLOGGEDON>`` You have not issued a ``C_LOGON`` providing the chassis password.
@@ -39,7 +39,7 @@ In case something is unacceptable to the tester, it will return one of the follo
 Exceptions
 ----------------------
 
-If the status message from the server is not ``<OK>``, an exception will be raised by XOA Driver. An example of an exception caused by a ``<NOTWRITABLE>`` reply is shown here:
+If the status message from the server is not ``<OK>``, an exception will be raised by XOA Python API. An example of an exception caused by a ``<NOTWRITABLE>`` reply is shown here:
 
 .. code-block:: shell
     :emphasize-lines: 16

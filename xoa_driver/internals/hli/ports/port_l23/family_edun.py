@@ -20,7 +20,7 @@ from .pcs_pma_l import PcsPma as PcsPma3
 from .freya_l1 import Layer1
 
 class PcsPma(PcsPma1, PcsPma2, PcsPma3):
-    """Freya PCS/PMA
+    """Edun PCS/PMA
     """
     def __init__(self, conn: "itf.IConnection", port) -> None:
         PcsPma1.__init__(self, conn, port)
@@ -28,13 +28,13 @@ class PcsPma(PcsPma1, PcsPma2, PcsPma3):
         PcsPma3.__init__(self, conn, port)
 
 class L1(Layer1):
-    """Freya L1
+    """Edun L1
     """
     def __init__(self, conn: "itf.IConnection", port) -> None:
         Layer1.__init__(self, conn, port)
 
 
-class FamilyFreya(BasePortL23Genuine):
+class FamilyEdun(BasePortL23Genuine):
     pcs_pma: PcsPma
     """PCS/PMA layer
 
@@ -71,102 +71,7 @@ class FamilyFreya(BasePortL23Genuine):
     """Register a callback to the event that the port's dynamic traffic setting changes."""
 
 
-class PFreya800G1S1P_a(FamilyFreya):
-    """L23 port on Freya-800G-1S-1P[a] module.
-    """
-    ...
-
-
-class PFreya800G1S1P_b(FamilyFreya):
-    """L23 port on Freya-800G-1S-1P[b] module.
-    """
-    ...
-
-
-class PFreya800G1S1POSFP_a(FamilyFreya):
-    """L23 port on Freya-800G-1S-1P-OSFP[a] module.
-    """
-    ...
-
-class PFreya800G1S1POSFP_b(FamilyFreya):
-    """L23 port on Freya-800G-1S-1P-OSFP[b] module.
-    """
-    ...
-
-
-class PFreya800G4S1P_a(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P[a] module.
-    """
-    ...
-
-
-class PFreya800G4S1P_b(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P[b] module.
-    """
-    ...
-
-
-class PFreya800G4S1P_c(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P[c] module.
-    """
-    ...
-
-
-class PFreya800G4S1P_d(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P[d] module.
-    """
-    ...
-
-
-class PFreya800G4S1P_e(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P[e] module.
-    """
-    ...
-
-
-class PFreya800G4S1P_f(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P[f] module.
-    """
-    ...
-
-
-class PFreya800G4S2P_a(FamilyFreya):
-    """L23 port on Freya-800G-4S-2P[a] module.
-    """
-    ...
-
-
-class PFreya800G4S1POSFP_a(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P-OSFP[a] module.
-    """
-    ...
-
-
-class PFreya800G4S1POSFP_b(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P-OSFP[b] module.
-    """
-    ...
-
-
-class PFreya800G4S1POSFP_c(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P-OSFP[c] module.
-    """
-    ...
-
-
-class PFreya800G4S1POSFP_d(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P-OSFP[d] module.
-    """
-    ...
-
-
-class PFreya800G4S1POSFP_e(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P-OSFP[e] module.
-    """
-    ...
-
-
-class PFreya800G4S1POSFP_f(FamilyFreya):
-    """L23 port on Freya-800G-4S-1P-OSFP[f] module.
+class PEdun800G3S1PSMPX_a(FamilyEdun):
+    """L23 port on Edun-800G-3S-1P-SMPX[a] module.
     """
     ...

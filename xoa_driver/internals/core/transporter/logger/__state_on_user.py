@@ -19,7 +19,7 @@ SYMBOL_RESPONSE = f"{YELLOW} <- {RESET}"
 
 class StateOnUser:
     @staticmethod
-    def setup(connid: str, logger: "CustomLogger") -> "CustomLogger" | None:
+    def setup(connid: str, logger: "CustomLogger") -> "CustomLogger | None":
         return logger
 
     @staticmethod

@@ -1,21 +1,21 @@
-Installing XOA Driver
+Installing XOA Python API
 =========================
 
-XOA Driver is available to install and upgrade via the `Python Package Index <https://pypi.org/>`_. Alternatively, you can also install and upgrade from the source file.
+XOA Python API is available to install and upgrade via the `Python Package Index <https://pypi.org/>`_. Alternatively, you can also install and upgrade from the source file.
 
 Prerequisites
 -------------
 
-Before installing XOA Driver, please make sure your environment has installed `Python <https://www.python.org/>`_ and ``pip``.
+Before installing XOA Python API, please make sure your environment has installed `Python <https://www.python.org/>`_ and ``pip``.
 
 Python
 ^^^^^^^
 
-XOA Driver requires that you `install Python <https://realpython.com/installing-python/>`_  on your system.
+XOA Python API requires that you `install Python <https://realpython.com/installing-python/>`_  on your system.
 
 .. note:: 
 
-    XOA Driver requires Python >= 3.11
+    XOA Python API requires Python >= 3.11
 
 ``pip``
 ^^^^^^^
@@ -56,7 +56,7 @@ If you don't have ``pip`` installed, you can:
 Installing From PyPI Using ``pip``
 --------------------------------------
 
-``pip`` is the recommended installer for XOA Driver. The most common usage of ``pip`` is to install from the Python Package Index using `Requirement Specifiers <https://pip.pypa.io/en/stable/cli/pip_install/#requirement-specifiers>`_.
+``pip`` is the recommended installer for XOA Python API. The most common usage of ``pip`` is to install from the Python Package Index using `Requirement Specifiers <https://pip.pypa.io/en/stable/cli/pip_install/#requirement-specifiers>`_.
 
 
 Install to Global Namespace
@@ -66,7 +66,7 @@ Install to Global Namespace
     :new-set:
 
     .. code-block:: doscon
-        :caption: Install XOA Driver in Windows environment from PyPi.
+        :caption: Install XOA Python API in Windows environment from PyPi.
 
         > pip install tdl-xoa-driver -U         # latest version
         > pip install tdl-xoa-driver==1.1.0     # specific version
@@ -75,7 +75,7 @@ Install to Global Namespace
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Install XOA Driver in macOS/Linux environment from PyPi.
+        :caption: Install XOA Python API in macOS/Linux environment from PyPi.
 
         $ pip3 install tdl-xoa-driver -U         # latest version
         $ pip3 install tdl-xoa-driver==1.1.0     # specific version
@@ -85,14 +85,14 @@ Install to Global Namespace
 Install in Activated Virtual Environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Install XOA Driver in a virtual environment, so it does not pollute your global namespace. 
+Install XOA Python API in a virtual environment, so it does not pollute your global namespace. 
 
 For example, your project folder is called ``/my_xoa_project``.
 
 .. tab:: Windows
 
     .. code-block:: doscon
-        :caption: Install XOA Driver in a virtual environment in Windows from PyPI.
+        :caption: Install XOA Python API in a virtual environment in Windows from PyPI.
 
         [my_xoa_project]> python -m venv .\env
         [my_xoa_project]> .\env\Scripts\activate
@@ -102,7 +102,7 @@ For example, your project folder is called ``/my_xoa_project``.
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Install XOA Driver in a virtual environment in macOS/Linux from PyPI.
+        :caption: Install XOA Python API in a virtual environment in macOS/Linux from PyPI.
 
         [my_xoa_project]$ python3 -m venv ./env
         [my_xoa_project]$ source ./env/bin/activate
@@ -142,20 +142,20 @@ You can deactivate a virtual environment by typing ``deactivate`` in your shell.
 Upgrading From PyPI Using ``pip``
 --------------------------------------------
 
-To upgrade XOA Driver package from PyPI:
+To upgrade XOA Python API package from PyPI:
 
 .. tab:: Windows
     :new-set:
     
     .. code-block:: doscon
-        :caption: Upgrade XOA Driver in Windows environment from PyPi.
+        :caption: Upgrade XOA Python API in Windows environment from PyPi.
 
         > pip install tdl-xoa-driver -U
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Upgrade XOA Driver in macOS/Linux environment from PyPi.
+        :caption: Upgrade XOA Python API in macOS/Linux environment from PyPi.
 
         $ pip3 install tdl-xoa-driver -U
 
@@ -163,7 +163,7 @@ To upgrade XOA Driver package from PyPI:
 Installing Manually From Source
 --------------------------------------------
 
-If for some reason you need to install or upgrade XOA Driver manually from source, the steps are:
+If for some reason you need to install or upgrade XOA Python API manually from source, the steps are:
 
 **Step 1**, make sure Python packages `wheel <https://wheel.readthedocs.io/en/stable/>`_ and  `setuptools <https://setuptools.pypa.io/en/latest/index.html>`_ are installed on your system. Install ``wheel`` and ``setuptools`` using ``pip``:
 
@@ -182,20 +182,20 @@ If for some reason you need to install or upgrade XOA Driver manually from sourc
 
         $ pip3 install wheel setuptools
 
-**Step 2**, download the XOA Driver source distribution from `XOA Driver Releases <https://github.com/xenanetworks/tdl-xoa-driver/releases>`_. Unzip the archive and run the ``setup.py`` script to install the package:
+**Step 2**, download the XOA Python API source distribution from `XOA Python API Releases <https://github.com/xenanetworks/tdl-xoa-driver/releases>`_. Unzip the archive and run the ``setup.py`` script to install the package:
 
 .. tab:: Windows
     :new-set:
 
     .. code-block:: doscon
-        :caption: Install XOA Driver in Windows environment from source.
+        :caption: Install XOA Python API in Windows environment from source.
 
         [xoa_driver]> python setup.py install
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Install XOA Driver in macOS/Linux environment from source.
+        :caption: Install XOA Python API in macOS/Linux environment from source.
 
         [xoa_driver]$ python3 setup.py install
 
@@ -206,13 +206,13 @@ If for some reason you need to install or upgrade XOA Driver manually from sourc
     :new-set:
 
     .. code-block:: doscon
-        :caption: Build XOA Driver wheel in Windows environment for distribution.
+        :caption: Build XOA Python API wheel in Windows environment for distribution.
 
         [xoa_driver]> python setup.py bdist_wheel
 
 .. tab:: macOS/Linux
 
     .. code-block:: console
-        :caption: Build XOA Driver wheel in macOS/Linux environment for distribution.
+        :caption: Build XOA Python API wheel in macOS/Linux environment for distribution.
 
         [xoa_driver]$ python3 setup.py bdist_wheel

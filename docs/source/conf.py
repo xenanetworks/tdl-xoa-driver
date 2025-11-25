@@ -48,10 +48,10 @@ def get_short_version(rel_path):
 company = f"Teledyne LeCroy Xena"
 year = datetime.datetime.today().year
 month = datetime.datetime.today().month
-project = f"XOA Python API User Manual"
+project = f"XOA Python API"
 copyright = f"{year}, {company}"
 author = company
-title = f"XOA Python API User Manual"
+title = f"XOA Python API Documentation"
 output_basename = f"tdl_xoa_driver_doc"
 
 # The full version, including alpha/beta/rc tags.

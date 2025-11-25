@@ -1,4 +1,5 @@
 #: All available test module types.
+"""Xena test module types."""
 
 from .internals.hli.modules.modules_l23.module_l23_base import ModuleL23
 from .internals.hli.modules.modules_l23.family_d import (
@@ -116,6 +117,10 @@ from .internals.hli.modules.module_chimera import (
 from .internals.hli.modules.module_l47 import ModuleL47
 from .internals.hli.modules.module_l47ve import ModuleL47VE
 
+from .internals.hli.modules.modules_l23.family_edun import (
+    MEdun800G3S1PSMPX_a,
+)
+
 import typing
 
 Z10OdinModule = typing.Union[
@@ -214,6 +219,8 @@ Z800FreyaModule = typing.Union[
     MFreya800G4S1POSFP_e_g2,
     MFreya800G4S1POSFP_f_g2,
 ]
+
+Z1600EdunModule = MEdun800G3S1PSMPX_a
 
 E100ChimeraModule = typing.Union[
     ModuleChimera,
@@ -317,6 +324,8 @@ GenericL23Module = typing.Union[
     "MFreya800G4S1POSFP_d_g2",
     "MFreya800G4S1POSFP_e_g2",
     "MFreya800G4S1POSFP_f_g2",
+
+    "MEdun800G3S1PSMPX_a",
 ]
 
 GenericAnyModule = typing.Union[
@@ -432,6 +441,9 @@ __all__ = (
     "MFreya800G4S1POSFP_d_g2",
     "MFreya800G4S1POSFP_e_g2",
     "MFreya800G4S1POSFP_f_g2",
+
+    "Z1600EdunModule",
+    "MEdun800G3S1PSMPX_a",
 
     "E100ChimeraModule",
     "ModuleChimera",

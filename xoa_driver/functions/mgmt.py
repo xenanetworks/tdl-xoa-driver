@@ -1,3 +1,8 @@
+"""
+The resource management high-level function module, 
+including testers, modules, ports, and streams.
+"""
+
 from __future__ import annotations
 import asyncio
 import typing as t
