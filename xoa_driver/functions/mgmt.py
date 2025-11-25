@@ -40,13 +40,8 @@ async def reserve_tester(tester: GenericAnyTester, force: bool = True) -> None:
     :return:
     :rtype: None
     """
-    r = await tester.reservation.get()
-    if force and r.operation == enums.ReservedStatus.RESERVED_BY_OTHER:
-        await tester.reservation.set_relinquish()
-        await asyncio.gather(*(release_module(m, True) for m in tester.modules))
-        await tester.reservation.set_reserve()
-    elif r.operation == enums.ReservedStatus.RELEASED:
-        await tester.reservation.set_reserve()
+    await release_tester(tester, force)
+    await tester.reservation.set_reserve()
 
 
 async def release_tester(
@@ -132,12 +127,8 @@ async def reserve_module(module: GenericAnyModule, force: bool = True) -> None:
     :return:
     :rtype: None
     """
-    r = await module.reservation.get()
-    if force and r.operation == enums.ReservedStatus.RESERVED_BY_OTHER:
-        await release_module(module, True)
-        await module.reservation.set_reserve()
-    elif r.operation == enums.ReservedStatus.RELEASED:
-        await module.reservation.set_reserve()
+    await release_module(module, force)
+    await module.reservation.set_reserve()
 
 
 async def release_module(

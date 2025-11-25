@@ -1,5 +1,5 @@
 API Structure
-==================================
+============================
 
 XOA Python API consists of three layers on top of the Xena proprietary binary API, as shown below.
 
@@ -9,7 +9,7 @@ XOA Python API consists of three layers on top of the Xena proprietary binary AP
 
     :term:`Low-Level API (LL-API)<LL-API>` provides low-level class.
 
-.. figure:: ../_static/api_structure.png
+.. figure:: images/api_structure.png
     :scale: 100 %
     :align: center
 
@@ -48,3 +48,9 @@ HL-FUNC provides **high-level abstraction** functions on top of the object-orien
 .. seealso::
 
     Read more about :doc:`hlfunc_guide`.
+
+.. toctree::
+
+    hlfunc_guide
+    hlapi_guide
+    llapi_guide    

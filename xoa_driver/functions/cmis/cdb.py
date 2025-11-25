@@ -15,40 +15,32 @@ class CMDBaseReply:
     def __init__(self, reply: t.Dict[str, t.Any]):
         self.cdb_io_status: int = reply.get("cdb_io_status", 0)
         """integer, indicates the CDB IO status.
-        
+
         * 0: Idle, transceiver is not processing a CDB command.
         * 1: Finished, transceiver has finished processing a CDB command. It is ready to accept a new CDB command.
         * 2: Timeout, transceiver has timed out while processing a CDB command. It is ready to accept a new CDB command.
         * 3: In progress: transceiver is currently processing a CDB command. It is not ready to accept a new CDB command.
         """
-
-# CMD 0000h: Query Status
-class CMD0000hQueryStatusReply(CMDBaseReply):
-    """REPLY message of CMD 0000h Query Status
-    """
-    def __init__(self, reply: t.Dict[str, t.Any]) -> None:
-        super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
+        self.cdb_status: int = reply['cdb_status']
         """
-        hex string, provides the status of the most recently triggered CDB command.
+        integer, provides the status of the most recently triggered CDB command.
 
         In Progress
 
         * ``10 000001b``: Busy capturing command
         * ``10 000010b``: Busy checking/validating command
         * ``10 000011b``: Busy executing command
-        
+
         On Success
 
         * ``00 000001b``: Success
-        
+
         On Failure
 
         * ``01 000000b``: Failed, no specific failure
         * ``01 000101b``: CdbChkCode error
 
         """
-        
         self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
         """
         Latched Flag to indicate completion of a CDB command for CDB instance.
@@ -57,14 +49,19 @@ class CMD0000hQueryStatusReply(CMDBaseReply):
 
         """
 
-        self.status: str = reply["status"]
-        """hex string
+# CMD 0000h: Query Status
+class CMD0000hQueryStatusReply(CMDBaseReply):
+    """REPLY message of CMD 0000h Query Status
+    """
+    def __init__(self, reply: t.Dict[str, t.Any]) -> None:
+        super().__init__(reply)
+        self.status: int = reply['status']
+        """integer
 
             * ``0000 0000b``: Module Boot Up.
             * ``0000 0001b``: Host Password Accepted.
             * ``1xxx xxxxb``: Module Password accepted.
             * Bits ‘x’ may contain custom information.
-
         """
 
 async def cmd_0000h_query_status_cmd(port: Z800FreyaPort, cdb_instance: int, response_delay: int) -> None:
@@ -114,43 +111,21 @@ class CMD0001hEnterPasswordReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """
-        hex string, provides the status of the most recently triggered CDB command.
-
-        On Success
-
-            * ``00 000001b``: Success
-
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000101b``: CdbChkCode error
-            * ``01 000110b``: Password error – not accepted
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
-
-async def cmd_0001h_enter_password_cmd(port: Z800FreyaPort, cdb_instance: int, password: str) -> None:
+        
+async def cmd_0001h_enter_password_cmd(port: Z800FreyaPort, cdb_instance: int, password: bytearray) -> None:
     """Send CMD 0001h Enter Password
 
     :param port: the port object to send the command to
     :type port: Z800FreyaPort
-    :param cdb_instance: CDB instance number.
+
+        :param cdb_instance: CDB instance number.
     
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
     
     :type cdb_instance: int
     :param password: password to be entered
-    :type password: hex str
+    :type password: int
     """
 
     cmd_data = {
@@ -186,32 +161,8 @@ class CMD0002hChangePasswordReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """
-        hex string, provides the status of the most recently triggered CDB command.
 
-        On Success
-        
-            * ``00 000001b``: Success
-
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error (e.g. Bit 31 is set).
-            * ``01 000101b``: CdbChkCode error
-            * ``01 000110b``: Insufficient privilege to change password
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
-
-async def cmd_0002h_change_password_cmd(port: Z800FreyaPort, cdb_instance: int, new_password: str) -> None:
+async def cmd_0002h_change_password_cmd(port: Z800FreyaPort, cdb_instance: int, new_password: bytearray) -> None:
     """Send CMD 0002h Change Password
 
     :param port: the port object to send the command to
@@ -223,7 +174,7 @@ async def cmd_0002h_change_password_cmd(port: Z800FreyaPort, cdb_instance: int, 
     
     :type cdb_instance: int
     :param new_password: new password to be entered
-    :type new_password: hex str
+    :type new_password: int
     """
     cmd_data = {
         "new_password": new_password
@@ -258,28 +209,6 @@ class CMD0004hAbortProcessingReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """
-        hex string, provides the status of the most recently triggered CDB command.
-
-        On Success
-        
-            * ``00 000001b``: Success
-        
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
 async def cmd_0004h_abort_processing_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
     """Send CMD 0004h Abort Processing
@@ -323,93 +252,10 @@ class CMD0040hModuleFeaturesReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """
-        hex string, provides the status of the most recently triggered CDB command.
 
-        On Success
-        
-            * ``00 000001b``: Success
+        # Parse cmd_support_mask as a list of integers
+        self.cmd_support = reply["cmd_support_mask"]
 
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
-
-        self.cmd_support_0000h_0007h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][2:4]
-        """Support mask for CMD 0000h to CMD 0007h"""
-        self.cmd_support_0008h_000fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][4:6]
-        """Support mask for CMD 0008h to CMD 000fh"""
-        self.cmd_support_0010h_0017h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][6:8]
-        """Support mask for CMD 0010h to CMD 0017h"""
-        self.cmd_support_0018h_001fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][8:10]
-        """Support mask for CMD 0018h to CMD 001fh"""
-        self.cmd_support_0020h_0027h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][10:12]
-        """Support mask for CMD 0020h to CMD 0027h"""
-        self.cmd_support_0028h_002fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][12:14]
-        """Support mask for CMD 0028h to CMD 002fh"""
-        self.cmd_support_0030h_0037h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][14:16]
-        """Support mask for CMD 0030h to CMD 0037h"""
-        self.cmd_support_0038h_003fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][16:18]
-        """Support mask for CMD 0038h to CMD 003fh"""
-        self.cmd_support_0040h_0047h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][18:20]
-        """Support mask for CMD 0040h to CMD 0047h"""
-        self.cmd_support_0048h_004fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][20:22]
-        """Support mask for CMD 0048h to CMD 004fh"""
-        self.cmd_support_0050h_0057h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][22:24]
-        """Support mask for CMD 0050h to CMD 0057h"""
-        self.cmd_support_0058h_005fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][24:26]
-        """Support mask for CMD 0058h to CMD 005fh"""
-        self.cmd_support_0060h_0067h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][26:28]
-        """Support mask for CMD 0060h to CMD 0067h"""
-        self.cmd_support_0068h_006fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][28:30]
-        """Support mask for CMD 0068h to CMD 006fh"""
-        self.cmd_support_0070h_0077h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][30:32]
-        """Support mask for CMD 0070h to CMD 0077h"""
-        self.cmd_support_0078h_007fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][32:34]
-        """Support mask for CMD 0078h to CMD 007fh"""
-        self.cmd_support_0080h_0087h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][34:36]
-        """Support mask for CMD 0080h to CMD 0087h"""
-        self.cmd_support_0088h_008fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][36:38]
-        """Support mask for CMD 0088h to CMD 008fh"""
-        self.cmd_support_0090h_0097h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][38:40]
-        """Support mask for CMD 0090h to CMD 0097h"""
-        self.cmd_support_0098h_009fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][40:42]
-        """Support mask for CMD 0098h to CMD 009fh"""
-        self.cmd_support_00a0h_00a7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][42:44]
-        """Support mask for CMD 00a0h to CMD 00a7h"""
-        self.cmd_support_00a8h_00afh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][44:46]
-        """Support mask for CMD 00a8h to CMD 00afh"""
-        self.cmd_support_00b0h_00b7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][46:48]
-        """Support mask for CMD 00b0h to CMD 00b7h"""
-        self.cmd_support_00b8h_00bfh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][48:50]
-        """Support mask for CMD 00b8h to CMD 00bfh"""
-        self.cmd_support_00c0h_00c7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][50:52]
-        """Support mask for CMD 00c0h to CMD 00c7h"""
-        self.cmd_support_00c8h_00cfh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][52:54]
-        """Support mask for CMD 00c8h to CMD 00cfh"""
-        self.cmd_support_00d0h_00d7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][54:56]
-        """Support mask for CMD 00d0h to CMD 00d7h"""
-        self.cmd_support_00d8h_00dfh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][56:58]
-        """Support mask for CMD 00d8h to CMD 00dfh"""
-        self.cmd_support_00e0h_00e7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][58:60]
-        """Support mask for CMD 00e0h to CMD 00e7h"""
-        self.cmd_support_00e8h_00efh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][60:62]
-        """Support mask for CMD 00e8h to CMD 00efh"""
-        self.cmd_support_00f0h_00f7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][62:64]
-        """Support mask for CMD 00f0h to CMD 00f7h"""
-        self.cmd_support_00f8h_00ffh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][64:66]
-        """Support mask for CMD 00f8h to CMD 00ffh"""
         self.max_completion_time: int = reply["max_completion_time"]
         """integer, U16 Maximum CDB command execution time in ms, of all supported CDB commands
         """
@@ -456,57 +302,34 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """
-        hex string, provides the status of the most recently triggered CDB command.
 
-        On Success
-            
-            * ``00 000001b``: Success
-
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
-
-        self.image_readback: int = 1 if int(reply["feature_support_mask"], 16) & 0x80 else 0
+        self.image_readback: int = reply["feature_support_mask"]
         """
         * 0b = Full Image Readback Not Supported
         * 1b = Full Image Readback Supported
 
         """
-        self.max_duration_coding: int = 1 if int(reply["feature_support_mask"], 16) & 0x08 else 0
+        self.max_duration_coding: int = reply["feature_support_mask"]
         """
         * 0b = max duration multiplier M is 1
         * 1b = max duration multiplier M is 10
-        
+
         This bit encodes a multiplier value M which governs the interpretation of values found in the U16 array of advertised max durations in Bytes 144-153 of this message: These advertised values are multiplied by M.
 
         """
-        self.skipping_erased_blocks: int = 1 if int(reply["feature_support_mask"], 16) & 0x04 else 0
+        self.skipping_erased_blocks: int = reply["feature_support_mask"]
         """
         * 0b = Skipping erased blocks Not Supported
         * 1b = Skipping erased blocks Supported
 
         """
-        self.copy_cmd: int = 1 if int(reply["feature_support_mask"], 16) & 0x02 else 0
+        self.copy_cmd: int = reply["feature_support_mask"]
         """
         * 0b = CMD 0108h (Copy image) Not Supported
         * 1b = CMD 0108h (Copy image) Supported
 
         """
-        self.abort_cmd: int = 1 if int(reply["feature_support_mask"], 16) & 0x01 else 0
+        self.abort_cmd: int = reply["feature_support_mask"]
         """
         * 0b = CMD 0102h (Abort) Not Supported
         * 1b = CMD 0102h (Abort) Supported
@@ -515,8 +338,8 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         self.start_cmd_payload_size: int = reply["start_cmd_payload_size"]
         """integer, This defines the number of bytes that the host must extract from the beginning of the vendor-delivered binary firmware image file and send to the module in CMD 0101h (Start)
         """
-        self.erased_byte: str = reply["erased_byte"]
-        """hex string, This is the value representing an erased byte. The purpose of advertising this byte is to optionally reduce download time by allowing the host to skip sending blocks of the image containing ErasedByte values only.
+        self.erased_byte: int = reply["erased_byte"]
+        """integer, This is the value representing an erased byte. The purpose of advertising this byte is to optionally reduce download time by allowing the host to skip sending blocks of the image containing ErasedByte values only.
         """
         self.read_write_length_ext: int = reply["read_write_length_ext"]
         """integer, specifies the allowable additional number of byte octets in a READ or a WRITE, specifically for Firmware Management Commands (IDs 0100h-01FFh) as follows:
@@ -540,8 +363,8 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         * i:     8 * 16 = 128 bytes (16 ≤ i ≤ 256)
 
         """
-        self.write_mechanism: str = reply["write_mechanism"]
-        """hex string, Firmware update supported mechanism
+        self.write_mechanism: int = reply['write_mechanism']
+        """integer, Firmware update supported mechanism
 
         * 00h: None Supported.
         * 01h: Write to LPL supported.
@@ -549,8 +372,8 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         * 11h: Both Write to LPL and EPL supported.
 
         """
-        self.read_mechanism: str = reply["read_mechanism"]
-        """hex string, Firmware read / readback support mechanism.
+        self.read_mechanism: int = reply['read_mechanism']
+        """integer, Firmware read / readback support mechanism.
 
         * 00h: None Supported.
         * 01h: Read via LPL supported.
@@ -623,132 +446,21 @@ class CMD0044hSecFeaturesAndCapabilitiesReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
 
-        On Success
-        
-            * ``00 000001b``: Success
-
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000101b``: CdbChkCode error
+        # Parse cmd_support_mask as a list of integers
+        self.cmd_support = reply["cmd_support_mask"]
 
         """
+        CMD 0400h-04FFh support.
 
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
-
-        self.cmd_support_0400h_0407h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][2:4]
-        """
-        CMD 0400h-0407h support.
-
-        Each bit represents a mask. If a bit is set, the corresponding command is supported
+        Each integer represents a mask. If an integer is set, the corresponding command is supported
         
         * D0: CMD 0400h is supported.
         * ..
-        * D7: CMD 0407h is supported
+        * D255: CMD 04FFh is supported
 
         """
-        self.cmd_support_0408h_040fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][4:6]
-        """CMD 0408h-040Fh support
-        """
-        self.cmd_support_0410h_0417h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][6:8]
-        """CMD 0410h-0417h support
-        """
-        self.cmd_support_0418h_041fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][8:10]
-        """CMD 0418h-041Fh support
-        """
-        self.cmd_support_0420h_0427h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][10:12]
-        """CMD 0420h-0427h support
-        """
-        self.cmd_support_0428h_042fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][12:14]
-        """CMD 0428h-042Fh support
-        """
-        self.cmd_support_0430h_0437h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][14:16]
-        """CMD 0430h-0437h support
-        """
-        self.cmd_support_0438h_043fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][16:18]
-        """CMD 0438h-043Fh support
-        """
-        self.cmd_support_0440h_0447h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][18:20]
-        """CMD 0440h-0447h support
-        """
-        self.cmd_support_0448h_044fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][20:22]
-        """CMD 0448h-044Fh support
-        """
-        self.cmd_support_0450h_0457h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][22:24]
-        """CMD 0450h-0457h support
-        """
-        self.cmd_support_0458h_045fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][24:26]
-        """CMD 0458h-045Fh support
-        """
-        self.cmd_support_0460h_0467h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][26:28]
-        """CMD 0460h-0467h support
-        """
-        self.cmd_support_0468h_046fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][28:30]
-        """CMD 0468h-046Fh support
-        """
-        self.cmd_support_0470h_0477h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][30:32]
-        """CMD 0470h-0477h support
-        """
-        self.cmd_support_0478h_047fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][32:34]
-        """CMD 0478h-047Fh support
-        """
-        self.cmd_support_0480h_0487h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][34:36]
-        """CMD 0480h-0487h support
-        """
-        self.cmd_support_0488h_048fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][36:38]
-        """CMD 0488h-048Fh support
-        """
-        self.cmd_support_0490h_0497h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][38:40]
-        """CMD 0490h-0497h support
-        """
-        self.cmd_support_0498h_049fh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][40:42]
-        """CMD 0498h-049Fh support
-        """
-        self.cmd_support_04a0h_04a7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][42:44]
-        """CMD 04a0h-04a7h support
-        """
-        self.cmd_support_04a8h_04afh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][44:46]
-        """CMD 04a8h-04afh support
-        """
-        self.cmd_support_04b0h_04b7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][46:48]
-        """CMD 04b0h-04b7h support
-        """
-        self.cmd_support_04b8h_04bfh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][48:50]
-        """CMD 04b8h-04bfh support
-        """
-        self.cmd_support_04c0h_04c7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][50:52]
-        """CMD 04c0h-04c7h support
-        """
-        self.cmd_support_04c8h_04cfh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][52:54]
-        """CMD 04c8h-04cfh support
-        """
-        self.cmd_support_04d0h_04d7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][54:56]
-        """CMD 04d0h-04d7h support
-        """
-        self.cmd_support_04d8h_04dfh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][56:58]
-        """CMD 04d8h-04dfh support
-        """
-        self.cmd_support_04e0h_04e7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][58:60]
-        """CMD 04e0h-04e7h support
-        """
-        self.cmd_support_04e8h_04efh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][60:62]
-        """CMD 04e8h-04efh support
-        """
-        self.cmd_support_04f0h_04f7h: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][62:64]
-        """CMD 04f0h-04f7h support
-        """
-        self.cmd_support_04f8h_04ffh: str = reply["cmd_support_mask"][0:2]+reply["cmd_support_mask"][64:66]
-        """CMD 04f8h-04ffh support
-        """
+       
         self.num_certificates: int = reply["num_certificates"]
         """integer, Number of public certificates the host may obtain from the module. 
         
@@ -867,29 +579,8 @@ class CMD0045hExternallyDefinedFeaturesReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-        
-        On Success
-        
-            * ``00 000001b``: Success
-        
-        On Failure
-        
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000101b``: CdbChkCode error
 
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
-
-        self.supplement_support: str = reply["supplement_support"]
+        self.supplement_support: int = reply['supplement_support']
         """Bit 0 = 0/1: CMIS-VCS not supported/supported
         """
 
@@ -934,34 +625,6 @@ class CMD0050hGetApplicationAttributesReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-
-        On Success
-
-            * ``00 000001b``: Success
-
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
         self.application_number: int = reply["application_number"]
         """integer, U16 Application number. 
@@ -1049,39 +712,11 @@ class CMD0051hGetInterfaceCodeDescriptionReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
 
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-        
-        On Success
-
-            * ``00 000001b``: Success
-        
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
+        self.interface_id: int = reply['interface_id']
+        """integer, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
         """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
-
-        self.interface_id: str = reply["interface_id"]
-        """hex string, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
-        """
-        self.interface_location: str = reply["interface_location"]
+        self.interface_location: int = reply['interface_location']
         """integer, 0: media side. 1: host side.
         """
         self.interfacre_name: str = reply["interfacre_name"]
@@ -1093,7 +728,7 @@ class CMD0051hGetInterfaceCodeDescriptionReply(CMDBaseReply):
         self.interfacre_data_rate: float = reply["interfacre_data_rate"]
         """float, F16: Application Bit Rate in Gb/s
         """
-        self.interfacre_lane_count: str = reply["interfacre_lane_count"]
+        self.interfacre_lane_count: int = reply["interfacre_lane_count"]
         """integer, U16: Number of parallel lanes.
         """
         self.lane_signaling_rate: float = reply["lane_signaling_rate"]
@@ -1106,7 +741,7 @@ class CMD0051hGetInterfaceCodeDescriptionReply(CMDBaseReply):
         """ integer, U16: Bits per Symbol.
         """
 
-async def cmd_0051h_get_interface_code_description_cmd(port: Z800FreyaPort, cdb_instance: int, interface_id: str, interface_location: int) -> None:
+async def cmd_0051h_get_interface_code_description_cmd(port: Z800FreyaPort, cdb_instance: int, interface_id: int, interface_location: int) -> None:
     """Send CMD 0051h Get Interface Code Description
 
     :param port: the port object to send the command to
@@ -1124,7 +759,7 @@ async def cmd_0051h_get_interface_code_description_cmd(port: Z800FreyaPort, cdb_
     """
     cmd_data = {
         "interface_id": interface_id,
-        "interface_location": "0x{:02x}".format(interface_location)
+        "interface_location": interface_location
     }
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0051h_get_if_code_descr.set(cmd_data=cmd_data)
 
@@ -1156,18 +791,6 @@ class CMD0100hGetFirmwareInfoReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """
-        hex string, provides the status of the most recently triggered CDB command.
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
         self.firmware_status: int = reply["firmware_status"]
         """
@@ -1281,34 +904,6 @@ class CMD0101hStartFirmwareDownloadReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-
-        On Success
-
-            * ``00 000001b``: Success
-
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
 async def cmd_0101h_start_firmware_download_cmd(port: Z800FreyaPort, cdb_instance: int, image_size: int, vendor_data: str) -> None:
     """Send CMD 0101h Start Firmware Download
@@ -1360,34 +955,6 @@ class CMD0102hAbortFirmwareDownloadReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-        
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-        
-        On Success
-        
-            * ``00 000001b``: Success
-        
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
 async def cmd_0102h_abort_firmware_download_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
     """Send CMD 0102h Abort Firmware Download
@@ -1431,34 +998,6 @@ class CMD0103hWriteFirmwareBlockLPLReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-
-        On Success
-        
-            * ``00 000001b``: Success
-
-        On Failure
-
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
 async def cmd_0103h_write_firmware_block_lpl_cmd(port: Z800FreyaPort, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
     """Send CMD 0103h Write Firmware Block LPL
@@ -1510,34 +1049,6 @@ class CMD0104hWriteFirmwareBlockEPLReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-
-        In Progress
-        
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-
-        On Success
-        
-            * ``00 000001b``: Success
-
-        On Failure
-            
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
 async def cmd_0104h_write_firmware_block_epl_cmd(port: Z800FreyaPort, cdb_instance: int, block_address: int, firmware_block: bytes) -> None:
     """Send CMD 0104h Write Firmware Block EPL
@@ -1590,34 +1101,7 @@ class CMD0105hReadFirmwareBlockLPLReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-
-        In Progress
-        
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-        
-        On Success
-        
-            * ``00 000001b``: Success
-        
-        On Failure
-        
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
-        self.base_address_block: str = reply["base_address_block"]
+        self.base_address_block: int = reply["base_address_block"]
         """hex string, Base address of the data block within the firmware image.
         """
         self.image_data: bytes = bytes.fromhex(reply["image_data"].replace("0x", ""))
@@ -1678,33 +1162,6 @@ class CMD0106hReadFirmwareBlockEPLReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-        
-        On Success
-            
-            * ``00 000001b``: Success
-        
-        On Failure
-            
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
         self.image_data: bytes = bytes.fromhex(reply["image_data"].replace("0x", ""))
         """Up to 2048 Bytes. Actual Length specified in RPLLength
         """
@@ -1763,34 +1220,7 @@ class CMD0107hCompleteFirmwareDownloadReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
 
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-        
-        On Success
-        
-            * ``00 000001b``: Success
-        
-        On Failure
-        
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
 async def cmd_0107h_complete_firmware_download_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
     """Send CMD 0107h Complete Firmware Download
@@ -1834,52 +1264,25 @@ class CMD0108hCopyFirmwareImageReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-        
-        On Success
-        
-            * ``00 000001b``: Success
-        
-        On Failure
-        
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
         self.length: int = reply["length"]
         """integer, number of bytes copied.
         """
-        self.copy_direction: str = reply["copy_direction"]
-        """hex string, copy direction.
+        self.copy_direction: str = reply['copy_direction']
+        """int, copy direction.
 
         * ``0xAB``, Copy Image A into Image B
         * ``0xBA``,Copy Image B into Image A
 
         """
-        self.copy_status: str = reply["copy_status"]
-        """hex string, copy status.
+        self.copy_status: str = reply['copy_status']
+        """int, copy status.
 
         * ``0x00``, Copy Successful
         * ``0x01``, Copy Failed
 
         """
 
-async def cmd_0108h_copy_firmware_image_cmd(port: Z800FreyaPort, cdb_instance: int, copy_direction: str) -> None:
+async def cmd_0108h_copy_firmware_image_cmd(port: Z800FreyaPort, cdb_instance: int, copy_direction: int) -> None:
     """Send CMD 0108h Copy Firmware Image
 
     :param port: the port object to send the command to
@@ -1930,34 +1333,6 @@ class CMD0109hRunFirmwareImageReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-        
-        On Success
-        
-            * ``00 000001b``: Success
-        
-        On Failure
-        
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
 async def cmd_0109h_run_firmware_image_cmd(port: Z800FreyaPort, cdb_instance: int, image_to_run: int, delay_to_reset: int) -> None:
     """Send CMD 0109h Run Firmware Image
@@ -2015,34 +1390,6 @@ class CMD010AhCommitFirmwareImageReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.cdb_status: str = reply["cdb_status"]
-        """hex string, provides the status of the most recently triggered CDB command.
-
-        In Progress
-
-            * ``10 000001b``: Busy processing command, CMD captured
-            * ``10 000010b``: Busy processing command, CMD checking
-            * ``10 000011b``: Busy processing command, CMD execution
-        
-        On Success
-        
-            * ``00 000001b``: Success
-        
-        On Failure
-        
-            * ``01 000000b``: Failed, no specific failure
-            * ``01 000010b``: Parameter range error or not supported
-            * ``01 000101b``: CdbChkCode error
-
-        """
-
-        self.cdb_cmd_complete_flag: bool = reply["cdb_cmd_complete_flag"]
-        """
-        Latched Flag to indicate completion of a CDB command for CDB instance.
-
-        Set by module when the CDB command is complete.
-
-        """
 
 async def cmd_010ah_commit_firmware_image_cmd(port: Z800FreyaPort, cdb_instance: int) -> None:
     """Send CMD 010Ah Commit Firmware Image
@@ -2082,30 +1429,37 @@ async def cmd_010ah_commit_firmware_image_reply(port: Z800FreyaPort, cdb_instanc
 
 # CMD 8000h-FFFFh: Custom Command
 
-class CustomCMDReply(CMDBaseReply):
+class CustomCMDReply():
     """Defines the custom reply to receiver for the CDB instance.
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
-        super().__init__(reply)
-        self.cdb_cmd_complete_flag: str = reply["reply_status"]["cdb_cmd_complete_flag"]
-        """hex string, REPLY Status.CdbCmdCompleteFlag. 
+        self.cdb_io_status: int = reply["reply_status"]["cdb_io_status"]
+        """integer, indicates the CDB IO status.
+
+        * 0: Idle, transceiver is not processing a CDB command.
+        * 1: Finished, transceiver has finished processing a CDB command. It is ready to accept a new CDB command.
+        * 2: Timeout, transceiver has timed out while processing a CDB command. It is ready to accept a new CDB command.
+        * 3: In progress: transceiver is currently processing a CDB command. It is not ready to accept a new CDB command.
+        """
+        self.cdb_cmd_complete_flag: bool = reply["reply_status"]["cdb_cmd_complete_flag"]
+        """Integer, REPLY Status.CdbCmdCompleteFlag. 
         
         Indicates whether the CDB command is complete.
 
         """
-        self.cdb_status: str = reply["reply_status"]["cdb_status"]
-        """hex string, REPLY Status.CdbStatus. 
+        self.cdb_status: int = reply["reply_status"]["cdb_status"]
+        """Integer, REPLY Status.CdbStatus. 
         
         Provides the status of the most recently triggered CDB command.
 
         """
-        self.rpl_length: str = reply["reply_header"]["rpl_length"]
+        self.rpl_length: int = reply["reply_header"]["rpl_length"]
         """integer, REPLY Header.RPLLength.
 
         Length of the reply data.
 
         """
-        self.rpl_check_code: str = reply["reply_header"]["rpl_check_code"]
+        self.rpl_check_code: int = reply["reply_header"]["rpl_check_code"]
         """integer, REPLY Header.RPLChkCode.
         
         Check code for the reply data.
@@ -2115,17 +1469,6 @@ class CustomCMDReply(CMDBaseReply):
         """hex string, REPLY Data.Data
         
         The actual data to be sent in the reply.
-
-        """
-        self.cdb_io_status: str = reply["reply_status"]["cdb_io_status"]
-        """integer, REPLY Status.CdbIOStatus
-
-        Provides the status of the CDB IO operation.
-
-        * 0 = IDLE
-        * 1 = FINISHED
-        * 2 = TIMEOUT
-        * 3 = PENDING
 
         """
 
