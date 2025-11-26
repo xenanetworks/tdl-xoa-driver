@@ -3177,7 +3177,13 @@ class ChassisModelName(IntEnum):
     Z_800_Q_A_C_FREYA   = 16
     Z_800_O_A_C_FREYA   = 17
     E_100_Q_C_CHIMERA   = 18
-
+    Z_100_Q_X_C_LOKI = 19
+    Z_400_Q_X_C_THOR = 20
+    Z_800_Q_X_C_FREYA = 21
+    Z_1604_S_C_EDUN = 22
+    Z_1608_O_C_EDUN = 23
+    B_6400 = 24
+    
 class ModuleModelName(IntEnum):
     NA              = 0
     Z_01_T_ODIN     = 1
@@ -3192,6 +3198,12 @@ class ModuleModelName(IntEnum):
     Z_800_Q_FREYA   = 10
     Z_800_O_FREYA   = 11
     E_100_Q_CHIMERA = 12
+    Z_100_Q_X_LOKI = 13
+    Z_400_Q_X_THOR = 14
+    Z_800_Q_X_FREYA = 15
+    Z_1604_S_EDUN = 16
+    Z_1608_O_EDUN = 17
+    Z_1616_O_EDUN = 18
 
 class ModuleConfigStatus(IntEnum):
     UNKNOWN = 0
