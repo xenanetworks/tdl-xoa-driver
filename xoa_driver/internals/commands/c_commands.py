@@ -2024,8 +2024,8 @@ class C_MODEL_NUMBER:
     _connection: 'interfaces.IConnection'
 
     class GetDataAttr(ResponseBodyStruct):
-        number:  ChassisModelNumber = field(XmpInt())
-        """ChassisModelNumber, the model of the Xena tester"""
+        number:  str = field(XmpStr())
+        """str, the model of the Xena tester"""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the Xena chassis model number.
