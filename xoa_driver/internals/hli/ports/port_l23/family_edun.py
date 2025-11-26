@@ -75,3 +75,8 @@ class PEdun800G3S1PSMPX_a(FamilyEdun):
     """L23 port on Edun-800G-3S-1P-SMPX[a] module.
     """
     ...
+
+class PEdun1600G4S1POSFP_a(FamilyEdun):
+    """L23 port on Edun-1600G-4S-1P-OSFP[a] module.
+    """
+    ...

@@ -66,3 +66,17 @@ class MEdun800G3S1PSMPX_a(ModuleFamilyEdun):
         )
         """Port Index Manager of Edun-800G-3S-1P-SMPX[a]"""
 
+
+@typing.final
+@revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP[a]")
+class MEdun1600G4S1POSFP_a(ModuleFamilyEdun):
+    """Test module Edun-1600G-4S-1P-OSFP[a]"""
+    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
+        super().__init__(conn, init_data)
+        self.ports: pm.PortsManager[ports.PEdun1600G4S1POSFP_a] = pm.PortsManager(
+            conn=conn,
+            ports_type=ports.PEdun1600G4S1POSFP_a,
+            module_id=self.module_id,
+            ports_count=self.ports_count
+        )
+        """Port Index Manager of Edun-1600G-4S-1P-OSFP[a]"""
