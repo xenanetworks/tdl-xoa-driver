@@ -23,7 +23,8 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     XmpMacAddress,
     XmpSequence,
     XmpStr,
-    Hex
+    Hex,
+    XmpJson,
 )
 from .enums import (
     ReservedStatus,
@@ -1239,7 +1240,7 @@ class C_WATCHDOG:
 @dataclass
 class C_DEBUGCMD:
     """
-    Chassis debug command
+    Chassis debug command for internal use only.
     """
 
     code: typing.ClassVar[int] = 37
@@ -1249,16 +1250,11 @@ class C_DEBUGCMD:
     _cmd_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        data: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
-
-    class SetDataAttr(RequestBodyStruct):
-        data: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        data: dict = field(XmpJson(min_len=2))
 
     def get(self) -> Token[GetDataAttr]:
         return Token(self._connection, build_get_request(self, indices=[self._cmd_xindex]))
     
-    def set(self, data: typing.List[int]) -> Token[None]:
-        return Token(self._connection, build_set_request(self, indices=[self._cmd_xindex], data=data))
     
 
 @register_command
