@@ -20,6 +20,7 @@ def _redact_sensitive(cmd: str) -> str:
     # (Optional) Redact any --password=... arguments
     cmd = re.sub(r'(--password=)(\S+)', r'\1***REDACTED***', cmd, flags=re.IGNORECASE)
     return cmd
+
 def errexit(msg):
     logging.error(f"Error: { msg }, exiting...")
     sys.exit(1)
@@ -147,9 +148,7 @@ class XOACLIManager:
             # If the message contains a sensitive command, do NOT log it
             import re
             # Check for C_LOGON or password in string, as a safeguard
-            if re.search(r'C_LOGON\s*".*"', msg) or \
-               re.search(r'password\s*=\s*".*"', msg, flags=re.IGNORECASE) or \
-               re.search(r'--password=\S+', msg, flags=re.IGNORECASE):
+            if re.search(r'C_LOGON\s*".*"', msg) or re.search(r'password\s*=\s*".*"', msg, flags=re.IGNORECASE) or re.search(r'--password=\S+', msg, flags=re.IGNORECASE):
                 logging.info(f"{time.time()} [Sensitive command redacted]")
                 print(f"{time.time()} [Sensitive command redacted]")
                 return
@@ -188,9 +187,9 @@ class XOACLIManager:
         
 
 #####################################################################
-#																																		#
-#						Send and Expect wrappers																#
-#																																		#
+#																	#
+#						Send and Expect wrappers					#
+#																	#
 #####################################################################
 
     ## Send command and return response
@@ -300,13 +299,13 @@ class XOACLIManager:
 
 
 #####################################################################
-#																																		#
-#				Xena Scripting API specific commands												#
-#																																		#
+#																	#
+#				Xena Scripting API specific commands				#
+#																	#
 #####################################################################
 
     #############################################################
-    # 						Chassis Commands 															#
+    # 						Chassis Commands 					#
     #############################################################
 
     # Logon
