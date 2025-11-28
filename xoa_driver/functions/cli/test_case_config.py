@@ -5,7 +5,7 @@ from typing import List
 from ..mgmt import *
 from ._config_block import *
 
-async def save_test_case_config(tester: testers.L23Tester, ports: List[ports.GenericL23Port], path: str, testbed_name: str = "<testbed>", with_module_config: bool = True) -> str:
+async def save_test_case_config(tester: testers.L23Tester, ports: List[ports.GenericL23Port], path: str, testbed_name: str = "<testbed>", with_module_config: bool = True, debug=False, halt_on_error=False) -> str:
     """Save module configuration to the specifiied filepath
 
     :param tester: Chassis object
@@ -36,7 +36,7 @@ async def save_test_case_config(tester: testers.L23Tester, ports: List[ports.Gen
     tester_password = resp.password
     
     # Connect to the tester on tcp port 22611
-    xm = XOACLIManager(host=tester_ip, debug=False, halt_on_error=False)
+    xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error)
 
     # Log on and set username
     xm.logon_set_owner(tester_password)
@@ -95,7 +95,7 @@ async def save_test_case_config(tester: testers.L23Tester, ports: List[ports.Gen
     
     return result
 
-async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str = "default", delay_after_module_config: int = 5) -> None:
+async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str = "default", delay_after_module_config: int = 5, debug=False, halt_on_error=False) -> None:
     """Load module configuration from the specifiied filepath
 
     :param tester: Chassis object
@@ -113,7 +113,7 @@ async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str 
     tester_password = resp.password
 
     # Connect to the tester on tcp port 22611
-    xm = XOACLIManager(host=tester_ip, debug=False, halt_on_error=False)
+    xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error)
 
     # Log on and set username
     xm.logon_set_owner(tester_password)
@@ -161,7 +161,7 @@ async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str 
                 # Free the port after applying configuration
                 xm.free_port(port_index)
 
-async def module_config_from_file(tester: testers.L23Tester, path: str) -> None:
+async def module_config_from_file(tester: testers.L23Tester, path: str, debug=False, halt_on_error=False) -> None:
     """Load module configuration from the specifiied filepath. This function is a wrapper around load_module_config to provide backward compatibility.
 
     :param tester: Chassis object
@@ -169,4 +169,4 @@ async def module_config_from_file(tester: testers.L23Tester, path: str) -> None:
     :param path: File path to load the module configuration from
     :type path: str
     """
-    await load_test_case_config(tester, path, mode="module")
+    await load_test_case_config(tester, path, mode="module", debug=debug, halt_on_error=halt_on_error)

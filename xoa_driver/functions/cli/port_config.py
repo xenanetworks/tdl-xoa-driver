@@ -3,7 +3,7 @@ from xoa_driver import testers, ports
 from ._cli_manager import XOACLIManager
 from ._config_block import *
 
-async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port, path: str) -> str:
+async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port, path: str, debug=False, halt_on_error=False) -> str:
     """Save configuration from the test port to the specified filepath
 
     :param tester: Chassis object
@@ -23,7 +23,7 @@ async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     module = tester.modules.obtain(port.kind.module_id)
     
     # Connect to the tester on tcp port 22611
-    xm = XOACLIManager(host=tester_ip, debug=False, halt_on_error=False)
+    xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error)
 
     # Log on and set username
     xm.logon_set_owner(tester_password)
@@ -52,7 +52,7 @@ async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
         xpcfile.write(result)
     return result
 
-async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port, path: str) -> None:
+async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port, path: str, debug=False, halt_on_error=False) -> None:
     """Load configuration to the test port from the specified filepath
 
     :param tester: Chassis object
@@ -69,7 +69,7 @@ async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     port_index = f"{port.kind.module_id}/{port.kind.port_id}"
     
     # Connect to the tester on tcp port 22611
-    xm = XOACLIManager(host=tester_ip, debug=False, halt_on_error=False)
+    xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error)
 
     # Log on and set username
     xm.logon_set_owner(tester_password)
@@ -92,7 +92,7 @@ async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     # Free the port after applying configuration
     xm.free_port(port_index)
 
-async def port_config_from_file(tester: testers.L23Tester, port: ports.GenericL23Port, path: str) -> None:
+async def port_config_from_file(tester: testers.L23Tester, port: ports.GenericL23Port, path: str, debug=False, halt_on_error=False) -> None:
     """Load port configuration from the specifiied filepath. This function is a wrapper around load_port_config to provide backward compatibility.
 
     :param tester: Chassis object
@@ -102,6 +102,6 @@ async def port_config_from_file(tester: testers.L23Tester, port: ports.GenericL2
     :param load_path: File path to load the port configuration from
     :type load_path: str
     """
-    await load_port_config(tester, port, path)
+    await load_port_config(tester, port, path, debug=debug, halt_on_error=halt_on_error)
 
 
