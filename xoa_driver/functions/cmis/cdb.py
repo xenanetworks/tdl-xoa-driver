@@ -303,13 +303,27 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
 
-        self.image_readback: int = reply["feature_support_mask"]
+        feature_support_mask: int = reply["feature_support_mask"]
+
+        self.abort_cmd: int = (feature_support_mask >> 0) & 0x01
         """
-        * 0b = Full Image Readback Not Supported
-        * 1b = Full Image Readback Supported
+        * 0b = CMD 0102h (Abort) Not Supported
+        * 1b = CMD 0102h (Abort) Supported
 
         """
-        self.max_duration_coding: int = reply["feature_support_mask"]
+        self.copy_cmd: int = (feature_support_mask >> 1) & 0x01
+        """
+        * 0b = CMD 0108h (Copy image) Not Supported
+        * 1b = CMD 0108h (Copy image) Supported
+
+        """
+        self.skipping_erased_blocks: int = (feature_support_mask >> 2) & 0x01
+        """
+        * 0b = Skipping erased blocks Not Supported
+        * 1b = Skipping erased blocks Supported
+
+        """
+        self.max_duration_coding: int = (feature_support_mask >> 3) & 0x01
         """
         * 0b = max duration multiplier M is 1
         * 1b = max duration multiplier M is 10
@@ -317,22 +331,10 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         This bit encodes a multiplier value M which governs the interpretation of values found in the U16 array of advertised max durations in Bytes 144-153 of this message: These advertised values are multiplied by M.
 
         """
-        self.skipping_erased_blocks: int = reply["feature_support_mask"]
+        self.image_readback: int = (feature_support_mask >> 7) & 0x01
         """
-        * 0b = Skipping erased blocks Not Supported
-        * 1b = Skipping erased blocks Supported
-
-        """
-        self.copy_cmd: int = reply["feature_support_mask"]
-        """
-        * 0b = CMD 0108h (Copy image) Not Supported
-        * 1b = CMD 0108h (Copy image) Supported
-
-        """
-        self.abort_cmd: int = reply["feature_support_mask"]
-        """
-        * 0b = CMD 0102h (Abort) Not Supported
-        * 1b = CMD 0102h (Abort) Supported
+        * 0b = Full Image Readback Not Supported
+        * 1b = Full Image Readback Supported
 
         """
         self.start_cmd_payload_size: int = reply["start_cmd_payload_size"]
@@ -1104,7 +1106,7 @@ class CMD0105hReadFirmwareBlockLPLReply(CMDBaseReply):
         self.base_address_block: int = reply["base_address_block"]
         """hex string, Base address of the data block within the firmware image.
         """
-        self.image_data: bytes = bytes.fromhex(reply["image_data"].replace("0x", ""))
+        self.image_data = reply["image_data"]
         """hex string, Up to 116 bytes.
         """
 
@@ -1162,7 +1164,7 @@ class CMD0106hReadFirmwareBlockEPLReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        self.image_data: bytes = bytes.fromhex(reply["image_data"].replace("0x", ""))
+        self.image_data = reply["image_data"]
         """Up to 2048 Bytes. Actual Length specified in RPLLength
         """
 
@@ -1267,14 +1269,14 @@ class CMD0108hCopyFirmwareImageReply(CMDBaseReply):
         self.length: int = reply["length"]
         """integer, number of bytes copied.
         """
-        self.copy_direction: str = reply['copy_direction']
+        self.copy_direction: int = reply['copy_direction']
         """int, copy direction.
 
         * ``0xAB``, Copy Image A into Image B
         * ``0xBA``,Copy Image B into Image A
 
         """
-        self.copy_status: str = reply['copy_status']
+        self.copy_status: int = reply['copy_status']
         """int, copy status.
 
         * ``0x00``, Copy Successful
@@ -1586,7 +1588,7 @@ async def firmware_download_procedure(port: GenericL23Port, cdb_instance: int, f
     firmware_header_size = reply_obj.start_cmd_payload_size
 
     # Determine the write mechanism
-    write_mechanism = reply_obj.write_mechanism.lower().lstrip("0x")
+    write_mechanism = reply_obj.write_mechanism
     if write_mechanism == WriteMechanism.NONE_SUPPORTED:
         print(f"Write Mechanism is not supported. Unable to proceed with firmware update.")
         return False
