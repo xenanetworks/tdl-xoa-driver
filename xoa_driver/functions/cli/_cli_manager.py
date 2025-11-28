@@ -8,6 +8,12 @@ from typing import Optional, Callable, Union, List, Dict, Any
 from ._socket_driver import SimpleSocket
 LOGFILE = "XENALOG"
 
+
+def _redact_sensitive(cmd: str) -> str:
+    """Redact password fields from CLI command strings."""
+    # Redact any value following "C_LOGON"
+    import re
+    return re.sub(r'(C_LOGON\s*")([^"]+)(")', r'\1***REDACTED***\3', cmd)
 def errexit(msg):
     logging.error(f"Error: { msg }, exiting...")
     sys.exit(1)
@@ -132,9 +138,10 @@ class XOACLIManager:
     def debug_message(self, msg: str) -> None:
         """Print debug message if debug is enabled"""
         if self.debug_enabled == True:
-            logging.info(f"{time.time()} {msg}")
-            print(f"{time.time()} {msg}")
-
+            # Redact CLI command containing passwords before logging
+            safe_msg = _redact_sensitive(msg)
+            logging.info(f"{time.time()} {safe_msg}")
+            print(f"{time.time()} {safe_msg}")
     def log_command(self, cmd:str) -> None:
         """Place the command in the log cmd list for later logging
 
@@ -186,7 +193,7 @@ class XOACLIManager:
     def send_expect(self, cmd:str, resp:str) -> bool:
         """Send command and expect response (typically <OK>)"""
 
-        self.debug_message(f"send_expect({ resp }): { cmd }")
+        self.debug_message(f"send_expect({ resp }): {_redact_sensitive(cmd)}")
         self.log_command(cmd)
         try:
             if self.driver.is_connected == False:
