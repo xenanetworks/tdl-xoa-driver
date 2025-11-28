@@ -10,10 +10,16 @@ LOGFILE = "XENALOG"
 
 
 def _redact_sensitive(cmd: str) -> str:
-    """Redact password fields from CLI command strings."""
-    # Redact any value following "C_LOGON"
+    """Redact password or sensitive data from CLI command strings."""
+    # Redact values in commands likely to contain passwords (e.g., C_LOGON, or generically matching quoted args to C_LOGON)
     import re
-    return re.sub(r'(C_LOGON\s*")([^"]+)(")', r'\1***REDACTED***\3', cmd)
+    # Redact anything in C_LOGON "..."
+    cmd = re.sub(r'(C_LOGON\s*")([^"]+)(")', r'\1***REDACTED***\3', cmd)
+    # (Optional) Redact anything that looks like password="..."
+    cmd = re.sub(r'(password\s*=\s*")([^"]+)(")', r'\1***REDACTED***\3', cmd, flags=re.IGNORECASE)
+    # (Optional) Redact any --password=... arguments
+    cmd = re.sub(r'(--password=)(\S+)', r'\1***REDACTED***', cmd, flags=re.IGNORECASE)
+    return cmd
 def errexit(msg):
     logging.error(f"Error: { msg }, exiting...")
     sys.exit(1)
@@ -149,7 +155,7 @@ class XOACLIManager:
         :type cmd: str
         """
         if self.is_log_cmd_empty == True:
-            self.cmd_trace_list.append(cmd)
+            self.cmd_trace_list.append(_redact_sensitive(cmd))
     
     ## Enable halt on error - calls sys.exit(1) upon error
     def enable_halt_on_error(self) -> None:
