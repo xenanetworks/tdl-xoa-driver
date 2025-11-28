@@ -144,7 +144,16 @@ class XOACLIManager:
     def debug_message(self, msg: str) -> None:
         """Print debug message if debug is enabled"""
         if self.debug_enabled == True:
-            # Redact CLI command containing passwords before logging
+            # If the message contains a sensitive command, do NOT log it
+            import re
+            # Check for C_LOGON or password in string, as a safeguard
+            if re.search(r'C_LOGON\s*".*"', msg) or \
+               re.search(r'password\s*=\s*".*"', msg, flags=re.IGNORECASE) or \
+               re.search(r'--password=\S+', msg, flags=re.IGNORECASE):
+                logging.info(f"{time.time()} [Sensitive command redacted]")
+                print(f"{time.time()} [Sensitive command redacted]")
+                return
+            # Redact as an additional precaution
             safe_msg = _redact_sensitive(msg)
             logging.info(f"{time.time()} {safe_msg}")
             print(f"{time.time()} {safe_msg}")
