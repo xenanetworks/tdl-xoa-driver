@@ -1,14 +1,20 @@
 from __future__ import annotations
-from typing import Any
+from typing import (
+    TYPE_CHECKING,
+    Any,
+)
 
-from xoa_driver.ports import GenericAnyPort
+if TYPE_CHECKING:
+    from xoa_driver.ports import GenericAnyPort
+
 from xoa_driver.internals.core import interfaces as itf
 from xoa_driver.lli import commands
 from xoa_driver import enums
 
 
 def get_ctx(port: GenericAnyPort) -> tuple["itf.IConnection", int, int]:
-    return (port._conn, *port.kind)
+    module_id, port_id = port.kind  # Explicitly unpack to two ints
+    return (port._conn, module_id, port_id)
 
 
 def dictionize_autoneg_status(
