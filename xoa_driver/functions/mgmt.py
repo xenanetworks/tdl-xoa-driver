@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
     from xoa_driver.internals.hli.ports.port_l23.family_l1 import FamilyFreya
     from xoa_driver.ports import GenericAnyPort, GenericL23Port
-    from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule
+    from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
     from xoa_driver.testers import GenericAnyTester, L23Tester
 from .exceptions import (
     NotSupportMedia,
@@ -342,12 +342,13 @@ async def get_module_eol_days(module: GenericAnyModule) -> int:
     return timedelta.days
 
 
-async def get_module_cage_insertion_count(module: Z800FreyaModule, cage_index: int) -> int:
+    from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
+async def get_module_cage_insertion_count(module: Union[Z800FreyaModule, Z1600EdunModule], cage_index: int) -> int:
     """
     Get module cage insertion count
 
     :param module: The Z800 Freya module object
-    :type module: Z800FreyaModule
+    :type module: Union[Z800FreyaModule, Z1600EdunModule]
     :param cage_index: The cage index
     :type module: int
     :return: Insertion count of the cage
@@ -362,6 +363,22 @@ async def get_module_cage_insertion_count(module: Z800FreyaModule, cage_index: i
         result = -1
     else:
         result = -1
+    return result
+
+
+async def get_module_cage_count(module: Union[Z800FreyaModule, Z1600EdunModule]) -> int:
+    """
+    Get module cage count
+
+    :param module: The Z800 Freya module object
+    :type module: Union[Z800FreyaModule, Z1600EdunModule]
+    :return: The number of cages in the module
+    :rtype: int
+    """
+    resp = await module.health.cage_insertion.get()
+    info_js = resp.info
+    info_dict = json.loads(info_js)
+    result = len(info_dict['1']['data'])
     return result
 
 
