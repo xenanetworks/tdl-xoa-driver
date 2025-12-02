@@ -6,6 +6,7 @@ from xoa_driver.ports import Z800FreyaPort, GenericL23Port
 from ._utils import *
 from ._constants import *
 import time
+import asyncio
 from contextlib import suppress
 from xoa_driver import exceptions
 import json
@@ -70,10 +71,10 @@ async def cmd_0000h_query_status_cmd(port: GenericL23Port, cdb_instance: int, re
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param response_delay: Programmable delay in ms for module responding to this command. A value of 0 asks for module response as fast as possible.
     :type response_delay: int
@@ -90,10 +91,10 @@ async def cmd_0000h_query_status_reply(port: GenericL23Port, cdb_instance: int) 
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0000h Query Status
     :rtype: CMD0000hQueryStatusReply
@@ -111,7 +112,7 @@ class CMD0001hEnterPasswordReply(CMDBaseReply):
     """
     def __init__(self, reply: t.Dict[str, t.Any]) -> None:
         super().__init__(reply)
-        
+
 async def cmd_0001h_enter_password_cmd(port: GenericL23Port, cdb_instance: int, password: bytearray) -> None:
     """Send CMD 0001h Enter Password
 
@@ -119,10 +120,10 @@ async def cmd_0001h_enter_password_cmd(port: GenericL23Port, cdb_instance: int, 
     :type port: GenericL23Port
 
         :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param password: password to be entered
     :type password: int
@@ -139,10 +140,10 @@ async def cmd_0001h_enter_password_reply(port: GenericL23Port, cdb_instance: int
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0001h Enter Password
     :rtype: CMD0001hEnterPasswordReply
@@ -153,7 +154,7 @@ async def cmd_0001h_enter_password_reply(port: GenericL23Port, cdb_instance: int
             return CMD0001hEnterPasswordReply(resp.reply)
         except exceptions.XmpPendingError:
             time.sleep(0.1)
-    
+
 
 # CMD 0002h: Change Password
 class CMD0002hChangePasswordReply(CMDBaseReply):
@@ -168,10 +169,10 @@ async def cmd_0002h_change_password_cmd(port: GenericL23Port, cdb_instance: int,
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param new_password: new password to be entered
     :type new_password: int
@@ -187,10 +188,10 @@ async def cmd_0002h_change_password_reply(port: GenericL23Port, cdb_instance: in
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0002h Change Password
     :rtype: CMD0002hChangePasswordReply
@@ -216,10 +217,10 @@ async def cmd_0004h_abort_processing_cmd(port: GenericL23Port, cdb_instance: int
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     """
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0004h_abort_processing.set()
@@ -230,10 +231,10 @@ async def cmd_0004h_abort_processing_reply(port: GenericL23Port, cdb_instance: i
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0004h Abort Processing
     :rtype: CMD0004hAbortProcessingReply
@@ -266,10 +267,10 @@ async def cmd_0040h_module_features_cmd(port: GenericL23Port, cdb_instance: int)
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     """
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0040h_module_features.set()
@@ -280,10 +281,10 @@ async def cmd_0040h_module_features_reply(port: GenericL23Port, cdb_instance: in
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0040h Module Features
     :rtype: CMD0040hModuleFeaturesReply
@@ -347,7 +348,7 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         """integer, specifies the allowable additional number of byte octets in a READ or a WRITE, specifically for Firmware Management Commands (IDs 0100h-01FFh) as follows:
 
         EPL: For accessing the multi-page EPL field, the allowable length extension is i byte octets (8 bytes).
-        
+
         LPL: For accessing the LPL field on page 9Fh, the allowable length extension is min(i, 15) byte octets.
 
         This leads to the maximum length of a READ or a WRITE
@@ -359,7 +360,7 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         * 255:  8 * 256 = 2048 bytes
 
         Value  Maximum Number of Bytes (LPL)
-        
+
         * 0:     8 bytes (no extension of general length limit)
         * i:     8 * (1+i) bytes (0 ≤ i ≤ 15)
         * i:     8 * 16 = 128 bytes (16 ≤ i ≤ 256)
@@ -385,8 +386,8 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         """
         self.hitless_restart: int = reply["hitless_restart"]
         """integer
-        
-        * 0: CMD Run Image causes a reset. Traffic is affected. 
+
+        * 0: CMD Run Image causes a reset. Traffic is affected.
         * 1: CMD Run Image may reset but module will do its best to maintain traffic and management states. Data path functions are not reset.
 
         """
@@ -412,10 +413,10 @@ async def cmd_0041h_fw_mgmt_features_cmd(port: GenericL23Port, cdb_instance: int
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     """
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0041h_fw_mgmt_features.set()
@@ -426,10 +427,10 @@ async def cmd_0041h_fw_mgmt_features_reply(port: GenericL23Port, cdb_instance: i
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0041h Firmware Management Features
     :rtype: CMD0041hFirmwareManagementFeaturesReply
@@ -456,16 +457,16 @@ class CMD0044hSecFeaturesAndCapabilitiesReply(CMDBaseReply):
         CMD 0400h-04FFh support.
 
         Each integer represents a mask. If an integer is set, the corresponding command is supported
-        
+
         * D0: CMD 0400h is supported.
         * ..
         * D255: CMD 04FFh is supported
 
         """
-       
+
         self.num_certificates: int = reply["num_certificates"]
-        """integer, Number of public certificates the host may obtain from the module. 
-        
+        """integer, Number of public certificates the host may obtain from the module.
+
         The device must contain a single leaf certificate and it may optionally contain one or more intermediate certificates optionally followed by a root certificate. For X.509 certificates, intermediate certificates are not self-signed, and the root cert is self-signed.
 
         ``num_certificates <= 4``
@@ -473,19 +474,19 @@ class CMD0044hSecFeaturesAndCapabilitiesReply(CMDBaseReply):
         """
         self.cert_chain_supported: int = reply["cert_chain_supported"]
         """integer
-        
-        * 0: Certificate chain is not supported. Module contains leaf certificate instance i = 0 only. 
+
+        * 0: Certificate chain is not supported. Module contains leaf certificate instance i = 0 only.
         * 1: Module supports certificate chain and host must specify the instance when downloading a certificate.
-        
+
         Instance i = 0 is the start of the chain, i.e. the leaf certificate, and any instance i+1 is another certificate used to sign the certificate instance i, where ``i < num_certificates <= 4``
 
         """
         self.certificate_format: int = reply["certificate_format"]
         """integer
-        
-        * 0: Not supported. 
-        * 1: **Custom**. 
-        * 2: X509v3 DER encoding. 
+
+        * 0: Not supported.
+        * 1: **Custom**.
+        * 2: X509v3 DER encoding.
         * 3-255: Reserved.
 
         """
@@ -502,13 +503,13 @@ class CMD0044hSecFeaturesAndCapabilitiesReply(CMDBaseReply):
         """integer, Length of certificate i = 3 or 0 when not supported.
         """
         self.digest_length: int = reply["digest_length"]
-        """integer, Required message hash digest length (in bytes) 
-        
-        * 0: Not supported. 
-        * 1: 28 bytes (SHA224). 
-        * 2: 32 bytes (SHA256). 
-        * 3: 48 bytes (SHA384). 
-        * 4: 64 bytes (SHA512). 
+        """integer, Required message hash digest length (in bytes)
+
+        * 0: Not supported.
+        * 1: 28 bytes (SHA224).
+        * 2: 32 bytes (SHA256).
+        * 3: 48 bytes (SHA384).
+        * 4: 64 bytes (SHA512).
         * 5-255: **Reserved**.
 
         """
@@ -520,22 +521,22 @@ class CMD0044hSecFeaturesAndCapabilitiesReply(CMDBaseReply):
         """
         self.signature_format: int = reply["signature_format"]
         """integer
-        * 0: Not supported. 
-        * 1: **Custom, vendor specific encoding**. 
-        * 2: Raw binary byte stream. 
-        * 3: DER encoding. 
-        * 4: ECDSA (R,S) integer pair, integers prefixed with length. 
+        * 0: Not supported.
+        * 1: **Custom, vendor specific encoding**.
+        * 2: Raw binary byte stream.
+        * 3: DER encoding.
+        * 4: ECDSA (R,S) integer pair, integers prefixed with length.
         * 5-255: Reserved.
 
         """
         self.signature_pad_scheme: int = reply["signature_pad_scheme"]
         """integer
-        
-        * 0: None. 
-        * 1: **Custom**. 
-        * 2: PKCS#1 v1.5. 
-        * 3: OAEP. 
-        * 4: PSS. 
+
+        * 0: None.
+        * 1: **Custom**.
+        * 2: PKCS#1 v1.5.
+        * 3: OAEP.
+        * 4: PSS.
         * 5-255: Reserved
 
         """
@@ -546,10 +547,10 @@ async def cmd_0044h_sec_feat_capabilities_cmd(port: GenericL23Port, cdb_instance
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     """
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0044h_sec_feat_capabilities.set()
@@ -560,10 +561,10 @@ async def cmd_0044h_sec_feat_and_capabilities_reply(port: GenericL23Port, cdb_in
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0044h Security Features and Capabilities
     :rtype: CMD0044hSecFeaturesAndCapabilitiesReply
@@ -592,10 +593,10 @@ async def cmd_0045h_externally_defined_features_cmd(port: GenericL23Port, cdb_in
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     """
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0045h_external_features.set()
@@ -606,10 +607,10 @@ async def cmd_0045h_externally_defined_features_reply(port: GenericL23Port, cdb_
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0045h Externally Defined Features
     :rtype: CMD0045hExternallyDefinedFeaturesReply
@@ -629,16 +630,16 @@ class CMD0050hGetApplicationAttributesReply(CMDBaseReply):
         super().__init__(reply)
 
         self.application_number: int = reply["application_number"]
-        """integer, U16 Application number. 
-        
-        * 15-8: reserved (0). 
-        * 7-4: NADBlockIndex (0-15) or 0. 
+        """integer, U16 Application number.
+
+        * 15-8: reserved (0).
+        * 7-4: NADBlockIndex (0-15) or 0.
         * 3-0: AppSelCode (1-15).
 
         """
         self.max_module_power: int = reply["max_module_power"]
-        """integer, U16: Worst case module power dissipation when this Application is instantiated homogeneously as often as possible in parallel (when applicable) with worst case configuration options. 
-        
+        """integer, U16: Worst case module power dissipation when this Application is instantiated homogeneously as often as possible in parallel (when applicable) with worst case configuration options.
+
         Unit: 0.25 W.
 
         """
@@ -673,10 +674,10 @@ async def cmd_0050h_get_application_attributes_cmd(port: GenericL23Port, cdb_ins
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param application_number: U16 Application number. 15-8: reserved (0). 7-4: NADBlockIndex (0-15) or 0. 3-0: AppSelCode (1-15)
     :type application_number: int
@@ -692,10 +693,10 @@ async def cmd_0050h_get_application_attributes_reply(port: GenericL23Port, cdb_i
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0050h Get Application Attributes
     :rtype: CMD0050hGetApplicationAttributesReply
@@ -706,7 +707,7 @@ async def cmd_0050h_get_application_attributes_reply(port: GenericL23Port, cdb_i
             return CMD0050hGetApplicationAttributesReply(resp.reply)
         except exceptions.XmpPendingError:
             time.sleep(0.1)
-        
+
 
 # CMD 0051h: Get Interface Code Description
 class CMD0051hGetInterfaceCodeDescriptionReply(CMDBaseReply):
@@ -749,10 +750,10 @@ async def cmd_0051h_get_interface_code_description_cmd(port: GenericL23Port, cdb
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param interface_id: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
     :type interface_id: hex str
@@ -771,10 +772,10 @@ async def cmd_0051h_get_interface_code_description_reply(port: GenericL23Port, c
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0051h Get Interface Code Description
     :rtype: CMD0051hGetInterfaceCodeDescriptionReply
@@ -799,19 +800,19 @@ class CMD0100hGetFirmwareInfoReply(CMDBaseReply):
         integer, Firmware Status.
 
         Bitmask to indicate FW Status.
-        
+
             * Image in Bank A:
                 * Bit 0: Operational Status
                 * Bit 1: Administrative Status
                 * Bit 2: Validity Status
                 * Bit 3: Reserved
-            
+
             * Image in Bank B:
                 * Bit 4: Operational Status
                 * Bit 5: Administrative Status
                 * Bit 6: Validity Status
                 * Bit 7: Reserved
-            
+
             * Encoding as follows:
                 * Operational Status: 1 = running, 0 = not running
                 * Administrative Status: 1=committed, 0=uncommitted
@@ -870,10 +871,10 @@ async def cmd_0100h_get_firmware_info_cmd(port: GenericL23Port, cdb_instance: in
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     """
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0100h_get_firmware_info.set()
@@ -884,10 +885,10 @@ async def cmd_0100h_get_firmware_info_reply(port: GenericL23Port, cdb_instance: 
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0100h Get Firmware Info
     :rtype: CMD0100hGetFirmwareInfoReply
@@ -913,10 +914,10 @@ async def cmd_0101h_start_firmware_download_cmd(port: GenericL23Port, cdb_instan
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param image_size: U32 Size of firmware image to download into the module. This should be the file size including the LPL bytes sent as vendor data in this message.
     :type image_size: int
@@ -935,10 +936,10 @@ async def cmd_0101h_start_firmware_download_reply(port: GenericL23Port, cdb_inst
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0101h Start Firmware Download
     :rtype: CMD0101hStartFirmwareDownloadReply
@@ -964,10 +965,10 @@ async def cmd_0102h_abort_firmware_download_cmd(port: GenericL23Port, cdb_instan
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     """
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0102h_abort_firmware_download.set()
@@ -978,10 +979,10 @@ async def cmd_0102h_abort_firmware_download_reply(port: GenericL23Port, cdb_inst
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0102h Abort Firmware Download
     :rtype: CMD0102hAbortFirmwareDownloadReply
@@ -1007,10 +1008,10 @@ async def cmd_0103h_write_firmware_block_lpl_cmd(port: GenericL23Port, cdb_insta
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the “Start Command Payload Size”.
     :type block_address: int
@@ -1029,10 +1030,10 @@ async def cmd_0103h_write_firmware_block_lpl_reply(port: GenericL23Port, cdb_ins
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0103h Write Firmware Block LPL
     :rtype: CMD0103hWriteFirmwareBlockLPLReply
@@ -1058,10 +1059,10 @@ async def cmd_0104h_write_firmware_block_epl_cmd(port: GenericL23Port, cdb_insta
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the “Start Command Payload Size”.
     :type block_address: int
@@ -1081,10 +1082,10 @@ async def cmd_0104h_write_firmware_block_epl_reply(port: GenericL23Port, cdb_ins
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0104h Write Firmware Block EPL
     :rtype: CMD0104hWriteFirmwareBlockEPLReply
@@ -1116,10 +1117,10 @@ async def cmd_0105h_read_firmware_block_lpl_cmd(port: GenericL23Port, cdb_instan
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
     :type block_address: int
@@ -1138,10 +1139,10 @@ async def cmd_0105h_read_firmware_block_lpl_reply(port: GenericL23Port, cdb_inst
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
     :type block_address: int
@@ -1156,7 +1157,7 @@ async def cmd_0105h_read_firmware_block_lpl_reply(port: GenericL23Port, cdb_inst
             return CMD0105hReadFirmwareBlockLPLReply(resp.reply)
         except exceptions.XmpPendingError:
             time.sleep(0.1)
-    
+
 
 # CMD 0106h: Read Firmware Block EPL
 class CMD0106hReadFirmwareBlockEPLReply(CMDBaseReply):
@@ -1174,10 +1175,10 @@ async def cmd_0106h_read_firmware_block_epl_cmd(port: GenericL23Port, cdb_instan
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”
     :type block_address: int
@@ -1196,10 +1197,10 @@ async def cmd_0106h_read_firmware_block_epl_reply(port: GenericL23Port, cdb_inst
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param block_address: U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”
     :type block_address: int
@@ -1230,10 +1231,10 @@ async def cmd_0107h_complete_firmware_download_cmd(port: GenericL23Port, cdb_ins
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     """
     await port.transceiver.cmis.cdb(cdb_instance).cmd_0107h_complete_firmware_download.set()
@@ -1244,10 +1245,10 @@ async def cmd_0107h_complete_firmware_download_reply(port: GenericL23Port, cdb_i
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0107h Complete Firmware Download
     :rtype: CMD0107hCompleteFirmwareDownloadReply
@@ -1290,13 +1291,13 @@ async def cmd_0108h_copy_firmware_image_cmd(port: GenericL23Port, cdb_instance: 
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
-    :param copy_direction: copy direction. 
-    
+    :param copy_direction: copy direction.
+
         * ``0xAB``, Copy Image A into Image B
         * ``0xBA``,Copy Image B into Image A
 
@@ -1313,10 +1314,10 @@ async def cmd_0108h_copy_firmware_image_reply(port: GenericL23Port, cdb_instance
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0108h Copy Firmware Image
     :rtype: CMD0108CopyFirmwareImageReply
@@ -1342,10 +1343,10 @@ async def cmd_0109h_run_firmware_image_cmd(port: GenericL23Port, cdb_instance: i
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param image_to_run: integer, index of the image to run.
 
@@ -1353,7 +1354,7 @@ async def cmd_0109h_run_firmware_image_cmd(port: GenericL23Port, cdb_instance: i
         * 1 = Attempt Hitless Reset to Inactive Image
         * 2 = Traffic affecting Reset to Running Image.
         * 3 = Attempt Hitless Reset to Running Image
-    
+
     :type image_to_run: int
     :param delay_to_reset: integer, Indicates the delay in ms after receiving this command before a reset will occur, starting from the time the CDB complete Flag is set.
     :type delay_to_reset: int
@@ -1370,10 +1371,10 @@ async def cmd_0109h_run_firmware_image_reply(port: GenericL23Port, cdb_instance:
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 0109h Run Firmware Image
     :rtype: CMD0109RunFirmwareImageReply
@@ -1399,10 +1400,10 @@ async def cmd_010ah_commit_firmware_image_cmd(port: GenericL23Port, cdb_instance
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     """
     await port.transceiver.cmis.cdb(cdb_instance).cmd_010ah_commit_firmware_image.set()
@@ -1413,10 +1414,10 @@ async def cmd_010ah_commit_firmware_image_reply(port: GenericL23Port, cdb_instan
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 010Ah Commit Firmware Image
     :rtype: CMD010AhCommitFirmwareImageReply
@@ -1444,14 +1445,14 @@ class CustomCMDReply():
         * 3: In progress: transceiver is currently processing a CDB command. It is not ready to accept a new CDB command.
         """
         self.cdb_cmd_complete_flag: bool = reply["reply_status"]["cdb_cmd_complete_flag"]
-        """Integer, REPLY Status.CdbCmdCompleteFlag. 
-        
+        """Integer, REPLY Status.CdbCmdCompleteFlag.
+
         Indicates whether the CDB command is complete.
 
         """
         self.cdb_status: int = reply["reply_status"]["cdb_status"]
-        """Integer, REPLY Status.CdbStatus. 
-        
+        """Integer, REPLY Status.CdbStatus.
+
         Provides the status of the most recently triggered CDB command.
 
         """
@@ -1463,13 +1464,13 @@ class CustomCMDReply():
         """
         self.rpl_check_code: int = reply["reply_header"]["rpl_check_code"]
         """integer, REPLY Header.RPLChkCode.
-        
+
         Check code for the reply data.
 
         """
         self.data = reply["reply_data"]["data"]
         """hex string, REPLY Data.Data
-        
+
         The actual data to be sent in the reply.
 
         """
@@ -1480,10 +1481,10 @@ async def cmd_custom_cmd_reply(port: GenericL23Port, cdb_instance: int) -> Custo
     :param port: the port object to read the response from
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :return: REPLY of CMD 8000h-FFFFh Custom Command
     :rtype: CustomCMDReply
@@ -1501,10 +1502,10 @@ async def cmd_custom_cmd_request(port: GenericL23Port, cdb_instance: int, cmd_id
     :param port: the port object to send the command to
     :type port: GenericL23Port
     :param cdb_instance: CDB instance number.
-    
+
         * 0 = CBD Instance 1
         * 1 = CDB Instance 2
-    
+
     :type cdb_instance: int
     :param cmd_id: ``CMD Header.CMDID``. Command ID.
     :type cmd_id: hex str
@@ -1520,7 +1521,7 @@ async def cmd_custom_cmd_request(port: GenericL23Port, cdb_instance: int, cmd_id
 
     :param rpl_check_code: ``CMD Header.RPLChkCode``. Check code for the RPL. (optional)
     :type rpl_check_code: int
-    
+
     :param data: ``CMD Data.Data``. The data to be sent in the command.
     :type data: hex str
     """
@@ -1552,7 +1553,7 @@ async def firmware_download_procedure(port: GenericL23Port, cdb_instance: int, f
 
     The host then reads (and possibly converts to binary format) the vendor specific and vendor provided firmware download file into a contiguous addressable byte array defined as the binary download image.
 
-    To start the firmware download, the host sends the download image header consisting of the first StartCmdPayloadSize bytes from the download image using CMD 0101h: (Start Firmware Download). This header instructs the module in a vendor specific way about the full or partial download content to be expected. 
+    To start the firmware download, the host sends the download image header consisting of the first StartCmdPayloadSize bytes from the download image using CMD 0101h: (Start Firmware Download). This header instructs the module in a vendor specific way about the full or partial download content to be expected.
 
     Before the module updates an image bank in a download procedure the module ensures that the bank is marked as empty or corrupt until the download has eventually finished successfully.
 
@@ -1578,10 +1579,10 @@ async def firmware_download_procedure(port: GenericL23Port, cdb_instance: int, f
     if cdb_instance >= cdb_instances_supported:
         print(f"CDB instance {cdb_instance} is not supported. Only {cdb_instances_supported} CDB instances are supported.")
         return False
-    
+
     # Log the start of the firmware update
     print(f"Starting firmware update on {port}")
-    
+
     # Read capabilities (CMD 0041h)
     # Read size of START_LPL, erase byte
     reply_obj = await cmd_0041h_fw_mgmt_features_reply(port, cdb_instance)
@@ -1600,15 +1601,15 @@ async def firmware_download_procedure(port: GenericL23Port, cdb_instance: int, f
         use_epl_write = True
     else:
         print((f"Both CMD 0103h and CMD 0104h are supported. Will use the preferred write mechanism."))
-    
+
     # Read the erased byte value
     erased_byte = reply_obj.erased_byte
-    if reply_obj.abort_cmd == 0 and use_abort_for_failure == True:
+    if reply_obj.abort_cmd == 0 and use_abort_for_failure:
         use_abort_for_failure = False
         print(f"CMD 0102h Abort Firmware Download is not supported by the module. Will use CMD 0107h Complete Firmware Download instead.")
-    
+
     # Start the data block write loop
-    return await __write_data_block_loop(port, cdb_instance, firmware_file, firmware_header_size, erased_byte, use_epl_write, use_abort_for_failure)
+    return await __write_data_block_loop(port, cdb_instance, firmware_file, firmware_header_size, str(erased_byte), use_epl_write, use_abort_for_failure)
 
 
 ##################
@@ -1633,46 +1634,63 @@ async def __write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmw
     :param use_abort_for_failure: should the procedure use CMD 0102h Abort Firmware Download to abort the firmware download on failure.
     :type use_abort_for_failure: bool
     """
-    if use_epl_write == True:
+    if use_epl_write:
         write_func_map = {
             "block_size": 2048,
-            "write_func": cmd_0104h_write_firmware_block_epl_cmd,
+            "write_cmd_func": cmd_0104h_write_firmware_block_epl_cmd,
+            "write_reply_func": cmd_0104h_write_firmware_block_epl_reply,
             "description": "CMD 0104h: (Write Firmware Block EPL)"
         }
     else:
         write_func_map = {
             "block_size": 116,
-            "write_func": cmd_0103h_write_firmware_block_lpl_cmd,
+            "write_cmd_func": cmd_0103h_write_firmware_block_lpl_cmd,
+            "write_reply_func": cmd_0103h_write_firmware_block_lpl_reply,
             "description": "CMD 0103h: (Write Firmware Block LPL)"
         }
 
-    with open(firmware_filename, "rb") as f:        
+    with open(firmware_filename, "rb") as f:
         # Read the header data
         firmware_header_data = "0x" + f.read(firmware_header_size).hex()
 
-        # Send the header data using CMD 0101h: (Start Firmware Download), and wait for SUCCESS response
+        # Send the header data using CMD 0101h: (Start Firmware Download), and wait for completion
         await cmd_0101h_start_firmware_download_cmd(port, cdb_instance, firmware_header_size, firmware_header_data)
-        if await __is_cmd_successful("cmd_0101h_start_firmware_download_cmd", port, cdb_instance) == False:
-            print(f"CMD 0101h: (Start Firmware Download) failed to become SUCCESS.")
+        while True:
+            reply = await cmd_0101h_start_firmware_download_reply(port, cdb_instance)
+            if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+                break
+            await asyncio.sleep(0.1)
+
+        if reply.cdb_io_status != 1 or reply.cdb_status != 1:
+            print(f"CMD 0101h: (Start Firmware Download) failed. cdb_io_status={reply.cdb_io_status}, cdb_status={reply.cdb_status}")
+            await __abort_firmware_download(port, cdb_instance, use_abort_for_failure)
+            return False
 
         addr = 0
         while True:
-            # Read the a block of firmware data
+            # Read a block of firmware data
             data_block = f.read(write_func_map["block_size"])
             if not data_block:
                 print(f"EOF. No more data to read.")
                 break
             data_block_len = len(data_block)
-            data_block_hex = "0x" + data_block.hex()
-            if check_erased_byte(data_block_hex, erased_byte) == True:
+
+            if check_erased_byte(data_block, erased_byte):
                 addr += data_block_len
                 continue
             else:
                 # Send the data block
-                func = write_func_map["write_func"]
-                await func(port, cdb_instance, addr, data_block_hex)
-                if await __is_cmd_successful(str(write_func_map["write_func"]), port, cdb_instance) == False:
-                    print(f"{write_func_map['description']} failed.")
+                await write_func_map["write_cmd_func"](port, cdb_instance, addr, data_block)
+
+                # Wait for completion by polling cdb_io_status
+                while True:
+                    reply = await write_func_map["write_reply_func"](port, cdb_instance)
+                    if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+                        break
+                    await asyncio.sleep(0.1)
+
+                if reply.cdb_io_status != 1 or reply.cdb_status != 1:
+                    print(f"{write_func_map['description']} failed. cdb_io_status={reply.cdb_io_status}, cdb_status={reply.cdb_status}")
                     await __abort_firmware_download(port, cdb_instance, use_abort_for_failure)
                     return False
                 else:
@@ -1681,11 +1699,17 @@ async def __write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmw
 
         # Send CMD 0107h: (Complete Firmware Download) to complete the firmware download
         await cmd_0107h_complete_firmware_download_cmd(port, cdb_instance)
-        if await __is_cmd_successful("cmd_0107h_complete_firmware_download_cmd", port, cdb_instance) == False:
-            print(f"CMD 0107h: (Complete Firmware Download) failed.")
+        while True:
+            reply = await cmd_0107h_complete_firmware_download_reply(port, cdb_instance)
+            if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+                break
+            await asyncio.sleep(0.1)
+
+        if reply.cdb_io_status != 1 or reply.cdb_status != 1:
+            print(f"CMD 0107h: (Complete Firmware Download) failed. cdb_io_status={reply.cdb_io_status}, cdb_status={reply.cdb_status}")
             print(f"Firmware Update Failed.")
             return False
-        
+
         print(f"Firmware Update Successful.")
         return True
 
@@ -1700,58 +1724,35 @@ async def __abort_firmware_download(port: GenericL23Port, cdb_instance: int, use
     :param use_abort_for_failure: should the procedure use CMD 0102h Abort Firmware Download to abort the firmware download on failure.
     :type use_abort_for_failure: bool
     """
-    if use_abort_for_failure == True:
+    if use_abort_for_failure:
         # Send CMD 0102h: (Abort Firmware Download) to abort the firmware download
         await cmd_0102h_abort_firmware_download_cmd(port, cdb_instance)
-        if await __is_cmd_successful("cmd_0102h_abort_firmware_download_cmd", port, cdb_instance) == False:
+        while True:
+            reply = await cmd_0102h_abort_firmware_download_reply(port, cdb_instance)
+            if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+                break
+            await asyncio.sleep(0.1)
+
+        if reply.cdb_io_status != 1 or reply.cdb_status != 1:
             print(f"CMD 0102h: (Abort Firmware Download) failed.")
         else:
             print(f"CMD 0102h: (Abort Firmware Download) successful.")
     else:
         # Send CMD 0107h: (Complete Firmware Download) to complete the firmware download
         await cmd_0107h_complete_firmware_download_cmd(port, cdb_instance)
-        if await __is_cmd_successful("cmd_0107h_complete_firmware_download_cmd", port, cdb_instance) == False:
+        while True:
+            reply = await cmd_0107h_complete_firmware_download_reply(port, cdb_instance)
+            if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+                break
+            await asyncio.sleep(0.1)
+
+        if reply.cdb_io_status != 1 or reply.cdb_status != 1:
             print(f"CMD 0107h: (Complete Firmware Download) failed.")
         else:
             print(f"CMD 0107h: (Complete Firmware Download) successful.")
 
     print(f"Firmware Update Failed.")
 
-
-async def __is_cmd_successful(cmd_name: str, port: GenericL23Port, cdb_instance: int, timeout = 5.0) -> bool:
-    """Check if the CDB command is successful.
-
-    :param cmd_name: the function name of the command to check
-    :type cmd_name: str
-    :param port: the port object
-    :type port: GenericL23Port
-    :param cdb_instance: the CDB instance number
-    :type cdb_instance: int
-    :param timeout: the timeout, defaults to 5.0
-    :type timeout: float, optional
-    :return: if the command is successful or not
-    :rtype: bool
-    """
-    func_map = {
-        "cmd_0101h_start_firmware_download_reply": cmd_0101h_start_firmware_download_reply,
-        "cmd_0103h_write_firmware_block_lpl_reply": cmd_0103h_write_firmware_block_lpl_reply,
-        "cmd_0104h_write_firmware_block_epl_reply": cmd_0104h_write_firmware_block_epl_reply,
-        "cmd_0107h_complete_firmware_download_reply": cmd_0107h_complete_firmware_download_reply,
-    }
-    if cmd_name not in func_map:
-        print(f"Invalid command name: {cmd_name}. Valid commands are: {list(func_map.keys())}")
-        return False
-    start = time.time()
-    while time.time() - start < timeout:
-        reply_obj = await func_map[cmd_name](port, cdb_instance)
-        if reply_obj.cdb_cmd_complete_flag == True:
-            if check_cdb_status(reply_obj.cdb_status) == CdbCommandCoarseStatus.SUCCESS:
-                return True
-            elif check_cdb_status(reply_obj.cdb_status) == CdbCommandCoarseStatus.FAILED:
-                return False
-        else:
-            time.sleep(timeout/100)
-    return False
 
 __all__ = (
     "cmd_0000h_query_status_cmd",
