@@ -23,7 +23,7 @@ def main():
         packages=setuptools.find_packages(),
         license='Apache 2.0',
         classifiers=[
-            "Development Status :: 5 - Production/Stable",
+            "Development Status :: 4 - Beta",
             "Intended Audience :: Developers",
             "Topic :: Software Development :: Libraries :: Python Modules",
             "License :: OSI Approved :: Apache Software License",
