@@ -28,10 +28,6 @@ from itertools import chain  # type: ignore[Pylance false warning]
 from datetime import datetime
 import json
 
-PcsPmaSupported = (FamilyL, FamilyFreya)
-AutoNegSupported = (FamilyL, FamilyFreya)
-LinkTrainingSupported = FamilyL
-
 
 # region Testers
 async def reserve_tester(tester: GenericAnyTester, force: bool = True) -> None:

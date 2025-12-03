@@ -1055,14 +1055,6 @@ async def firmware_download_procedure(port: GenericL23Port, cdb_instance: int, f
 ##################
 # Helper functions
 ##################
-WriteFunc = Callable[[GenericL23Port, int, int, bytes], Awaitable[None]]
-@dataclass
-class WriteFuncConfig:
-    block_size: int
-    write_func: WriteFunc
-    description: str
-
-ReplyFunc = Callable[[GenericL23Port, int], Awaitable[CMDBaseReply]]
 
 async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmware_filename: str, firmware_header_size: int, erased_byte: int, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
     """Write data block loop
