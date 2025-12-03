@@ -1031,22 +1031,22 @@ async def firmware_download_procedure(port: GenericL23Port, cdb_instance: int, f
     # Determine the write mechanism
     write_mechanism = reply_obj.write_mechanism
     if write_mechanism == WriteMechanism.NONE_SUPPORTED:
-        print(f"Write Mechanism is not supported. Unable to proceed with firmware update.")
+        print("Write Mechanism is not supported. Unable to proceed with firmware update.")
         return False
     elif write_mechanism == WriteMechanism.LPL_ONLY:
-        print(f"Only CMD 0103h Write Firmware Block LPL is supported. Will use LPL write mechanism.")
+        print("Only CMD 0103h Write Firmware Block LPL is supported. Will use LPL write mechanism.")
         use_epl_write = False
     elif write_mechanism == WriteMechanism.EPL_ONLY:
-        print(f"Only CMD 0104h Write Firmware Block EPL is supported. Will use EPL write mechanism.")
+        print("Only CMD 0104h Write Firmware Block EPL is supported. Will use EPL write mechanism.")
         use_epl_write = True
     else:
-        print((f"Both CMD 0103h and CMD 0104h are supported. Will use the preferred write mechanism."))
+        print(("Both CMD 0103h and CMD 0104h are supported. Will use the preferred write mechanism."))
 
     # Read the erased byte value
     erased_byte = reply_obj.erased_byte
     if reply_obj.abort_cmd == 0 and use_abort_for_failure:
         use_abort_for_failure = False
-        print(f"CMD 0102h Abort Firmware Download is not supported by the module. Will use CMD 0107h Complete Firmware Download instead.")
+        print("CMD 0102h Abort Firmware Download is not supported by the module. Will use CMD 0107h Complete Firmware Download instead.")
 
     # Start the data block write loop
     return await _write_data_block_loop(port, cdb_instance, firmware_file, firmware_header_size, erased_byte, use_epl_write, use_abort_for_failure)
@@ -1111,7 +1111,7 @@ async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmwa
 
         if reply.cdb_io_status != 1 or reply.cdb_status != 1:
             print(f"CMD 0101h: (Start Firmware Download) failed. cdb_io_status={reply.cdb_io_status}, cdb_status={reply.cdb_status}")
-            await __abort_firmware_download(port, cdb_instance, use_abort_for_failure)
+            await _abort_firmware_download(port, cdb_instance, use_abort_for_failure)
             return False
 
         addr = 0
@@ -1119,11 +1119,12 @@ async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmwa
             # Read a block of firmware data
             data_block = f.read(write_func_map["block_size"])
             if not data_block:
-                print(f"EOF. No more data to read.")
+                print("EOF. No more data to read.")
                 break
             data_block_len = len(data_block)
-
-            if check_erased_byte(data_block, erased_byte):
+            data_block_hex = "0x" + data_block.hex()
+            erased_byte_hex = f"0x{erased_byte:02X}"
+            if check_erased_byte(data_block_hex, erased_byte_hex):
                 addr += data_block_len
                 continue
             else:
@@ -1139,7 +1140,7 @@ async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmwa
 
                 if reply.cdb_io_status != 1 or reply.cdb_status != 1:
                     print(f"{write_func_map['description']} failed. cdb_io_status={reply.cdb_io_status}, cdb_status={reply.cdb_status}")
-                    await __abort_firmware_download(port, cdb_instance, use_abort_for_failure)
+                    await _abort_firmware_download(port, cdb_instance, use_abort_for_failure)
                     return False
                 else:
                     addr += data_block_len
@@ -1155,10 +1156,10 @@ async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmwa
 
         if reply.cdb_io_status != 1 or reply.cdb_status != 1:
             print(f"CMD 0107h: (Complete Firmware Download) failed. cdb_io_status={reply.cdb_io_status}, cdb_status={reply.cdb_status}")
-            print(f"Firmware Update Failed.")
+            print("Firmware Update Failed.")
             return False
 
-        print(f"Firmware Update Successful.")
+        print("Firmware Update Successful.")
         return True
 
 
@@ -1182,9 +1183,9 @@ async def _abort_firmware_download(port: GenericL23Port, cdb_instance: int, use_
             await asyncio.sleep(0.1)
 
         if reply.cdb_io_status != 1 or reply.cdb_status != 1:
-            print(f"CMD 0102h: (Abort Firmware Download) failed.")
+            print("CMD 0102h: (Abort Firmware Download) failed.")
         else:
-            print(f"CMD 0102h: (Abort Firmware Download) successful.")
+            print("CMD 0102h: (Abort Firmware Download) successful.")
     else:
         # Send CMD 0107h: (Complete Firmware Download) to complete the firmware download
         await cmd_0107h_complete_firmware_download_cmd(port, cdb_instance)
@@ -1195,11 +1196,11 @@ async def _abort_firmware_download(port: GenericL23Port, cdb_instance: int, use_
             await asyncio.sleep(0.1)
 
         if reply.cdb_io_status != 1 or reply.cdb_status != 1:
-            print(f"CMD 0107h: (Complete Firmware Download) failed.")
+            print("CMD 0107h: (Complete Firmware Download) failed.")
         else:
-            print(f"CMD 0107h: (Complete Firmware Download) successful.")
+            print("CMD 0107h: (Complete Firmware Download) successful.")
 
-    print(f"Firmware Update Failed.")
+    print("Firmware Update Failed.")
 
 
 __all__ = (
