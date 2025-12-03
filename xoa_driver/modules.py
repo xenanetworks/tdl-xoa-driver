@@ -32,6 +32,7 @@ from .internals.hli.modules.modules_l23.family_g import (
     MLoki100G3S1PSE,
     MLoki100G3S1PB,
     MLoki100G3S1PB_b,
+    MLoki100G5S4P_a,
 )
 from .internals.hli.modules.modules_l23.family_h import (
     MLoki100G5S1P,
@@ -159,6 +160,7 @@ Z100LokiModule = typing.Union[
     MLoki100G3S1PB_b,
     MLoki100G5S1P,
     MLoki100G5S2P,
+    MLoki100G5S4P_a,
 ]
 
 Z400ThorModule = typing.Union[
@@ -272,6 +274,7 @@ GenericL23Module = typing.Union[
     "MLoki100G3S1PB_b",
     "MLoki100G5S1P",
     "MLoki100G5S2P",
+    "MLoki100G5S4P_a",
 
     "MThor100G5S4P",
     "MThor400G7S1P",
@@ -388,6 +391,7 @@ __all__ = (
     "MLoki100G3S1PB_b",
     "MLoki100G5S1P",
     "MLoki100G5S2P",
+    "MLoki100G5S4P_a",
 
     "Z400ThorModule",
     "MThor100G5S4P",
