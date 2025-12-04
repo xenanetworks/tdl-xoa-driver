@@ -832,7 +832,16 @@ class PL1_PRESET_CONFIG_COEFF:
 @dataclass
 class PL1_PHYTXEQ_LEVEL:
     """
-    Control and monitor the equalizer settings of the on-board PHY in the transmission direction (towards the transceiver cage).
+    Control and monitor the equalizer settings (mV/dB values) of the on-board PHY in the transmission direction (towards the transceiver cage).
+
+    This command returns a variable number of tap values with module-dependent ordering:
+
+    - **Regular Freya**: Original fixed format [pre3, pre2, pre, main, post]
+    - **Loki-4P and H-Freya/Edun**: Variable number in N*pre, main, M*post layout
+      [pre_n, pre_n-1, ..., pre_1, main, post_1, post_2, ..., post_m]
+
+    Use P_CAPABILITIES to query ``numtxeqtaps`` and ``numtxeqpretaps`` to determine
+    the number of taps and layout.
 
     .. note::
 
@@ -849,44 +858,63 @@ class PL1_PHYTXEQ_LEVEL:
     _serdes_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        pre3: int = field(XmpInt())
-        """integer, pre3 tap value in dB/10, ranges from 0 to 71. Default = 0 (neutral)"""
-        pre2: int = field(XmpInt())
-        """integer, pre2 tap value in dB/10, ranges from 0 to 71. Default = 0 (neutral)"""
-        pre: int = field(XmpInt())
-        """integer, pre tap value in dB/10, ranges from 0 to 187. Default = 0 (neutral)"""
-        main: int = field(XmpInt())
-        """integer, main tap value in mV, ranges from 507 to 998."""
-        post: int = field(XmpInt())
-        """integer, post tap value in dB/10, ranges from 0 to 187 Default = 0 (neutral)"""
-        
+        tap_values: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, TX EQ tap values in mV/dB. The number and layout depend on the platform:
+
+        - Regular Freya: [pre3, pre2, pre, main, post] where pre3/pre2 in dB/10 (0-71), pre/post in dB/10 (0-187), main in mV (507-998)
+        - Loki-4P and H-Freya/Edun: [pre_n, ..., pre_1, main, post_1, post_2, ..., post_m]
+          where N = numtxeqpretaps and M = numtxeqtaps - numtxeqpretaps - 1
+        """
+
     class SetDataAttr(RequestBodyStruct):
-        pre3: int = field(XmpInt())
-        """integer, pre3 tap value in dB/10, ranges from 0 to 71. Default = 0 (neutral)"""
-        pre2: int = field(XmpInt())
-        """integer, pre2 tap value in dB/10, ranges from 0 to 71. Default = 0 (neutral)"""
-        pre: int = field(XmpInt())
-        """integer, pre tap value in dB/10, ranges from 0 to 187. Default = 0 (neutral)"""
-        main: int = field(XmpInt())
-        """integer, main tap value in mV, ranges from 507 to 998."""
-        post: int = field(XmpInt())
-        """integer, post tap value in dB/10, ranges from 0 to 187 Default = 0 (neutral)"""
+        tap_values: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, TX EQ tap values in mV/dB. The number and layout depend on the platform:
+
+        - Regular Freya: [pre3, pre2, pre, main, post] where pre3/pre2 in dB/10 (0-71), pre/post in dB/10 (0-187), main in mV (507-998)
+        - Loki-4P and H-Freya/Edun: [pre_n, ..., pre_1, main, post_1, post_2, ..., post_m]
+          where N = numtxeqpretaps and M = numtxeqtaps - numtxeqpretaps - 1
+        """
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the TX equalizer settings (mV/dB values) of the on-board PHY.
+
+        The returned tap values layout depends on the platform. Query P_CAPABILITIES
+        for ``numtxeqtaps`` and ``numtxeqpretaps`` to determine the format.
+
+        :return: list of TX EQ tap values in mV/dB
+        :rtype: PL1_PHYTXEQ_LEVEL.GetDataAttr
+        """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
 
-    def set(self, pre3:int, pre2: int, pre: int, main: int, post: int) -> Token[None]:
+    def set(self, tap_values: typing.List[int]) -> Token[None]:
+        """Set the TX equalizer settings (mV/dB values) of the on-board PHY.
+
+        The tap values layout depends on the platform. Query P_CAPABILITIES
+        for ``numtxeqtaps`` and ``numtxeqpretaps`` to determine the required format.
+
+        :param tap_values: list of TX EQ tap values in mV/dB in platform-specific order
+        :type tap_values: typing.List[int]
+        """
 
         return Token(
             self._connection,
-            build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex], pre3=pre3, pre2=pre2, pre=pre, main=main, post=post))
-    
+            build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex], tap_values=tap_values))
+
 @register_command
 @dataclass
 class PL1_PHYTXEQ_COEFF:
     """
-    Control and monitor the equalizer settings of the on-board PHY in the transmission direction (towards the transceiver cage).
+    Control and monitor the equalizer settings (IEEE coefficient values) of the on-board PHY in the transmission direction (towards the transceiver cage).
+
+    This command returns a variable number of tap values with module-dependent ordering:
+
+    - **Regular Freya**: Original fixed format [pre3, pre2, pre, main, post]
+    - **Loki-4P and H-Freya/Edun**: Variable number in N*pre, main, M*post layout
+      [pre_n, pre_n-1, ..., pre_1, main, post_1, post_2, ..., post_m]
+
+    Use P_CAPABILITIES to query ``numtxeqtaps`` and ``numtxeqpretaps`` to determine
+    the number of taps and layout.
 
     .. note::
 
@@ -913,38 +941,48 @@ class PL1_PHYTXEQ_COEFF:
     _serdes_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        pre3: int = field(XmpInt())
-        """integer, pre3 tap value, negative, scaled by 1E3. Default = 0 (neutral)"""
-        pre2: int = field(XmpInt())
-        """integer, pre2 tap value, positive, scaled by 1E3. Default = 0 (neutral)"""
-        pre: int = field(XmpInt())
-        """integer, pre tap value, negative, scaled by 1E3. Default = 0 (neutral)"""
-        main: int = field(XmpInt())
-        """integer, main tap value, positive, scaled by 1E3. Default = 1000"""
-        post: int = field(XmpInt())
-        """integer, post tap value, negative, scaled by 1E3. Default = 0 (neutral)"""
-        
+        tap_values: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, TX EQ tap values as IEEE coefficients scaled by 1E3. The number and layout depend on the platform:
+
+        - Regular Freya: [pre3, pre2, pre, main, post] where pre3/pre/post are negative, pre2/main are positive
+        - Loki-4P and H-Freya/Edun: [pre_n, ..., pre_1, main, post_1, ..., post_m]
+          where N = numtxeqpretaps and M = numtxeqtaps - numtxeqpretaps - 1
+        """
+
     class SetDataAttr(RequestBodyStruct):
-        pre3: int = field(XmpInt())
-        """integer, pre3 tap value, negative, scaled by 1E3. Default = 0 (neutral)"""
-        pre2: int = field(XmpInt())
-        """integer, pre2 tap value, positive, scaled by 1E3. Default = 0 (neutral)"""
-        pre: int = field(XmpInt())
-        """integer, pre tap value, negative, scaled by 1E3. Default = 0 (neutral)"""
-        main: int = field(XmpInt())
-        """integer, main tap value, positive, scaled by 1E3. Default = 1000"""
-        post: int = field(XmpInt())
-        """integer, post tap value, negative, scaled by 1E3. Default = 0 (neutral)"""
+        tap_values: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, TX EQ tap values as IEEE coefficients scaled by 1E3. The number and layout depend on the platform:
+
+        - Regular Freya: [pre3, pre2, pre, main, post] where pre3/pre/post are negative, pre2/main are positive
+        - Loki-4P and H-Freya/Edun: [pre_n, ..., pre_1, main, post_1, ..., post_m]
+          where N = numtxeqpretaps and M = numtxeqtaps - numtxeqpretaps - 1
+        """
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the TX equalizer settings (IEEE coefficient values) of the on-board PHY.
+
+        The returned tap values layout depends on the platform. Query P_CAPABILITIES
+        for ``numtxeqtaps`` and ``numtxeqpretaps`` to determine the format.
+
+        :return: list of TX EQ tap values as IEEE coefficients scaled by 1E3
+        :rtype: PL1_PHYTXEQ_COEFF.GetDataAttr
+        """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
 
-    def set(self, pre3:int, pre2: int, pre: int, main: int, post: int) -> Token[None]:
+    def set(self, tap_values: typing.List[int]) -> Token[None]:
+        """Set the TX equalizer settings (IEEE coefficient values) of the on-board PHY.
+
+        The tap values layout depends on the platform. Query P_CAPABILITIES
+        for ``numtxeqtaps`` and ``numtxeqpretaps`` to determine the required format.
+
+        :param tap_values: list of TX EQ tap values as IEEE coefficients scaled by 1E3 in platform-specific order
+        :type tap_values: typing.List[int]
+        """
 
         return Token(
             self._connection,
-            build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex], pre3=pre3, pre2=pre2, pre=pre, main=main, post=post))    
+            build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex], tap_values=tap_values))
 
 @register_command
 @dataclass

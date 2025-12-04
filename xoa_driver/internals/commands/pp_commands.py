@@ -595,7 +595,7 @@ class PP_PMAERRPUL_PARAMS:
     def set(self, duration: int, period: int, repetition: int, coeff: int, exp: int) -> Token[None]:
         """Set PMA pulse error injection settings.
 
-        :param duration: 0 ms - 5000m s; increments of 1 ms; 0 = constant BER
+        :param duration: 0 ms - 5000 ms; increments of 1 ms; 0 = constant BER
         :type duration: int
         :param period: 10 ms - 50000 ms; number of ms - must be multiple of 10 ms
         :type period: int
