@@ -90,7 +90,7 @@ async def save_test_case_config(tester: testers.L23Tester, ports: List[ports.Gen
         port_config_block.commands = raw_resp[0]
         result += "\n" + ";\n" + port_config_block.config_block_str
         
-    with open(path, 'w+', newline='') as xtcfile:
+    with open(path, 'w+') as xtcfile:
         xtcfile.write(result)
     
     return result
@@ -119,7 +119,7 @@ async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str 
     xm.logon_set_owner(tester_password)
 
     # Read configuration from file
-    with open(path, 'r', newline='') as xpcfile:
+    with open(path, 'r') as xpcfile:
         config_data = xpcfile.read()
 
         # Parse the config data to configure modules and ports block by block
@@ -139,7 +139,7 @@ async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str 
                 # Send each command to the tester
                 for cmd in module_block.commands:
                     if cmd.strip():  # Ensure the command is not empty
-                        print(f"Applying command: {module_index} {cmd}")
+                        # print(f"Applying command: {module_index} {cmd}")
                         xm.send(cmd=f"{module_index} {cmd}", sync_on=False)
                 # Free the module after applying configuration
                 xm.free_module(module_index)
@@ -156,7 +156,7 @@ async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str 
                 # Send each command to the tester
                 for cmd in port_block.commands:
                     if cmd.strip():  # Ensure the command is not empty
-                        print(f"Applying command: {port_index} {cmd}")
+                        # print(f"Applying command: {port_index} {cmd}")
                         xm.send(cmd=f"{port_index} {cmd}", sync_on=False)
                 # Free the port after applying configuration
                 xm.free_port(port_index)

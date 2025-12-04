@@ -48,7 +48,7 @@ async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
 
     # Save configuration to file
     result = port_config_block.config_block_str
-    with open(path, 'w+', newline='') as xpcfile:
+    with open(path, 'w+') as xpcfile:
         xpcfile.write(result)
     return result
 
@@ -78,7 +78,7 @@ async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     xm.reserve_port(port_index)
 
     # Read configuration from file
-    with open(path, 'r', newline='') as xpcfile:
+    with open(path, 'r') as xpcfile:
         config_data = xpcfile.read()
 
     # Deserialize config block and send CLI commands

@@ -150,12 +150,12 @@ class XOACLIManager:
             # Check for C_LOGON or password in string, as a safeguard
             if re.search(r'C_LOGON\s*".*"', msg) or re.search(r'password\s*=\s*".*"', msg, flags=re.IGNORECASE) or re.search(r'--password=\S+', msg, flags=re.IGNORECASE):
                 logging.info(f"{time.time()} [Sensitive command redacted]")
-                print(f"{time.time()} [Sensitive command redacted]")
+                # print(f"{time.time()} [Sensitive command redacted]")
                 return
             # Redact as an additional precaution
             safe_msg = _redact_sensitive(msg)
             logging.info(f"{time.time()} {safe_msg}")
-            print(f"{time.time()} {safe_msg}")
+            # print(f"{time.time()} {safe_msg}")
     def log_command(self, cmd:str) -> None:
         """Place the command in the log cmd list for later logging
 
