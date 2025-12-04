@@ -1117,7 +1117,19 @@ class PP_EYEINFO:
 class PP_PHYTXEQ:
     """
     Control and monitor the equalizer settings of the on-board PHY in the
-    transmission direction (towards the transceiver cage) on Thor and Loki modules.
+    transmission direction (towards the transceiver cage).
+
+    This command returns a variable number of tap values with module-dependent ordering:
+
+    - **Legacy Loki-2P/Thor**: Original fixed format [pre, main, post, pre2, pre3, mode]
+    - **Regular Freya**: Original fixed format [pre, main, post, pre2, pre3, mode]
+    - **Loki-4P and H-Freya/Edun**: Variable number in N*pre, main, M*post layout
+      [pre_n, pre_n-1, ..., pre_1, main, post_1, post_2, ..., post_m]
+
+    Use P_CAPABILITIES to query ``numtxeqtaps`` and ``numtxeqpretaps`` to determine
+    the number of taps and layout:
+    - ``numtxeqpretaps``: Number of precursor taps (N)
+    - ``numtxeqtaps - numtxeqpretaps - 1``: Number of postcursor taps (M)
 
     .. versionchanged:: 1.1
 
@@ -1132,63 +1144,46 @@ class PP_PHYTXEQ:
     _serdes_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        pre: int = field(XmpInt())
-        """integer, preemphasis, (range: Module dependent), default = 0 (neutral)."""
-        main: int = field(XmpInt())
-        """integer, amplification, (range: Module dependent), default = 0 (neutral)."""
-        post: int = field(XmpInt())
-        """integer, postemphasis, (range: Module dependent), default = 0 (neutral)."""
-        pre2: int = field(XmpInt())
-        """integer, preemphasis, (range: Module dependent), default = 0 (neutral)."""
-        pre3_post2: int = field(XmpInt())
-        """integer, postemphasis, (range: Module dependent), default = 0 (neutral)."""
-        post3: int = field(XmpInt())
-        """integer, postemphasis, (range: Module dependent), default = 0 (neutral)."""
-        mode: int = field(XmpInt())
-        """integer, value must be 4"""
+        tap_values: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, TX EQ tap values. The number and layout depend on the platform:
+
+        - Legacy Loki-2P/Thor and Regular Freya: [pre, main, post, pre2, pre3, mode]
+        - Loki-4P and H-Freya/Edun: [pre_n, ..., pre_1, main, post_1, ..., post_m]
+          where N = numtxeqpretaps and M = numtxeqtaps - numtxeqpretaps - 1
+        """
 
     class SetDataAttr(RequestBodyStruct):
-        pre: int = field(XmpInt())
-        """integer, preemphasis, (range: Module dependent), default = 0 (neutral)."""
-        main: int = field(XmpInt())
-        """integer, amplification, (range: Module dependent), default = 0 (neutral)."""
-        post: int = field(XmpInt())
-        """integer, postemphasis, (range: Module dependent), default = 0 (neutral)."""
-        pre2: int = field(XmpInt())
-        """integer, preemphasis, (range: Module dependent), default = 0 (neutral)."""
-        pre3_post2: int = field(XmpInt())
-        """integer, postemphasis, (range: Module dependent), default = 0 (neutral)."""
-        post3: int = field(XmpInt())
-        """integer, postemphasis, (range: Module dependent), default = 0 (neutral)."""
-        mode: int = field(XmpInt())
-        """integer, value must be 4"""
+        tap_values: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, TX EQ tap values. The number and layout depend on the platform:
+
+        - Legacy Loki-2P/Thor and Regular Freya: [pre, main, post, pre2, pre3, mode]
+        - Loki-4P and H-Freya/Edun: [pre_n, ..., pre_1, main, post_1, ..., post_m]
+          where N = numtxeqpretaps and M = numtxeqtaps - numtxeqpretaps - 1
+        """
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the equalizer settings of the on-board PHY in the
-        transmission direction (towards the transceiver cage) on Thor and Loki modules.
+        """Get the TX equalizer settings of the on-board PHY.
 
-        :return: preemphasis, (range: Module dependent), default = 0 (neutral).
+        The returned tap values layout depends on the platform. Query P_CAPABILITIES
+        for ``numtxeqtaps`` and ``numtxeqpretaps`` to determine the format.
+
+        :return: list of TX EQ tap values
         :rtype: PP_PHYTXEQ.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
 
-    def set(self, pre2: int, pre: int, main: int, post: int, pre3_post2: int, post3: int) -> Token[None]:
-        """Set the equalizer settings of the on-board PHY in the
-        transmission direction (towards the transceiver cage) on Thor and Loki modules.
+    def set(self, tap_values: typing.List[int]) -> Token[None]:
+        """Set the TX equalizer settings of the on-board PHY.
 
-        :param pre2: pre2 emphasis
-        :type pre2: int
-        :param pre: pre emphasis
-        :type pre: int
-        :param main: main emphasis
-        :type main: int
-        :param post: post emphasis
-        :type post: int
-        :param pre3_post2: post2 or pre3 emphasis
-        :type pre3_post2: int
-        :param post3: post3 emphasis
-        :type post3: int
+        The tap values layout depends on the platform. Query P_CAPABILITIES
+        for ``numtxeqtaps`` and ``numtxeqpretaps`` to determine the required format:
+
+        - Legacy Loki-2P/Thor and Regular Freya: [pre, main, post, pre2, pre3, mode]
+        - Loki-4P and H-Freya/Edun: [pre_n, ..., pre_1, main, post_1, ..., post_m]
+
+        :param tap_values: list of TX EQ tap values in platform-specific order
+        :type tap_values: typing.List[int]
         """
 
         return Token(
@@ -1198,13 +1193,7 @@ class PP_PHYTXEQ:
                 module=self._module,
                 port=self._port,
                 indices=[self._serdes_xindex],
-                pre2=pre2,
-                pre=pre,
-                main=main,
-                post=post,
-                pre3_post2=pre3_post2,
-                post3=post3,
-                mode=4))
+                tap_values=tap_values))
 
 
 @register_command
