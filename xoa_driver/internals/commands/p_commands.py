@@ -601,7 +601,44 @@ class P_CAPABILITIES:
         * Bit 0: Normal modifier (16/24-bit) supports little-endian
         * Bit 1: Extended modifier (32-bit) supports little-endian
         """
-        
+        capture_bitmask: int = field(XmpInt(), min_version=470)
+        """integer, bitmask indicating capture capabilities.
+
+        If all bits are 0: CAPTURE_NOT_SUPPORTED
+
+        Bits [0:11] are for Start triggers:
+
+        * Bit 0: CAPTURE_START_ON
+        * Bit 1: CAPTURE_START_FCSERROR
+        * Bit 2: CAPTURE_START_FILTER
+        * Bit 3: CAPTURE_START_PLDERROR
+        * Bit 4-11: Reserved
+
+        Bits [12:23] are for Stop triggers:
+
+        * Bit 12: CAPTURE_STOP_FULL
+        * Bit 13: CAPTURE_STOP_FCSERROR
+        * Bit 14: CAPTURE_STOP_FILTER
+        * Bit 15: CAPTURE_STOP_PLDERROR
+        * Bit 16: CAPTURE_STOP_USERSTOP
+        * Bit 17-23: Reserved
+
+        Bits [24:31] are for Keep modes:
+
+        * Bit 24: CAPTURE_KEEP_ALL
+        * Bit 25: CAPTURE_KEEP_FCSERR
+        * Bit 26: CAPTURE_KEEP_NOTPLD
+        * Bit 27: CAPTURE_KEEP_TPLD
+        * Bit 28: CAPTURE_KEEP_FILTER
+        * Bit 29: CAPTURE_KEEP_PLDERR
+        * Bit 30-31: Reserved
+        """
+        num_txeq_pre: int = field(XmpInt(), min_version=470)
+        """The number of postcursors = num_txeq - num_txeq_pre - 1."""
+        txeq_max_seq: int = field(XmpInt(), min_version=470)
+        """max value of individual TXEQ taps, SEQuential: <pre-n> <pre-(n-q)> ... <prr1> <main> <post1> <post2> ...."""
+        txeq_min_seq: int = field(XmpInt(), min_version=470)
+        """min-value of individual TXEQ taps, SEQuential: <pre-n> <pre-(n-q)> ... <prr1> <main> <post1> <post2> ...."""
 
 
     def get(self) -> Token[GetDataAttr]:
