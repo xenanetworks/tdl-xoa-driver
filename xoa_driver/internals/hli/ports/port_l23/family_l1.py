@@ -41,11 +41,11 @@ class FamilyFreya(BasePortL23Genuine):
     :type: PcsPma
     """
     
-    serdes: Tuple[SerDes, ...]
-    """SerDes index
+    # serdes: Tuple[SerDes, ...]
+    # """SerDes index
 
-    :type: Tuple[SerDes, ...]
-    """
+    # :type: Tuple[SerDes, ...]
+    # """
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
@@ -60,10 +60,10 @@ class FamilyFreya(BasePortL23Genuine):
     async def _setup(self) -> Self:
         await super()._setup()
         self.pcs_pma = PcsPma(self._conn, self)
-        self.serdes = tuple(
-            SerDes(self._conn, *self.kind, serdes_xindex=serdes_xindex)
-            for serdes_xindex in range(self.info.capabilities.serdes_count)
-        )
+        # self.serdes = tuple(
+        #     SerDes(self._conn, *self.kind, serdes_xindex=serdes_xindex)
+        #     for serdes_xindex in range(self.info.capabilities.serdes_count)
+        # )
         self.l1 = L1(self._conn, self)
         return self
 
