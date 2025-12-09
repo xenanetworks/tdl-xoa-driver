@@ -1,10 +1,11 @@
 import asyncio
 from xoa_driver import testers, ports
+from typing import List, Tuple
 from ._cli_manager import XOACLIManager
 from ._config_block import *
 
 async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port, path: str, debug=False, halt_on_error=False) -> str:
-    """Save configuration from the test port to the specified filepath
+    """Save port config to the specified filepath
 
     :param tester: Chassis object
     :type tester: testers.L23Tester
@@ -52,8 +53,8 @@ async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
         xpcfile.write(result)
     return result
 
-async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port, path: str, debug=False, halt_on_error=False) -> None:
-    """Load configuration to the test port from the specified filepath
+async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port, path: str, debug=False, halt_on_error=False) -> List[Tuple[str, str]]:
+    """Load port config from the specified filepath
 
     :param tester: Chassis object
     :type tester: testers.L23Tester
@@ -61,6 +62,8 @@ async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     :type port: ports.GenericL23Port
     :param load_path: File path to load the port configuration from
     :type load_path: str
+    :return: List of tuples containing response and the corresponding command sent
+    :rtype: List[Tuple[str, str]]
     """
     
     tester_ip = tester.info.host
@@ -77,8 +80,10 @@ async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     # Reserve the port before applying configuration
     xm.reserve_port(port_index)
 
+    result: List[Tuple[str, str]] = []
+
     # Read configuration from file
-    with open(path, 'r') as xpcfile:
+    with open(path, 'r', encoding='utf-8') as xpcfile:
         config_data = xpcfile.read()
 
     # Deserialize config block and send CLI commands
@@ -87,12 +92,14 @@ async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     cli_cmds = config_block.commands
     for cmd in cli_cmds:
         if cmd.strip():  # Ensure the command is not empty
-            xm.send(cmd=f"{port_index} {cmd}", sync_on=False)
+            resp = xm.send(cmd=f"{port_index} {cmd}", sync_on=False)
+            result.append((resp, f"{port_index} {cmd}"))
 
     # Free the port after applying configuration
     xm.free_port(port_index)
+    return result
 
-async def port_config_from_file(tester: testers.L23Tester, port: ports.GenericL23Port, path: str, debug=False, halt_on_error=False) -> None:
+async def port_config_from_file(tester: testers.L23Tester, port: ports.GenericL23Port, path: str, debug=False, halt_on_error=False) -> List[Tuple[str, str]]:
     """Load port configuration from the specifiied filepath. This function is a wrapper around load_port_config to provide backward compatibility.
 
     :param tester: Chassis object
@@ -101,7 +108,9 @@ async def port_config_from_file(tester: testers.L23Tester, port: ports.GenericL2
     :type port: ports.GenericL23Port
     :param load_path: File path to load the port configuration from
     :type load_path: str
+    :return: List of tuples containing response and command sent
+    :rtype: List[Tuple[str, str]]
     """
-    await load_port_config(tester, port, path, debug=debug, halt_on_error=halt_on_error)
+    return await load_port_config(tester, port, path, debug=debug, halt_on_error=halt_on_error)
 
 

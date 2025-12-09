@@ -1,12 +1,12 @@
 import asyncio
 from xoa_driver import testers, modules, ports
 from ._cli_manager import XOACLIManager
-from typing import List
+from typing import List, Tuple
 from ..mgmt import *
 from ._config_block import *
 
-async def save_test_case_config(tester: testers.L23Tester, ports: List[ports.GenericL23Port], path: str, testbed_name: str = "<testbed>", with_module_config: bool = True, debug=False, halt_on_error=False) -> str:
-    """Save module configuration to the specifiied filepath
+async def save_testbed_config(tester: testers.L23Tester, ports: List[ports.GenericL23Port], path: str, testbed_name: str = "<testbed>", with_module_config: bool = True, debug=False, halt_on_error=False) -> str:
+    """Save testbed configuration to the specifiied filepath
 
     :param tester: Chassis object
     :type tester: testers.L23Tester
@@ -95,8 +95,8 @@ async def save_test_case_config(tester: testers.L23Tester, ports: List[ports.Gen
     
     return result
 
-async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str = "default", delay_after_module_config: int = 5, debug=False, halt_on_error=False) -> None:
-    """Load module configuration from the specifiied filepath
+async def load_testbed_config(tester: testers.L23Tester, path: str, mode: str = "default", delay_after_module_config: int = 5, debug=False, halt_on_error=False) -> List[Tuple[str, str]]:
+    """Load testbed configuration from the specifiied filepath
 
     :param tester: Chassis object
     :type tester: testers.L23Tester
@@ -106,6 +106,8 @@ async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str 
     :type mode: str
     :param delay_after_module_config: Delay in seconds after configuring each module to ensure proper configuration
     :type delay_after_module_config: int
+    :return: List of tuples containing response and the corresponding command sent
+    :rtype: List[Tuple[str, str]]
     """
 
     tester_ip = tester.info.host
@@ -118,50 +120,55 @@ async def load_test_case_config(tester: testers.L23Tester, path: str, mode: str 
     # Log on and set username
     xm.logon_set_owner(tester_password)
 
+    result: List[Tuple[str, str]] = []
+
     # Read configuration from file
     with open(path, 'r') as xpcfile:
         config_data = xpcfile.read()
 
-        # Parse the config data to configure modules and ports block by block
-        config_datas = config_data.split(f";\n")
-        for block in config_datas:
-            if config_block_type(config_block_str=block) == ConfigMetadataType.MODULE and mode in ["default", "module"]:
-                module_block = ConfigBlock()
-                module_block.config_block_str = block
-                module_index = module_block.module_id
+    # Parse the config data to configure modules and ports block by block
+    config_datas = config_data.split(f";\n")
+    for block in config_datas:
+        if config_block_type(config_block_str=block) == ConfigMetadataType.MODULE and mode in ["default", "module"]:
+            module_block = ConfigBlock()
+            module_block.config_block_str = block
+            module_index = module_block.module_id
 
-                # Free the module before applying configuration
-                module = tester.modules.obtain(int(module_index))
-                await release_module(module=module, should_release_ports=True)
-                # Reserve the module before applying configuration
-                xm.reserve_module(module_index)
+            # Free the module before applying configuration
+            module = tester.modules.obtain(int(module_index))
+            await release_module(module=module, should_release_ports=True)
+            # Reserve the module before applying configuration
+            xm.reserve_module(module_index)
 
-                # Send each command to the tester
-                for cmd in module_block.commands:
-                    if cmd.strip():  # Ensure the command is not empty
-                        # print(f"Applying command: {module_index} {cmd}")
-                        xm.send(cmd=f"{module_index} {cmd}", sync_on=False)
-                # Free the module after applying configuration
-                xm.free_module(module_index)
-                await asyncio.sleep(delay_after_module_config)  # Small delay to ensure proper module configuration
+            # Send each command to the tester
+            for cmd in module_block.commands:
+                if cmd.strip():  # Ensure the command is not empty
+                    # print(f"Applying command: {module_index} {cmd}")
+                    resp = xm.send(cmd=f"{module_index} {cmd}", sync_on=False)
+                    result.append((resp, f"{module_index} {cmd}"))
+            # Free the module after applying configuration
+            xm.free_module(module_index)
+            await asyncio.sleep(delay_after_module_config)  # Small delay to ensure proper module configuration
 
-            elif config_block_type(config_block_str=block) == ConfigMetadataType.PORT and mode in ["default", "port"]:
-                port_block = ConfigBlock()
-                port_block.config_block_str = block
-                port_index = port_block.port_id
+        elif config_block_type(config_block_str=block) == ConfigMetadataType.PORT and mode in ["default", "port"]:
+            port_block = ConfigBlock()
+            port_block.config_block_str = block
+            port_index = port_block.port_id
 
-                # Reserve the port before applying configuration
-                xm.reserve_port(port_index)
+            # Reserve the port before applying configuration
+            xm.reserve_port(port_index)
 
-                # Send each command to the tester
-                for cmd in port_block.commands:
-                    if cmd.strip():  # Ensure the command is not empty
-                        # print(f"Applying command: {port_index} {cmd}")
-                        xm.send(cmd=f"{port_index} {cmd}", sync_on=False)
-                # Free the port after applying configuration
-                xm.free_port(port_index)
+            # Send each command to the tester
+            for cmd in port_block.commands:
+                if cmd.strip():  # Ensure the command is not empty
+                    # print(f"Applying command: {port_index} {cmd}")
+                    resp = xm.send(cmd=f"{port_index} {cmd}", sync_on=False)
+                    result.append((resp, f"{port_index} {cmd}"))
+            # Free the port after applying configuration
+            xm.free_port(port_index)
+    return result
 
-async def module_config_from_file(tester: testers.L23Tester, path: str, debug=False, halt_on_error=False) -> None:
+async def module_config_from_file(tester: testers.L23Tester, path: str, debug=False, halt_on_error=False) -> List[Tuple[str, str]]:
     """Load module configuration from the specifiied filepath. This function is a wrapper around load_module_config to provide backward compatibility.
 
     :param tester: Chassis object
@@ -169,4 +176,4 @@ async def module_config_from_file(tester: testers.L23Tester, path: str, debug=Fa
     :param path: File path to load the module configuration from
     :type path: str
     """
-    await load_test_case_config(tester, path, mode="module", debug=debug, halt_on_error=halt_on_error)
+    return await load_testbed_config(tester, path, mode="module", debug=debug, halt_on_error=halt_on_error)
