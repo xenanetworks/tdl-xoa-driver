@@ -20,8 +20,8 @@ Port Configuration File I/O
 Test Case Configuration File I/O
 --------------------------------
 
-.. autofunction:: save_test_case_config
+.. autofunction:: save_testbed_config
 
-.. autofunction:: load_test_case_config
+.. autofunction:: load_testbed_config
 
 .. autofunction:: module_config_from_file
