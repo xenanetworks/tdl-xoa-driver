@@ -6064,3 +6064,85 @@ class P_USED_TPLDID:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+    
+
+
+
+
+#################################################################
+#                                                               #
+#                   EDUN Temporary Commands                     #
+#                                                               #
+#################################################################
+
+@register_command
+@dataclass
+class P_EDUN_RX_STATUS:
+    """
+    Edun Rx status values for the specified SerDes index on the port.
+    """
+
+    code: typing.ClassVar[int] = 598
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _serdes_xindex: int
+
+# 1. ``signal_detected``: :term:`byte<B>`. 1=Detected, 0=not detected
+# 2. ``pmd_lock``: :term:`byte<B>`. 1=Lock, 0=No lock
+# 3. ``tuning_done``: :term:`byte<B>`. 1=Done, 0=not done.
+# 4. ``eye_slicer_upper``: :term:`integer<I>`, upper eye slicer value. Unit is in mV.
+# 5. ``eye_slicer_middle``: :term:`integer<I>`, middle eye slicer value. Unit is in mV.
+# 6. ``eye_slicer_lower``: :term:`integer<I>`, lower eye slicer value. Unit is in mV.
+# 7. ``snr``: :term:`integer<I>` Signal to Noise ratio, 1/100 dB
+# 8. ``vga``: :term:`integer<I>` Variable Gain Amplifier setting (0 to 64)
+# 9. ``dco``: :term:`integer<I>` DC Offset compensation value
+# 10. ``ffe_pre3``: :term:`integer<I>` Pre-cursor 3 of the RX equalizer
+# 11. ``ffe_pre2``: :term:`integer<I>` Pre-cursor 2 of the RX equalizer
+# 12. ``ffe_pre1``: :term:`integer<I>` Pre-cursor 1 of the RX equalizer
+# 13. ``ffe_main``: :term:`integer<I>` Main cursor of the RX equalizer
+# 14. ``ffe_post1``: :term:`integer<I>` Post-cursor 1 of the RX equalizer
+# 15. ``ffe_post2``: :term:`integer<I>` Post-cursor 2 of the RX equalizer
+
+    class GetDataAttr(ResponseBodyStruct):
+        signal_detected: int = field(XmpByte())
+        """1=Detected, 0=not detected"""
+        pmd_lock: int = field(XmpByte())
+        """1=Lock, 0=No Lock"""
+        tuning_done: int = field(XmpByte())
+        """1=Done, 0=Not Done"""
+        eye_slicer_upper: int = field(XmpInt())
+        """Upper eye slicer value. Unit is in mV."""
+        eye_slicer_middle: int = field(XmpInt())
+        """Middle eye slicer value. Unit is in mV."""
+        eye_slicer_lower: int = field(XmpInt())
+        """Lower eye slicer value. Unit is in mV."""
+        snr: int = field(XmpInt())
+        """Signal to Noise ratio, 1/100 dB"""
+        vga: int = field(XmpInt())
+        """Variable Gain Amplifier setting (0 to 64)"""
+        dco: int = field(XmpInt())
+        """DC Offset compensation value"""
+        ffe_pre3: int = field(XmpInt())
+        """Pre-cursor 3 of the RX equalizer"""
+        ffe_pre2: int = field(XmpInt())
+        """Pre-cursor 2 of the RX equalizer"""
+        ffe_pre1: int = field(XmpInt())
+        """Pre-cursor 1 of the RX equalizer"""
+        ffe_main: int = field(XmpInt())
+        """Main cursor of the RX equalizer"""
+        ffe_post1: int = field(XmpInt())
+        """Post-cursor 1 of the RX equalizer"""
+        ffe_post2: int = field(XmpInt())
+        """Post-cursor 2 of the RX equalizer"""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get Edun Rx status values for the specified SerDes index on the port.
+
+        :return: Edun Rx status values for the specified SerDes index on the port.
+        :rtype: P_EDUN_RX_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
