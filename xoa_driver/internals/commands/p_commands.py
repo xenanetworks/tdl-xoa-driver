@@ -6105,7 +6105,13 @@ class P_EDUN_RX_STATUS:
 # 13. ``ffe_main``: :term:`integer<I>` Main cursor of the RX equalizer
 # 14. ``ffe_post1``: :term:`integer<I>` Post-cursor 1 of the RX equalizer
 # 15. ``ffe_post2``: :term:`integer<I>` Post-cursor 2 of the RX equalizer
-
+# 16. TP0: INTEGER RX Channel Loss hint given by user (dB)
+# 17. TP1: INTEGER RX Channel Loss (initial) estimate
+# 18. TP2: INTEGER AFE static bandwitdh setting (200G  == 0 else 100G if < 3 else 50GPAM4/NRZ if <5 else LinkCAT)
+# 19. DFE1: INTEGER ISI correction tap 1
+# 20. DFE2: INTEGER ISI correction tap 2
+# 21. FLT_M: INTEGER Max. floating tap value
+# 22. FLT_S: INTEGER Sum of floating taps
     class GetDataAttr(ResponseBodyStruct):
         signal_detected: int = field(XmpByte())
         """1=Detected, 0=not detected"""
@@ -6137,6 +6143,20 @@ class P_EDUN_RX_STATUS:
         """Post-cursor 1 of the RX equalizer"""
         ffe_post2: int = field(XmpInt())
         """Post-cursor 2 of the RX equalizer"""
+        tp0: int = field(XmpInt())
+        """RX Channel Loss hint given by user (dB)"""
+        tp1: int = field(XmpInt())
+        """RX Channel Loss (initial) estimate"""
+        tp2: int = field(XmpInt())
+        """AFE static bandwitdh setting (200G  == 0 else 100G if < 3 else 50GPAM4/NRZ if <5 else LinkCAT)"""
+        dfe1: int = field(XmpInt())
+        """ISI correction tap 1"""
+        dfe2: int = field(XmpInt())
+        """ISI correction tap 2"""
+        flt_m: int = field(XmpInt())
+        """Max. floating tap value"""
+        flt_s: int = field(XmpInt())
+        """Sum of floating taps"""
 
     def get(self) -> Token[GetDataAttr]:
         """Get Edun Rx status values for the specified SerDes index on the port.
