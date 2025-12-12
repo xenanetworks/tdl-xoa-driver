@@ -2,6 +2,8 @@ from typing import (
     TYPE_CHECKING,
     Tuple,
 )
+
+from typing import Self
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 from xoa_driver.internals.commands import (

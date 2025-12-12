@@ -74,7 +74,7 @@ class IndexManager(Generic[IT]):
         ]
         return min(empties) if empties else len(existing_indices)
 
-    def __remove_from_slot(self, index_inst: Type) -> None:
+    def __remove_from_slot(self, index_inst: IT) -> None:
         # throws ValueError if element is not exists in list of indices
         self._indices.remove(index_inst)
 
