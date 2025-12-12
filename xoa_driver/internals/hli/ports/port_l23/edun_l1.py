@@ -21,7 +21,6 @@ from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
     PL1_PNSWAP_RX,
     PL1_PNSWAP_TX,
-    P_EDUN_RX_STATUS,
     PP_AUTONEG,
     PP_AUTONEGSTATUS,
     PP_LINKTRAIN,
