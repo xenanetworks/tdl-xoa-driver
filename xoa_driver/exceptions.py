@@ -1,5 +1,7 @@
 #: All exception classes which can be propagated to the upper level.
 
+"""Exception types used in XOA Python API."""
+
 from .internals.exceptions import (
     WrongModuleError,
     WrongTesterError,

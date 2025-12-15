@@ -31,7 +31,7 @@ from xoa_driver import (
 )
 from xoa_driver.hlfuncs import (
     mgmt,
-    cli
+    xpc
 )
 import logging
 

@@ -34,6 +34,8 @@ class TesterLocalState:
         "driver_version",
         "reservation",
         "reserved_by",
+        "version_string",
+        "name",
     )
 
     def __init__(self, host: str, port: int) -> None:
@@ -46,6 +48,8 @@ class TesterLocalState:
         self.driver_version: int = 0
         self.reservation: enums.ReservedStatus = enums.ReservedStatus.RELEASED
         self.reserved_by: str = ""
+        self.version_string: str = ""
+        self.name: str = ""
 
     async def initiate(self, tester) -> None:
         (
@@ -55,6 +59,8 @@ class TesterLocalState:
             serial_res,
             reserved_by_res,
             reservation_resp,
+            version_string_res,
+            name_res,
         ) = await funcs.apply(
             tester.capabilities.get(),
             tester.model.get(),
@@ -62,6 +68,8 @@ class TesterLocalState:
             tester.serial_no.get(),
             tester.reserved_by.get(),
             tester.reservation.get(),
+            tester.version_str.get(),
+            tester.name.get(),
         )
         self.reserved_by = reserved_by_res.username
         self.model = model_res.model
@@ -70,6 +78,8 @@ class TesterLocalState:
         self.serial_number = serial_res.serial_number
         self.reservation = reservation_resp.operation
         self.capabilities = capabilities_resp
+        self.version_string = version_string_res.version_str
+        self.name = name_res.chassis_name
 
     def register_subscriptions(self, tester) -> None:
         tester._conn.subscribe(C_RESERVEDBY, utils.Update(self, "reserved_by", "username"))

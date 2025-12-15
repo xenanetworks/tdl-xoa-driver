@@ -284,21 +284,21 @@ class PR_TPLDERRORS:
     class GetDataAttr(ResponseBodyStruct):
         dummy: int = field(XmpLong())
         """long integer, not in use."""
-        non_incre_seq_event_count: int = field(XmpLong())
-        """long integer, number of non-incrementing-sequence-number events."""
-        swapped_seq_misorder_event_count: int = field(XmpLong())
-        """long integer, number of swapped-sequence-number misorder events."""
-        non_incre_payload_packet_count: int = field(XmpLong())
-        """long integer, number of packets with non-incrementing payload content."""
+        packet_loss_by_seq: int = field(XmpLong())
+        """long integer, Number of packet loss calculated by detecting gaps in received sequence numbers from test payload, where each missing number indicates a lost packet."""
+        misorder_by_seq: int = field(XmpLong())
+        """long integer, Number of misordered packets calculated by detecting packets that arrive with a sequence number lower than the highest seen so far, indicating out-of-order delivery."""
+        payload_err_packets: int = field(XmpLong())
+        """long integer, Number of packets with payload integrity errors."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get statistics concerning errors in the packets with a particular test payload id received on a port.
 
         :return:
             dummy value not in use,
-            number of non-incrementing-sequence-number events,
-            number of swapped-sequence-number misorder events,
-            number of packets with non-incrementing payload content
+            Number of packet loss by sequence number,
+            Number of misordered packets by sequence number,
+            Number of packets with payload integrity errors.
 
         :rtype: PR_TPLDERRORS.GetDataAttr
         """
@@ -532,12 +532,13 @@ class PR_TOTALEXT:
         packet_count_since_cleared: int = field(XmpLong())
         """long integer, number of packets received since statistics were cleared."""
         fcs_error_count: int = field(XmpLong())
-
+        """long integer, number of Rx packets with a bad FCS."""
         oversize_count: int = field(XmpLong())
-
+        """long integer, number of oversize packets (>1518 bytes) received since last clear (-1 if this counter is not supported by the tester)."""
         undersize_count: int = field(XmpLong())
-
+        """long integer, number of undersize packets (<64 bytes) received since last clear (-1 if this counter is not supported by the tester)."""
         jabber_count: int = field(XmpLong())
+        """long integer, number of jabber packets (oversized with a bad FCS) received since last clear (-1 if this counter is not supported by the tester)."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get statistics concerning all the packets received on a port.
@@ -548,10 +549,10 @@ class PR_TOTALEXT:
             number of packets received in the last second,
             number of bytes received since statistics were cleared,
             number of packets received since statistics were cleared,
-            number of packets received with fcs error frames,
-            number of oversize packets received since last clear (-1 if this counter is not supported by the tester),
-            number of undersize packets received since last clear (-1 if this counter is not supported by the tester),
-            number of jabber packets received since last clear (-1 if this counter is not supported by the tester).
+            number of packets received with a bad FCS,
+            number of oversize packets (>1518 bytes) received since last clear (-1 if this counter is not supported by the tester),
+            number of undersize packets (<64 bytes) received since last clear (-1 if this counter is not supported by the tester),
+            number of jabber packets (oversized with a bad FCS) received since last clear (-1 if this counter is not supported by the tester).
 
         :rtype: PR_TOTALEXT.GetDataAttr
         """

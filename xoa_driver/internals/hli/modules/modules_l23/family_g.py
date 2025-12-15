@@ -86,7 +86,7 @@ class MLoki100G3S1PB_b(ModuleL23):
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-5S-4P[a]")
-class MLoki100G35S4P_a(ModuleL23):
+class MLoki100G5S4P_a(ModuleL23):
     """Test module Loki-100G-5S-4P[a]"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)

@@ -8,7 +8,7 @@ def main():
     setuptools.setup(
         name="tdl-xoa-driver",
         description=(
-            "XOA Driver is a Python library providing user-friendly communication"
+            "TDL XOA Python API is a Python library providing user-friendly communication"
             " interfaces to Teledyne LeCroy Xena Ethernet traffic generation test equipment."
             " It provides a rich collection of APIs that can be used to either write"
             " test scripts or develop applications."
@@ -23,7 +23,7 @@ def main():
         packages=setuptools.find_packages(),
         license='Apache 2.0',
         classifiers=[
-            "Development Status :: 5 - Production/Stable",
+            "Development Status :: 4 - Beta",
             "Intended Audience :: Developers",
             "Topic :: Software Development :: Libraries :: Python Modules",
             "License :: OSI Approved :: Apache Software License",

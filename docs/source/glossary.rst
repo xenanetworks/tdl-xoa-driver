@@ -9,8 +9,8 @@ Glossary of Terms
     Test Resource
         Test chassis, test module, and test port, both hardware and virtual are referred to as test resources. A user must have the ownership of a test resource before be able to perform testing.
 
-    XOA Driver
-        The foundation of Xena OpenAutomation is its Python API (XOA Driver) that provides interfaces for engineers to manage Xena hardware and virtual test equipment.
+    XOA Python API
+        The foundation of Xena OpenAutomation is its Python API (XOA Python API) that provides interfaces for engineers to manage Xena hardware and virtual test equipment.
 
     XOA CLI
         XOA Command-Line Interface. Xena provides a rich set of CLI commands for users to administer test chassis for test automation.

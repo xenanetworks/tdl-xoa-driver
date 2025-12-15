@@ -1,13 +1,23 @@
+"""
+The resource management high-level function module, 
+including testers, modules, ports, and streams.
+"""
+
 from __future__ import annotations
 import asyncio
-import typing as t
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Union,
+)
 from xoa_driver import enums, testers
 from xoa_driver.utils import apply
-from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
-from xoa_driver.internals.hli.ports.port_l23.family_l1 import FamilyFreya
-from xoa_driver.ports import GenericAnyPort, GenericL23Port
-from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule
-from xoa_driver.testers import GenericAnyTester, L23Tester
+if TYPE_CHECKING:
+    from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
+    from xoa_driver.internals.hli.ports.port_l23.family_l1 import FamilyFreya
+    from xoa_driver.ports import GenericAnyPort, GenericL23Port
+    from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
+    from xoa_driver.testers import GenericAnyTester, L23Tester
 from .exceptions import (
     NotSupportMedia,
     NotSupportPortSpeed,
@@ -17,10 +27,6 @@ from .tools import MODULE_EOL_INFO
 from itertools import chain  # type: ignore[Pylance false warning]
 from datetime import datetime
 import json
-
-PcsPmaSupported = (FamilyL, FamilyFreya)
-AutoNegSupported = (FamilyL, FamilyFreya)
-LinkTrainingSupported = FamilyL
 
 
 # region Testers
@@ -150,14 +156,14 @@ async def release_module(
 
 def get_module_supported_media(
     module: GenericL23Module | ModuleChimera,
-) -> list[dict[str, t.Any]]:
+) -> list[dict[str, Any]]:
     """
     Get a list of supported media, port speed and count of the module.
 
     :param module: The module object
     :type module: GenericAnyModule
     :return: List of supported media, port speed and count
-    :rtype: list[dict[str, t.Any]]
+    :rtype: list[dict[str, Any]]
     """
     supported_media_list = []
     item = {}
@@ -174,7 +180,7 @@ def get_module_supported_media(
 
 
 async def set_module_media_config(
-    module: t.Union[GenericL23Module, ModuleChimera],
+    module: Union[GenericL23Module, ModuleChimera],
     media: enums.MediaConfigurationType,
     force: bool = True,
 ) -> None:
@@ -210,7 +216,7 @@ async def set_module_media_config(
 
 
 async def set_module_port_config(
-    module: t.Union[GenericL23Module, ModuleChimera],
+    module: Union[GenericL23Module, ModuleChimera],
     port_count: int,
     port_speed: int,
     force: bool = True,
@@ -219,7 +225,7 @@ async def set_module_port_config(
     Set module's port-speed configuration
 
     :param module: The module object
-    :type module: t.Union[GenericL23Module, ModuleChimera]
+    :type module: Union[GenericL23Module, ModuleChimera]
     :param port_count: The port count
     :type port_count: int
     :param port_speed: The port speed in Mbps, e.g. 40000 for 40G
@@ -258,7 +264,7 @@ async def set_module_port_config(
 
 
 async def set_module_config(
-    module: t.Union[GenericL23Module, ModuleChimera],
+    module: Union[GenericL23Module, ModuleChimera],
     media: enums.MediaConfigurationType,
     port_count: int,
     port_speed: int,
@@ -267,7 +273,7 @@ async def set_module_config(
     """Change the module configuration to the target media, port count and port speed.
 
     :param module: the module object
-    :type module: t.Union[GenericL23Module, ModuleChimera]
+    :type module: Union[GenericL23Module, ModuleChimera]
     :param media: the target media for the module
     :type media: enums.MediaConfigurationType
     :param port_count: the target port count
@@ -332,12 +338,13 @@ async def get_module_eol_days(module: GenericAnyModule) -> int:
     return timedelta.days
 
 
-async def get_module_cage_insertion_count(module: Z800FreyaModule, cage_index: int) -> int:
+    from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
+async def get_module_cage_insertion_count(module: Union[Z800FreyaModule, Z1600EdunModule], cage_index: int) -> int:
     """
     Get module cage insertion count
 
     :param module: The Z800 Freya module object
-    :type module: Z800FreyaModule
+    :type module: Union[Z800FreyaModule, Z1600EdunModule]
     :param cage_index: The cage index
     :type module: int
     :return: Insertion count of the cage
@@ -352,6 +359,22 @@ async def get_module_cage_insertion_count(module: Z800FreyaModule, cage_index: i
         result = -1
     else:
         result = -1
+    return result
+
+
+async def get_module_cage_count(module: Union[Z800FreyaModule, Z1600EdunModule]) -> int:
+    """
+    Get module cage count
+
+    :param module: The Z800 Freya module object
+    :type module: Union[Z800FreyaModule, Z1600EdunModule]
+    :return: The number of cages in the module
+    :rtype: int
+    """
+    resp = await module.health.cage_insertion.get()
+    info_js = resp.info
+    info_dict = json.loads(info_js)
+    result = len(info_dict['1']['data'])
     return result
 
 

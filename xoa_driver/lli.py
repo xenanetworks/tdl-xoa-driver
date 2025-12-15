@@ -1,5 +1,6 @@
 #: Low-Level interface
 
+"""Low-Level Interface (LLI) components."""
 
 from xoa_driver.internals import commands
 from xoa_driver.internals.core.transporter.registry import get_command

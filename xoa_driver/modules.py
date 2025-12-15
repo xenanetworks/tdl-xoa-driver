@@ -1,4 +1,5 @@
 #: All available test module types.
+"""Xena test module types."""
 
 from .internals.hli.modules.modules_l23.module_l23_base import ModuleL23
 from .internals.hli.modules.modules_l23.family_d import (
@@ -31,6 +32,7 @@ from .internals.hli.modules.modules_l23.family_g import (
     MLoki100G3S1PSE,
     MLoki100G3S1PB,
     MLoki100G3S1PB_b,
+    MLoki100G5S4P_a,
 )
 from .internals.hli.modules.modules_l23.family_h import (
     MLoki100G5S1P,
@@ -116,6 +118,11 @@ from .internals.hli.modules.module_chimera import (
 from .internals.hli.modules.module_l47 import ModuleL47
 from .internals.hli.modules.module_l47ve import ModuleL47VE
 
+from .internals.hli.modules.modules_l23.family_edun import (
+    MEdun800G3S1PSMPX_a,
+    MEdun1600G4S1POSFP_a
+)
+
 import typing
 
 Z10OdinModule = typing.Union[
@@ -153,6 +160,7 @@ Z100LokiModule = typing.Union[
     MLoki100G3S1PB_b,
     MLoki100G5S1P,
     MLoki100G5S2P,
+    MLoki100G5S4P_a,
 ]
 
 Z400ThorModule = typing.Union[
@@ -215,6 +223,11 @@ Z800FreyaModule = typing.Union[
     MFreya800G4S1POSFP_f_g2,
 ]
 
+Z1600EdunModule = typing.Union[
+    MEdun800G3S1PSMPX_a,
+    MEdun1600G4S1POSFP_a
+]
+
 E100ChimeraModule = typing.Union[
     ModuleChimera,
     MChi100G5S2P,
@@ -261,6 +274,7 @@ GenericL23Module = typing.Union[
     "MLoki100G3S1PB_b",
     "MLoki100G5S1P",
     "MLoki100G5S2P",
+    "MLoki100G5S4P_a",
 
     "MThor100G5S4P",
     "MThor400G7S1P",
@@ -317,6 +331,9 @@ GenericL23Module = typing.Union[
     "MFreya800G4S1POSFP_d_g2",
     "MFreya800G4S1POSFP_e_g2",
     "MFreya800G4S1POSFP_f_g2",
+
+    "MEdun800G3S1PSMPX_a",
+    "MEdun1600G4S1POSFP_a",
 ]
 
 GenericAnyModule = typing.Union[
@@ -374,6 +391,7 @@ __all__ = (
     "MLoki100G3S1PB_b",
     "MLoki100G5S1P",
     "MLoki100G5S2P",
+    "MLoki100G5S4P_a",
 
     "Z400ThorModule",
     "MThor100G5S4P",
@@ -432,6 +450,10 @@ __all__ = (
     "MFreya800G4S1POSFP_d_g2",
     "MFreya800G4S1POSFP_e_g2",
     "MFreya800G4S1POSFP_f_g2",
+
+    "Z1600EdunModule",
+    "MEdun800G3S1PSMPX_a",
+    "MEdun1600G4S1POSFP_a",
 
     "E100ChimeraModule",
     "ModuleChimera",

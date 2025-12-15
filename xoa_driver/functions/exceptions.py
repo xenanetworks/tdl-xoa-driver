@@ -1,3 +1,5 @@
+"""The exception high-level function module."""
+
 from __future__ import annotations
 
 from xoa_driver.ports import GenericAnyPort
