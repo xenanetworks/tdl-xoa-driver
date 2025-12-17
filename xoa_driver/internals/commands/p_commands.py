@@ -635,9 +635,9 @@ class P_CAPABILITIES:
         """
         num_txeq_pre: int = field(XmpInt(), min_version=470)
         """The number of postcursors = num_txeq - num_txeq_pre - 1."""
-        txeq_max_seq: int = field(XmpInt(), min_version=470)
+        txeq_max_seq: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()], length=10), min_version=470)
         """max value of individual TXEQ taps, SEQuential: <pre-n> <pre-(n-q)> ... <prr1> <main> <post1> <post2> ...."""
-        txeq_min_seq: int = field(XmpInt(), min_version=470)
+        txeq_min_seq: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()], length=10), min_version=470)
         """min-value of individual TXEQ taps, SEQuential: <pre-n> <pre-(n-q)> ... <prr1> <main> <post1> <post2> ...."""
 
 
@@ -1549,7 +1549,6 @@ class P_XMITONE:
         A valid Frame Check Sum is written into the final four bytes.
 
         :param hex_data: raw bytes of the packet in hex to transmit
-        :rtype: typing.List[str]
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, hex_data=hex_data))
