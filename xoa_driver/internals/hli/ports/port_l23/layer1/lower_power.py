@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 from xoa_driver.internals.commands import (
-    P_AUTONEGSELECTION,  # questionable which ports are electrical
     P_LPENABLE,
     P_LPTXMODE,
     P_LPSTATUS,

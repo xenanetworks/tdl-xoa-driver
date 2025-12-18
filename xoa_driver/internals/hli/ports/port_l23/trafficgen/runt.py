@@ -1,12 +1,9 @@
 import functools
 from typing import TYPE_CHECKING
 from xoa_driver.internals.commands import (
-    P_DYNAMIC,
     P_TXRUNTLENGTH,
     P_RXRUNTLENGTH,
     P_RXRUNTLEN_ERRS,
-    P_TXPREAMBLE_REMOVE,
-    P_RXPREAMBLE_INSERT,
 
 )
 if TYPE_CHECKING:

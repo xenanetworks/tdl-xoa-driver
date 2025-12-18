@@ -1016,3 +1016,29 @@ class PE_FLOWCLEAR:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._flow_xindex]))
+
+__all__ = [
+    "PE_BANDPOLICER",
+    "PE_BANDSHAPER",
+    "PE_CLEAR",
+    "PE_COMMENT",
+    "PE_CORRUPT",
+    "PE_CORTOTAL",
+    "PE_DROPTOTAL",
+    "PE_DUPTOTAL",
+    "PE_FCSDROP",
+    "PE_FLOWCLEAR",
+    "PE_FLOWCORTOTAL",
+    "PE_FLOWDROPTOTAL",
+    "PE_FLOWDUPTOTAL",
+    "PE_FLOWJITTERTOTAL",
+    "PE_FLOWLATENCYTOTAL",
+    "PE_FLOWMISTOTAL",
+    "PE_INDICES",
+    "PE_JITTERTOTAL",
+    "PE_LATENCYRANGE",
+    "PE_LATENCYTOTAL",
+    "PE_MISORDER",
+    "PE_MISTOTAL",
+    "PE_TPLDMODE",
+]

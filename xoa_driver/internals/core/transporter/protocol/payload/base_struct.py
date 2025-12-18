@@ -146,7 +146,7 @@ class Order:
 
 
 class OrderedMeta(type):
-    def __new__(cls: Type[Self], clsname: str, bases: tuple[Type], clsdict: dict[str, Any]) -> Self:
+    def __new__(cls: Type[OrderedMeta], clsname: str, bases: tuple[Type], clsdict: dict[str, Any]) -> OrderedMeta:
         if clsname not in SKIP_CLASSES:
             is_response = any(iter(cls_.__name__ == RESPONSE_CLS_NAME for cls_ in bases))
             annotations = utils.resolve_annotations(

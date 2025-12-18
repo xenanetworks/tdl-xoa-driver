@@ -5,6 +5,7 @@ from typing import (
 )
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
+    from xoa_driver.internals.hli.ports.port_l23.family_loki import FamilyLoki
 from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
 )
@@ -48,25 +49,26 @@ class SerDesLoki:
 
 
 class Layer1:
-    def __init__(self, conn: "itf.IConnection", port) -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyLoki") -> None:
+        module_id, port_id = port.kind
         self.serdes: Tuple[SerDesLoki, ...] = tuple(
-                SerDesLoki(conn, *port.kind, serdes_xindex=idx)
+                SerDesLoki(conn, module_id, port_id, serdes_xindex=idx)
                 for idx in range(port.info.capabilities.serdes_count)
                 )
         
-        self.impairment = Impair(conn, port)
+        self.impairment = Impair(conn, module_id, port_id)
         """Impairment functions"""
 
-        self.rs_fault = RsFault(conn, *port.kind)
+        self.rs_fault = RsFault(conn, module_id, port_id)
         """RS Fault Management"""
 
         self.pcs_fec = PcsLayer(conn, port)
         """PCS/FEC layer"""
 
-        self.prbs_config = PP_PRBSTYPE(conn, *port.kind)
+        self.prbs_config = PP_PRBSTYPE(conn, module_id, port_id)
         """PRBS configuration, including PRBS polynomial, invert mode, and statistic collection mode (for RX).
         """
         
-        self.transceiver = Transceiver(conn, *port.kind)
+        self.transceiver = Transceiver(conn, module_id, port_id)
         """Loki Transceiver configuration and status
         """

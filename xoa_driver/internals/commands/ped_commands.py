@@ -1032,3 +1032,25 @@ class PED_ENABLE:
 
     set_on = functools.partialmethod(set, OnOff.ON)
     """Enable impairment distribution"""
+
+
+__all__ = [
+    "PED_ACCBURST",
+    "PED_BER",
+    "PED_CONST",
+    "PED_CUST",
+    "PED_ENABLE",
+    "PED_FIXED",
+    "PED_FIXEDBURST",
+    "PED_GAMMA",
+    "PED_GAUSS",
+    "PED_GE",
+    "PED_OFF",
+    "PED_ONESHOTSTATUS",
+    "PED_POISSON",
+    "PED_RANDOM",
+    "PED_RANDOMBURST",
+    "PED_SCHEDULE",
+    "PED_STEP",
+    "PED_UNI",
+]

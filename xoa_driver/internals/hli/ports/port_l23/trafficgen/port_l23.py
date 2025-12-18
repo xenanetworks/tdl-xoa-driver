@@ -337,7 +337,7 @@ class BasePortL23(base_port.BasePort[ports_state.PortL23LocalState]):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
         self.capabilities = P_CAPABILITIES(conn, module_id, port_id)
-        """L23 port capabilities.
+        """L23 Port capabilities
 
         :type: P_CAPABILITIES
         """

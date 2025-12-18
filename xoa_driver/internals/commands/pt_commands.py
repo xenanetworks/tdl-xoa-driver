@@ -382,3 +382,17 @@ class PT_FLOWCLEAR:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._flow_xindex]))
+
+
+__all__ = [
+    "PT_CLEAR",
+    "PT_EXTRA",
+    "PT_FLOWCLEAR",
+    "PT_FLOWTOTAL",
+    "PT_NOTPLD",
+    "PT_NOTPLDEXT",
+    "PT_STREAM",
+    "PT_STREAMEXT",
+    "PT_TOTAL",
+    "PT_TOTALEXT",
+]

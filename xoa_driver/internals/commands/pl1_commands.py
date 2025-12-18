@@ -1668,3 +1668,38 @@ class PL1_PNSWAP_RX:
     set_off = functools.partialmethod(set, OnOff.OFF)
     """Set P/N polarity swap of the SerDes in the receiving direction to OFF
     """
+
+__all__ = [
+    "PL1_ANLT",
+    "PL1_AUTONEGINFO",
+    "PL1_AUTONEG_ABILITIES",
+    "PL1_AUTONEG_CONFIG",
+    "PL1_AUTONEG_STATUS",
+    "PL1_CFG_TMP",
+    "PL1_CTRL",
+    "PL1_CWE_BIT_ERR_MASK",
+    "PL1_CWE_CONTROL",
+    "PL1_CWE_CYCLE",
+    "PL1_CWE_ERR_SYM_INDICES",
+    "PL1_CWE_FEC_ENGINE",
+    "PL1_CWE_FEC_STATS",
+    "PL1_CWE_FEC_STATS_CLEAR",
+    "PL1_GET_DATA",
+    "PL1_LINKTRAININFO",
+    "PL1_LINKTRAIN_CMD",
+    "PL1_LINKTRAIN_CONFIG",
+    "PL1_LINKTRAIN_STATUS",
+    "PL1_LOG",
+    "PL1_LT_PHYTXEQ_RANGE",
+    "PL1_LT_PHYTXEQ_RANGE_COEFF",
+    "PL1_PCS_VARIANT",
+    "PL1_PHYTXEQ",
+    "PL1_PHYTXEQ_COEFF",
+    "PL1_PHYTXEQ_LEVEL",
+    "PL1_PNSWAP_RX",
+    "PL1_PNSWAP_TX",
+    "PL1_PRESET_CONFIG",
+    "PL1_PRESET_CONFIG_COEFF",
+    "PL1_PRESET_CONFIG_LEVEL",
+    "PL1_PRESET_RESET",
+]

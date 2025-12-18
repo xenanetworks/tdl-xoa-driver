@@ -8,44 +8,23 @@ from xoa_driver.internals.commands import (
     PP_AUTONEG,
     PP_AUTONEGSTATUS,
     PP_LINKTRAIN,
-    PP_LINKTRAINSTATUS,
-    PP_PRECODING,
-    PP_GRAYCODING,
     PL1_AUTONEGINFO,
     PL1_LINKTRAININFO,
     PL1_LOG,
     PL1_CFG_TMP,
     PL1_LINKTRAIN_CMD,
-    PL1_CTRL,
-    PL1_GET_DATA,
-    PL1_PHYTXEQ_LEVEL,
-    PL1_PHYTXEQ_COEFF,
     PL1_AUTONEG_STATUS,
     PL1_AUTONEG_ABILITIES,
-    PL1_PCS_VARIANT,
     PL1_AUTONEG_CONFIG,
     PL1_ANLT,
-    PL1_PHYTXEQ,
     PL1_LINKTRAIN_CONFIG,
     PL1_LINKTRAIN_STATUS,
-    PP_PHYRXEQ_EXT,
-    PP_PHYRXEQSTATUS_EXT,
-    PL1_CWE_CYCLE,
-    PL1_CWE_ERR_SYM_INDICES,
-    PL1_CWE_BIT_ERR_MASK,
-    PL1_CWE_FEC_ENGINE,
-    PL1_CWE_FEC_STATS,
-    PL1_CWE_CONTROL,
-    PL1_CWE_FEC_STATS_CLEAR,
     PL1_LT_PHYTXEQ_RANGE,
     PL1_LT_PHYTXEQ_RANGE_COEFF,
     PL1_PRESET_CONFIG,
     PL1_PRESET_CONFIG_COEFF,
     PL1_PRESET_CONFIG_LEVEL,
     PL1_PRESET_RESET,
-    PP_PRBSTYPE,
-    PL1_PNSWAP_RX,
-    PL1_PNSWAP_TX,
 )
 from xoa_driver import enums
 
@@ -70,8 +49,8 @@ class AutonegBasic:
 class LinkTrainBasic:
     """Basic link training"""
 
-    def __init__(self, conn: "itf.IConnection", port) -> None:
-        self.settings = PP_LINKTRAIN(conn, *port.kind)
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        self.settings = PP_LINKTRAIN(conn, module_id, port_id)
         """Link training settings.
         
         :type: PP_LINKTRAIN
@@ -81,14 +60,14 @@ class LinkTrainBasic:
 class AnltBasic:
     """Basic ANLT settings"""
 
-    def __init__(self, conn: "itf.IConnection", port) -> None:
-        self.autoneg = AutonegBasic(conn, *port.kind)
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        self.autoneg = AutonegBasic(conn, module_id, port_id)
         """PCS/PMA auto-negotiation settings.
         
         :type: AutonegBasic
         """
 
-        self.link_training = LinkTrainBasic(conn, port)
+        self.link_training = LinkTrainBasic(conn, module_id, port_id)
         """PCS/PMA link training settings.
         
         :type: LinkTrainBasic

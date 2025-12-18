@@ -698,3 +698,27 @@ class M4_TLS_CIPHER_SUITES:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module))
+
+
+__all__ = [
+    "M4_CAPTURE_FILE_DELETE",
+    "M4_CAPTURE_FILE_LIST",
+    "M4_CAPTURE_FILE_LIST_BSON",
+    "M4_CAPTURE_SIZE",
+    "M4_COMPATIBLE_CLIENT_VERSION",
+    "M4_LICENSE_INFO",
+    "M4_MEM_INFO",
+    "M4_REPLAY_FILE_DELETE",
+    "M4_REPLAY_FILE_LIST",
+    "M4_REPLAY_FILE_LIST_BSON",
+    "M4_REPLAY_PARSER_PARAMS",
+    "M4_REPLAY_PARSE_START",
+    "M4_REPLAY_PARSE_STATE",
+    "M4_REPLAY_PARSE_STOP",
+    "M4_SYSTEMID",
+    "M4_SYSTEM_STATUS",
+    "M4_SYSTEM_TIME",
+    "M4_TIME",
+    "M4_TLS_CIPHER_SUITES",
+    "M4_VERSIONNO",
+]

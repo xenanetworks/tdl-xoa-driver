@@ -1,15 +1,19 @@
 from typing import (
     TYPE_CHECKING,
     Tuple,
+    Union,
+    Self,
 )
-from typing import Self
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
+    from xoa_driver.internals.hli.ports.port_l23.family_edun import FamilyEdun
+    from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
+    from xoa_driver.internals.hli.ports.port_l23.family_loki import FamilyLoki
+    from xoa_driver.internals.hli.ports.port_l23.family_thor import FamilyThor
 from xoa_driver.internals.commands import (
     PP_ALARMS_ERRORS,
     PP_TXLANECONFIG,
     PP_TXLANEINJECT,
-    PP_TXPRBSCONFIG,
     PP_TXERRORRATE,
     PP_TXINJECTONE,
     PP_RXTOTALSTATS,
@@ -17,25 +21,8 @@ from xoa_driver.internals.commands import (
     PP_RXLANELOCK,
     PP_RXLANESTATUS,
     PP_RXLANEERRORS,
-    PP_RXPRBSSTATUS,
     PP_RXCLEAR,
-    PP_RXLASERPOWER,
-    PP_TXLASERPOWER,
-    PP_EYEMEASURE,
-    PP_EYERESOLUTION,
-    PP_EYEREAD,
-    PP_EYEINFO,
-    PP_PHYTXEQ,
-    PP_PHYRETUNE,
-    PP_PHYAUTOTUNE,
-    PP_EYEBER,
-    PP_PHYAUTONEG,
     PP_FECMODE,
-    PP_EYEDWELLBITS,
-    PP_PHYSIGNALSTATUS,
-    PP_PRBSTYPE,
-    PP_PHYSETTINGS,
-    PP_PHYRXEQ,
     PL1_CWE_CYCLE,
     PL1_CWE_ERR_SYM_INDICES,
     PL1_CWE_BIT_ERR_MASK,
@@ -187,42 +174,43 @@ class FreyaFecCodewordErrorInject:
 class PcsLayer:
     """PCS/FEC layer configuration and status."""
 
-    def __init__(self, conn: "itf.IConnection", port) -> None:
+    def __init__(self, conn: "itf.IConnection", port: "Union[FamilyLoki, FamilyThor, FamilyFreya, FamilyEdun]") -> None:
         self._conn = conn
         self.__port = port
+        module_id, port_id = port.kind
 
-        self.alarms = PcsAlarms(conn, *port.kind)
+        self.alarms = PcsAlarms(conn, module_id, port_id)
         """PCS alarms
 
         :type: PcsAlarms
         """
 
-        self.error_gen = PcsErrorGeneration(conn, *port.kind)
+        self.error_gen = PcsErrorGeneration(conn, module_id, port_id)
         """Error generation
 
         :type: PcsPmaTxErrorGeneration
         """
 
-        self.fec_symbol_status = PcsFecSymbolStatus(conn, *port.kind)
+        self.fec_symbol_status = PcsFecSymbolStatus(conn, module_id, port_id)
         """Rx FEC symbol status
 
         :type: FecSymbolStatus
         """
 
-        self.clear = PP_RXCLEAR(conn, *port.kind)
+        self.clear = PP_RXCLEAR(conn, module_id, port_id)
         """Clear all the PCS receiver statistics.
 
         :type: PP_RXCLEAR
         """
 
-        self.fec_mode = PP_FECMODE(conn, *port.kind)
+        self.fec_mode = PP_FECMODE(conn, module_id, port_id)
         """FEC mode configuration.
 
         :type: PP_FECMODE
         """
 
         self.lane: Tuple["PcsLane", ...] = tuple(
-            PcsLane(self._conn, *self.__port.kind, lane_idx=idx)
+            PcsLane(self._conn, module_id, port_id, lane_idx=idx)
             for idx in range(self.__port.info.capabilities.lane_count)
         )  # TODO: need to fix, currently port.info.capabilities must be none because lanes are created before awaiting the port
         """PCS Lane

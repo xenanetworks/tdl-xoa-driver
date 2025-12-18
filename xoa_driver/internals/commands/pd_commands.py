@@ -353,3 +353,13 @@ class PD_SAMPLES:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._dataset_xindex]))
+
+__all__ = [
+    "PD_CREATE",
+    "PD_DELETE",
+    "PD_ENABLE",
+    "PD_INDICES",
+    "PD_RANGE",
+    "PD_SAMPLES",
+    "PD_SOURCE",
+]

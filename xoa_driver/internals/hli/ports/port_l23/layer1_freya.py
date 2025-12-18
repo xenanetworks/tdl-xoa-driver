@@ -4,6 +4,7 @@ from typing import (
 )
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
+    from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
 from xoa_driver.internals.commands import (
     PL1_PCS_VARIANT,
     PP_PRBSTYPE,
@@ -56,29 +57,31 @@ class FreyaPcsLayer(PcsLayer):
     """Freya PCS and FEC configuration and status
     """
 
-    def __init__(self, conn: "itf.IConnection", port) -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya") -> None:
+        module_id, port_id = port.kind
         PcsLayer.__init__(self, conn, port)
     
-        self.pcs_variant = PL1_PCS_VARIANT(conn, *port.kind)
+        self.pcs_variant = PL1_PCS_VARIANT(conn, module_id, port_id)
         """PCS variant configuration
         """
 
-        self.fec_error_inject = FreyaFecCodewordErrorInject(conn, *port.kind)
+        self.fec_error_inject = FreyaFecCodewordErrorInject(conn, module_id, port_id)
         """FEC codeword error injection
         """
     
 class Layer1:
-    def __init__(self, conn: "itf.IConnection", port) -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya") -> None:
+        module_id, port_id = port.kind
         self.serdes: Tuple[SerDesFreya, ...] = tuple(
-                SerDesFreya(conn, *port.kind, serdes_xindex=idx)
+                SerDesFreya(conn, module_id, port_id, serdes_xindex=idx)
                 for idx in range(port.info.capabilities.serdes_count)
                 )
         
-        self.impairment = Impair(conn, *port.kind)
+        self.impairment = Impair(conn, module_id, port_id)
         """Impairment functions
         """
         
-        self.rs_fault = RsFault(conn, *port.kind)
+        self.rs_fault = RsFault(conn, module_id, port_id)
         """RS Fault configuration and status
         """
 
@@ -86,15 +89,15 @@ class Layer1:
         """Freya PCS and FEC configuration and status
         """
 
-        self.prbs_config = PP_PRBSTYPE(conn, *port.kind)
+        self.prbs_config = PP_PRBSTYPE(conn, module_id, port_id)
         """PRBS configuration, including PRBS polynomial, invert mode, and statistic collection mode (for RX).
         """
 
-        self.anlt = FreyaAnlt(conn, *port.kind)
+        self.anlt = FreyaAnlt(conn, module_id, port_id)
         """Freya port-level anlt. For per-serdes configuration and status, use serdes[x]
         """
         
-        self.transceiver = Transceiver(conn, *port.kind)
+        self.transceiver = Transceiver(conn, module_id, port_id)
         """Freya Transceiver configuration and status
         """
         

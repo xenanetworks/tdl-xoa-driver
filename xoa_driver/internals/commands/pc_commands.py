@@ -333,3 +333,11 @@ class PC_PACKET:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._capture_packet_xindex]))
+
+__all__ = [
+    "PC_EXTRA",
+    "PC_KEEP",
+    "PC_PACKET",
+    "PC_STATS",
+    "PC_TRIGGER",
+]

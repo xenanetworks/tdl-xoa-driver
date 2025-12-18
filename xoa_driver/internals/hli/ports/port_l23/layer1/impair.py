@@ -46,14 +46,14 @@ class PmaErrorInject:
 class Impair:
     """Impairment functions"""
 
-    def __init__(self, conn: "itf.IConnection", port) -> None:
-        self.link_flap = LinkFlap(conn, *port.kind)
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        self.link_flap = LinkFlap(conn, module_id, port_id)
         """Link flap settings.
         
         :type: LinkFlap
         """
 
-        self.pma_error_inject = PmaErrorInject(conn, *port.kind)
+        self.pma_error_inject = PmaErrorInject(conn, module_id, port_id)
         """PMA pulse error injection settings.
         
         :type: PmaErrorInject
