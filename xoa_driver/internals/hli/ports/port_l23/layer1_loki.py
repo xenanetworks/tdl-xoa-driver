@@ -50,16 +50,6 @@ class SerDesLoki:
         await self.eye_diagram
         return self
 
-class LokiTransceiver(Transceiver):
-    """Loki Transceiver configuration and status
-    """
-
-    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int,) -> None:
-        Transceiver.__init__(self, conn, module_id, port_id)
-
-        self.cmis = Cmis(conn, module_id, port_id)
-        """CMIS transceiver configuration and status
-        """
 
 class Layer1:
     def __init__(self, conn: "itf.IConnection", port) -> None:
@@ -81,6 +71,6 @@ class Layer1:
         """PRBS configuration, including PRBS polynomial, invert mode, and statistic collection mode (for RX).
         """
         
-        self.transceiver = LokiTransceiver(conn, *port.kind)
+        self.transceiver = Transceiver(conn, *port.kind)
         """Loki Transceiver configuration and status
         """

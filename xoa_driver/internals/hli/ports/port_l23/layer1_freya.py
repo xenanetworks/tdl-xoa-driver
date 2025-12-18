@@ -104,17 +104,6 @@ class FreyaPcsLayer(PcsLayer):
         self.fec_error_inject = FreyaFecCodewordErrorInject(conn, *port.kind)
         """FEC codeword error injection
         """
-
-class FreyaTransceiver(Transceiver):
-    """Freya Transceiver configuration and status
-    """
-
-    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int,) -> None:
-        Transceiver.__init__(self, conn, module_id, port_id)
-
-        self.cmis = Cmis(conn, module_id, port_id)
-        """CMIS transceiver configuration and status
-        """
     
 class Layer1:
     def __init__(self, conn: "itf.IConnection", port) -> None:
@@ -143,7 +132,7 @@ class Layer1:
         """Freya port-level anlt. For per-serdes configuration and status, use serdes[x]
         """
         
-        self.transceiver = FreyaTransceiver(conn, *port.kind)
+        self.transceiver = Transceiver(conn, *port.kind)
         """Freya Transceiver configuration and status
         """
         

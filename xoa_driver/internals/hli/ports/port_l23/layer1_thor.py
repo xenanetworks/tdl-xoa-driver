@@ -37,19 +37,6 @@ class SerDesThor:
         :type: BasicMedium
         """
 
-
-
-class ThorTransceiver(Transceiver):
-    """Thor Transceiver configuration and status
-    """
-
-    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int,) -> None:
-        Transceiver.__init__(self, conn, module_id, port_id)
-
-        self.cmis = Cmis(conn, module_id, port_id)
-        """CMIS transceiver configuration and status
-        """
-
 class Layer1:
     def __init__(self, conn: "itf.IConnection", port) -> None:
         self.serdes: Tuple[SerDesThor, ...] = tuple(
@@ -70,6 +57,6 @@ class Layer1:
         """PRBS configuration, including PRBS polynomial, invert mode, and statistic collection mode (for RX).
         """
         
-        self.transceiver = ThorTransceiver(conn, *port.kind)
+        self.transceiver = Transceiver(conn, *port.kind)
         """Thor Transceiver configuration and status
         """

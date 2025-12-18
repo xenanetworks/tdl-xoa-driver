@@ -9,7 +9,8 @@ from xoa_driver.internals.commands import (
     PX_I2C_CONFIG,
     PX_RW_SEQ_BANK,
 )
-from xoa_driver.internals.hli.ports.port_l23.layer1.laser_power import LaserPower
+from ..layer1.laser_power import LaserPower
+from .cmis import Cmis
 
 
 class Transceiver:
@@ -37,6 +38,10 @@ class Transceiver:
 
         self.laser_power = LaserPower(conn, module_id, port_id)
         """Laser power status.
+        """
+
+        self.cmis = Cmis(conn, module_id, port_id)
+        """CMIS transceiver configuration and status
         """
 
     def access_rw(self, page_address: int, register_address: int) -> "PX_RW":
