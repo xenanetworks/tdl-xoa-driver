@@ -28,7 +28,7 @@ from .port_l23 import (
     # TxConfiguration,
 )
 
-from ..tvcr.transceiver import Transceiver
+from ..tcvr.transceiver import Transceiver
 from .port_rx_stats import GenuinePortReceptionStatistics
 from .port_tx_stats import GenuinePortTransmissionStatistics
 
