@@ -111,6 +111,9 @@ class PortsCombiManager(PortBaseManager[PT]):
             for port_id in range(self._ports_count)
         )
         ports = await asyncio.gather(*coros)
-        self._items = OrderedDict(
-            (port.kind.port_id, port) for port in ports
+        self._items = cast(
+            OrderedDict[int, PT],
+            OrderedDict(
+                (port.kind.port_id, port) for port in ports
+            )
         )

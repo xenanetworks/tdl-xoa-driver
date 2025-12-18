@@ -1,21 +1,18 @@
-
 import functools
 from typing import TYPE_CHECKING, Tuple
 from typing import Self
 from xoa_driver.internals.commands import (
     P_DYNAMIC,
 )
-from xoa_driver import enums
 from xoa_driver.internals.utils import attributes as utils
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 
 from .trafficgen.port_l23_genuine import BasePortL23Genuine
-from .layer1_edun import Layer1
+from .layer1_loki import Layer1
 
 
-
-class FamilyEdun(BasePortL23Genuine):
+class FamilyLoki(BasePortL23Genuine):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
         self.dynamic = P_DYNAMIC(conn, module_id, port_id)
@@ -34,12 +31,43 @@ class FamilyEdun(BasePortL23Genuine):
     """Register a callback to the event that the port's dynamic traffic setting changes."""
 
 
-class PEdun800G3S1PSMPX_a(FamilyEdun):
-    """L23 port on Edun-800G-3S-1P-SMPX[a] module.
+class PLoki100G3S1P(FamilyLoki):
+    """L23 port on Loki-100G-3S-1P module.
     """
     ...
 
-class PEdun1600G4S1POSFP_a(FamilyEdun):
-    """L23 port on Edun-1600G-4S-1P-OSFP[a] module.
+
+class PLoki100G3S1P_b(FamilyLoki):
+    """L23 port on Loki-100G-3S-1P[b] module.
+    """
+    ...
+
+
+class PLoki100G3S1PSE(FamilyLoki):
+    """L23 port on Loki-100G-3S-1P-SE module.
+    """
+    ...
+
+class PLoki100G3S1PB(FamilyLoki):
+    """L23 port on Loki-100G-3S-1P-B module.
+    """
+    ...
+
+class PLoki100G3S1PB_b(FamilyLoki):
+    """L23 port on Loki-100G-3S-1P-B[b] module.
+    """
+    ...
+
+class PLoki100G5S4P_a(FamilyLoki):
+    """L23 port on Loki-100G-5S-4P[a] module.
+    """
+    ...
+
+class PLoki100G5S1P(FamilyLoki):
+    """L23 port on Loki-100G-5S-1P module.
+    """
+
+class PLoki100G5S2P(FamilyLoki):
+    """L23 port on Loki-100G-5S-2P module.
     """
     ...

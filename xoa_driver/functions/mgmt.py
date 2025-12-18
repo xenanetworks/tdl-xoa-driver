@@ -14,7 +14,7 @@ from xoa_driver import enums, testers
 from xoa_driver.utils import apply
 if TYPE_CHECKING:
     from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
-    from xoa_driver.internals.hli.ports.port_l23.family_l1 import FamilyFreya
+    from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
     from xoa_driver.ports import GenericAnyPort, GenericL23Port
     from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
     from xoa_driver.testers import GenericAnyTester, L23Tester

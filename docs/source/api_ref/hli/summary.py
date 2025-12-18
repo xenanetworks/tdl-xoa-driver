@@ -1439,14 +1439,14 @@ async def my_awesome_func(stop_event: asyncio.Event):
     #################################################
 
     # Auto-Negotiation Settings
-    resp = await port.pcs_pma.auto_neg.settings.get()
+    resp = await port.pcs_pma.autoneg.settings.get()
     resp.tec_ability
     resp.fec_capable
     resp.fec_requested
     resp.pause_mode
 
     # Auto-Negotiation Status
-    resp = await port.pcs_pma.auto_neg.status.get()
+    resp = await port.pcs_pma.autoneg.status.get()
     resp.mode
     resp.auto_state
     resp.tec_ability
@@ -1512,56 +1512,56 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.timeout_mode
 
     # Link Training Serdes Status
-    resp = await port.pcs_pma.link_training.per_lane_status[0].get()
+    resp = await port.pcs_pma.link_training.status_per_serdes[0].get()
     resp.mode
     resp.failure
     resp.status
 
     # PMA Pulse Error Inject Control
-    await port.pcs_pma.pma_pulse_err_inj.enable.set(on_off=enums.OnOff.ON)
-    await port.pcs_pma.pma_pulse_err_inj.enable.set_on()
-    await port.pcs_pma.pma_pulse_err_inj.enable.set(on_off=enums.OnOff.OFF)
-    await port.pcs_pma.pma_pulse_err_inj.enable.set_off()
+    await port.pcs_pma.pma_error_inject.enable.set(on_off=enums.OnOff.ON)
+    await port.pcs_pma.pma_error_inject.enable.set_on()
+    await port.pcs_pma.pma_error_inject.enable.set(on_off=enums.OnOff.OFF)
+    await port.pcs_pma.pma_error_inject.enable.set_off()
 
-    resp = await port.pcs_pma.pma_pulse_err_inj.enable.get()
+    resp = await port.pcs_pma.pma_error_inject.enable.get()
     resp.on_off
 
     # PMA Pulse Error Inject Configuration
-    await port.pcs_pma.pma_pulse_err_inj.params.set(duration=1000, period=1000, repetition=10, coeff=5, exp=-5)
+    await port.pcs_pma.pma_error_inject.params.set(duration=1000, period=1000, repetition=10, coeff=5, exp=-5)
     
-    resp = await port.pcs_pma.pma_pulse_err_inj.params.get()
+    resp = await port.pcs_pma.pma_error_inject.params.get()
     resp.duration
     resp.period
     resp.coeff
     resp.exp
 
     # RX Status - Lane Error Counters
-    resp = await port.pcs_pma.lanes[0].rx_status.errors.get()
+    resp = await port.pcs_pma.lane[0].rx_status.errors.get()
     resp.alignment_error_count
     resp.corrected_fec_error_count
     resp.header_error_count
 
     # RX Status - Lock Status
-    resp = await port.pcs_pma.lanes[0].rx_status.lock.get()
+    resp = await port.pcs_pma.lane[0].rx_status.lock.get()
     resp.align_lock
     resp.header_lock
 
     # RX Status - Lane Status
-    resp = await port.pcs_pma.lanes[0].rx_status.status.get()
+    resp = await port.pcs_pma.lane[0].rx_status.status.get()
     resp.skew
     resp.virtual_lane
 
     # RX Status - Clear Counters
-    await port.pcs_pma.rx.clear.set()
+    await port.pcs_pma.fec_symbol_status.clear.set()
 
     # RX Status - RX FEC Stats
-    resp = await port.pcs_pma.rx.fec_status.get()
+    resp = await port.pcs_pma.fec_symbol_status.fec_status.get()
     resp.stats_type
     resp.data_count
     resp.stats
 
     # RX Status - RX Total Stats
-    resp = await port.pcs_pma.rx.total_status.get()
+    resp = await port.pcs_pma.fec_symbol_status.total_status.get()
     resp.total_corrected_codeword_count
     resp.total_corrected_symbol_count
     resp.total_post_fec_ber
@@ -1590,14 +1590,14 @@ async def my_awesome_func(stop_event: asyncio.Event):
     await port.pcs_pma.error_gen.inject_one.set()
 
     # TX Configuration - Error Injection
-    await port.pcs_pma.lanes[0].tx_error_inject.set_alignerror()
-    await port.pcs_pma.lanes[0].tx_error_inject.set_bip8error()
-    await port.pcs_pma.lanes[0].tx_error_inject.set_headererror()
+    await port.pcs_pma.lane[0].tx_error_inject.set_alignerror()
+    await port.pcs_pma.lane[0].tx_error_inject.set_bip8error()
+    await port.pcs_pma.lane[0].tx_error_inject.set_headererror()
 
     # TX Configuration - Lane Configuration
-    await port.pcs_pma.lanes[0].tx_config.set(virt_lane_index=1, skew=10)
+    await port.pcs_pma.lane[0].tx_config.set(virt_lane_index=1, skew=10)
     
-    resp = await port.pcs_pma.lanes[0].tx_config.get()
+    resp = await port.pcs_pma.lane[0].tx_config.get()
     resp.virt_lane_index
     resp.skew
 
@@ -1669,20 +1669,20 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.pam4_msb_lsb_swap
 
     # TX Tap Autotune
-    await port.serdes[0].phy.autotune.set(on_off=enums.OnOff.ON)
-    await port.serdes[0].phy.autotune.set_on()
-    await port.serdes[0].phy.autotune.set(on_off=enums.OnOff.OFF)
-    await port.serdes[0].phy.autotune.set_off()
+    await port.serdes[0].medium.autotune.set(on_off=enums.OnOff.ON)
+    await port.serdes[0].medium.autotune.set_on()
+    await port.serdes[0].medium.autotune.set(on_off=enums.OnOff.OFF)
+    await port.serdes[0].medium.autotune.set_off()
 
-    resp = await port.serdes[0].phy.autotune.get()
+    resp = await port.serdes[0].medium.autotune.get()
     resp.on_off
 
     # TX Tap Retune
-    await port.serdes[0].phy.retune.set(dummy=1)
+    await port.serdes[0].medium.retune.set(dummy=1)
 
     # TX Tap Configuration
-    await port.serdes[0].phy.tx_equalizer.set(pre2=0, pre1=0, main=86, post1=0, post2=0, post3=0)
-    resp = await port.serdes[0].phy.tx_equalizer.get()
+    await port.serdes[0].medium.tx_equalizer.set(pre2=0, pre1=0, main=86, post1=0, post2=0, post3=0)
+    resp = await port.serdes[0].medium.tx_equalizer.get()
     resp.pre2
     resp.pre
     resp.main
@@ -1691,9 +1691,9 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.post3
 
     # RX Tap Configuration
-    await port.serdes[0].phy.rx_equalizer.set(auto=0, ctle=0, reserved=0)
+    await port.serdes[0].medium.rx_equalizer.set(auto=0, ctle=0, reserved=0)
     
-    resp = await port.serdes[0].phy.rx_equalizer.get()
+    resp = await port.serdes[0].medium.rx_equalizer.get()
     resp.auto
     resp.ctle
 
@@ -2277,9 +2277,9 @@ async def my_awesome_func(stop_event: asyncio.Event):
         await port.pcs_pma.link_flap.enable.set_on()
         await port.pcs_pma.link_flap.enable.set_off()
 
-        await port.pcs_pma.pma_pulse_err_inj.params.set(duration=100, period=1000, repetition=0, coeff=100, exp=-4)
-        await port.pcs_pma.pma_pulse_err_inj.enable.set_on()
-        await port.pcs_pma.pma_pulse_err_inj.enable.set_off()
+        await port.pcs_pma.pma_error_inject.params.set(duration=100, period=1000, repetition=0, coeff=100, exp=-4)
+        await port.pcs_pma.pma_error_inject.enable.set_on()
+        await port.pcs_pma.pma_error_inject.enable.set_off()
 
         # Enable impairment on the port.
         await port.emulate.set_off()

@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 from xoa_driver.internals.hli.ports import base_port
 from xoa_driver.internals.utils import attributes as utils
 from xoa_driver.internals.state_storage import ports_state
-from ..pcs_pma_ijkl_chimera import PcsPma
+from ..layer1.impair import Impair
 from .pe_custom_distribution import CustomDistributions
 from .port_emulation import ChimeraPE
 
@@ -75,7 +75,7 @@ class PortChimera(base_port.BasePort[ports_state.PortChimeraLocalState]):
         self.custom_distributions = CustomDistributions(conn, module_id, port_id)
         """Custom distributions."""
 
-        self.pcs_pma = PcsPma(conn, self)
+        self.pcs_pma = Impair(conn, self)
         """"PCS/PMA settings."""
 
         self._local_states = ports_state.PortChimeraLocalState()

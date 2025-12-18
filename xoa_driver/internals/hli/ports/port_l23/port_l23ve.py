@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
-from .bases.port_l23 import BasePortL23
-from .bases.port_reception_statistics import PortReceptionStatistics
-from .bases.port_transmission_statistics import PortTransmissionStatistics
+from .trafficgen.port_l23 import BasePortL23
+from .trafficgen.port_rx_stats import PortReceptionStatistics
+from .trafficgen.port_tx_stats import PortTxStats
 
 from xoa_driver.internals.commands import (
     P_MDIXMODE,
@@ -36,7 +36,7 @@ class L23VEPortStatistics:
         :type: PortReceptionStatistics
         """
 
-        self.tx = PortTransmissionStatistics(conn, module_id, port_id)
+        self.tx = PortTxStats(conn, module_id, port_id)
         """L23 VE port's TX statistics.
         
         :type: PortTransmissionStatistics
