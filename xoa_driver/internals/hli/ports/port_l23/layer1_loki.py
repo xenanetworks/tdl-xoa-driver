@@ -15,7 +15,7 @@ from xoa_driver.internals.hli.ports.port_l23.layer1.impair import Impair
 from xoa_driver.internals.hli.ports.port_l23.layer1.medium import BasicMedium
 from xoa_driver.internals.hli.ports.port_l23.layer1.eye_diagram import EyeDiagram
 from xoa_driver.internals.hli.ports.port_l23.layer1.rs_fault import RsFault
-from xoa_driver.internals.hli.ports.port_l23.tvcr.transceiver import Transceiver
+from xoa_driver.internals.hli.ports.port_l23.tcvr.transceiver import Transceiver
 
 class SerDesLoki:
     """L23 high-speed port SerDes configuration and status."""

@@ -10,7 +10,7 @@ from xoa_driver.internals.commands import (
     PX_RW_SEQ_BANK,
 )
 from xoa_driver.internals.hli.ports.port_l23.layer1.laser_power import LaserPower
-from xoa_driver.internals.hli.ports.port_l23.tvcr.cmis import Cmis
+from xoa_driver.internals.hli.ports.port_l23.tcvr.cmis import Cmis
 
 
 class Transceiver:

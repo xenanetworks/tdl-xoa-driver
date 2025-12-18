@@ -14,7 +14,7 @@ from xoa_driver.internals.hli.ports.port_l23.layer1.pcs_fec import PcsLayer
 from xoa_driver.internals.hli.ports.port_l23.layer1.impair import Impair
 from xoa_driver.internals.hli.ports.port_l23.layer1.medium import BasicMedium
 from xoa_driver.internals.hli.ports.port_l23.layer1.rs_fault import RsFault
-from xoa_driver.internals.hli.ports.port_l23.tvcr.transceiver import Transceiver
+from xoa_driver.internals.hli.ports.port_l23.tcvr.transceiver import Transceiver
 
 class SerDesThor:
     """L23 high-speed port SerDes configuration and status."""

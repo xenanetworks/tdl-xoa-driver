@@ -15,7 +15,7 @@ from xoa_driver.internals.hli.ports.port_l23.layer1.prbs import Prbs
 from xoa_driver.internals.hli.ports.port_l23.layer1.pma import FreyaPMA
 from xoa_driver.internals.hli.ports.port_l23.layer1.medium import EdunMedium
 from xoa_driver.internals.hli.ports.port_l23.layer1.rs_fault import RsFault
-from xoa_driver.internals.hli.ports.port_l23.tvcr.transceiver import Transceiver
+from xoa_driver.internals.hli.ports.port_l23.tcvr.transceiver import Transceiver
 from xoa_driver.internals.hli.ports.port_l23.layer1.anlt import AnltBasic
 
 

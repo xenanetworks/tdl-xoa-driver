@@ -12,7 +12,7 @@ from xoa_driver.internals.commands import (
 from xoa_driver.internals.hli.ports.port_l23.layer1.prbs import Prbs
 from xoa_driver.internals.hli.ports.port_l23.layer1.impair import Impair
 from xoa_driver.internals.hli.ports.port_l23.layer1.pcs_fec import PcsLayer, FreyaFecCodewordErrorInject
-from xoa_driver.internals.hli.ports.port_l23.tvcr.transceiver import Transceiver
+from xoa_driver.internals.hli.ports.port_l23.tcvr.transceiver import Transceiver
 from xoa_driver.internals.hli.ports.port_l23.layer1.rs_fault import RsFault
 from xoa_driver.internals.hli.ports.port_l23.layer1.medium import FreyaMedium
 from xoa_driver.internals.hli.ports.port_l23.layer1.siv import FreyaSIV
