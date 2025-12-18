@@ -10,14 +10,14 @@ from typing import (
     Any,
     Union,
 )
-from xoa_driver import enums, testers
+from xoa_driver import enums, ports
 from xoa_driver.utils import apply
 if TYPE_CHECKING:
-    from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
-    from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
-    from xoa_driver.ports import GenericAnyPort, GenericL23Port
+    from xoa_driver.ports import GenericL23Port, Z800FreyaPort, Z1600EdunPort, GenericAnyPort
     from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
-    from xoa_driver.testers import GenericAnyTester, L23Tester
+    from xoa_driver.testers import L23Tester
+    type FreyaEdunModule = Union[Z800FreyaModule, Z1600EdunModule]
+    type FreyaEdunPort = Union[Z800FreyaPort, Z1600EdunPort]
 from .exceptions import (
     NotSupportMedia,
     NotSupportPortSpeed,
@@ -30,12 +30,12 @@ import json
 
 
 # region Testers
-async def reserve_tester(tester: GenericAnyTester, force: bool = True) -> None:
+async def reserve_tester(tester: L23Tester, force: bool = True) -> None:
     """
     Reserve a tester regardless whether it is owned by others or not.
 
     :param tester: The tester to reserve
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
     :param force: Should force reserve the tester
     :type force: boolean
     :return:
@@ -46,14 +46,14 @@ async def reserve_tester(tester: GenericAnyTester, force: bool = True) -> None:
 
 
 async def release_tester(
-        tester: GenericAnyTester, 
+        tester: L23Tester, 
         should_release_modules_ports: bool = False,
         ) -> None:
     """
     Free a tester. If the tester is reserved by you, release the tester. If the tester is reserved by others, relinquish the tester. The tester should have no owner afterwards.
 
     :param tester: The tester to free
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
     :param should_release_modules_ports: should modules and ports also be freed, defaults to False
     :type should_release_modules_ports: bool, optional
     :return:
@@ -90,12 +90,12 @@ async def get_chassis_sys_uptime_sec(tester: L23Tester) -> int:
 # region Modules
 
 
-def get_module(tester: GenericAnyTester, module_id: int) -> GenericAnyModule:
+def get_module(tester: L23Tester, module_id: int) -> GenericAnyModule:
     """
     Get a module object of the tester.
 
     :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
     :param module_id: the index id of the module
     :type module_id: int
     :raises NoSuchModuleError: No such a module index on the tester
@@ -105,12 +105,12 @@ def get_module(tester: GenericAnyTester, module_id: int) -> GenericAnyModule:
     return tester.modules.obtain(module_id)
 
 
-def get_modules(tester: GenericAnyTester) -> tuple[GenericAnyModule, ...]:
+def get_modules(tester: L23Tester) -> tuple[GenericAnyModule, ...]:
     """
     Get all modules of the tester
 
     :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
     :return: List of module objects
     :rtype: tuple[GenericAnyModule]
     """
@@ -155,13 +155,13 @@ async def release_module(
 
 
 def get_module_supported_media(
-    module: GenericL23Module | ModuleChimera,
+    module: Union[GenericL23Module, ModuleChimera],
 ) -> list[dict[str, Any]]:
     """
     Get a list of supported media, port speed and count of the module.
 
     :param module: The module object
-    :type module: GenericAnyModule
+    :type module: Union[GenericL23Module, ModuleChimera]
     :return: List of supported media, port speed and count
     :rtype: list[dict[str, Any]]
     """
@@ -188,7 +188,7 @@ async def set_module_media_config(
     Set module's media configuration.
 
     :param module: The module object
-    :type module: GenericAnyModule
+    :type module: Union[GenericL23Module, ModuleChimera]
     :param media: Target media for the module
     :type media: enums.MediaConfigurationType
     :param force: Should reserve the module by force, defaults to True
@@ -338,12 +338,11 @@ async def get_module_eol_days(module: GenericAnyModule) -> int:
     return timedelta.days
 
 
-    from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
 async def get_module_cage_insertion_count(module: Union[Z800FreyaModule, Z1600EdunModule], cage_index: int) -> int:
     """
     Get module cage insertion count
 
-    :param module: The Z800 Freya module object
+    :param module: The Z800 Freya/Z1600 Edun module object
     :type module: Union[Z800FreyaModule, Z1600EdunModule]
     :param cage_index: The cage index
     :type module: int
@@ -366,7 +365,7 @@ async def get_module_cage_count(module: Union[Z800FreyaModule, Z1600EdunModule])
     """
     Get module cage count
 
-    :param module: The Z800 Freya module object
+    :param module: The Z800 Freya/Z1600 Edun module object
     :type module: Union[Z800FreyaModule, Z1600EdunModule]
     :return: The number of cages in the module
     :rtype: int
@@ -384,12 +383,12 @@ async def get_module_cage_count(module: Union[Z800FreyaModule, Z1600EdunModule])
 # region Ports
 
 
-def get_all_ports(tester: GenericAnyTester) -> tuple[GenericAnyPort, ...]:
+def get_all_ports(tester: L23Tester) -> tuple[GenericAnyPort, ...]:
     """
     Get all ports of the tester
 
     :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
     :return: List of port objects
     :rtype: tuple[GenericAnyPort]
     """
@@ -397,12 +396,12 @@ def get_all_ports(tester: GenericAnyTester) -> tuple[GenericAnyPort, ...]:
     return tuple(chain.from_iterable(all_ports_))
 
 
-def get_ports(tester: GenericAnyTester, module_id: int) -> tuple[GenericAnyPort, ...]:
+def get_ports(tester: L23Tester, module_id: int) -> tuple[GenericAnyPort, ...]:
     """
     Get all ports of the module
 
     :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
     :param module_id: The module index
     :type module_id: int
     :return: List of port objects
@@ -412,12 +411,12 @@ def get_ports(tester: GenericAnyTester, module_id: int) -> tuple[GenericAnyPort,
     return tuple(module.ports)
 
 
-def get_port(tester: GenericAnyTester, module_id: int, port_id: int) -> GenericAnyPort:
+def get_port(tester: L23Tester, module_id: int, port_id: int) -> GenericAnyPort:
     """
     Get a port of the module
 
     :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
     :param module_id: The module index
     :type module_id: int
     :param port_id: The port index
@@ -498,24 +497,26 @@ async def remove_streams(port: GenericL23Port) -> None:
 # endregion
 
 __all__ = (
-    "release_module",
-    "release_port",
-    "release_ports",
-    "release_tester",
-    "get_all_ports",
-    "get_module",
-    "get_module_eol_date",
-    "get_module_eol_days",
-    "get_module_supported_media",
-    "get_modules",
-    "get_port",
-    "get_ports",
-    "reserve_module",
-    "reserve_port",
     "reserve_tester",
+    "release_tester",
+    "get_chassis_sys_uptime_sec",
+    "get_module",
+    "get_modules",
+    "reserve_module",
+    "release_module",
+    "get_module_supported_media",
     "set_module_media_config",
     "set_module_port_config",
-    "remove_streams",
+    "set_module_config",
+    "get_module_eol_date",
+    "get_module_eol_days",
     "get_module_cage_insertion_count",
-    "get_chassis_sys_uptime_sec",
+    "get_module_cage_count",
+    "get_all_ports",
+    "get_ports",
+    "get_port",
+    "reserve_port",
+    "release_port",
+    "release_ports",
+    "remove_streams",
 )

@@ -5,7 +5,9 @@ from typing import (
 )
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
-
+from xoa_driver.internals.commands import (
+    PP_PRBSTYPE,
+)
 from .layer1.prbs import Prbs
 from .layer1.pcs_fec import PcsLayer
 from .layer1.impair import Impair
@@ -13,12 +15,6 @@ from .layer1.medium import BasicMedium
 from .layer1.eye_diagram import EyeDiagram
 from .layer1.rs_fault import RsFault
 from .tvcr.transceiver import Transceiver
-from .tvcr.cmis import Cmis
-from xoa_driver import enums
-
-from xoa_driver.internals.commands import (
-    PP_PRBSTYPE,
-)
 
 class SerDesLoki:
     """L23 high-speed port SerDes configuration and status."""

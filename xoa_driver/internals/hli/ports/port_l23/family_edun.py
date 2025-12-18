@@ -1,11 +1,13 @@
 
 import functools
-from typing import TYPE_CHECKING, Tuple
-from typing import Self
+from typing import (
+    TYPE_CHECKING,
+    Tuple,
+    Self,
+)
 from xoa_driver.internals.commands import (
     P_DYNAMIC,
 )
-from xoa_driver import enums
 from xoa_driver.internals.utils import attributes as utils
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
