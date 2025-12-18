@@ -9,8 +9,8 @@ from xoa_driver.internals.commands import (
     PX_I2C_CONFIG,
     PX_RW_SEQ_BANK,
 )
-from ..layer1.laser_power import LaserPower
-from .cmis import Cmis
+from xoa_driver.internals.hli.ports.port_l23.layer1.laser_power import LaserPower
+from xoa_driver.internals.hli.ports.port_l23.tvcr.cmis import Cmis
 
 
 class Transceiver:

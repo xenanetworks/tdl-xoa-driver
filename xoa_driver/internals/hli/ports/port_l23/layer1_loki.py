@@ -9,13 +9,13 @@ if TYPE_CHECKING:
 from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
 )
-from .layer1.prbs import Prbs
-from .layer1.pcs_fec import PcsLayer
-from .layer1.impair import Impair
-from .layer1.medium import BasicMedium
-from .layer1.eye_diagram import EyeDiagram
-from .layer1.rs_fault import RsFault
-from .tvcr.transceiver import Transceiver
+from xoa_driver.internals.hli.ports.port_l23.layer1.prbs import Prbs
+from xoa_driver.internals.hli.ports.port_l23.layer1.pcs_fec import PcsLayer
+from xoa_driver.internals.hli.ports.port_l23.layer1.impair import Impair
+from xoa_driver.internals.hli.ports.port_l23.layer1.medium import BasicMedium
+from xoa_driver.internals.hli.ports.port_l23.layer1.eye_diagram import EyeDiagram
+from xoa_driver.internals.hli.ports.port_l23.layer1.rs_fault import RsFault
+from xoa_driver.internals.hli.ports.port_l23.tvcr.transceiver import Transceiver
 
 class SerDesLoki:
     """L23 high-speed port SerDes configuration and status."""

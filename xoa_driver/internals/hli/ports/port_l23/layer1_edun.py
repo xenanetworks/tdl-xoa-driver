@@ -10,13 +10,13 @@ from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
     PP_LINKTRAINSTATUS,
 )
-from .layer1.pcs_fec import PcsLayer, FreyaFecCodewordErrorInject
-from .layer1.prbs import Prbs
-from .layer1.pma import FreyaPMA
-from .layer1.medium import EdunMedium
-from .layer1.rs_fault import RsFault
-from .tvcr.transceiver import Transceiver
-from .layer1.anlt import AnltBasic
+from xoa_driver.internals.hli.ports.port_l23.layer1.pcs_fec import PcsLayer, FreyaFecCodewordErrorInject
+from xoa_driver.internals.hli.ports.port_l23.layer1.prbs import Prbs
+from xoa_driver.internals.hli.ports.port_l23.layer1.pma import FreyaPMA
+from xoa_driver.internals.hli.ports.port_l23.layer1.medium import EdunMedium
+from xoa_driver.internals.hli.ports.port_l23.layer1.rs_fault import RsFault
+from xoa_driver.internals.hli.ports.port_l23.tvcr.transceiver import Transceiver
+from xoa_driver.internals.hli.ports.port_l23.layer1.anlt import AnltBasic
 
 
 

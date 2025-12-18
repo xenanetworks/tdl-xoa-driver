@@ -10,11 +10,11 @@ from xoa_driver.internals.commands import (
 from xoa_driver.internals.utils import attributes as utils
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
-from .trafficgen.port_l23_genuine import BasePortL23Genuine
-from .layer1.lower_power import LowPowerMode
-from .trafficgen.runt import Runt
-from .layer1.preamble import Preamble
-from .layer1.brr import BroadrReach
+from xoa_driver.internals.hli.ports.port_l23.trafficgen.port_l23_genuine import BasePortL23Genuine
+from xoa_driver.internals.hli.ports.port_l23.layer1.lower_power import LowPowerMode
+from xoa_driver.internals.hli.ports.port_l23.trafficgen.runt import Runt
+from xoa_driver.internals.hli.ports.port_l23.layer1.preamble import Preamble
+from xoa_driver.internals.hli.ports.port_l23.layer1.brr import BroadrReach
 
 class FamilyOdin(BasePortL23Genuine):
     """Base class for Odin-1G port"""
