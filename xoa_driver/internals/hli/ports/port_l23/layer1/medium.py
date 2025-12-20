@@ -15,6 +15,7 @@ from xoa_driver.internals.commands import (
     PL1_PHYTXEQ,
     PP_PHYRXEQ_EXT,
     PP_PHYRXEQSTATUS_EXT,
+    P_EDUN_RX_STATUS,
 )
 from xoa_driver import enums
 
@@ -46,8 +47,6 @@ class BasicMedium:
         :type: PP_PHYAUTOTUNE
         """
 
-
-
 class FreyaTxTap:
     """Freya Tx Tap"""
 
@@ -69,6 +68,11 @@ class FreyaTxTap:
 
         :type: PL1_PHYTXEQ_COEFF
         """
+
+class EdunTxTap(FreyaTxTap):
+    """Edun Tx Tap
+    """
+    pass
 
 class FreyaRxTapConfig:
     """Freya Rx Tap Configuration"""
@@ -385,6 +389,14 @@ class FreyaRxTap:
         """Freya Rx tap status
         """
 
+class EdunRxTap:
+    """Edun Rx Tap
+    """
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_xindex: int) -> None:
+        self.status = P_EDUN_RX_STATUS(conn, module_id, port_id, serdes_xindex)
+        """Freya Rx tap status
+        """
+
 class FreyaMedium:
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_xindex: int) -> None:
         self.tx = FreyaTxTap(conn, module_id, port_id, serdes_xindex)
@@ -396,6 +408,9 @@ class FreyaMedium:
         
 class EdunMedium:
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_xindex: int) -> None:
-        self.tx = FreyaTxTap(conn, module_id, port_id, serdes_xindex)
+        self.tx = EdunTxTap(conn, module_id, port_id, serdes_xindex)
         """Edun Tx tap
+        """
+        self.rx = EdunRxTap(conn, module_id, port_id, serdes_xindex)
+        """Edun Rx tap
         """
