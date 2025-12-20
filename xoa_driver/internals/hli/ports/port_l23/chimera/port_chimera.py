@@ -63,7 +63,7 @@ class PortChimera(base_port.BasePort[ports_state.PortChimeraLocalState]):
         :type: P_LOADMODE
         """
 
-        self.emulation = ChimeraPE(self._conn, *self.kind)
+        self.emulation = ChimeraPE(conn, module_id, port_id)
         """Chimera Port Emulation """
 
         self.emulate = P_EMULATE(conn, module_id, port_id)
@@ -75,7 +75,7 @@ class PortChimera(base_port.BasePort[ports_state.PortChimeraLocalState]):
         self.custom_distributions = CustomDistributions(conn, module_id, port_id)
         """Custom distributions."""
 
-        self.pcs_pma = Impair(conn, self)
+        self.pcs_pma = Impair(conn, module_id, port_id)
         """"PCS/PMA settings."""
 
         self._local_states = ports_state.PortChimeraLocalState()
