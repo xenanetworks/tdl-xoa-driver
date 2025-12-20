@@ -435,7 +435,7 @@ async def txtap_set(
     pre2: int,
     pre: int,
     main: int,
-    post1: int,
+    post: int,
 ) -> None:
     """
     Set the tap value of the local TX tap.
@@ -452,21 +452,14 @@ async def txtap_set(
     :type pre: int
     :param main: main value
     :type main: int
-    :param post1: post1 value
-    :type post1: int
+    :param post: post value
+    :type post: int
     :return:
     :rtype: None
     """
     conn, mid, pid = get_ctx(port)
     cmd_ = commands.PP_PHYTXEQ(conn, mid, pid, serdes)
-    await cmd_.set(
-        pre=pre,
-        main=main,
-        post=post1,
-        pre2=pre2,
-        pre3_post2=pre3,
-        post3=0,
-    )
+    await cmd_.set(tap_values=[pre, main, post, pre2, pre3])
 
 
 async def anlt_link_recovery(port: "Z800FreyaPort", restart_link_down: bool, restart_lt_failure: bool) -> None:
