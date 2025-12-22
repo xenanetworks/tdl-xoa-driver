@@ -93,21 +93,29 @@ async def get_chassis_sys_uptime(tester: L23Tester) -> int:
 # region Modules
 
 
-def get_modules(tester: L23Tester, module_ids: List[int]) -> Tuple[GenericAnyModule, ...]:
+def obtain_modules_by_ids(tester: L23Tester, module_ids: List[str]) -> Tuple[GenericAnyModule, ...]:
     """
     Get the module objects of the tester specified by module index ids
 
     :param tester: The tester object
     :type tester: :class:`~xoa_driver.testers.L23Tester`
-    :param module_ids: the index ids of the modules. If the list is empty, return all modules of the tester
-    :type module_ids: List[int]
+    :param module_ids: the index ids of the modules.
+
+    Use "*" to get all modules.
+    
+    If the list is empty, return all modules of the tester
+
+    :type module_ids: List[str]
     :raises NoSuchModuleError: No such a module index on the tester
     :return: module objects
     :rtype: List[:class:`~xoa_driver.modules.GenericAnyModule`]
     """
     if len(module_ids) == 0:
         return tuple(tester.modules)
-    return tuple(tester.modules.obtain(module_id) for module_id in module_ids)
+    elif "*" in module_ids:
+        return tuple(tester.modules)
+    else:
+        return tuple(tester.modules.obtain(int(module_id)) for module_id in module_ids)
 
 
 async def reserve_modules(modules: List[GenericAnyModule], force: bool = True) -> None:
@@ -166,7 +174,7 @@ def get_module_supported_configs(
     return supported_media_list
 
 
-async def config_module(
+async def set_module_config(
     module: Union[GenericL23Module, ModuleChimera],
     media: enums.MediaConfigurationType,
     port_count: int,
@@ -188,10 +196,10 @@ async def config_module(
     :raises NotSupportMediaPortSpeed: the provided media, port count and port speed configuration is not supported by the module
     """
 
-    await config_modules([(module, media, port_count, port_speed)], force)
+    await set_module_configs([(module, media, port_count, port_speed)], force)
 
 
-async def config_modules(module_configs: List[Tuple[Union[GenericL23Module, ModuleChimera], enums.MediaConfigurationType, int, int]], force: bool = True) -> None:
+async def set_module_configs(module_configs: List[Tuple[Union[GenericL23Module, ModuleChimera], enums.MediaConfigurationType, int, int]], force: bool = True) -> None:
 
     """Configure multiple modules with specified media, port count and port speed.
 
@@ -302,42 +310,72 @@ async def get_cage_count(module: Union[Z800FreyaModule, Z1600EdunModule]) -> int
 # region Ports
 
 
-def get_ports(tester: L23Tester, port_ids: List[str]) -> tuple[GenericAnyPort, ...]:
+def obtain_ports_by_ids(tester: L23Tester, port_ids: List[str], separator: str = "/") -> tuple[GenericAnyPort, ...]:
     """
     Get ports of the tester specified by port ids
 
     :param tester: The tester object
     :type tester: :class:`~xoa_driver.testers.L23Tester`
-    :param port_ids: The port ids, The port index with format "m/p", m is module index, p is port index, e.g. ["1/3", "2/4"]
-    :type port_ids: List[str], if the list is empty, return all ports of the tester
+    :param port_ids: The port ids.
+    
+    The port index with format "m/p", m is module index, p is port index, e.g. ["1/3", "2/4"]. 
+
+    Use "1/*" to get all ports of module 1.
+
+    Use "*/1" to get port 1 of all modules.
+
+    Use "*", or "*/*" to get all ports of all modules.
+    
+    Use an empty list to get all ports of all modules.
+
+    :type port_ids: List[str]
+    :param separator: The separator between module index and port index in port id, defaults to "/"
+    :type separator: str, optional
     :return: List of port objects
     :rtype: tuple[GenericAnyPort]
     """
     returned_ports = []
-    if len(port_ids) == 0:
-        all_ports_ = (m.ports for m in get_modules(tester, []))
+    if len(port_ids) == 0 or f"*{separator}*" in port_ids or f"*" in port_ids: # [] or ["*/*"] or ["*"]
+        all_ports_ = (m.ports for m in tester.modules)
         return tuple(chain.from_iterable(all_ports_))
-    for port_id in port_ids:
-        mid = int(port_id.split("/")[0])
-        pid = int(port_id.split("/")[1])
-        module = get_modules(tester, [mid])[0]
-        returned_ports.append(module.ports.obtain(pid))
-    return tuple(returned_ports)
+    else:
+        for port_id in port_ids:
+            if separator not in port_id:
+                continue
+            mid = port_id.split(separator)[0]
+            if mid != "*":
+                module = tester.modules.obtain(int(mid))
+                pid = port_id.split(separator)[1]
+                if pid == "*": # ["1/*"]
+                    returned_ports.extend(list(module.ports))
+                else: # ["1/3"]
+                    returned_ports.append(module.ports.obtain(int(pid)))
+            else: # ["*/1"]
+                pid = port_id.split(separator)[1]
+                for module in tester.modules:
+                    returned_ports.append(module.ports.obtain(int(pid)))
+        return tuple(returned_ports)
 
 
-def get_port(tester: L23Tester, port_id: str) -> GenericAnyPort:
+def obtain_port_by_id(tester: L23Tester, port_id: str, separator: str = "/") -> GenericAnyPort:
     """
     Get a port of the module
 
     :param tester: The tester object
     :type tester: :class:`~xoa_driver.testers.L23Tester`
-    :param port_id: The port index with format "m/p", m is module index, p is port index, e.g. "1/3"
+    :param port_id: The port index with format "m/p", m is module index, p is port index, e.g. "1/3". Wildcard "*" is not allowed.
     :type port_id: str
+    :param separator: The separator between module index and port index in port id, defaults to "/"
+    :type separator: str, optional
     :raises NoSuchPortError: No port found with the index
     :return: The port object
     :rtype: GenericAnyPort
     """
-    return get_ports(tester, [port_id])[0]
+    if "*" in port_id:
+        raise ValueError("Wildcard '*' is not allowed in port_id for obtain_port_by_id function.")
+    if separator not in port_id:
+        raise ValueError(f"Invalid port_id format: {port_id}. Expected format 'm{separator}p'.")
+    return obtain_ports_by_ids(tester, [port_id], separator=separator)[0]
 
 
 async def reserve_ports(ports: list[GenericAnyPort], force: bool = True, reset: bool = False) -> None:
@@ -415,18 +453,18 @@ __all__ = (
     "reserve_tester",
     "release_tester",
     "get_chassis_sys_uptime",
-    "get_modules",
+    "obtain_modules_by_ids",
     "reserve_modules",
     "release_modules",
     "get_module_supported_configs",
-    "config_modules",
-    "config_module",
+    "set_module_configs",
+    "set_module_config",
     "get_module_eol_date",
     "get_module_eol_days",
     "get_cage_insertions",
     "get_cage_count",
-    "get_ports",
-    "get_port",
+    "obtain_ports_by_ids",
+    "obtain_port_by_id",
     "reserve_ports",
     "release_ports",
     "reset_ports",
