@@ -14,6 +14,7 @@ from .layer1.pcs_fec import PcsLayer
 from .layer1.impair import Impair
 from .layer1.medium import BasicMedium
 from .layer1.rs_fault import RsFault
+from .layer1.anlt import AnltBasic
 from .tcvr.transceiver import Transceiver
 
 class SerDesThor:
@@ -54,6 +55,10 @@ class Layer1:
         """PRBS configuration, including PRBS polynomial, invert mode, and statistic collection mode (for RX).
         """
         
+        self.anlt = AnltBasic(conn, module_id, port_id)
+        """Thor ANLT settings
+        """
+        
         self.transceiver = Transceiver(conn, module_id, port_id)
         """Thor Transceiver configuration and status
-        """
+        """        
