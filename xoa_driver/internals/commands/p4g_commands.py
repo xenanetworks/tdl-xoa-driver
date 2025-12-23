@@ -1,3 +1,4 @@
+"""Port (L47) Connection Group Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import ipaddress

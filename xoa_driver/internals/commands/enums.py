@@ -1,4 +1,5 @@
 
+"""Enums used in various commands."""
 from enum import IntEnum, IntFlag
 
 

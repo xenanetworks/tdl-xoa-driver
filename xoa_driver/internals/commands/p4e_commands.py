@@ -1,3 +1,4 @@
+"""Port (L47) Packet Engine Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
