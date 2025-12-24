@@ -1,0 +1,76 @@
+//---------------------------------------------------------------------
+// ALL OF THE BELOW FUNCTIONS OPERATE ON A SINGLE (CURRENT) PORT.
+//
+// THEY CAN BE IMPLEMENTED USING DIRECT FPGA REGISTER READ/WRITE
+// OPERATIONS AND DO NOT OTHERWISE DEPEND ON OR CONFLICT WITH
+// FEATURES IN XENASERVER
+//---------------------------------------------------------------------
+
+// Returns current/minimum/maximum port Tx/Rx frequency (Hz)
+// Minimum and maximum are values since last call.
+un32 get_current_tx_frequency();
+un32 get_current_rx_frequency();
+un32 get_minimum_rx_frequency();
+un32 get_maximum_rx_frequency();
+
+// Returns current + sticky Loss of Lock (LOL) status
+// oo SERDES <serdes>
+bool get_loss_of_lock( unsigned serdes, bool *sticky );
+
+// Returns relative skew of lane <pcsl> measured in bits
+un32 get_rx_lane_skew( unsigned pcsl );
+
+// Returns current + sticky High BER status
+bool get_hi_ber( bool *sticky );
+
+// Returns current + sticky High SER status.
+// High SER is signalled if 5560 RS-FEC symbol errors
+// are detected in contiguous block of 8192
+// non-overlapping RS-FEC codewords
+bool get_hi_ser( bool *sticky );
+
+// Returns current + sticky Degraded SER status
+// The criteria for signalling Degraded SER is
+// programmable using set_degraded_ser_criteria()
+bool get_degraded_ser( bool *sticky );
+
+// Set criteria for signaling Degraded SER
+//
+// If more than <activate_threshold> RS-FEC symbol errors
+// are detected in a contiguous block of <interval> RS-FEC
+// codewords, Degraded SER is signalled.
+//
+// If less than <deactivate_threshold> RS-FEC symbol errors
+// are detected in a contiguous block of <interval> RS-FEC
+// codewords, Degraded SER is no longer signalled.
+//
+// <interval> must be an even number and a multiple of the
+// number of PCS flows:
+//   100G:      2 (one flow, but must be even)
+//   200G/400G: 2 (two flows)
+//   800G/1.6T: 4 (four flows)
+//
+// An uncorrectable codeword is counted as 16 erroneous
+// RS-FEC symbols.
+//
+void set_degraded_ser_criteria( un32 activate_threshold,
+                                un32 deactivate_threshold,
+                                un32 interval
+                              );
+void get_degraded_ser_criteria( un32 *activate_threshold,
+                                un32 *deactivate_threshold,
+                                un32 *interval
+                              );
+
+// Returns number of erroneous 64b/66b codewords since last call
+un32 get_cw_error_count();
+
+// Returns number of invalid 256b/257b transcode blocks since last call
+un32 get_itb_count();
+
+// Returns number of times link sync has been lost since last call
+un32 get_link_sync_loss_count();
+
+// Returns number of local/remote fault conditions since last call
+un32 get_local_fault_count();
+un32 get_remote_fault_count();

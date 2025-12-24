@@ -102,6 +102,7 @@ extensions = [
     'sphinx.ext.duration',
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
+    'sphinx.ext.apidoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
     'sphinx.ext.coverage',
@@ -115,6 +116,26 @@ extensions = [
     'sphinx_rtd_theme',
     'sphinxcontrib.googleanalytics',
 ]
+
+# -- apidoc configuration
+
+# apidoc_modules = [
+#     {
+#         'path': '../../xoa_driver/',
+#         'destination': 'api_ref/api_doc/',
+#         'exclude_patterns': ['**/tests/*'],
+#         'max_depth': 4,
+#         'follow_links': True,
+#         'separate_modules': False,
+#         'include_private': False,
+#         'no_headings': False,
+#         'module_first': False,
+#         'implicit_namespaces': True,
+#         'automodule_options': {
+#             'members', 'show-inheritance', 'undoc-members'
+#         },
+#     },
+# ]
 
 # -- autodoc configuration
 
@@ -177,8 +198,6 @@ autosummary_generate = True
 
 # If true, autosummary overwrites existing files by generated stub pages.
 autosummary_generate_overwrite = False
-
-
 
 # -- Options for HTML output -----------------------------------------------------
 

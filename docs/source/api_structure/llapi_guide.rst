@@ -1,4 +1,3 @@
-.. _low_level_api_label:
 
 Low-Level API
 ===================================

@@ -22,18 +22,30 @@ This documentation covers how to use the XOA Python API, including how to instal
    introduction
    getting_started/index
    script_example
-   api_structure/index
    test_resource_mgt
    command_grouping
    status_msg_exceptions
    glossary
 
 .. toctree::
-   :numbered: 3
-   :maxdepth: 1
-   :caption: API Reference Guide
+   :maxdepth: 2
+   :caption: High-level API Reference Guide
 
-   api_ref/index
+   api_ref/hli/overview
+   api_ref/hli/index
+   api_ref/hlfuncs/index
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Low-Level API Reference Guide
+
+   api_ref/lli/overview
+   api_ref/lli/syntax
+   api_ref/lli/example
+   api_ref/lli/index
+   
+
    
 
 

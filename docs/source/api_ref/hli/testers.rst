@@ -1,5 +1,9 @@
-Tester
+``testers`` module
 =========================
+
+.. literalinclude:: testers.py
+    :language: python
+
 
 .. currentmodule:: xoa_driver.testers.l23_tester
 
@@ -55,13 +59,3 @@ Make all the test port LEDs flash on and off with a 1-second interval. This is h
     await tester.flash.get()
 
 
-
-
-.. list-table:: Identification
-  :widths: auto
-  :header-rows: 1
-  :align: left
-
-  * - Action
-    - API
-    - Description
