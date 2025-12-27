@@ -2338,10 +2338,10 @@ class P_ARPRXTABLE:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        chunks: typing.List[ArpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        entries: typing.List[ArpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     class SetDataAttr(RequestBodyStruct):
-        chunks: typing.List[ArpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        entries: typing.List[ArpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     def get(self) -> Token[GetDataAttr]:
         """Get the port's ARP table used to reply to incoming ARP requests.
@@ -2356,18 +2356,18 @@ class P_ARPRXTABLE:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, chunks: typing.List[ArpEntry]) -> Token[None]:
+    def set(self, entries: typing.List[ArpEntry]) -> Token[None]:
         """Set the port's ARP table used to reply to incoming ARP requests.
 
-        :param chunks:
+        :param entries:
             * IP address to match to the Target IP address in the ARP requests
             * The prefix used for address matching
             * Whether the target MAC address will be patched with the part of the IP address that is not masked by the prefix
             * The target MAC address to return in the ARP reply
-        :type chunks: typing.List[subtypes.ArpChunkList]
+        :type entries: typing.List[subtypes.ArpChunkList]
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, chunks=chunks))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, entries=entries))
 
 
 @register_command
@@ -2385,10 +2385,10 @@ class P_NDPRXTABLE:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        chunks: typing.List[NdpEntry] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        entries: typing.List[NdpEntry] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     class SetDataAttr(RequestBodyStruct):
-        chunks: typing.List[NdpEntry] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        entries: typing.List[NdpEntry] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     def get(self) -> Token[GetDataAttr]:
         """Get the port's NDP table used to reply to incoming NDP Neighbor Solicitation.
@@ -2403,19 +2403,18 @@ class P_NDPRXTABLE:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, chunks: typing.List[NdpEntry]) -> Token[None]:
+    def set(self, entries: typing.List[NdpEntry]) -> Token[None]:
         """Set the port's NDP table used to reply to incoming NDP Neighbor Solicitation.
 
-        :param chunks:
+        :param entries:
             * IP address to match to the Target IP address in the NDP Neighbor Solicitation
             * The prefix used for address matching
             * Whether the target MAC address will be patched with the part of the IP address that is not masked by the prefix
             * The target MAC address to return in the NDP Neighbor Advertisement
-        :type chunks: typing.List[subtypes.NdpChunkList]
+        :type entries: typing.List[subtypes.NdpChunkList]
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, chunks=chunks))
-
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, entries=entries))
 
 @register_command
 @dataclass
