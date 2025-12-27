@@ -21,11 +21,7 @@ class FamilyOdin(BasePortL23Genuine):
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
-        self.mdix_mode = P_MDIXMODE(conn, module_id, port_id)
-        """MDI/MDIX mode.
         
-        :type: P_MDIXMODE
-        """
 
         self.autoneg_selection = P_AUTONEGSELECTION(conn, module_id, port_id)
         """Auto-negotiation selection.
@@ -33,26 +29,28 @@ class FamilyOdin(BasePortL23Genuine):
         :type: P_AUTONEGSELECTION
         """
 
-        self.eee = LowPowerMode(conn, module_id, port_id)
-        """L23 port Low Power mode settings.
         
-        :type: LowPowerMode
-        """
         
 
 class POdin1G3S6P(FamilyOdin):
     """L23 port on Odin-1G-3S-6P module.
     """
-    ...
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        super().__init__(conn, module_id, port_id)
+        self.mdix_mode = P_MDIXMODE(conn, module_id, port_id)
+        """MDI/MDIX mode.
+        
+        :type: P_MDIXMODE
+        """
 
 
-class POdin1G3S6P_b(FamilyOdin):
+class POdin1G3S6P_b(POdin1G3S6P):
     """L23 port on Odin-1G-3S-6P[b] module.
     """
     ...
 
 
-class POdin1G3S6PE(FamilyOdin):
+class POdin1G3S6PE(POdin1G3S6P):
     """L23 port on Odin-1G-3S-6P-E module.
     """
     ...
@@ -94,13 +92,13 @@ class POdin10G1S2P(FamilyOdin):
     ...
 
 
-class POdin10G1S2P_b(FamilyOdin):
+class POdin10G1S2P_b(POdin10G1S2P):
     """L23 port on Odin-10G-1S-2P[b] module.
     """
     ...
 
 
-class POdin10G1S2P_c(FamilyOdin):
+class POdin10G1S2P_c(POdin10G1S2P):
     """L23 port on Odin-10G-1S-2P[c] module.
     """
     ...
@@ -121,10 +119,17 @@ class POdin5G4S6PCU(FamilyOdin):
 class POdin10G5S6PCU(FamilyOdin):
     """L23 port on Odin-10G-5S-6P-CU module.
     """
-    ...
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        super().__init__(conn, module_id, port_id)
+
+        self.eee = LowPowerMode(conn, module_id, port_id)
+        """L23 port Low Power mode settings.
+        
+        :type: LowPowerMode
+        """
 
 
-class POdin10G5S6PCU_b(FamilyOdin):
+class POdin10G5S6PCU_b(POdin10G5S6PCU):
     """L23 port on Odin-10G-5S-6P-CU[b] module.
     """
     ...
@@ -148,10 +153,23 @@ class POdin10G6S6P_a(FamilyOdin):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
         self.runt = Runt(conn, module_id, port_id)
-        """Runt settings."""
+        """Runt settings.
+        
+        :type: Runt
+        """
 
         self.preamble = Preamble(conn, module_id, port_id)
-        """Preamble settings."""
+        """Preamble settings.
+        
+        :type: Preamble
+        """
+
+        self.dynamic = P_DYNAMIC(conn, module_id, port_id)
+        """L23 port's dynamic traffic change.
+        
+        :type: P_DYNAMIC
+        """
+
 
 class POdin10G1S6P_b(POdin10G6S6P_a):
     """L23 port on Odin-10G-6S-6P[b] module.
