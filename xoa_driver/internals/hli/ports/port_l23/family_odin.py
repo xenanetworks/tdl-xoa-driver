@@ -21,13 +21,21 @@ class FamilyOdin(BasePortL23Genuine):
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
+
+        self.dynamic = P_DYNAMIC(conn, module_id, port_id)
+        """L23 port's dynamic traffic change.
         
+        :type: P_DYNAMIC
+        """
 
         self.autoneg_selection = P_AUTONEGSELECTION(conn, module_id, port_id)
         """Auto-negotiation selection.
         
         :type: P_AUTONEGSELECTION
         """
+
+    on_dynamic_change = functools.partialmethod(utils.on_event, P_DYNAMIC)
+    """Register a callback to the event that the port's dynamic traffic setting changes."""
 
         
         
@@ -164,11 +172,7 @@ class POdin10G6S6P_a(FamilyOdin):
         :type: Preamble
         """
 
-        self.dynamic = P_DYNAMIC(conn, module_id, port_id)
-        """L23 port's dynamic traffic change.
         
-        :type: P_DYNAMIC
-        """
 
 
 class POdin10G1S6P_b(POdin10G6S6P_a):
@@ -198,16 +202,8 @@ class POdin10G1S12P(FamilyOdin):
 class POdin40G2S2P(FamilyOdin):
     """L23 port on Odin-40G-2S-2P module.
     """
-    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
-        super().__init__(conn, module_id, port_id)
-        self.dynamic = P_DYNAMIC(conn, module_id, port_id)
-        """L23 port's dynamic traffic change.
-        
-        :type: P_DYNAMIC
-        """
-
-    on_dynamic_change = functools.partialmethod(utils.on_event, P_DYNAMIC)
-    """Register a callback to the event that the port's dynamic traffic setting changes."""
+    ...
+    
 
 
 class POdin40G2S2PB(POdin40G2S2P):
