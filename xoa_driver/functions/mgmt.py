@@ -44,6 +44,7 @@ async def reserve_tester(tester: L23Tester, force: bool = True) -> None:
     :return:
     :rtype: None
     """
+
     await release_tester(tester, force)
     await tester.reservation.set_reserve()
 
@@ -110,6 +111,7 @@ def obtain_modules_by_ids(tester: L23Tester, module_ids: List[str]) -> Tuple[Gen
     :return: module objects
     :rtype: List[:class:`~xoa_driver.modules.GenericAnyModule`]
     """
+
     if len(module_ids) == 0:
         return tuple(tester.modules)
     elif "*" in module_ids:
@@ -129,6 +131,7 @@ async def reserve_modules(modules: List[GenericAnyModule], force: bool = True) -
     :return:
     :rtype: None
     """
+
     await release_modules(modules, force)
     await asyncio.gather(*(module.reservation.set_reserve() for module in modules))
 
@@ -145,6 +148,7 @@ async def release_modules(
     :return:
     :rtype: None
     """
+
     for module in modules:
         r = await module.reservation.get()
         if r.operation == enums.ReservedStatus.RESERVED_BY_OTHER:
@@ -318,22 +322,23 @@ def obtain_ports_by_ids(tester: L23Tester, port_ids: List[str], separator: str =
     :type tester: :class:`~xoa_driver.testers.L23Tester`
     :param port_ids: The port ids.
     
-    The port index with format "m/p", m is module index, p is port index, e.g. ["1/3", "2/4"]. 
+        The port index with format ``m/p``, m is module index, p is port index, e.g. ["1/3", "2/4"]. 
 
-    Use "1/*" to get all ports of module 1.
+        Use ``1/*`` to get all ports of module 1.
 
-    Use "*/1" to get port 1 of all modules.
+        Use ``*/1`` to get port 1 of all modules.
 
-    Use "*", or "*/*" to get all ports of all modules.
+        Use ``*``, or ``*/*`` to get all ports of all modules.
     
-    Use an empty list to get all ports of all modules.
+        Use an empty list to get all ports of all modules.
 
     :type port_ids: List[str]
-    :param separator: The separator between module index and port index in port id, defaults to "/"
+    :param separator: The separator between module index and port index in port id, defaults to `/`
     :type separator: str, optional
     :return: List of port objects
     :rtype: tuple[GenericAnyPort]
     """
+
     returned_ports = []
     if len(port_ids) == 0 or f"*{separator}*" in port_ids or f"*" in port_ids: # [] or ["*/*"] or ["*"]
         all_ports_ = (m.ports for m in tester.modules)
