@@ -1884,7 +1884,7 @@ class P4_DHCP_RESULT:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        dhcp_chunks: typing.List[subtypes.DhcpChunk] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpIPv4Address(), XmpIPv4Address(), XmpIPv4Address(), XmpInt(), XmpMacAddress()]))
+        dhcp_chunks: typing.List[subtypes.DhcpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpIPv4Address(), XmpIPv4Address(), XmpIPv4Address(), XmpInt(), XmpMacAddress()]))
 
     def get(self) -> "Token[GetDataAttr]":
         """Get the port's the result of the last DHCP client process

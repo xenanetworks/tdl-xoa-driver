@@ -19,7 +19,7 @@ from .enums import (
 
 
 @dataclass
-class ArpChunk:
+class ArpEntry:
     ipv4_address: ipaddress.IPv4Address
     """The IP address to match to the Target IP address in the ARP requests"""
 
@@ -34,7 +34,7 @@ class ArpChunk:
 
 
 @dataclass
-class NdpChunk:
+class NdpEntry:
     ipv6_address: ipaddress.IPv6Address
     """The IP address to match to the Target IP address in the NDP Neighbor Solicitation"""
 
@@ -48,7 +48,7 @@ class NdpChunk:
     """The target MAC address to return in the NDP Neighbor Advertisement. If set t to all-zero, the port MAC address will be used."""
 
 @dataclass
-class DhcpChunk:
+class DhcpEntry:
     ipv4_address:       ipaddress.IPv4Address = field(XmpIPv4Address())  # provided IP address by DHCP Server
     subnet_mask:        ipaddress.IPv4Address = field(XmpIPv4Address())  # provided Subnet mask by DHCP Server
     braodcast_address:  ipaddress.IPv4Address = field(XmpIPv4Address())  # provided Broadcast address by DHCP Server

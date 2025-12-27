@@ -5,9 +5,9 @@
 from .internals.core.token import Token
 from .internals.core.transporter.protocol.payload.types import Hex
 from .internals.commands.subtypes import (
-    ArpChunk,
-    NdpChunk,
-    DhcpChunk,
+    ArpEntry,
+    NdpEntry,
+    DhcpEntry,
     GroupAddressElem,
     VlanTag,
     QueueStatsElem,
@@ -31,9 +31,9 @@ from xoa_driver.internals.hli.indices.macsecscs.genuine_macsecsc import GenuineM
 __all__ = (
     "Token",
     "Hex",
-    "ArpChunk",
-    "NdpChunk",
-    "DhcpChunk",
+    "ArpEntry",
+    "NdpEntry",
+    "DhcpEntry",
     "GroupAddressElem",
     "VlanTag",
     "QueueStatsElem",

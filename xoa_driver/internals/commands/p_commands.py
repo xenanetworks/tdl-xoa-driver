@@ -29,8 +29,8 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     Hex,
 )
 from .subtypes import (
-    ArpChunk,
-    NdpChunk,
+    ArpEntry,
+    NdpEntry,
 )
 from .enums import (
     ReservedStatus,
@@ -2338,10 +2338,10 @@ class P_ARPRXTABLE:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        chunks: typing.List[ArpChunk] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        chunks: typing.List[ArpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     class SetDataAttr(RequestBodyStruct):
-        chunks: typing.List[ArpChunk] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        chunks: typing.List[ArpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     def get(self) -> Token[GetDataAttr]:
         """Get the port's ARP table used to reply to incoming ARP requests.
@@ -2356,7 +2356,7 @@ class P_ARPRXTABLE:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, chunks: typing.List[ArpChunk]) -> Token[None]:
+    def set(self, chunks: typing.List[ArpEntry]) -> Token[None]:
         """Set the port's ARP table used to reply to incoming ARP requests.
 
         :param chunks:
@@ -2385,10 +2385,10 @@ class P_NDPRXTABLE:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        chunks: typing.List[NdpChunk] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        chunks: typing.List[NdpEntry] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     class SetDataAttr(RequestBodyStruct):
-        chunks: typing.List[NdpChunk] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        chunks: typing.List[NdpEntry] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     def get(self) -> Token[GetDataAttr]:
         """Get the port's NDP table used to reply to incoming NDP Neighbor Solicitation.
@@ -2403,7 +2403,7 @@ class P_NDPRXTABLE:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, chunks: typing.List[NdpChunk]) -> Token[None]:
+    def set(self, chunks: typing.List[NdpEntry]) -> Token[None]:
         """Set the port's NDP table used to reply to incoming NDP Neighbor Solicitation.
 
         :param chunks:
