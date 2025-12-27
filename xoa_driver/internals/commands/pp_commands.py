@@ -841,7 +841,7 @@ class PP_TXLASERPOWER:
 @dataclass
 class PP_PMAERRPUL_ENABLE:
     """
-    Enable / disable 'PMA pulse error inject'.
+    Enable / disable PMA pulse error inject.
     """
 
     code: typing.ClassVar[int] = 300
@@ -869,8 +869,8 @@ class PP_PMAERRPUL_ENABLE:
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, on_off: OnOff) -> Token[None]:
-        """Set the status of 'PMA pulse error inject'.
-
+        """Set the status of PMA pulse error inject.
+        
         :param on_off: whether PMA pulse error inject is enabled
         :type on_off: OnOff
         """
