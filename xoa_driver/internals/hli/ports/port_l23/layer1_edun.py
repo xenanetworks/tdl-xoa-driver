@@ -11,6 +11,7 @@ from xoa_driver.internals.commands import (
     PP_LINKTRAINSTATUS,
 )
 from .layer1.pcs_fec import PcsLayer, FreyaFecCodewordErrorInject
+from .layer1.impair import Impair
 from .layer1.prbs import Prbs
 from .layer1.pma import FreyaPMA
 from .layer1.medium import EdunMedium
@@ -71,6 +72,9 @@ class Layer1:
                 for idx in range(port.info.capabilities.serdes_count)
                 )
         
+        self.impairment = Impair(conn, module_id, port_id)
+        """Impairment functions"""
+
         self.rs_fault = RsFault(conn, module_id, port_id)
         """RS Fault configuration and status
         """
