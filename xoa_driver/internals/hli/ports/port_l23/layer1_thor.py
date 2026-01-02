@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from xoa_driver.internals.hli.ports.port_l23.family_thor import FamilyThor
 from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
+    PP_LINKTRAINSTATUS,
 )
 from .layer1.prbs import Prbs
 from .layer1.pcs_fec import PcsLayer
@@ -32,6 +33,11 @@ class SerDesThor:
         """Basic medium
 
         :type: BasicMedium
+        """
+
+        self.lt_status = PP_LINKTRAINSTATUS(conn, module_id, port_id, serdes_xindex)
+        """LT status for Edun
+        :type: PP_LINKTRAINSTATUS
         """
 
 class Layer1:
