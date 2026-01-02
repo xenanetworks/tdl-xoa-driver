@@ -264,6 +264,14 @@ class PP_TXPRBSCONFIG:
                 error_on_off=error_on_off
             )
         )
+    
+    set_on = functools.partialmethod(set, 17, PRBSOnOff.PRBSON, ErrorOnOff.ERRORSOFF)
+    """Enable PRBS transmission on this SerDes without error injection.
+    """
+
+    set_off = functools.partialmethod(set, 17, PRBSOnOff.PRBSOFF, ErrorOnOff.ERRORSOFF)
+    """Disable PRBS transmission on this SerDes without error injection.
+    """
 
 
 @register_command
