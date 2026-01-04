@@ -117,6 +117,11 @@ class POdin10G1S6P(FamilyOdin):
     """
     ...
 
+class POdin10G1S6P_b(POdin10G1S6P):
+    """L23 port on Odin-10G-1S-6P[b] module.
+    """
+    ...
+
 
 class POdin5G4S6PCU(FamilyOdin):
     """L23 port on Odin-5G-4S-6P-CU module.
@@ -160,6 +165,7 @@ class POdin10G6S6P_a(FamilyOdin):
     """
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
+        
         self.runt = Runt(conn, module_id, port_id)
         """Runt settings.
         
@@ -171,14 +177,6 @@ class POdin10G6S6P_a(FamilyOdin):
         
         :type: Preamble
         """
-
-        
-
-
-class POdin10G1S6P_b(POdin10G6S6P_a):
-    """L23 port on Odin-10G-6S-6P[b] module.
-    """
-    ...
 
 
 class POdin10G1S2PT(FamilyOdin):
