@@ -21,7 +21,6 @@ from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
     PL1_PNSWAP_RX,
     PL1_PNSWAP_TX,
-    P_EDUN_RX_STATUS,
     PP_AUTONEG,
     PP_AUTONEGSTATUS,
     PP_LINKTRAIN,
@@ -81,22 +80,22 @@ class EdunTxTap:
         :type: PL1_PHYTXEQ_COEFF
         """
 
-class EdunRxTap:
-    """Edun Rx tap
-    """
-    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_xindex: int) -> None:
-        self.status = P_EDUN_RX_STATUS(conn, module_id, port_id, serdes_xindex)
-        """Edun Rx tap status
-        """
+# class EdunRxTap:
+#     """Edun Rx tap
+#     """
+    # def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_xindex: int) -> None:
+    #     self.status = P_EDUN_RX_STATUS(conn, module_id, port_id, serdes_xindex)
+    #     """Edun Rx tap status
+    #     """
 
 class EdunMedium:
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_xindex: int) -> None:
         self.tx = EdunTxTap(conn, module_id, port_id, serdes_xindex)
         """Edun Tx tap
         """
-        self.rx = EdunRxTap(conn, module_id, port_id, serdes_xindex)
-        """Edun Rx tap
-        """
+        # self.rx = EdunRxTap(conn, module_id, port_id, serdes_xindex)
+        # """Edun Rx tap
+        # """
 
 class SerDesEdun:
     """L23 high-speed port SerDes configuration and status."""

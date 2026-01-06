@@ -7,9 +7,9 @@ Corresponding low-level API class: :class:`~xoa_driver.internals.commands.pl1_co
 
 .. code-block:: python
 
-    await port.l1.anlt.ctrl.enable_an_lt_auto()
-    await port.l1.anlt.ctrl.disable_anlt()
-    await port.l1.anlt.ctrl.enable_an_lt_interactive()
     await port.l1.anlt.ctrl.enable_an_only()
-    await port.l1.anlt.ctrl.enable_an_lt_auto()
+    await port.l1.anlt.ctrl.enable_lt_auto_only()
     await port.l1.anlt.ctrl.enable_lt_interactive_only()
+    await port.l1.anlt.ctrl.enable_an_lt_auto()
+    await port.l1.anlt.ctrl.enable_an_lt_interactive()
+    await port.l1.anlt.ctrl.disable_anlt()
