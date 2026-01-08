@@ -2006,10 +2006,6 @@ class PP_AUTONEG:
         :param pause_mode: pause mode (hex string with 0x prefix or PauseMode enum)
         :type pause_mode: typing.Union[str, PauseMode]
         """
-        # Convert tec_ability to hex string using AutoNegTecAbilityHex
-        #tec_ability_hex = AutoNegTecAbilityHex(tec_ability).hex_string
-        # Convert pause_mode to hex string using PauseModeHex
-        #pause_mode_hex = PauseModeHex(pause_mode).hex_string
 
         return Token(
             self._connection,

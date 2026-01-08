@@ -2125,6 +2125,8 @@ class AutoNegMode(IntEnum):
 
 
 class AutoNegTecAbilityHex(XmpHex):
+    """Auto Neg Technical Abilities Hex wrapper class for protocol compatibility."""
+
     def __init__(self, value: Union[str, "AutoNegTecAbility"] = "0x0000000000000000") -> None:
         super().__init__(size=8)
         if isinstance(value, AutoNegTecAbility):
