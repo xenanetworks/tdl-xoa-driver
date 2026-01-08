@@ -38,8 +38,10 @@ from .enums import (
     PRBSStatisticsMode,
     AutoNegMode,
     AutoNegTecAbility,
+    AutoNegTecAbilityHex,
     AutoNegFECOption,
     PauseMode,
+    PauseModeHex,
     AutoNegFECType,
     AutoNegStatus,
     AutoNegFECStatus,
@@ -1955,8 +1957,7 @@ class PP_PHYRXEQSTATUS_EXT:
 @dataclass
 class PP_AUTONEG:
     """
-    Auto-negotiation settings of the PHY - for Thor-400G-7S-1P Thor-400G-7S-1P[b]
-    and [c]
+    Basic Auto-negotiation configuration and control
     """
 
     code: typing.ClassVar[int] = 381
@@ -1969,25 +1970,25 @@ class PP_AUTONEG:
     class GetDataAttr(ResponseBodyStruct):
         mode: AutoNegMode = field(XmpInt())
         """coded integer, mode"""
-        tec_ability: AutoNegTecAbility = field(XmpInt())
-        """coded integer, technical ability."""
-        fec_capable: int = field(XmpInt())
+        tec_ability: Hex = field(XmpHex(size=8))
+        """hex string, technical ability."""
+        fec_capable: Hex = field(XmpHex(size=1))
         """coded integer, FEC capable."""
-        fec_requested: int = field(XmpInt())
+        fec_requested: Hex = field(XmpHex(size=1))
         """coded integer, FEC requested."""
-        pause_mode: PauseMode = field(XmpInt())
+        pause_mode: Hex = field(XmpHex(size=1))
         """coded integer, pause mode."""
 
     class SetDataAttr(RequestBodyStruct):
         mode: AutoNegMode = field(XmpInt())
         """coded integer, mode"""
-        tec_ability: AutoNegTecAbility = field(XmpInt())
-        """coded integer, technical ability."""
-        fec_capable: int = field(XmpInt())
+        tec_ability: Hex = field(XmpHex(size=8))
+        """hex string, technical ability."""
+        fec_capable: Hex = field(XmpHex(size=1))
         """coded integer, FEC capable."""
-        fec_requested: int = field(XmpInt())
+        fec_requested: Hex = field(XmpHex(size=1))
         """coded integer, FEC requested."""
-        pause_mode: PauseMode = field(XmpInt())
+        pause_mode: Hex = field(XmpHex(size=1))
         """coded integer, pause mode."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -1999,19 +2000,19 @@ class PP_AUTONEG:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, mode: AutoNegMode, tec_ability: AutoNegTecAbility, fec_capable: AutoNegFECOption, fec_requested: AutoNegFECOption, pause_mode: PauseMode) -> Token[None]:
+    def set(self, mode: AutoNegMode, tec_ability: Hex, fec_capable: Hex, fec_requested: Hex, pause_mode: Hex) -> Token[None]:
         """Set the auto-negotiation settings of the PHY.
 
         :param mode: auto neg mode
         :type mode: AutoNegMode
-        :param tec_ability: technical ability
-        :type tec_ability: AutoNegTecAbility
+        :param tec_ability: technical ability (hex string with 0x prefix or AutoNegTecAbility enum)
+        :type tec_ability: Hex
         :param fec_capable: FEC capable
-        :type fec_capable: AutoNegFECOption
+        :type fec_capable: Hex
         :param fec_requested: FEC requested
-        :type fec_requested: AutoNegFECOption
-        :param pause_mode: pause mode
-        :type pause_mode: PauseMode
+        :type fec_requested: Hex
+        :param pause_mode: pause mode (hex string with 0x prefix or PauseMode enum)
+        :type pause_mode: Hex
         """
 
         return Token(
@@ -2033,7 +2034,7 @@ class PP_AUTONEG:
 @dataclass
 class PP_AUTONEGSTATUS:
     """
-    Status of auto-negotiation settings of the PHY - for Thor-400G-7S-1P[b] and [c]
+    Basic Auto-negotiation status
     """
 
     code: typing.ClassVar[int] = 382
@@ -2050,13 +2051,13 @@ class PP_AUTONEGSTATUS:
         """codec integer, FEC."""
         auto_state: AutoNegStatus = field(XmpInt())
         """coded integer, auto-negotiation state."""
-        tec_ability: AutoNegTecAbility = field(XmpInt())
+        tec_ability: Hex = field(XmpHex(size=8))
         """coded integer, technical ability."""
-        fec_capable: int = field(XmpInt())
+        fec_capable: Hex = field(XmpHex(size=1))
         """coded integer, FEC capable partner."""
-        fec_requested: int = field(XmpInt())
+        fec_requested: Hex = field(XmpHex(size=1))
         """coded integer, FEC requested partner."""
-        pause_mode: PauseMode = field(XmpInt())
+        pause_mode: Hex = field(XmpHex(size=1))
         """coded integer, pause mode."""
 
     def get(self) -> Token[GetDataAttr]:

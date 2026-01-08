@@ -200,6 +200,8 @@ from .internals.commands.enums import (
     ModifierEndianness,
     MACSecPNMode,
     ModuleConfigStatus,
+    PauseModeHex,
+    AutoNegTecAbilityHex,
 )
 
 __all__ = (
@@ -400,4 +402,6 @@ __all__ = (
     "ModifierEndianness",
     "MACSecPNMode",
     "ModuleConfigStatus",
+    "PauseModeHex",
+    "AutoNegTecAbilityHex",
 )
