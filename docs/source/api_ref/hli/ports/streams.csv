@@ -1,0 +1,84 @@
+1,Create Stream,port.streams.create(),Create a new stream object on the port
+2,Obtain Stream,port.streams.obtain(),Obtain an existing stream object using stream index
+3,Obtain Multiple Streams,port.streams.obtain_multiple(),Obtain multiple existing stream objects
+4,Sync Streams,port.streams.server_sync(),Sync existing streams from port
+5,Get Stream Index,stream.idx,Get the stream index
+6,Get Stream Module/Port Index,stream.kind.module_id/port_id,Get stream's module and port index
+7,Remove Stream by Index,port.streams.remove(),Remove a stream from the port by index
+8,Delete Stream,stream.delete(),Remove a stream from the port using object
+9,Set Stream Description,stream.comment.set(),Set a text description for the stream
+10,Get Stream Description,stream.comment.get(),Get the stream description
+11,Set Test Payload ID,stream.tpld_id.set(),Set the test payload identifier for the stream
+12,Get Test Payload ID,stream.tpld_id.get(),Get the test payload identifier for the stream
+13,Disable Stream,stream.enable.set_off(),Disable the stream
+14,Enable Stream,stream.enable.set_on(),Enable the stream
+15,Suppress Stream,stream.enable.set_suppress(),Suppress the stream
+16,Get Stream Enable Status,stream.enable.get(),Get the stream enable status
+17,Set Stream Rate Fraction,stream.rate.fraction.set(),Set stream rate as fraction of port rate (ppm)
+18,Get Stream Rate Fraction,stream.rate.fraction.get(),Get stream rate fraction
+19,Set Stream Rate PPS,stream.rate.pps.set(),Set stream rate in packets per second
+20,Get Stream Rate PPS,stream.rate.pps.get(),Get stream rate in packets per second
+21,Set Stream Rate L2 BPS,stream.rate.l2bps.set(),Set stream rate in L2 bits per second
+22,Get Stream Rate L2 BPS,stream.rate.l2bps.get(),Get stream rate in L2 bits per second
+23,Set Stream Packet Limit,stream.packet.limit.set(),Set the total number of packets for the stream
+24,Get Stream Packet Limit,stream.packet.limit.get(),Get the stream packet limit
+25,Set Burst Size and Density,stream.burst.burstiness.set(),Set burst size and density for the stream
+26,Get Burst Size and Density,stream.burst.burstiness.get(),Get burst size and density configuration
+27,Set Burst Gap,stream.burst.gap.set(),Set inter-packet and inter-burst gaps
+28,Get Burst Gap,stream.burst.gap.get(),Get burst gap configuration
+29,Set Priority Flow Control,stream.priority_flow.set(),Set PFC CoS value for the stream
+30,Get Priority Flow Control,stream.priority_flow.get(),Get PFC CoS value for the stream
+31,Set Packet Length FIXED,stream.packet.length.set(),Set fixed packet length for the stream
+32,Set Packet Length INCREMENTING,stream.packet.length.set(),Set incrementing packet length for the stream
+33,Set Packet Length BUTTERFLY,stream.packet.length.set(),Set butterfly packet length for the stream
+34,Set Packet Length RANDOM,stream.packet.length.set(),Set random packet length for the stream
+35,Set Packet Length MIX,stream.packet.length.set(),Set mixed packet length for the stream
+36,Get Packet Length,stream.packet.length.get(),Get packet length configuration
+37,Auto Adjust Packet Size,stream.packet.auto_adjust.set(),Adjust packet length distribution of the stream
+38,Set Protocol Segments,stream.packet.header.protocol.set(),Set header protocol segments for the stream
+39,Get Protocol Segments,stream.packet.header.protocol.get(),Get header protocol segments
+40,Set Packet Header Data,stream.packet.header.data.set(),Set packet header data using hex or headers object
+41,Get Packet Header Data,stream.packet.header.data.get(),Get packet header data
+42,Set Payload Pattern,stream.payload.content.set(),Set payload content pattern for the stream
+43,Set Payload INC16,stream.payload.content.set_inc_word(),Set 16-bit incrementing payload
+44,Set Payload INC8,stream.payload.content.set_inc_byte(),Set 8-bit incrementing payload
+45,Set Payload DEC8,stream.payload.content.set_dec_byte(),Set 8-bit decrementing payload
+46,Set Payload DEC16,stream.payload.content.set_dec_word(),Set 16-bit decrementing payload
+47,Set Payload PRBS,stream.payload.content.set_prbs(),Set PRBS payload
+48,Set Payload RANDOM,stream.payload.content.set_random(),Set random payload
+49,Get Payload Content,stream.payload.content.get(),Get payload content configuration
+50,Set Extended Payload,stream.payload.extended.set(),Set extended payload (up to MTU) for the stream
+51,Get Extended Payload,stream.payload.extended.get(),Get extended payload data
+52,Set CDF Offset,stream.cdf.offset.set(),Set Custom Data Field offset for the stream
+53,Get CDF Offset,stream.cdf.offset.get(),Get CDF offset value
+54,Set CDF Count,stream.cdf.count.set(),Set number of custom data fields for the stream
+55,Get CDF Count,stream.cdf.count.get(),Get number of custom data fields
+56,Set CDF Data,stream.cdf.data().set(),Set custom data field data for the stream
+57,Get CDF Data,stream.cdf.data().get(),Get custom data field data
+58,Set IPv4 Gateway,stream.gateway.ipv4.set(),Set IPv4 gateway address for the stream
+59,Get IPv4 Gateway,stream.gateway.ipv4.get(),Get IPv4 gateway address
+60,Set IPv6 Gateway,stream.gateway.ipv6.set(),Set IPv6 gateway address for the stream
+61,Get IPv6 Gateway,stream.gateway.ipv6.get(),Get IPv6 gateway address
+62,Request ARP Resolution,stream.request.arp.get(),Generate ARP request for peer address resolution
+63,Request PING Check,stream.request.ping.get(),Generate PING request to check IP peer
+64,Inject FCS Error,stream.inject_err.frame_checksum.set(),Inject frame checksum error in transmitted packet
+65,Inject Misorder Error,stream.inject_err.misorder.set(),Inject misorder error by swapping sequence numbers
+66,Inject Payload Integrity Error,stream.inject_err.payload_integrity.set(),Inject payload integrity error in packet
+67,Inject Sequence Error,stream.inject_err.sequence.set(),Inject sequence error by skipping sequence number
+68,Inject Test Payload Error,stream.inject_err.test_payload.set(),Inject test payload error in packet
+69,Configure 16/24-bit Modifiers,stream.packet.header.modifiers.configure(),Create 16/24-bit modifiers for the stream
+70,Clear 16/24-bit Modifiers,stream.packet.header.modifiers.clear(),Clear all 16/24-bit modifiers
+71,Obtain 16/24-bit Modifier,stream.packet.header.modifiers.obtain(),Obtain a 16/24-bit modifier object
+72,Set Modifier Range,modifier.range.set(),Set min/max/step for modifier range
+73,Get Modifier Range,modifier.range.get(),Get modifier range configuration
+74,Set Modifier Specification,modifier.specification.set(),Set modifier position, mask, action, repetition
+75,Get Modifier Specification,modifier.specification.get(),Get modifier specification configuration
+76,Set Modifier Endianness,modifier.endian.set(),Set modifier endianness (BIG or LITTLE)
+77,Get Modifier Endianness,modifier.endian.get(),Get modifier endianness setting
+78,Configure 32-bit Modifiers,stream.packet.header.modifiers_extended.configure(),Create 32-bit modifiers for the stream
+79,Clear 32-bit Modifiers,stream.packet.header.modifiers_extended.clear(),Clear all 32-bit modifiers
+80,Obtain 32-bit Modifier,stream.packet.header.modifiers_extended.obtain(),Obtain a 32-bit modifier object
+81,Set 32-bit Modifier Range,modifier_ext.range.set(),Set min/max/step for 32-bit modifier range
+82,Get 32-bit Modifier Range,modifier_ext.range.get(),Get 32-bit modifier range configuration
+83,Set 32-bit Modifier Specification,modifier_ext.specification.set(),Set 32-bit modifier position, mask, action, repetition
+84,Get 32-bit Modifier Specification,modifier_ext.specification.get(),Get 32-bit modifier specification configuration

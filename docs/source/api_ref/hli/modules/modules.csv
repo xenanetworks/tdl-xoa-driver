@@ -1,0 +1,46 @@
+1,Get Module Object,tester.modules.obtain(),Obtain a module object representing the module installed in a specific slot
+2,Release Module,module.reservation.set_release(),Release the module
+3,Relinquish Module,module.reservation.set_relinquish(),Relinquish the module
+4,Reserve Module,module.reservation.set_reserve(),Reserve the module
+5,Get Module Reservation Status,module.reservation.get(),Get the current reservation status of the module
+6,Get Module Reserved By,module.reserved_by.get(),Get the current reservation status of the module
+7,Get Module Capabilities,module.capabilities.get(),Get the module capabilities information
+8,Get Module Name,module.name.get(),Get the name of the module
+9,Set Module Description,module.comment.set(),Set a text description of the module
+10,Get Module Description,module.comment.get(),Get a text description of the module
+11,Get Module Legacy Model,module.model.get(),Get the legacy model of the module
+12,Get Module Revision,module.revision.get(),Get the hardware revision of the module
+13,Get Module Serial Number,module.serial_number.get(),Get the serial number of the module
+14,Get Module Firmware Version,module.version_number.get(),Get the firmware version of the module
+15,Get Module Port Count,module.port_count.get(),Get the number of ports on the module
+16,Get Module Status,module.status.get(),Get the temperature status of the module
+17,Get Supported Configurations,module.supported_configs.get(),Get the supported media configurations of the module
+18,Set Module Media Configuration,module.config.media.set(),Set the media configuration of the module
+19,Get Module Media Configuration,module.config.media.get(),Get the media configuration of the module
+20,Set Module Port Speed Configuration,module.config.port_speed.set(),Set the port speed configuration of the module
+21,Get Module Port Speed Configuration,module.config.port_speed.get(),Get the port speed configuration of the module
+22,Set TX Clock Filter Bandwidth,module.advanced_timing.clock_tx.filter.set(),Set the TX clock filter loop bandwidth
+23,Get TX Clock Filter Bandwidth,module.advanced_timing.clock_tx.filter.get(),Get the TX clock filter loop bandwidth
+24,Set TX Clock Source,module.advanced_timing.clock_tx.source.set(),Set the TX clock source
+25,Get TX Clock Source,module.advanced_timing.clock_tx.source.get(),Get the TX clock source
+26,Get TX Clock Status,module.advanced_timing.clock_tx.status.get(),Get the TX clock status
+27,Get SMA Status,module.advanced_timing.sma.status.get(),Get the SMA status
+28,Set SMA Input,module.advanced_timing.sma.input.set(),Set the SMA input
+29,Get SMA Input,module.advanced_timing.sma.input.get(),Get the SMA input
+30,Set SMA Output,module.advanced_timing.sma.output.set(),Set the SMA output
+31,Get SMA Output,module.advanced_timing.sma.output.get(),Get the SMA output
+32,Set Local Clock Adjust,module.timing.clock_local_adjust.set(),Set the local clock adjustment in parts per billion (ppb)
+33,Get Local Clock Adjust,module.timing.clock_local_adjust.get(),Get the local clock adjustment in parts per billion (ppb)
+34,Get Clock Sync Status,module.timing.clock_sync_status.get(),Get the clock synchronization status
+35,Set Clock Source,module.timing.source.set(),Set the clock source
+36,Get Clock Source,module.timing.source.get(),Get the clock source
+37,Set Clock PPM Sweep Configuration,module.clock_sweep.config.set(),Set the clock PPM sweep configuration (Z800 Freya and Z1600 Edun)
+38,Get Clock PPM Sweep Configuration,module.clock_sweep.config.get(),Get the clock PPM sweep configuration (Z800 Freya and Z1600 Edun)
+39,Get Clock PPM Sweep Status,module.clock_sweep.status.get(),Get the clock PPM sweep status (Z800 Freya and Z1600 Edun)
+40,Set Chimera Bypass Mode,module.emulator_bypass_mode.set(),Set the module bypass mode (E100 Chimera)
+41,Get Chimera Bypass Mode,module.emulator_bypass_mode.get(),Get the module bypass mode (E100 Chimera)
+42,Set Chimera Latency Mode,module.latency_mode.set(),Set the module latency mode (E100 Chimera)
+43,Get Chimera Latency Mode,module.latency_mode.get(),Get the module latency mode (E100 Chimera)
+44,Set Chimera TX Clock Source,module.tx_clock.source.set(),Set the TX clock source (E100 Chimera)
+45,Get Chimera TX Clock Source,module.tx_clock.source.get(),Get the TX clock source (E100 Chimera)
+46,Get Chimera TX Clock Status,module.tx_clock.status.get(),Get the TX clock status (E100 Chimera)

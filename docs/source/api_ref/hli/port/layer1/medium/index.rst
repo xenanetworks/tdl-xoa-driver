@@ -1,7 +1,0 @@
-Medium
-=======
-
-.. toctree::
-    :glob:
-
-    *

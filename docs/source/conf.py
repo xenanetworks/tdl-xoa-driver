@@ -117,26 +117,6 @@ extensions = [
     'sphinxcontrib.googleanalytics',
 ]
 
-# -- apidoc configuration
-
-# apidoc_modules = [
-#     {
-#         'path': '../../xoa_driver/',
-#         'destination': 'api_ref/api_doc/',
-#         'exclude_patterns': ['**/tests/*'],
-#         'max_depth': 4,
-#         'follow_links': True,
-#         'separate_modules': False,
-#         'include_private': False,
-#         'no_headings': False,
-#         'module_first': False,
-#         'implicit_namespaces': True,
-#         'automodule_options': {
-#             'members', 'show-inheritance', 'undoc-members'
-#         },
-#     },
-# ]
-
 # -- autodoc configuration
 
 # 'mixed': Display the signature with the class name.

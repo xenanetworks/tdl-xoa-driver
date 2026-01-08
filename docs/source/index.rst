@@ -34,6 +34,7 @@ This documentation covers how to use the XOA Python API, including how to instal
    api_ref/hli/overview
    api_ref/hli/index
    api_ref/hlfuncs/index
+   api_ref/hli/example
 
 
 .. toctree::
@@ -41,9 +42,8 @@ This documentation covers how to use the XOA Python API, including how to instal
    :caption: Low-Level API Reference Guide
 
    api_ref/lli/overview
-   api_ref/lli/syntax
-   api_ref/lli/example
    api_ref/lli/index
+   api_ref/lli/example
    
 
    

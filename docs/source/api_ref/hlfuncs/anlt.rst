@@ -1,6 +1,11 @@
 ``anlt`` module
 ===================================
 
+.. important::
+
+    The APIs in this module are applicable only to Z800 Freya test modules.
+
+Auto-Negotiation and Link Training (ANLT) provides functions to help you fine-tune the protocol to its optimal state, test interoperability between different vendors, and protocol compliance for different implementations.
 
 .. currentmodule:: xoa_driver.hlfuncs.anlt
 
