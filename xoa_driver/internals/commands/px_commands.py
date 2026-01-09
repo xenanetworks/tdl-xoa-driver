@@ -930,7 +930,7 @@ class PX_CDB_MODULE_FEATURES:
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
-        * ``cmd_support_mask``: :hex string, indicates support of CDB commands 0000h-00FFh. This array of 32 bytes indicates support of CDB commands CMD <i>, with identifiers 0 ≤ <i> ≤ 255, as follows: CMD <i> is supported when bit<j>=<i>mod 8 of byte<k> = 138+floor(<i>/8) is set.
+        * ``cmd_support_mask``: :hex string, indicates support of CDB commands 0000h-00FFh. This array of 32 bytes indicates support of CDB commands CMD <i>, with identifiers 0 <= <i> <= 255, as follows: CMD <i> is supported when bit<j>=<i>mod 8 of byte<k> = 138+floor(<i>/8) is set.
         * ``max_completion_time``: integer, U16 Maximum CDB command execution time in ms, of all supported CDB commands.
 
         """

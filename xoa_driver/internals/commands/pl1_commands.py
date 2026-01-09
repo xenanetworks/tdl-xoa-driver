@@ -923,12 +923,12 @@ class PL1_PHYTXEQ_COEFF:
 
     The following rules apply:
 
-        * 0.5 approx. ≤ main ≤ 1
-        * -0.4 approx ≤ post ≤ 0
-        * -0.4 approx ≤ pre ≤ 0
-        * 0 ≤ pre2 ≤ 0.25 approx.
-        * -0.25 approx ≤ pre3 ≤ 0
-        * The sum of the absolute value of each coefficients must be ≤ 1.
+        * 0.5 approx. <= main <= 1
+        * -0.4 approx <= post <= 0
+        * -0.4 approx <= pre <= 0
+        * 0 <= pre2 <= 0.25 approx.
+        * -0.25 approx <= pre3 <= 0
+        * The sum of the absolute value of each coefficients must be <= 1.
         * A sum of 1 corresponds to a TX output voltage swing of 1000 mVpp approximately.
 
     """
