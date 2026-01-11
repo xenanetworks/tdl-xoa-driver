@@ -201,7 +201,6 @@ from .internals.commands.enums import (
     MACSecPNMode,
     ModuleConfigStatus,
     PauseModeHex,
-    AutoNegTecAbilityHex,
 )
 
 __all__ = (
