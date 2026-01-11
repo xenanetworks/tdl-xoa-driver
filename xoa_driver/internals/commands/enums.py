@@ -2,9 +2,6 @@
 
 from enum import IntEnum, IntFlag
 from typing import Union
-import typing
-
-from xoa_driver.internals.core.transporter.protocol.payload.types import XmpHex
 
 
 # region L23 enums
@@ -2124,50 +2121,6 @@ class AutoNegMode(IntEnum):
     """Auto Neg Off"""
     ANEG_ON = 1
     """Auto Neg On"""
-
-
-class AutoNegTecAbilityHex(XmpHex):
-    """Auto Neg Technical Abilities Hex wrapper class for protocol compatibility."""
-
-    def __init__(self, value: Union[str, "AutoNegTecAbility"] = "0x0000000000000000") -> None:
-        super().__init__(size=8)
-        if isinstance(value, AutoNegTecAbility):
-            # Convert enum to hex string
-            self._hex_string: str = "0x" + format(value.value, '016X')
-        else:
-            # Handle hex string input
-            hex_string = value
-            if hex_string.lower().startswith("0x"):
-                hex_string = hex_string[2:]
-            self._hex_string = "0x" + hex_string.upper().zfill(16)
-
-    def to_enum(self) -> "AutoNegTecAbility":
-        """Convert this AutoNegTecAbilityHex to an AutoNegTecAbility enum.
-
-        Returns:
-            The corresponding AutoNegTecAbility enum value.
-
-        Raises:
-            ValueError: If the hex value doesn't correspond to a valid AutoNegTecAbility.
-        """
-        int_value = int(self._hex_string, 16)
-        return AutoNegTecAbility(int_value)
-
-    @property
-    def hex_string(self) -> str:
-        """Get the hex string value (with 0x prefix)."""
-        return self._hex_string
-
-    @hex_string.setter
-    def hex_string(self, val: str) -> None:
-        """Set the hex string value."""
-        if val.lower().startswith("0x"):
-            val = val[2:]
-        self._hex_string = "0x" + val.upper().zfill(16)
-
-    def to_int(self) -> int:
-        """Convert the hex string to an integer."""
-        return int(self._hex_string, 16)
 
 
 class AutoNegTecAbility(IntEnum):
