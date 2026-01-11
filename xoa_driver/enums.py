@@ -402,5 +402,4 @@ __all__ = (
     "MACSecPNMode",
     "ModuleConfigStatus",
     "PauseModeHex",
-    "AutoNegTecAbilityHex",
 )
