@@ -38,7 +38,6 @@ from .enums import (
     PRBSStatisticsMode,
     AutoNegMode,
     AutoNegTecAbility,
-    AutoNegTecAbilityHex,
     AutoNegFECOption,
     PauseMode,
     PauseModeHex,

@@ -7,7 +7,7 @@ from xoa_driver.internals.core.funcs import (
     apply_iter,
 )
 
-from xoa_driver.internals.commands.utils import (
+from xoa_driver.internals.utils.conversion import (
     AutoNegTecAbilityHex,
 )
 
