@@ -12,15 +12,11 @@ from typing import (
     List,
     Tuple,
 )
-from xoa_driver import enums, ports
-from xoa_driver.utils import apply
 if TYPE_CHECKING:
-    from xoa_driver.ports import GenericL23Port, Z800FreyaPort, Z1600EdunPort, GenericAnyPort
-    from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
-    from xoa_driver.testers import L23Tester
+    from xoa_driver.ports import Z800FreyaPort, Z1600EdunPort
+    from xoa_driver.modules import Z800FreyaModule, Z1600EdunModule
     type FreyaEdunModule = Union[Z800FreyaModule, Z1600EdunModule]
     type FreyaEdunPort = Union[Z800FreyaPort, Z1600EdunPort]
-    from xoa_driver.internals.commands.enums import MediaConfigurationType
 
 
 
