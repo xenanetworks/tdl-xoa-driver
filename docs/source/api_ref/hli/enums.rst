@@ -179,14 +179,14 @@
     ModuleModelName
     FreyaAutonegMode
     FreyaLinkTrainingMode
-    FreyaTecAbility
-    FreyaFECAbility
-    FreyaPauseAbility
-    FreyaTechAbilityHCDStatus
+    AutoNegTecAbility
+    AutoNegFECAbility
+    AutoNegPauseAbility
+    AutoNegTechAbilityHCDStatus
     FreyaOutOfSyncPreset
     Layer1Control
     FreyaPCSVariant
-    FreyaTecAbilityHCD
+    AutoNegTecAbilityHCD
     Layer1Opcode
     FecCodewordBitErrorMaskMode
     FreyaPresetResponse
