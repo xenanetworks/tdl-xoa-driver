@@ -18,6 +18,7 @@ from .layer1.medium import EdunMedium
 from .layer1.rs_fault import RsFault
 from .tcvr.transceiver import Transceiver
 from .layer1.anlt import AnltBasic
+from .layer1.siv import FreyaSIV
 
 
 
@@ -46,6 +47,10 @@ class SerDesEdun:
         self.lt_status = PP_LINKTRAINSTATUS(conn, module_id, port_id, serdes_xindex)
         """LT status for Edun
         :type: PP_LINKTRAINSTATUS
+        """
+
+        self.siv = FreyaSIV(conn, module_id, port_id, serdes_xindex)
+        """Signal Integrity
         """
 
 class EdunPcsLayer(PcsLayer):

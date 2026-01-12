@@ -39,6 +39,8 @@ This documentation covers how to use the XOA Python API, including how to instal
    api_ref/hli/overview
    api_ref/hli/index
    api_ref/hlfuncs/index
+   api_ref/utils/index
+   api_ref/misc/index
    api_ref/hli/example
 
 

@@ -12,7 +12,6 @@ from xoa_driver.internals.commands import (
     P_TCVRSTATUS,
     P_LOADMODE,
     PP_FECMODE,
-    P_MACSEC_RX_ENABLE
 )
 from xoa_driver.internals.utils import attributes as utils
 from xoa_driver.internals.utils.indices import index_manager as idx_mgr
@@ -20,7 +19,6 @@ from xoa_driver.internals.hli.indices.streams.genuine_stream import GenuineStrea
 from xoa_driver.internals.hli.indices.filter.genuine_filter import GenuineFilterIdx
 from xoa_driver.internals.hli.indices.port_dataset import PortDatasetIdx
 from xoa_driver.internals.state_storage import ports_state
-from xoa_driver.internals.hli.indices.macsecscs.genuine_macsecsc import GenuineMacSecTxScIdx, GenuineMacSecRxScIdx
 
 from .port_l23 import (
     BasePortL23,
@@ -35,8 +33,6 @@ from .port_tx_stats import GenuinePortTransmissionStatistics
 StreamIndices = idx_mgr.IndexManager[GenuineStreamIdx]
 FilterIndices = idx_mgr.IndexManager[GenuineFilterIdx]
 PortDatasetIndices = idx_mgr.IndexManager[PortDatasetIdx]
-MacSecTxScIndices = idx_mgr.IndexManager[GenuineMacSecTxScIdx]
-MacSecRxScIndices = idx_mgr.IndexManager[GenuineMacSecRxScIdx]
 
 class SpeedMode:
     """L23 port's speed mode"""
@@ -146,12 +142,6 @@ class BasePortL23Genuine(BasePortL23):
         :type: PortStatistics
         """
 
-        self.macsec_rx = P_MACSEC_RX_ENABLE(conn, module_id, port_id)
-        """L23 port MACSec RX enable.
-
-        :type: P_MACSEC_RX_ENABLE        
-        """
-
         self.streams: StreamIndices = idx_mgr.IndexManager(
             conn,
             GenuineStreamIdx,
@@ -185,27 +175,6 @@ class BasePortL23Genuine(BasePortL23):
         :type: PortDatasetIndices
         """
 
-        self.macsec_txscs: MacSecTxScIndices = idx_mgr.IndexManager(
-            conn,
-            GenuineMacSecTxScIdx,
-            module_id,
-            port_id
-        )
-        """L23 port MACSec TX SC index manager.
-
-        :type: MacSecTxScIndices
-        """
-
-        self.macsec_rxscs: MacSecRxScIndices = idx_mgr.IndexManager(
-            conn,
-            GenuineMacSecRxScIdx,
-            module_id,
-            port_id
-        )
-        """L23 port MACSec RX SC index manager.
-
-        :type: MacSecRxScIndices
-        """
 
     @property
     def info(self) -> ports_state.PortL23GenuineLocalState:
@@ -218,6 +187,3 @@ class BasePortL23Genuine(BasePortL23):
 
     on_speed_selection_change = functools.partialmethod(utils.on_event, P_SPEEDSELECTION)
     """Register a callback to the event that the port's speed mode changes."""
-
-    on_macsec_rx_enable_change = functools.partialmethod(utils.on_event, P_MACSEC_RX_ENABLE)
-    """Register a callback to the event that the port MACsec RX enable status changes."""

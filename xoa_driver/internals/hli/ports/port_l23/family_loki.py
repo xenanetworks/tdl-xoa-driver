@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 
 from .trafficgen.port_l23_genuine import BasePortL23Genuine
 from .layer1_loki import Layer1
+from .sec.macsec import MacSec
 
 
 class FamilyLoki(BasePortL23Genuine):
@@ -61,16 +62,22 @@ class PLoki100G3S1PB_b(FamilyLoki):
     """
     ...
 
-class PLoki100G5S4P_a(FamilyLoki):
-    """L23 port on Loki-100G-5S-4P[a] module.
-    """
-    ...
-
 class PLoki100G5S1P(FamilyLoki):
     """L23 port on Loki-100G-5S-1P module.
     """
+    ...
 
 class PLoki100G5S2P(FamilyLoki):
     """L23 port on Loki-100G-5S-2P module.
     """
     ...
+
+
+class PLoki100G5S4P_a(FamilyLoki):
+    """L23 port on Loki-100G-5S-4P[a] module.
+    """
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        super().__init__(conn, module_id, port_id)
+
+        self.macsec = MacSec(conn, module_id, port_id)
+        """MACSec configuration and status."""

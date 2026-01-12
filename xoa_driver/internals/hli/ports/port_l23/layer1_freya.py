@@ -17,7 +17,7 @@ from .layer1.rs_fault import RsFault
 from .layer1.medium import FreyaMedium
 from .layer1.siv import FreyaSIV
 from .layer1.pma import FreyaPMA
-from .layer1.anlt import FreyaAnlt, FreyaLinkTraining
+from .layer1.anlt import AnltAdvanced, LinkTrainingAdvanced
 
 
 class SerDesFreya:
@@ -42,7 +42,7 @@ class SerDesFreya:
         :type: FreyaMedium
         """
 
-        self.lt = FreyaLinkTraining(conn, module_id, port_id, serdes_xindex)
+        self.lt = LinkTrainingAdvanced(conn, module_id, port_id, serdes_xindex)
         """Freya Link Training on serdes level
 
         :type: FreyaLinkTraining
@@ -93,7 +93,7 @@ class Layer1:
         """PRBS configuration, including PRBS polynomial, invert mode, and statistic collection mode (for RX).
         """
 
-        self.anlt = FreyaAnlt(conn, module_id, port_id)
+        self.anlt = AnltAdvanced(conn, module_id, port_id)
         """Freya port-level anlt. For per-serdes configuration and status, use serdes[x]
         """
         

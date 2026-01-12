@@ -24,7 +24,7 @@ def dictionize_autoneg_status(
 ) -> dict[str, Any]:
     _is_enabled = True if status.mode == enums.AutoNegMode.ANEG_ON else False
     _ta_hcd_status = status.tech_ability_hcd_status
-    if _ta_hcd_status == enums.FreyaTechAbilityHCDStatus.FAILED:
+    if _ta_hcd_status == enums.AutoNegTechAbilityHCDStatus.FAILED:
         _ta_hcd_value = "N/A"
         _fec_result_value = "N/A"
     else:
