@@ -1071,6 +1071,14 @@ async def my_awesome_func(stop_event: asyncio.Event):
         resp_obj = await port.preamble.tx_remove.get()
 
 
+    if isinstance(port, ports.PLoki100G5S4P_a):
+
+        """MACSEC CONFIGURATION"""
+        """MACsec - Tx SCs"""
+        await port.macsec.txscs.create()
+
+
+
     # [Layer-1 Advanced Features]
     # [Z100 Loki, Z400 Thor, Z800 Freya, Z1600 Edun Specific APIs]
     if isinstance(port, ports.Z100LokiPort) or isinstance(port, ports.Z400ThorPort) or isinstance(port, ports.Z800FreyaPort) or isinstance(port, ports.Z1600EdunPort):
@@ -1254,38 +1262,278 @@ async def my_awesome_func(stop_event: asyncio.Event):
         
 
         """AUTO-NEGOTIATION AND LINK TRAINING"""
+        """Basic Auto-Negotiation and Link Training Operations"""
         # [For Z400 Thor and Z1600 Edun]
         if isinstance(port, ports.Z1600EdunPort) or isinstance(port, ports.Z400ThorPort):
             
             """Auto-Negotiation Settings"""
-            await port.layer1.anlt.autoneg.settings.set(
+            ta_conf = enums.AutoNegTecAbility.IEEE_1_6TBASE_CR8_KR8 | enums.AutoNegTecAbility.IEEE_800GBASE_CR4_KR4
+            ta_conf = Hex(format(ta_conf, 'X').zfill(16))
+
+            fec_conf = enums.AutoNegFECOption.RS528 | enums.AutoNegFECOption.RS272
+            fec_conf = Hex(format(fec_conf, 'X').zfill(2))
+
+            pause_conf = enums.PauseMode.SYM_PAUSE | enums.PauseMode.ASYM_PAUSE
+            pause_conf = Hex(format(pause_conf, 'X').zfill(2))
+
+            await port.layer1.anlt.an.settings.set(
                 mode=enums.AutoNegMode.ANEG_ON, 
-                tec_ability=enums.AutoNegTecAbility.DEFAULT_TECH_MODE, 
-                fec_capable=enums.AutoNegFECOption.DEFAULT_FEC, 
-                fec_requested=enums.AutoNegFECOption.DEFAULT_FEC, 
-                pause_mode=enums.PauseMode.NO_PAUSE)
-            resp = await port.layer1.anlt.autoneg.settings.get()
+                tec_ability=ta_conf, 
+                fec_capable=fec_conf, 
+                fec_requested=fec_conf, 
+                pause_mode=pause_conf
+                )
+            resp = await port.layer1.anlt.an.settings.get()
 
 
             """Auto-Negotiation Status"""
-            await port.layer1.anlt.autoneg.status.get()
+            await port.layer1.anlt.an.status.get()
 
 
             """Link Training Settings"""
-            await port.layer1.anlt.link_training.settings.set(
+            await port.layer1.anlt.lt.settings.set(
                 mode=enums.LinkTrainingMode.DISABLED, 
                 pam4_frame_size=enums.PAM4FrameSize.P4K_FRAME, 
                 nrz_pam4_init_cond=enums.LinkTrainingInitCondition.NO_INIT, 
                 nrz_preset=enums.NRZPreset.NRZ_WITH_PRESET, 
                 timeout_mode=enums.TimeoutMode.DEFAULT)
-            resp = await port.layer1.anlt.link_training.settings.get()
+            resp = await port.layer1.anlt.lt.settings.get()
 
 
             """Link Training Status"""
             resp = await port.layer1.serdes[0].lt_status.get()
 
+        """Advanced Auto-Negotiation and Link Training Operations"""
         # [For Z800 Freya]
-        # See hlfuncs.anlt module for Z800 Freya ANLT APIs
+        if isinstance(port, ports.Z800FreyaPort):
+            
+            """ANLT Auto-Restart Settings"""
+            await port.layer1.anlt.set_autorestart(restart_link_down=True, restart_lt_failure=True)
+            resp = await port.layer1.anlt.get_autorestart()
+
+            """ANLT Strict Mode Settings"""
+            await port.layer1.anlt.set_strict_mode(enable=False)
+            resp = await port.layer1.anlt.get_strict_mode()
+
+            """Auto-Negotiation Allow-in-Loopback Settings"""
+            await port.layer1.anlt.an.set_allow_loopback(allow=True)
+            resp = await port.layer1.anlt.an.get_allow_loopback()
+
+            """Auto-Negotiation Send Empty Next Page Settings"""
+            await port.layer1.anlt.an.set_empty_np(enable=True)
+            resp = await port.layer1.anlt.an.get_empty_np()
+
+            """Read Auto-Negotiation supported abilities per-port"""
+            resp= await port.layer1.anlt.an.abilities.get()
+
+            """Set Auto-Negotiation advertised abilities per-port"""
+            ta_conf = enums.AutoNegTecAbility.IEEE_1_6TBASE_CR8_KR8 | enums.AutoNegTecAbility.IEEE_800GBASE_CR4_KR4
+            ta_conf = Hex(format(ta_conf, 'X').zfill(16))
+
+            fec_conf = enums.AutoNegFECOption.RS528 | enums.AutoNegFECOption.RS272
+            fec_conf = Hex(format(fec_conf, 'X').zfill(2))
+
+            pause_conf = enums.PauseMode.SYM_PAUSE | enums.PauseMode.ASYM_PAUSE
+            pause_conf = Hex(format(pause_conf, 'X').zfill(2))
+
+            await port.layer1.anlt.an.advertise.set(
+                tech_abilities=ta_conf,
+                fec_abilities=fec_conf,
+                pause_mode=pause_conf
+            )
+            resp = await port.layer1.anlt.an.advertise.get()
+
+
+            """Link Training Per-Serdes Algorithm Selection"""
+            await port.layer1.serdes[0].lt.set_algorithm_default()
+            resp = await port.layer1.serdes[0].lt.get_algorithm()
+
+            """Link Training Per-Serdes Initial Modulation Selection"""
+            await port.layer1.serdes[0].lt.set_initial_modulation_nrz()
+            await port.layer1.serdes[0].lt.set_initial_modulation_pam4()
+            await port.layer1.serdes[0].lt.set_initial_modulation_pam4precoding()
+            resp = await port.layer1.serdes[0].lt.get_initial_modulation()
+
+            """Link Training Per-Serdes Preset Custom Configuration"""
+            # Using the native values for Preset 1
+            await port.layer1.serdes[0].lt.preset1.native.set(
+                response=enums.FreyaPresetResponse.ACCEPT,
+                pre3=0,
+                pre2=0,
+                pre=0,
+                main=0,
+                post=0
+                )
+            resp = await port.layer1.serdes[0].lt.preset1.native.get()
+
+            # Using the IEEE values for Preset 1
+            await port.layer1.serdes[0].lt.preset1.ieee.set(
+                response=enums.FreyaPresetResponse.ACCEPT,
+                pre3=-200,
+                pre2=100,
+                pre=-100,
+                main=507,
+                post=100,
+                )
+            resp = await port.layer1.serdes[0].lt.preset1.ieee.get()
+
+
+            # Using the level values for Preset 1
+            await port.layer1.serdes[0].lt.preset1.level.set(
+                response=enums.FreyaPresetResponse.ACCEPT,
+                pre3=6,
+                pre2=3,
+                pre=2,
+                main=64,
+                post=3,
+                )
+            resp = await port.layer1.serdes[0].lt.preset1.level.get()
+
+            """Reset Link Training Per-Serdes Preset to Default"""
+            await port.layer1.serdes[0].lt.preset1.reset.set()
+
+
+            """Link Training Per-Serdes Eq Range Configuration"""
+            # Using native values, set the response to COEFF_AT_LIMIT when the coeff reaches the min or max
+            await port.layer1.serdes[0].lt.range.main.native.set(response=enums.FreyaLinkTrainingRangeResponse.COEFF_AT_LIMIT, min=0, max=50)
+            resp = await port.layer1.serdes[0].lt.range.main.native.get()
+
+            # Using ieee values, set the response to COEFF_AT_LIMIT when the coeff reaches the min or max
+            await port.layer1.serdes[0].lt.range.main.ieee.set(response=enums.FreyaLinkTrainingRangeResponse.COEFF_AT_LIMIT, min=0, max=50)
+            resp = await port.layer1.serdes[0].lt.range.main.ieee.get()
+
+            """Reset Link Training Per-Serdes Eq Range to Auto"""
+            # When in Auto mode, the min and max values use the default values to the full range supported by the serdes, thus min and max are ignored
+            await port.layer1.serdes[0].lt.range.main.native.set(response=enums.FreyaLinkTrainingRangeResponse.AUTO, min=0, max=0)
+            await port.layer1.serdes[0].lt.range.main.ieee.set(response=enums.FreyaLinkTrainingRangeResponse.AUTO, min=0, max=0)
+
+            """Link Training Configurationl, per-port"""
+            # Using IEEE standard OOS preset
+            # Enable Default Timeout Mode for Link Training Auto mode
+            await port.layer1.anlt.lt_config.set(
+                oos_preset=enums.FreyaOutOfSyncPreset.IEEE,
+                timeout_mode=enums.TimeoutMode.DEFAULT
+                )
+            # Using IEEE standard OOS preset
+            # Disable Timeout for Link Training Manual mode
+            await port.layer1.anlt.lt_config.set(
+                oos_preset=enums.FreyaOutOfSyncPreset.IEEE,
+                timeout_mode=enums.TimeoutMode.DISABLED
+                )
+            
+
+            """Control ANLT with various modes, per-port"""
+            # Only enable Auto-Negotiation
+            await port.layer1.anlt.ctrl.enable_an_only()
+
+            # Enable Auto-Negotiation and Link Training (auto mode)
+            # When Link Training is set to auto mode, the serdes will automatically select the best algorithm and initial modulation based on the negotiated capabilities
+            await port.layer1.anlt.ctrl.enable_an_lt_auto()
+
+            # Enable Auto-Negotiation and Link Training (manual mode)
+            # When Link Training is set to manual mode, the serdes will use the user configured algorithm and initial modulation
+            await port.layer1.anlt.ctrl.enable_an_lt_interactive()
+
+            # Only enable Link Training (auto mode), skipping Auto-Negotiation
+            await port.layer1.anlt.ctrl.enable_lt_auto_only()
+
+            # Only enable Link Training (manual mode), skipping Auto-Negotiation
+            await port.layer1.anlt.ctrl.enable_lt_interactive_only()
+
+            # Disable both Auto-Negotiation and Link Training
+            await port.layer1.anlt.ctrl.disable_anlt()
+
+            """For Link Training in manual mode, you can send different LT commands to the remote partner, per-serdes"""
+            # Send PAM4 Request
+            await port.layer1.serdes[0].lt.send_cmd_modulation(modulation=enums.LinkTrainEncoding.PAM4)
+            # Send PAM4Precoding Request
+            await port.layer1.serdes[0].lt.send_cmd_modulation(modulation=enums.LinkTrainEncoding.PAM4_WITH_PRECODING)
+            
+            # Send Preset Request
+            await port.layer1.serdes[0].lt.send_cmd_preset(preset=enums.LinkTrainPresets.PRESET_1)
+
+            # Send EQ Coefficient Inc Request
+            await port.layer1.serdes[0].lt.send_cmd_inc(coeff=enums.LinkTrainCoeffs.MAIN)
+
+            # Send EQ Coefficient Dec Request
+            await port.layer1.serdes[0].lt.send_cmd_dec(coeff=enums.LinkTrainCoeffs.MAIN)
+
+            # Send No EQ
+            await port.layer1.serdes[0].lt.send_cmd_no_equalization()
+
+            # Send Trained Notification
+            await port.layer1.serdes[0].lt.send_cmd_trained()
+
+            # Check response status after sending any command
+            cmd, result, flag = await port.layer1.serdes[0].lt.get_cmd_result_flag()
+
+
+            """ANLT Statistics, Result and Status"""
+            # Get Auto-Negotiation results
+            resp = await port.layer1.anlt.an.results.get()
+
+            # Get Auto-Negotiation statistics
+            resp = await port.layer1.anlt.an.statistics.get()
+
+            # Get Link Training results, per-serdes
+            resp = await port.layer1.serdes[0].lt.results.get()
+
+            # Get Link Training statistics, per-serdes
+            resp = await port.layer1.serdes[0].lt.statistics.get()
+
+        
+        """SIGNAL INTEGRITY SAMPLE READING"""
+        # Only for Freya and Edun Modules
+        if isinstance(port, ports.Z800FreyaPort) or isinstance(port, ports.Z1600EdunPort):
+            
+            """Signal Integrity Sample Read - Control"""
+            await port.layer1.serdes[0].siv.control.set(opcode=enums.Layer1Opcode.START_SCAN)
+
+            """Signal Integrity Sample Read - Data"""
+            resp = await port.layer1.serdes[0].siv.data.get()
+
+
+
+        """HOST TX/RX EQUALIZATION CONFIGURATION"""
+        # For Loki Modules
+        if isinstance(port, ports.Z100LokiPort):
+            # Tx Equalizer Settings
+            await port.layer1.serdes[0].medium.tx_equalizer.set(tap_values=[0, 60, 0])
+
+            # Rx Equalizer Settings
+            await port.layer1.serdes[0].medium.rx_equalizer.set(auto=1, ctle=5, reserved=0)
+        
+        # For Thor Modules
+        if isinstance(port, ports.Z400ThorPort):
+            # Tx Equalizer Settings
+            await port.layer1.serdes[0].medium.tx_equalizer.set(tap_values=[0, 60, 0, 0, 0])
+
+            # Rx Equalizer Settings
+            await port.layer1.serdes[0].medium.rx_equalizer.set(auto=1, ctle=5, reserved=0)
+
+        # For Freya Modules
+        if isinstance(port, ports.Z800FreyaPort):
+            # Tx Equalizer Settings
+            await port.layer1.serdes[0].medium.tx.native.set(tap_values=[0, 60, 0, 0, 0, 0])
+
+            # Rx Equalizer Settings, either in Auto, Manual, or Freeze
+            await port.layer1.serdes[0].medium.rx.config.agc.set(mode=enums.RxEqExtCapMode.MANUAL, value=5)
+            await port.layer1.serdes[0].medium.rx.config.cdr.set(mode=enums.RxEqExtCapMode.MANUAL, value=5)
+            await port.layer1.serdes[0].medium.rx.config.ctle_high.set(mode=enums.RxEqExtCapMode.MANUAL, value=5)
+            await port.layer1.serdes[0].medium.rx.config.ctle_low.set(mode=enums.RxEqExtCapMode.MANUAL, value=5)
+            await port.layer1.serdes[0].medium.rx.config.dfe.set(mode=enums.RxEqExtCapMode.MANUAL, value=5)
+            await port.layer1.serdes[0].medium.rx.config.oc.set(mode=enums.RxEqExtCapMode.MANUAL, value=5)
+            # Post-FFE 1-23
+            await port.layer1.serdes[0].medium.rx.config.post_ffe_1.set(mode=enums.RxEqExtCapMode.MANUAL, value=5)
+            # Pre-FFE 1-8
+            await port.layer1.serdes[0].medium.rx.config.pre_ffe_1.set(mode=enums.RxEqExtCapMode.MANUAL, value=5)
+
+        # For Edun Modules
+        if isinstance(port, ports.Z1600EdunPort):
+            # Tx Equalizer Settings
+            await port.layer1.serdes[0].medium.tx.ieee.set(tap_values=[0, 60, 0, 0, 0, 0, 0])
+
+            # Rx Equalizer Settings
 
 
     # [Transceiver Management]
