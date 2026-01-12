@@ -1,11 +1,11 @@
 ``modules`` module
 =========================
 
-Module APIs
+Module APIs Overview
 --------------------
 
 .. csv-table:: Module APIs
-    :header: "#", "Action", "API", "Description"
+    :header: "Id", "Action", "API", "Description"
     :file: modules.csv
 
 
@@ -19,7 +19,7 @@ Examples - General Module APIs
 
 
 Examples - Z800 Freya/Z1600 Edun Specific APIs
------------------------------------------------
+----------------------------------------------
 
 .. literalinclude:: modules.py
     :caption: Examples - Z800 Freya and Z1600 Edun Specific Module APIs
@@ -29,7 +29,7 @@ Examples - Z800 Freya/Z1600 Edun Specific APIs
 
 
 Examples - E100 Chimera Specific APIs
--------------------------------------
+--------------------------------------
 
 .. literalinclude:: modules.py
     :caption: Examples - E100 Chimera Specific Module APIs

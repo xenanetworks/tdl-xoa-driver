@@ -1,37 +1,38 @@
-1,Connect Chassis,testers.L23Tester(),Create a tester object representing a chassis and connect to the chassis at IP address
-2,Disconnect Chassis,tester.session.logoff(),Disconnect from the chassis
-3,Shutdown Chassis,tester.down.set_poweroff(),Shut down the chassis and leave it powered off
-4,Restart Chassis,tester.down.set_restart(),Restart the chassis in a clean state
-5,Release Chassis,tester.reservation.set_release(),Release the chassis
-6,Relinquish Chassis,tester.reservation.set_relinquish(),Relinquish the chassis
-7,Reserve Chassis,tester.reservation.set_reserve(),Reserve the chassis
-8,Get Reservation Status,tester.reservation.get(),Get the current reservation status of the chassis
-9,Get Reserved By,tester.reserved_by.get(),Get the current reservation status of the chassis
-10,Flash LEDs Off,tester.flash.set_off(),Turn off the test port LEDs flashing
-11,Flash LEDs On,tester.flash.set_on(),Make all the test port LEDs flash on and off with a 1-second interval
-12,Get Flash Status,tester.flash.get(),Get the current LED flash status
-13,Set Management IP,tester.management_interface.ip_address.set(),Set the management IP address of the chassis management port
-14,Get Management IP,tester.management_interface.ip_address.get(),Get the management IP address of the chassis management port
-15,Get MAC Address,tester.management_interface.macaddress.get(),Get the MAC address for the chassis management port
-16,Set Management Hostname,tester.management_interface.hostname.set(),Set the chassis hostname used when DHCP is enabled
-17,Get Management Hostname,tester.management_interface.hostname.get(),Get the chassis hostname used when DHCP is enabled
-18,Enable DHCP,tester.management_interface.dhcp.set_on(),Enable DHCP for the chassis management IP address
-19,Disable DHCP,tester.management_interface.dhcp.set_off(),Disable DHCP for the chassis management IP address
-20,Get DHCP Status,tester.management_interface.dhcp.get(),Get the DHCP status of the chassis
-21,Get Capabilities,tester.capabilities.get(),Get the chassis capabilities information
-22,Set Chassis Name,tester.name.set(),Set the name of the chassis
-23,Get Chassis Name,tester.name.get(),Get the name of the chassis
-24,Set Chassis Password,tester.password.set(),Set the password of the chassis
-25,Get Chassis Password,tester.password.get(),Get the password of the chassis
-26,Set Chassis Description,tester.comment.set(),Set a text description of the chassis
-27,Get Chassis Description,tester.comment.get(),Get a text description of the chassis
-28,Get Chassis Model,tester.model.get(),Get the model of the chassis
-29,Get Chassis Serial Number,tester.serial_no.get(),Get the serial number of the chassis
-30,Get Chassis Build String,tester.build_string.get(),Get the chassis build string
-31,Get Chassis Version String,tester.version_str.get(),Get the currently running chassis software version
-32,Get Used TPLD IDs,tester.used_tpld_ids.get(),Get the used TPLD IDs in the chassis
-33,Get Chassis Time,tester.time.get(),Get the chassis local time
-34,Start Synchronized Port Traffic,tester.traffic.set_on(),Start synchronous traffic control for multiple ports on the same chassis
-35,Stop Synchronized Port Traffic,tester.traffic.set_off(),Stop synchronous traffic control for multiple ports on the same chassis
-36,Start Synchronized Chassis Traffic,tester.traffic_sync.set_on(),Start synchronous traffic control for multiple ports on different chassis
-37,Stop Synchronized Chassis Traffic,tester.traffic_sync.set_off(),Stop synchronous traffic control for multiple ports on different chassis
+
+"1","Connect Chassis","testers.L23Tester()","Create a tester object representing a chassis and connect to the chassis at IP address"
+"2","Disconnect Chassis","tester.session.logoff()","Disconnect from the chassis"
+"3","Shutdown Chassis","tester.down.set_poweroff()","Shut down the chassis and leave it powered off"
+"4","Restart Chassis","tester.down.set_restart()","Restart the chassis in a clean state"
+"5","Release Chassis","tester.reservation.set_release()","Release the chassis"
+"6","Relinquish Chassis","tester.reservation.set_relinquish()","Relinquish the chassis"
+"7","Reserve Chassis","tester.reservation.set_reserve()","Reserve the chassis"
+"8","Get Reservation Status","tester.reservation.get()","Get the current reservation status of the chassis"
+"9","Get Reserved By","tester.reserved_by.get()","Get the current reservation status of the chassis"
+"10","Flash LEDs Off","tester.flash.set_off()","Turn off the test port LEDs flashing"
+"11","Flash LEDs On","tester.flash.set_on()","Make all the test port LEDs flash on and off with a 1-second interval"
+"12","Get Flash Status","tester.flash.get()","Get the current LED flash status"
+"13","Set Management IP","tester.management_interface.ip_address.set()","Set the management IP address of the chassis management port"
+"14","Get Management IP","tester.management_interface.ip_address.get()","Get the management IP address of the chassis management port"
+"15","Get MAC Address","tester.management_interface.macaddress.get()","Get the MAC address for the chassis management port"
+"16","Set Management Hostname","tester.management_interface.hostname.set()","Set the chassis hostname used when DHCP is enabled"
+"17","Get Management Hostname","tester.management_interface.hostname.get()","Get the chassis hostname used when DHCP is enabled"
+"18","Enable DHCP","tester.management_interface.dhcp.set_on()","Enable DHCP for the chassis management IP address"
+"19","Disable DHCP","tester.management_interface.dhcp.set_off()","Disable DHCP for the chassis management IP address"
+"20","Get DHCP Status","tester.management_interface.dhcp.get()","Get the DHCP status of the chassis"
+"21","Get Capabilities","tester.capabilities.get()","Get the chassis capabilities information"
+"22","Set Chassis Name","tester.name.set()","Set the name of the chassis"
+"23","Get Chassis Name","tester.name.get()","Get the name of the chassis"
+"24","Set Chassis Password","tester.password.set()","Set the password of the chassis"
+"25","Get Chassis Password","tester.password.get()","Get the password of the chassis"
+"26","Set Chassis Description","tester.comment.set()","Set a text description of the chassis"
+"27","Get Chassis Description","tester.comment.get()","Get a text description of the chassis"
+"28","Get Chassis Model","tester.model.get()","Get the model of the chassis"
+"29","Get Chassis Serial Number","tester.serial_no.get()","Get the serial number of the chassis"
+"30","Get Chassis Build String","tester.build_string.get()","Get the chassis build string"
+"31","Get Chassis Version String","tester.version_str.get()","Get the currently running chassis software version"
+"32","Get Used TPLD IDs","tester.used_tpld_ids.get()","Get the used TPLD IDs in the chassis"
+"33","Get Chassis Time","tester.time.get()","Get the chassis local time"
+"34","Start Synchronized Port Traffic","tester.traffic.set_on()","Start synchronous traffic control for multiple ports on the same chassis"
+"35","Stop Synchronized Port Traffic","tester.traffic.set_off()","Stop synchronous traffic control for multiple ports on the same chassis"
+"36","Start Synchronized Chassis Traffic","tester.traffic_sync.set_on()","Start synchronous traffic control for multiple ports on different chassis"
+"37","Stop Synchronized Chassis Traffic","tester.traffic_sync.set_off()","Stop synchronous traffic control for multiple ports on different chassis"

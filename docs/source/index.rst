@@ -27,32 +27,10 @@ This documentation covers how to use the XOA Python API, including how to instal
    status_msg_exceptions
    glossary
 
-
------------
-
-
-
 .. toctree::
-   :maxdepth: 1
-   :caption: High-level API Reference Guide
+   :maxdepth: 2
+   :caption: API Reference Guide
 
-   api_ref/hli/overview
-   api_ref/hli/index
-   api_ref/hlfuncs/index
-   api_ref/utils/index
-   api_ref/misc/index
-   api_ref/hli/example
-
-
------------
-
-
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Low-Level API Reference Guide
-
-   api_ref/lli/overview
-   api_ref/lli/index
-   api_ref/lli/example
+   api_ref/hl_index
+   api_ref/ll_index
    

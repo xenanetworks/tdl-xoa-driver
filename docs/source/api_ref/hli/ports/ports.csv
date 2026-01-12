@@ -1,355 +1,447 @@
-1,Get Port Object,module.ports.obtain(),Obtain a port object representing a specific port on a module
-2,Release Port,port.reservation.set_release(),Release the port
-3,Relinquish Port,port.reservation.set_relinquish(),Relinquish the port
-4,Reserve Port,port.reservation.set_reserve(),Reserve the port
-5,Get Port Reservation Status,port.reservation.get(),Get the current reservation status of the port
-6,Get Port Reserved By,port.reserved_by.get(),Get the current reservation status of the port
-7,Set Port Description,port.comment.set(),Set a text description of the port
-8,Get Port Description,port.comment.get(),Get a text description of the port
-9,Get Interface Name,port.interface.get(),Get the interface name of the port
-10,Reset Port,port.reset.set(),Reset the port and clear configuration and statistics
-11,Flash Port LEDs On,port.flash.set_on(),Turn on port LED flashing with 1-second interval
-12,Flash Port LEDs Off,port.flash.set_off(),Turn off port LED flashing
-13,Get Flash Status,port.flash.get(),Get the current port LED flash status
-14,Get Sync Status,port.sync_status.get(),Get the port synchronization status
-15,Enable TX Output,port.tx_config.enable.set_on(),Enable the port transmitter
-16,Disable TX Output,port.tx_config.enable.set_off(),Disable the port transmitter
-17,Get TX Output Status,port.tx_config.enable.get(),Get the transmit output status
-18,Set TX Time Limit,port.tx_config.time_limit.set(),Set the transmit time limit in microseconds
-19,Get TX Time Limit,port.tx_config.time_limit.get(),Get the transmit time limit in microseconds
-20,Set TX Packet Limit,port.tx_config.packet_limit.set(),Set the transmit packet count limit
-21,Get TX Packet Limit,port.tx_config.packet_limit.get(),Get the transmit packet count limit
-22,Get TX Time Elapsed,port.tx_config.time.get(),Get the elapsed transmit time
-23,Get TX Delay,port.tx_config.delay.get(),Get the transmit delay
-24,Set TX Prepare,port.tx_config.prepare.set(),Prepare the port for transmission
-25,Start Traffic,port.traffic.state.set_start(),Start traffic transmission
-26,Stop Traffic,port.traffic.state.set_stop(),Stop traffic transmission
-27,Get Traffic State,port.traffic.state.get(),Get the current traffic state
-28,Get Traffic Error,port.traffic.error.get(),Get the traffic error status
-29,Send Manual Packet,port.tx_single_pkt.send.set(),Transmit a single manually specified packet
-30,Get Manual Packet Time,port.tx_single_pkt.time.get(),Get the time the manual packet was sent
-31,Disable Dynamic Traffic,port.dynamic.set_off(),Disable dynamic traffic on the port
-32,Enable Dynamic Traffic,port.dynamic.set_on(),Enable dynamic traffic on the port
-33,Get Dynamic Traffic Status,port.dynamic.get(),Get the current dynamic traffic status
-34,Set Rate Fraction,port.rate.fraction.set(),Set the transmit rate as a fraction (ppm)
-35,Get Rate Fraction,port.rate.fraction.get(),Get the port rate fraction
-36,Set Rate L2 Bits Per Second,port.rate.l2_bps.set(),Set the transmit rate in L2 bits per second
-37,Get Rate L2 Bits Per Second,port.rate.l2_bps.get(),Get the port rate in L2 bits per second
-38,Set Rate Frames Per Second,port.rate.pps.set(),Set the transmit rate in frames per second
-39,Get Rate Frames Per Second,port.rate.pps.get(),Get the port rate in frames per second
-40,Set TX Mode Normal,port.tx_config.mode.set_normal(),Set transmit mode to normal
-41,Set TX Mode Burst,port.tx_config.mode.set_burst(),Set transmit mode to burst
-42,Set TX Mode Sequential,port.tx_config.mode.set_sequential(),Set transmit mode to sequential
-43,Set TX Mode Strict Uniform,port.tx_config.mode.set_strictuniform(),Set transmit mode to strict uniform
-44,Get TX Mode,port.tx_config.mode.get(),Get the current transmit mode
-45,Set Burst Period,port.tx_config.burst_period.set(),Set the burst period in milliseconds
-46,Get Burst Period,port.tx_config.burst_period.get(),Get the burst period
-47,Set Inter-frame Gap,port.interframe_gap.set(),Set the inter-frame gap minimum byte count
-48,Get Inter-frame Gap,port.interframe_gap.get(),Get the inter-frame gap
-49,Set Speed Mode Auto,port.speed.mode.selection.set_auto(),Set speed mode to auto-negotiation
-50,Set Speed Mode 10M,port.speed.mode.selection.set_f10m(),Set speed mode to 10 Mbps
-51,Set Speed Mode 10M/100M,port.speed.mode.selection.set_f10m100m(),Set speed mode to 10/100 Mbps
-52,Set Speed Mode 10M HDX,port.speed.mode.selection.set_f10mhdx(),Set speed mode to 10 Mbps half-duplex
-53,Set Speed Mode 100M,port.speed.mode.selection.set_f100m(),Set speed mode to 100 Mbps
-54,Set Speed Mode 100M/1G,port.speed.mode.selection.set_f100m1g(),Set speed mode to 100 Mbps/1 Gbps
-55,Set Speed Mode 100M/1G/10G,port.speed.mode.selection.set_f100m1g10g(),Set speed mode to 100 Mbps/1 Gbps/10 Gbps
-56,Set Speed Mode 100M/1G/2.5G,port.speed.mode.selection.set_f100m1g2500m(),Set speed mode to 100 Mbps/1 Gbps/2.5 Gbps
-57,Set Speed Mode 100M HDX,port.speed.mode.selection.set_f100mhdx(),Set speed mode to 100 Mbps half-duplex
-58,Set Speed Mode 1G,port.speed.mode.selection.set_f1g(),Set speed mode to 1 Gbps
-59,Set Speed Mode 2.5G,port.speed.mode.selection.set_f2500m(),Set speed mode to 2.5 Gbps
-60,Set Speed Mode 5G,port.speed.mode.selection.set_f5g(),Set speed mode to 5 Gbps
-61,Set Speed Mode 10G,port.speed.mode.selection.set_f10g(),Set speed mode to 10 Gbps
-62,Set Speed Mode 40G,port.speed.mode.selection.set_f40g(),Set speed mode to 40 Gbps
-63,Set Speed Mode 100G,port.speed.mode.selection.set_f100g(),Set speed mode to 100 Gbps
-64,Get Speed Mode Selection,port.speed.mode.selection.get(),Get the current speed mode selection
-65,Get Supported Speed Modes,port.speed.mode.supported.get(),Get the supported speed modes for the port
-66,Get Current Speed,port.speed.current.get(),Get the current port speed
-67,Set Speed Reduction,port.speed.reduction.set(),Set the speed reduction in ppm
-68,Get Speed Reduction,port.speed.reduction.get(),Get the speed reduction in ppm
-69,Get Optical RX Power,port.status.get(),Get the optical RX power status
-70,Set MAC Address,port.net_config.mac_address.set(),Set the MAC address of the port
-71,Get MAC Address,port.net_config.mac_address.get(),Get the MAC address of the port
-72,Set Auto MAC Training,port.autotrain.set(),Set the auto MAC training interval
-73,Get Auto MAC Training,port.autotrain.get(),Get the auto MAC training interval
-74,Enable PAUSE,port.pause.set_on(),Enable PAUSE frame support
-75,Disable PAUSE,port.pause.set_off(),Disable PAUSE frame support
-76,Get PAUSE Status,port.pause.get(),Get the PAUSE frame support status
-77,Set PFC Enable,port.pfc_enable.set(),Set PFC enable for each CoS
-78,Get PFC Enable,port.pfc_enable.get(),Get PFC enable status for each CoS
-79,Set Gap Monitor,port.gap_monitor.set(),Set the gap monitor start and stop parameters
-80,Get Gap Monitor,port.gap_monitor.get(),Get the gap monitor parameters
-81,Set Checksum Offset,port.checksum.set(),Set the checksum offset
-82,Get Checksum Offset,port.checksum.get(),Get the checksum offset
-83,Set Random Seed,port.random_seed.set(),Set the random seed
-84,Get Random Seed,port.random_seed.get(),Get the random seed
-85,Set Maximum Header Length,port.max_header_length.set(),Set the maximum header length
-86,Get Maximum Header Length,port.max_header_length.get(),Get the maximum header length
-87,Set IMIX Weights,port.mix.weights.set(),Set the IMIX frame size weights
-88,Get IMIX Weights,port.mix.weights.get(),Get the IMIX frame size weights
-89,Set IMIX Frame Sizes,port.mix.lengths[].set(),Set individual IMIX frame sizes
-90,Get IMIX Frame Sizes,port.mix.lengths[].get(),Get individual IMIX frame sizes
-91,Set Payload Mode Normal,port.payload_mode.set_normal(),Set payload mode to normal
-92,Set Payload Mode EXTPL,port.payload_mode.set_extpl(),Set payload mode to extended payload
-93,Set Payload Mode CDF,port.payload_mode.set_cdf(),Set payload mode to CDF
-94,Get Payload Mode,port.payload_mode.get(),Get the current payload mode
-95,Set TPLD Mode Normal,port.tpld_mode.set_normal(),Set TPLD mode to normal
-96,Set TPLD Mode Micro,port.tpld_mode.set_micro(),Set TPLD mode to micro
-97,Get TPLD Mode,port.tpld_mode.get(),Get the current TPLD mode
-98,Set Loopback None,port.loop_back.set_none(),Disable loopback
-99,Set Loopback L1RX to TX,port.loop_back.set_l1rx2tx(),Set loopback L1RX to TX
-100,Set Loopback L2RX to TX,port.loop_back.set_l2rx2tx(),Set loopback L2RX to TX
-101,Set Loopback L3RX to TX,port.loop_back.set_l3rx2tx(),Set loopback L3RX to TX
-102,Set Loopback Port to Port,port.loop_back.set_port2port(),Set loopback port to port
-103,Set Loopback TXOFF to RX,port.loop_back.set_txoff2rx(),Set loopback TXOFF to RX
-104,Set Loopback TXON to RX,port.loop_back.set_txon2rx(),Set loopback TXON to RX
-105,Get Loopback Mode,port.loop_back.get(),Get the current loopback mode
-106,Set Latency Mode First to First,port.latency_config.mode.set_first2first(),Set latency mode to first to first
-107,Set Latency Mode First to Last,port.latency_config.mode.set_first2last(),Set latency mode to first to last
-108,Set Latency Mode Last to First,port.latency_config.mode.set_last2first(),Set latency mode to last to first
-109,Set Latency Mode Last to Last,port.latency_config.mode.set_last2last(),Set latency mode to last to last
-110,Get Latency Mode,port.latency_config.mode.get(),Get the current latency mode
-111,Set Latency Offset,port.latency_config.offset.set(),Set the latency offset
-112,Get Latency Offset,port.latency_config.offset.get(),Get the latency offset
-113,Set IPv4 Address,port.net_config.ipv4.address.set(),Set the IPv4 address configuration
-114,Get IPv4 Address,port.net_config.ipv4.address.get(),Get the IPv4 address configuration
-115,Enable IPv4 ARP Reply,port.net_config.ipv4.arp_reply.set_on(),Enable ARP reply for IPv4
-116,Disable IPv4 ARP Reply,port.net_config.ipv4.arp_reply.set_off(),Disable ARP reply for IPv4
-117,Get IPv4 ARP Reply,port.net_config.ipv4.arp_reply.get(),Get the IPv4 ARP reply status
-118,Enable IPv4 Ping Reply,port.net_config.ipv4.ping_reply.set_on(),Enable ping reply for IPv4
-119,Disable IPv4 Ping Reply,port.net_config.ipv4.ping_reply.set_off(),Disable ping reply for IPv4
-120,Get IPv4 Ping Reply,port.net_config.ipv4.ping_reply.get(),Get the IPv4 ping reply status
-121,Set IPv6 Address,port.net_config.ipv6.address.set(),Set the IPv6 address configuration
-122,Get IPv6 Address,port.net_config.ipv6.address.get(),Get the IPv6 address configuration
-123,Enable IPv6 NDP Reply,port.net_config.ipv6.arp_reply.set_on(),Enable NDP reply for IPv6
-124,Disable IPv6 NDP Reply,port.net_config.ipv6.arp_reply.set_off(),Disable NDP reply for IPv6
-125,Get IPv6 NDP Reply,port.net_config.ipv6.arp_reply.get(),Get the IPv6 NDP reply status
-126,Enable IPv6 Ping Reply,port.net_config.ipv6.ping_reply.set_on(),Enable IPv6 ping reply
-127,Disable IPv6 Ping Reply,port.net_config.ipv6.ping_reply.set_off(),Disable IPv6 ping reply
-128,Get IPv6 Ping Reply,port.net_config.ipv6.ping_reply.get(),Get the IPv6 ping reply status
-129,Set IPv4 ARP Table,port.arp_rx_table.set(),Set the IPv4 ARP table entries
-130,Get IPv4 ARP Table,port.arp_rx_table.get(),Get the IPv4 ARP table entries
-131,Set IPv6 NDP Table,port.ndp_rx_table.set(),Set the IPv6 NDP table entries
-132,Get IPv6 NDP Table,port.ndp_rx_table.get(),Get the IPv6 NDP table entries
-133,Set IPv4 Multicast JOIN,port.multicast.mode.set(),Set IPv4 multicast mode to JOIN
-134,Set IPv4 Multicast LEAVE,port.multicast.mode.set(),Set IPv4 multicast mode to LEAVE
-135,Set IPv4 Multicast OFF,port.multicast.mode.set(),Set IPv4 multicast mode to OFF
-136,Set IPv4 Multicast ON,port.multicast.mode.set(),Set IPv4 multicast mode to ON
-137,Get IPv4 Multicast Mode,port.multicast.mode.get(),Get the current IPv4 multicast mode
-138,Set IPv4 Multicast EXCLUDE (IGMPv3),port.multicast.mode_extended.set(),Set IPv4 multicast to EXCLUDE (IGMPv3)
-139,Set IPv4 Multicast INCLUDE (IGMPv3),port.multicast.mode_extended.set(),Set IPv4 multicast to INCLUDE (IGMPv3)
-140,Set IPv4 Multicast JOIN (IGMPv2),port.multicast.mode_extended.set(),Set IPv4 multicast to JOIN (IGMPv2)
-141,Set IPv4 Multicast LEAVE (IGMPv2),port.multicast.mode_extended.set(),Set IPv4 multicast to LEAVE (IGMPv2)
-142,Set IPv4 Multicast LEAVE_TO_ALL (IGMPv2),port.multicast.mode_extended.set(),Set IPv4 multicast to LEAVE_TO_ALL (IGMPv2)
-143,Set IPv4 Multicast GENERAL_QUERY (IGMPv2),port.multicast.mode_extended.set(),Set IPv4 multicast to GENERAL_QUERY (IGMPv2)
-144,Set IPv4 Multicast GROUP_QUERY (IGMPv2),port.multicast.mode_extended.set(),Set IPv4 multicast to GROUP_QUERY (IGMPv2)
-145,Set IPv4 Multicast ON (IGMPv2),port.multicast.mode_extended.set(),Set IPv4 multicast to ON (IGMPv2)
-146,Set IPv4 Multicast OFF (IGMPv2),port.multicast.mode_extended.set(),Set IPv4 multicast to OFF (IGMPv2)
-147,Get IPv4 Multicast Advanced,port.multicast.mode_extended.get(),Get the IPv4 multicast advanced settings
-148,Set IPv4 Multicast Source List,port.multicast.source_list.set(),Set the IPv4 multicast source list
-149,Get IPv4 Multicast Source List,port.multicast.source_list.get(),Get the IPv4 multicast source list
-150,Set IPv4 Multicast Header,port.multicast.header.set(),Set the IPv4 multicast header configuration
-151,Get IPv4 Multicast Header,port.multicast.header.get(),Get the IPv4 multicast header configuration
-152,Enable UAT Mode,port.uat.mode.set(),Enable UAT detection (Xena1564 test suite)
-153,Disable UAT Mode,port.uat.mode.set(),Disable UAT detection (Xena1564 test suite)
-154,Get UAT Mode,port.uat.mode.get(),Get UAT mode status (Xena1564 test suite)
-155,Get UAT Frame Loss Ratio,port.uat.frame_loss_ratio.get(),Get frame loss ratio threshold for UAT (Xena1564)
-156,Get UAT Status,port.statistics.rx.uat.status.get(),Get current UAT status (Xena1564 test suite)
-157,Get UAT Time,port.statistics.rx.uat.time.get(),Get total unavailable time in seconds (Xena1564)
-158,Set Capture Trigger Criteria,port.capturer.trigger.set(),Set packet capture trigger start and stop criteria
-159,Get Capture Trigger Criteria,port.capturer.trigger.get(),Get the packet capture trigger criteria
-160,Set Frame to Keep ALL,port.capturer.keep.set(),Set packet capture to keep all frames
-161,Set Frame to Keep FCSERR,port.capturer.keep.set(),Set packet capture to keep FCS error frames
-162,Set Frame to Keep NOTPLD,port.capturer.keep.set(),Set packet capture to keep non-TPLD frames
-163,Set Frame to Keep PLDERR,port.capturer.keep.set(),Set packet capture to keep payload error frames
-164,Set Frame to Keep TPLD,port.capturer.keep.set(),Set packet capture to keep TPLD frames
-165,Set Frame to Keep FILTER,port.capturer.keep.set(),Set packet capture to keep filtered frames
-166,Get Frame to Keep,port.capturer.keep.get(),Get the packet capture frame filter settings
-167,Start Packet Capture,port.capturer.state.set_start(),Start packet capture
-168,Stop Packet Capture,port.capturer.state.set_stop(),Stop packet capture
-169,Get Packet Capture State,port.capturer.state.get(),Get the current packet capture state
-170,Get Capture Stats,port.capturer.stats.get(),Get packet capture start time and status
-171,Read Captured Packets,port.capturer.obtain_captured(),Retrieve captured packets from the buffer
-172,Create Filter,port.filters.create(),Create a new filter on the port
-173,Obtain Filter,port.filters.obtain(),Obtain one or multiple existing filters
-174,Sync Filters,port.filters.server_sync(),Sync existing filters from port
-175,Remove Filter,port.filters.remove(),Remove filter using index
-176,Delete Filter,filter.delete(),Remove filter using object
-177,Get Filter Index,filter.idx,Get the filter index
-178,Get Filter Module/Port Index,filter.kind.module_id/port_id,Get filter's module and port index
-179,Enable Filter,filter.enable.set_on(),Enable the filter
-180,Disable Filter,filter.enable.set_off(),Disable the filter
-181,Get Filter Enable Status,filter.enable.get(),Get the filter enable status
-182,Set Filter Description,filter.comment.set(),Set a text description for the filter
-183,Get Filter Description,filter.comment.get(),Get the filter description
-184,Set Filter Condition,filter.condition.set(),Set the filter condition logic
-185,Get Filter Condition,filter.condition.get(),Get the filter condition logic
-186,Set Filter String Name,filter.string.set(),Set the string representation name for the filter
-187,Get Filter String Name,filter.string.get(),Get the filter string name
-188,Create Length Term,port.length_terms.create(),Create a new length term on the port
-189,Obtain Length Term,port.length_terms.obtain(),Obtain one or multiple existing length terms
-190,Remove Length Term,port.length_terms.remove(),Remove length term using index
-191,Delete Length Term,length_term.delete(),Remove length term using object
-192,Sync Length Terms,port.length_terms.server_sync(),Sync existing length terms from port
-193,Configure Length Term,length_term.length.set(),Set the length check type and size
-194,Get Length Term Config,length_term.length.get(),Get the length term configuration
-195,Create Match Term,port.match_terms.create(),Create a new match term on the port
-196,Obtain Match Term,port.match_terms.obtain(),Obtain one or multiple existing match terms
-197,Remove Match Term,port.match_terms.remove(),Remove match term using index
-198,Delete Match Term,match_term.delete(),Remove match term using object
-199,Sync Match Terms,port.match_terms.server_sync(),Sync existing match terms from port
-200,Set Match Term Value,match_term.match.set(),Set the match mask and value
-201,Get Match Term Value,match_term.match.get(),Get the match mask and value
-202,Set Match Term Position,match_term.position.set(),Set the byte offset for match term
-203,Get Match Term Position,match_term.position.get(),Get the match term byte offset
-204,Set Match Term Protocol,match_term.protocol.set(),Set the protocol segments for match term
-205,Get Match Term Protocol,match_term.protocol.get(),Get the protocol segments for match term
-206,Create Histogram,port.datasets.create(),Create a new histogram on the port
-207,Obtain Histogram,port.datasets.obtain(),Obtain one or multiple existing histograms
-208,Sync Histograms,port.datasets.server_sync(),Sync existing histograms from port
-209,Remove Histogram,port.datasets.remove(),Remove histogram using index
-210,Delete Histogram,histogram.delete(),Remove histogram using object
-211,Enable Histogram,histogram.enable.set_on(),Enable the histogram
-212,Disable Histogram,histogram.enable.set_off(),Disable the histogram
-213,Get Histogram Enable Status,histogram.enable.get(),Get the histogram enable status
-214,Configure Histogram Source TX_IFG,histogram.source.set(),Set histogram source to transmit inter-frame gap
-215,Configure Histogram Source TX_LEN,histogram.source.set(),Set histogram source to transmit length
-216,Configure Histogram Source RX_IFG,histogram.source.set(),Set histogram source to receive inter-frame gap
-217,Configure Histogram Source RX_LEN,histogram.source.set(),Set histogram source to receive length
-218,Configure Histogram Source RX_LATENCY,histogram.source.set(),Set histogram source to receive latency
-219,Configure Histogram Source RX_JITTER,histogram.source.set(),Set histogram source to receive jitter
-220,Get Histogram Source,histogram.source.get(),Get the histogram source configuration
-221,Set Histogram Bucket Range,histogram.range.set(),Set the histogram bucket range and step
-222,Get Histogram Bucket Range,histogram.range.get(),Get the histogram bucket range configuration
-223,Get Histogram Samples,histogram.samples.get(),Get histogram sample data
-224,Get Port Error Counter,port.errors_count.get(),Get port error counter
-225,Clear TX Statistics,port.statistics.tx.clear.set(),Clear all transmit statistics for the port
-226,Get Total TX Traffic Counters,port.statistics.tx.total.get(),Get total bytes and packets transmitted
-227,Get TX Non-TPLD Traffic Counter,port.statistics.tx.no_tpld.get(),Get transmit statistics for non-TPLD packets
-228,Get Extra TX Counters,port.statistics.tx.extra.get(),Get additional transmit statistics.
-229,Get TX Stream Counters,port.statistics.tx.obtain_from_stream().get(),Get transmit statistics for specific stream
-230,Clear RX Statistics,port.statistics.rx.clear.set(),Clear all receive statistics for the port
-231,Calibrate RX Latency,port.statistics.rx.calibrate.set(),Calibrate latency calculation for received packets
-232,Get Total RX Traffic Counters,port.statistics.rx.total.get(),Get total bytes and packets received
-233,Get RX Non-TPLD Traffic Counter,port.statistics.rx.no_tpld.get(),Get receive statistics for non-TPLD packets
-234,Get RX PFC Counters,port.statistics.rx.pfc_stats.get(),Get received Priority Flow Control (PFC) statistics
-235,Get Extra RX Counters,port.statistics.rx.extra.get(),Get additional receive statistics.
-236,Get Received TPLDs,port.statistics.rx.obtain_available_tplds(),Get set of test payload IDs in received packets
-237,Get RX Error Counters Per TPLD,port.statistics.rx.access_tpld().errors.get(),Get receive error statistics per TPLD
-238,Get RX Latency Counter Per TPLD,port.statistics.rx.access_tpld().latency.get(),Get receive latency statistics per TPLD
-239,Get RX Jitter Counter Per TPLD,port.statistics.rx.access_tpld().jitter.get(),Get receive jitter statistics per TPLD
-240,Get RX Traffic Counters Per TPLD,port.statistics.rx.access_tpld().traffic.get(),Get receive traffic statistics per TPLD
-241,Get RX Filtered Traffic Counters,port.statistics.rx.obtain_filter_statistics().get(),Get receive statistics for filtered packets
-242,Set MDI/MDIX Mode Auto,port.mdix_mode.set_auto(),Set MDI/MDIX mode to auto (Odin 1G)
-243,Set MDI/MDIX Mode MDI,port.mdix_mode.set_mdi(),Set MDI/MDIX mode to MDI (Odin 1G)
-244,Set MDI/MDIX Mode MDIX,port.mdix_mode.set_mdix(),Set MDI/MDIX mode to MDIX (Odin 1G)
-245,Get MDI/MDIX Mode,port.mdix_mode.get(),Get the MDI/MDIX mode (Odin 1G)
-246,Set BroadR Reach Master,port.brr.mode.set_master(),Set BroadR Reach mode to master (Odin T1)
-247,Set BroadR Reach Slave,port.brr.mode.set_slave(),Set BroadR Reach mode to slave (Odin T1)
-248,Get BroadR Reach Mode,port.brr.mode.get(),Get the BroadR Reach mode (Odin T1)
-249,Get BroadR Reach Status,port.brr.status.get(),Get the BroadR Reach status (Odin T1)
-250,Get EEE Capabilities,port.eee.capabilities.get(),Get Energy Efficient Ethernet capabilities (Odin 10G)
-251,Get EEE Partner Capabilities,port.eee.partner_capabilities.get(),Get EEE partner capabilities (Odin 10G)
-252,Disable EEE,port.eee.enable.set_off(),Disable Energy Efficient Ethernet (Odin 10G)
-253,Enable EEE,port.eee.enable.set_on(),Enable Energy Efficient Ethernet (Odin 10G)
-254,Get EEE Enable,port.eee.enable.get(),Get EEE enable status (Odin 10G)
-255,Set EEE Low Power TX Mode Off,port.eee.mode.set_off(),Set EEE low power TX mode to off (Odin 10G)
-256,Set EEE Low Power TX Mode On,port.eee.mode.set_on(),Set EEE low power TX mode to on (Odin 10G)
-257,Get EEE Mode,port.eee.mode.get(),Get EEE low power TX mode (Odin 10G)
-258,Get EEE RX Power,port.eee.rx_power.get(),Get EEE RX power (Odin 10G)
-259,Get EEE SNR Margin,port.eee.snr_margin.get(),Get EEE SNR margin (Odin 10G)
-260,Get EEE Status,port.eee.status.get(),Get EEE status (Odin 10G)
-261,Set Runt RX Length,port.runt.rx_length.set(),Set runt frame RX length (Odin 10G 6S6P-A)
-262,Get Runt RX Length,port.runt.rx_length.get(),Get runt frame RX length (Odin 10G 6S6P-A)
-263,Set Runt TX Length,port.runt.tx_length.set(),Set runt frame TX length (Odin 10G 6S6P-A)
-264,Get Runt TX Length,port.runt.tx_length.get(),Get runt frame TX length (Odin 10G 6S6P-A)
-265,Get Runt Length Errors,port.runt.has_length_errors.get(),Get runt frame length errors (Odin 10G 6S6P-A)
-266,Enable RX Preamble Insert,port.preamble.rx_insert.set(),Enable preamble insertion on RX (Odin 10G 6S6P-A)
-267,Disable RX Preamble Insert,port.preamble.rx_insert.set(),Disable preamble insertion on RX (Odin 10G 6S6P-A)
-268,Get RX Preamble Insert,port.preamble.rx_insert.get(),Get RX preamble insertion status (Odin 10G 6S6P-A)
-269,Enable TX Preamble Remove,port.preamble.tx_remove.set(),Enable preamble removal on TX (Odin 10G 6S6P-A)
-270,Disable TX Preamble Remove,port.preamble.tx_remove.set(),Disable preamble removal on TX (Odin 10G 6S6P-A)
-271,Get TX Preamble Remove,port.preamble.tx_remove.get(),Get TX preamble removal status (Odin 10G 6S6P-A)
-272,Set Link Flap Params,port.layer1.impairment.link_flap.params.set(),Set link flap configuration (Loki/Thor/Freya/Edun)
-273,Get Link Flap Params,port.layer1.impairment.link_flap.params.get(),Get link flap configuration (Loki/Thor/Freya/Edun)
-274,Enable Link Flap,port.layer1.impairment.link_flap.enable.set_on(),Enable link flap (Loki/Thor/Freya/Edun)
-275,Disable Link Flap,port.layer1.impairment.link_flap.enable.set_off(),Disable link flap (Loki/Thor/Freya/Edun)
-276,Get Link Flap Enable,port.layer1.impairment.link_flap.enable.get(),Get link flap enable status (Loki/Thor/Freya/Edun)
-277,Set PMA Error Inject Params,port.layer1.impairment.pma_error_inject.params.set(),Set PMA error injection configuration (Loki/Thor/Freya/Edun)
-278,Get PMA Error Inject Params,port.layer1.impairment.pma_error_inject.params.get(),Get PMA error injection configuration (Loki/Thor/Freya/Edun)
-279,Enable PMA Error Injection,port.layer1.impairment.pma_error_inject.enable.set_on(),Enable PMA error injection (Loki/Thor/Freya/Edun)
-280,Disable PMA Error Injection,port.layer1.impairment.pma_error_inject.enable.set_off(),Disable PMA error injection (Loki/Thor/Freya/Edun)
-281,Get PMA Error Inject Enable,port.layer1.impairment.pma_error_inject.enable.get(),Get PMA error injection enable status (Loki/Thor/Freya/Edun)
-282,Set RS Fault Signaling Disabled,port.layer1.rs_fault.signaling.set_disabled(),Set RS fault signaling to disabled (Loki/Thor/Freya/Edun)
-283,Set RS Fault Signaling Force Local,port.layer1.rs_fault.signaling.set_force_local(),Set RS fault signaling to force local (Loki/Thor/Freya/Edun)
-284,Set RS Fault Signaling Force Remote,port.layer1.rs_fault.signaling.set_force_remote(),Set RS fault signaling to force remote (Loki/Thor/Freya/Edun)
-285,Set RS Fault Signaling Normal,port.layer1.rs_fault.signaling.set_normal(),Set RS fault signaling to normal (Loki/Thor/Freya/Edun)
-286,Get RS Fault Signaling,port.layer1.rs_fault.signaling.get(),Get RS fault signaling mode (Loki/Thor/Freya/Edun)
-287,Get RS Fault Status,port.layer1.rs_fault.status.get(),Get RS fault status (Loki/Thor/Freya/Edun)
-288,Set FEC Mode RS_FEC,port.layer1.pcs_fec.fec_mode.set(),Set FEC mode to RS_FEC (Loki/Thor/Freya/Edun)
-289,Set FEC Mode RS_FEC_KP,port.layer1.pcs_fec.fec_mode.set(),Set FEC mode to RS_FEC_KP (Loki/Thor/Freya/Edun)
-290,Set FEC Mode RS_FEC_KR,port.layer1.pcs_fec.fec_mode.set(),Set FEC mode to RS_FEC_KR (Loki/Thor/Freya/Edun)
-291,Set FEC Mode FC_FEC,port.layer1.pcs_fec.fec_mode.set(),Set FEC mode to FC_FEC (Loki/Thor/Freya/Edun)
-292,Set FEC Mode OFF,port.layer1.pcs_fec.fec_mode.set(),Set FEC mode to OFF (Loki/Thor/Freya/Edun)
-293,Set FEC Mode ON,port.layer1.pcs_fec.fec_mode.set(),Set FEC mode to ON (Loki/Thor/Freya/Edun)
-294,Get FEC Mode,port.layer1.pcs_fec.fec_mode.get(),Get the current FEC mode (Loki/Thor/Freya/Edun)
-295,Set PCS TX Config Skew,port.layer1.pcs_fec.lane[].tx_config.set(),Set PCS TX skew configuration (Loki/Thor/Freya/Edun)
-296,Get PCS RX Status Skew,port.layer1.pcs_fec.lane[].rx_status.status.get(),Get PCS RX skew status (Loki/Thor/Freya/Edun)
-297,Get Lane RX Errors,port.layer1.pcs_fec.lane[].rx_status.errors.get(),Get lane RX BER and error counters (Loki/Thor/Freya/Edun)
-298,Get Lane RX Lock,port.layer1.pcs_fec.lane[].rx_status.lock.get(),Get lane RX header lock and align lock status (Loki/Thor/Freya/Edun)
-299,Clear PCS/FEC Counters,port.layer1.pcs_fec.clear.set(),Clear PCS/FEC error counters (Loki/Thor/Freya/Edun)
-300,Get FEC Symbol Error Distribution,port.layer1.pcs_fec.fec_symbol_status.fec_status.get(),Get RX FEC symbol error distribution (Loki/Thor/Freya/Edun)
-301,Get FEC Symbol Total Status,port.layer1.pcs_fec.fec_symbol_status.total_status.get(),Get RX FEC symbol total status and BER (Loki/Thor/Freya/Edun)
-302,Get PCS/FEC Alarms,port.layer1.pcs_fec.alarms.errors.get(),Get PCS/FEC error counters and alarms (Loki/Thor/Freya/Edun)
-303,Set PRBS Configuration,port.layer1.prbs_config.set(),Set PRBS pattern generation configuration (Loki/Thor/Freya/Edun)
-304,Get PRBS Configuration,port.layer1.prbs_config.get(),Get PRBS pattern generation configuration (Loki/Thor/Freya/Edun)
-305,Enable PRBS,port.layer1.serdes[].prbs.control.set_on(),Enable PRBS pattern generation (Loki/Thor/Freya/Edun)
-306,Disable PRBS,port.layer1.serdes[].prbs.control.set_off(),Disable PRBS pattern generation (Loki/Thor/Freya/Edun)
-307,Get PRBS Status,port.layer1.serdes[].prbs.status.get(),Get PRBS bit error and lock status (Loki/Thor/Freya/Edun)
-308,Set Gray Coding Configuration,port.layer1.serdes[].pma.graycoding.set(),Set gray coding configuration (Freya/Edun)
-309,Get Gray Coding Configuration,port.layer1.serdes[].pma.graycoding.get(),Get gray coding configuration (Freya/Edun)
-310,Set Precoding Configuration,port.layer1.serdes[].pma.precoding.set(),Set precoding configuration (Freya/Edun)
-311,Get Precoding Configuration,port.layer1.serdes[].pma.precoding.get(),Get precoding configuration (Freya/Edun)
-312,Enable P/N Swap TX,port.layer1.serdes[].pma.pn_swap_tx.set_on(),Enable P/N polarity swap on TX (Freya/Edun)
-313,Disable P/N Swap TX,port.layer1.serdes[].pma.pn_swap_tx.set_off(),Disable P/N polarity swap on TX (Freya/Edun)
-314,Get P/N Swap TX,port.layer1.serdes[].pma.pn_swap_tx.get(),Get P/N polarity swap TX status (Freya/Edun)
-315,Enable P/N Swap RX,port.layer1.serdes[].pma.pn_swap_rx.set_on(),Enable P/N polarity swap on RX (Freya/Edun)
-316,Disable P/N Swap RX,port.layer1.serdes[].pma.pn_swap_rx.set_off(),Disable P/N polarity swap on RX (Freya/Edun)
-317,Get P/N Swap RX,port.layer1.serdes[].pma.pn_swap_rx.get(),Get P/N polarity swap RX status (Freya/Edun)
-318,Set PCS Variant ETC,port.layer1.pcs_fec.pcs_variant.set(),Set PCS variant to ETC (Freya/Edun)
-319,Set PCS Variant IEEE,port.layer1.pcs_fec.pcs_variant.set(),Set PCS variant to IEEE (Freya/Edun)
-320,Get PCS Variant,port.layer1.pcs_fec.pcs_variant.get(),Get the PCS variant (Freya/Edun)
-321,Start FEC Error Injection,port.layer1.pcs_fec.fec_error_inject.control.set_start(),Start FEC error injection (Freya/Edun)
-322,Stop FEC Error Injection,port.layer1.pcs_fec.fec_error_inject.control.set_stop(),Stop FEC error injection (Freya/Edun)
-323,Get FEC Error Injection Status,port.layer1.pcs_fec.fec_error_inject.control.get(),Get FEC error injection status (Freya/Edun)
-324,Set FEC Error Codeword Pattern,port.layer1.pcs_fec.fec_error_inject.cycle.set(),Set FEC error codeword pattern (Freya/Edun)
-325,Get FEC Error Codeword Pattern,port.layer1.pcs_fec.fec_error_inject.cycle.get(),Get FEC error codeword pattern (Freya/Edun)
-326,Set FEC Error Symbol Pattern,port.layer1.pcs_fec.fec_error_inject.err_symbols.set(),Set FEC error symbol pattern (Freya/Edun)
-327,Get FEC Error Symbol Pattern,port.layer1.pcs_fec.fec_error_inject.err_symbols.get(),Get FEC error symbol pattern (Freya/Edun)
-328,Set FEC Error Bit Mask Static,port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set(),Set FEC error bit mask to static (Freya/Edun)
-329,Set FEC Error Bit Mask Rotate High,port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set(),Set FEC error bit mask to rotate high (Freya/Edun)
-330,Set FEC Error Bit Mask INC,port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set(),Set FEC error bit mask to increment (Freya/Edun)
-331,Set FEC Error Bit Mask All,port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set_all_bits(),Set FEC error bit mask to all bits (Freya/Edun)
-332,Set FEC Error Bit Mask None,port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set_no_bits(),Set FEC error bit mask to no bits (Freya/Edun)
-333,Get FEC Error Bit Mask,port.layer1.pcs_fec.fec_error_inject.bit_err_mask.get(),Get FEC error bit mask (Freya/Edun)
-334,Set FEC Error Engine,port.layer1.pcs_fec.fec_error_inject.engine.set_all_engines(),Set FEC error engine to all engines (Freya/Edun)
-335,Get FEC Error Engine,port.layer1.pcs_fec.fec_error_inject.engine.get(),Get FEC error engine setting (Freya/Edun)
-336,Get FEC Error Injection Statistics,port.layer1.pcs_fec.fec_error_inject.statistics.get(),Get FEC error injection statistics (Freya/Edun)
-337,Clear FEC Error Injection Stats,port.layer1.pcs_fec.fec_error_inject.clear_stats.set(),Clear FEC error injection statistics (Freya/Edun)
-338,Set Auto-Negotiation Settings,port.layer1.anlt.autoneg.settings.set(),Set auto-negotiation settings (Thor/Edun)
-339,Get Auto-Negotiation Settings,port.layer1.anlt.autoneg.settings.get(),Get auto-negotiation settings (Thor/Edun)
-340,Get Auto-Negotiation Status,port.layer1.anlt.autoneg.status.get(),Get auto-negotiation status (Thor/Edun)
-341,Set Link Training Settings,port.layer1.anlt.link_training.settings.set(),Set link training settings (Thor/Edun)
-342,Get Link Training Settings,port.layer1.anlt.link_training.settings.get(),Get link training settings (Thor/Edun)
-343,Get Link Training Status,port.layer1.serdes[].lt_status.get(),Get link training status (Thor/Edun)
-344,Transceiver Read/Write,port.transceiver.access_rw().set(),Write to transceiver register
-345,Transceiver Read,port.transceiver.access_rw().get(),Read from transceiver register
-346,Transceiver Sequential Read/Write,port.transceiver.access_rw_seq().set(),Sequential write to transceiver register
-347,Transceiver Sequential Read,port.transceiver.access_rw_seq().get(),Sequential read from transceiver register
-348,Transceiver Banked Sequential Read/Write,port.transceiver.access_rw_seq_bank().set(),Sequential banked write to transceiver register
-349,Transceiver Banked Sequential Read,port.transceiver.access_rw_seq_bank().get(),Sequential banked read from transceiver register
-350,Transceiver MII Write,port.transceiver.access_mii().set(),Write to transceiver MII register
-351,Transceiver MII Read,port.transceiver.access_mii().get(),Read from transceiver MII register
-352,Configure I2C,port.transceiver.i2c_config.set(),Configure I2C interface parameters
-353,Get TX Laser Power,port.transceiver.laser_power.tx_laser_power.get(),Get optical TX power level in nanowatts
-354,Get RX Laser Power,port.transceiver.laser_power.rx_laser_power.get(),Get optical RX power level in nanowatts
-355,Get CMIS CDB Instances,port.transceiver.cmis.cdb_instances_supported.get(),Get supported CDB instances from CMIS transceiver
+
+"1","Get Port Object","module.ports.obtain()","Obtain a port object representing a specific port on a module"
+"2","Release Port","port.reservation.set_release()","Reserve or release the port."
+"3","Relinquish Port","port.reservation.set_relinquish()","Reserve or release the port."
+"4","Reserve Port","port.reservation.set_reserve()","Reserve or release the port."
+"5","Get Port Reservation Status","port.reservation.get()","Reserve or release the port."
+"6","Get Port Reserved By","port.reserved_by.get()","Get the current reservation status of the port."
+"7","Set Port Description","port.comment.set()","A text description of the port."
+"8","Get Port Description","port.comment.get()","A text description of the port."
+"9","Get Interface Name","port.interface.get()","The interface name of the port."
+"10","Reset Port","port.reset.set()","Reset the port."
+"11","Flash Port LEDs On","port.flash.set_on()","Make the port LED flash on and off with a 1-second interval."
+"12","Flash Port LEDs Off","port.flash.set_off()","Make the port LED flash on and off with a 1-second interval."
+"13","Get Flash Status","port.flash.get()","Make the port LED flash on and off with a 1-second interval."
+"14","Get Sync Status","port.sync_status.get()","Get the port synchronization status."
+"15","Enable TX Output","port.tx_config.enable.set_on()","Enable or disable the port transmitter."
+"16","Disable TX Output","port.tx_config.enable.set_off()","Enable or disable the port transmitter."
+"17","Get TX Output Status","port.tx_config.enable.get()","Enable or disable the port transmitter."
+"18","Set TX Time Limit","port.tx_config.time_limit.set()","Set or get the transmit time limit."
+"19","Get TX Time Limit","port.tx_config.time_limit.get()","Set or get the transmit time limit."
+"20","Set TX Packet Limit","port.tx_config.packet_limit.set()","Set or get the transmit packet limit."
+"21","Get TX Packet Limit","port.tx_config.packet_limit.get()","Set or get the transmit packet limit."
+"22","Get TX Time Elapsed","port.tx_config.time.get()","Get the elapsed transmit time."
+"23","Get TX Delay","port.tx_config.delay.get()","Set or get the transmit delay."
+"24","Set TX Prepare","port.tx_config.prepare.set()","Prepare the port for transmission."
+"25","Start Traffic","port.traffic.state.set_start()","Start or stop traffic on the port."
+"26","Stop Traffic","port.traffic.state.set_stop()","Start or stop traffic on the port."
+"27","Get Traffic State","port.traffic.state.get()","Start or stop traffic on the port."
+"28","Get Traffic Error","port.traffic.error.get()","Get the traffic error status."
+"29","Send Manual Packet","port.tx_single_pkt.send.set()","Transmit a single manually specified packet."
+"30","Get Manual Packet Time","port.tx_single_pkt.time.get()","Get the time taken to transmit a single manually specified packet."
+"31","Disable Dynamic Traffic","port.dynamic.set_off()","Enable or disable dynamic traffic on the port."
+"32","Enable Dynamic Traffic","port.dynamic.set_on()","Enable or disable dynamic traffic on the port."
+"33","Get Dynamic Traffic Status","port.dynamic.get()","Enable or disable dynamic traffic on the port."
+"34","Set Rate Fraction","port.rate.fraction.set()","Set or get the transmit rate as a fraction of line rate in parts per million (ppm)."
+"35","Get Rate Fraction","port.rate.fraction.get()","Set or get the transmit rate as a fraction of line rate in parts per million (ppm)."
+"36","Set Rate L2 Bits Per Second","port.rate.l2_bps.set()","Set or get the transmit rate in bits per second at Layer 2."
+"37","Get Rate L2 Bits Per Second","port.rate.l2_bps.get()","Set or get the transmit rate in bits per second at Layer 2."
+"38","Set Rate Frames Per Second","port.rate.pps.set()","Set or get the transmit rate in frames per second."
+"39","Get Rate Frames Per Second","port.rate.pps.get()","Set or get the transmit rate in frames per second."
+"40","Set TX Mode Normal","port.tx_config.mode.set_normal()","Set or get the transmit mode."
+"41","Set TX Mode Burst","port.tx_config.mode.set_burst()","Set or get the transmit mode."
+"42","Set TX Mode Sequential","port.tx_config.mode.set_sequential()","Set or get the transmit mode."
+"43","Set TX Mode Strict Uniform","port.tx_config.mode.set_strictuniform()","Set or get the transmit mode."
+"44","Get TX Mode","port.tx_config.mode.get()","Set or get the transmit mode."
+"45","Set Burst Period","port.tx_config.burst_period.set()","Set or get the burst period in milliseconds."
+"46","Get Burst Period","port.tx_config.burst_period.get()","Set or get the burst period in milliseconds."
+"47","Set Inter-frame Gap","port.interframe_gap.set()","Set or get the inter-frame gap minimum byte count."
+"48","Get Inter-frame Gap","port.interframe_gap.get()","Set or get the inter-frame gap minimum byte count."
+"49","Set Speed Mode Auto","port.speed.mode.selection.set_auto()","Set or get the speed mode selection."
+"50","Set Speed Mode 10M","port.speed.mode.selection.set_f10m()","Set or get the speed mode selection."
+"51","Set Speed Mode 10M/100M","port.speed.mode.selection.set_f10m100m()","Set or get the speed mode selection."
+"52","Set Speed Mode 10M HDX","port.speed.mode.selection.set_f10mhdx()","Set or get the speed mode selection."
+"53","Set Speed Mode 100M","port.speed.mode.selection.set_f100m()","Set or get the speed mode selection."
+"54","Set Speed Mode 100M/1G","port.speed.mode.selection.set_f100m1g()","Set or get the speed mode selection."
+"55","Set Speed Mode 100M/1G/10G","port.speed.mode.selection.set_f100m1g10g()","Set or get the speed mode selection."
+"56","Set Speed Mode 100M/1G/2.5G","port.speed.mode.selection.set_f100m1g2500m()","Set or get the speed mode selection."
+"57","Set Speed Mode 100M HDX","port.speed.mode.selection.set_f100mhdx()","Set or get the speed mode selection."
+"58","Set Speed Mode 1G","port.speed.mode.selection.set_f1g()","Set or get the speed mode selection."
+"59","Set Speed Mode 2.5G","port.speed.mode.selection.set_f2500m()","Set or get the speed mode selection."
+"60","Set Speed Mode 5G","port.speed.mode.selection.set_f5g()","Set or get the speed mode selection."
+"61","Set Speed Mode 10G","port.speed.mode.selection.set_f10g()","Set or get the speed mode selection."
+"62","Set Speed Mode 40G","port.speed.mode.selection.set_f40g()","Set or get the speed mode selection."
+"63","Set Speed Mode 100G","port.speed.mode.selection.set_f100g()","Set or get the speed mode selection."
+"64","Get Speed Mode Selection","port.speed.mode.selection.get()","Set or get the speed mode selection."
+"65","Get Supported Speed Modes","port.speed.mode.supported.get()",""
+"66","Get Current Speed","port.speed.current.get()",""
+"67","Set Speed Reduction","port.speed.reduction.set()",""
+"68","Get Speed Reduction","port.speed.reduction.get()",""
+"69","Get Optical RX Power","port.status.get()",""
+"70","Set MAC Address","port.net_config.mac_address.set()",""
+"71","Get MAC Address","port.net_config.mac_address.get()",""
+"72","Set Auto MAC Training","port.autotrain.set()",""
+"73","Get Auto MAC Training","port.autotrain.get()",""
+"74","Enable PAUSE","port.pause.set_on()",""
+"75","Disable PAUSE","port.pause.set_off()",""
+"76","Get PAUSE Status","port.pause.get()",""
+"77","Set PFC Enable","port.pfc_enable.set()",""
+"78","Get PFC Enable","port.pfc_enable.get()",""
+"79","Set Gap Monitor","port.gap_monitor.set()",""
+"80","Get Gap Monitor","port.gap_monitor.get()",""
+"81","Set Checksum Offset","port.checksum.set()",""
+"82","Get Checksum Offset","port.checksum.get()",""
+"83","Set Random Seed","port.random_seed.set()",""
+"84","Get Random Seed","port.random_seed.get()",""
+"85","Set Maximum Header Length","port.max_header_length.set()",""
+"86","Get Maximum Header Length","port.max_header_length.get()",""
+"87","Set IMIX Weights","port.mix.weights.set()",""
+"88","Get IMIX Weights","port.mix.weights.get()",""
+"89","Set IMIX Lengths","port.mix.lengths[0].set()",""
+"90","Set IMIX Lengths","port.mix.lengths[1].set()",""
+"91","Set IMIX Lengths","port.mix.lengths[14].set()",""
+"92","Set IMIX Lengths","port.mix.lengths[15].set()",""
+"93","Get IMIX Lengths","port.mix.lengths[0].get()",""
+"94","Get IMIX Lengths","port.mix.lengths[1].get()",""
+"95","Get IMIX Lengths","port.mix.lengths[14].get()",""
+"96","Get IMIX Lengths","port.mix.lengths[15].get()",""
+"97","Set Payload Mode Normal","port.payload_mode.set_normal()",""
+"98","Set Payload Mode EXTPL","port.payload_mode.set_extpl()",""
+"99","Set Payload Mode CDF","port.payload_mode.set_cdf()",""
+"100","Get Payload Mode","port.payload_mode.get()",""
+"101","Set TPLD Mode Normal","port.tpld_mode.set_normal()",""
+"102","Set TPLD Mode Micro","port.tpld_mode.set_micro()",""
+"103","Get TPLD Mode","port.tpld_mode.get()",""
+"104","Set Loopback None","port.loop_back.set_none()",""
+"105","Set Loopback L1RX to TX","port.loop_back.set_l1rx2tx()",""
+"106","Set Loopback L2RX to TX","port.loop_back.set_l2rx2tx()",""
+"107","Set Loopback L3RX to TX","port.loop_back.set_l3rx2tx()",""
+"108","Set Loopback Port to Port","port.loop_back.set_port2port()",""
+"109","Set Loopback TXOFF to RX","port.loop_back.set_txoff2rx()",""
+"110","Set Loopback TXON to RX","port.loop_back.set_txon2rx()",""
+"111","Get Loopback Mode","port.loop_back.get()",""
+"112","Set Latency Mode First to First","port.latency_config.mode.set_first2first()",""
+"113","Set Latency Mode First to Last","port.latency_config.mode.set_first2last()",""
+"114","Set Latency Mode Last to First","port.latency_config.mode.set_last2first()",""
+"115","Set Latency Mode Last to Last","port.latency_config.mode.set_last2last()",""
+"116","Get Latency Mode","port.latency_config.mode.get()",""
+"117","Set Latency Offset","port.latency_config.offset.set()",""
+"118","Get Latency Offset","port.latency_config.offset.get()",""
+"119","Set IPv4 Address","port.net_config.ipv4.address.set()",""
+"120","Get IPv4 Address","port.net_config.ipv4.address.get()",""
+"121","Enable IPv4 ARP Reply","port.net_config.ipv4.arp_reply.set_on()",""
+"122","Disable IPv4 ARP Reply","port.net_config.ipv4.arp_reply.set_off()",""
+"123","Get IPv4 ARP Reply","port.net_config.ipv4.arp_reply.get()",""
+"124","Enable IPv4 Ping Reply","port.net_config.ipv4.ping_reply.set_on()",""
+"125","Disable IPv4 Ping Reply","port.net_config.ipv4.ping_reply.set_off()",""
+"126","Get IPv4 Ping Reply","port.net_config.ipv4.ping_reply.get()",""
+"127","Set IPv6 Address","port.net_config.ipv6.address.set()",""
+"128","Get IPv6 Address","port.net_config.ipv6.address.get()",""
+"129","Enable IPv6 NDP Reply","port.net_config.ipv6.arp_reply.set_on()",""
+"130","Disable IPv6 NDP Reply","port.net_config.ipv6.arp_reply.set_off()",""
+"131","Get IPv6 NDP Reply","port.net_config.ipv6.arp_reply.get()",""
+"132","Enable IPv6 Ping Reply","port.net_config.ipv6.ping_reply.set_on()",""
+"133","Disable IPv6 Ping Reply","port.net_config.ipv6.ping_reply.set_off()",""
+"134","Get IPv6 Ping Reply","port.net_config.ipv6.ping_reply.get()",""
+"135","Set IPv4 ARP Table","port.arp_rx_table.set()",""
+"136","Get IPv4 ARP Table","port.arp_rx_table.get()",""
+"137","Set IPv6 NDP Table","port.ndp_rx_table.set()",""
+"138","Get IPv6 NDP Table","port.ndp_rx_table.get()",""
+"139","Set IPv4 Multicast","port.multicast.mode.set()",""
+"140","Get IPv4 Multicast Mode","port.multicast.mode.get()",""
+"141","Set IPv4 Multicast Advanced IGMPv3","port.multicast.mode_extended.set()",""
+"142","Set IPv4 Multicast Advanced IGMPv3","port.multicast.mode_extended.set()",""
+"143","Set IPv4 Multicast Advanced IGMPv2","port.multicast.mode_extended.set()",""
+"144","Set IPv4 Multicast Advanced IGMPv2","port.multicast.mode_extended.set()",""
+"145","Set IPv4 Multicast Advanced IGMPv2","port.multicast.mode_extended.set()",""
+"146","Set IPv4 Multicast Advanced IGMPv2","port.multicast.mode_extended.set()",""
+"147","Set IPv4 Multicast Advanced IGMPv2","port.multicast.mode_extended.set()",""
+"148","Set IPv4 Multicast Advanced IGMPv2","port.multicast.mode_extended.set()",""
+"149","Set IPv4 Multicast Advanced IGMPv2","port.multicast.mode_extended.set()",""
+"150","Set IPv4 Multicast Advanced IGMPv2","port.multicast.mode_extended.set()",""
+"151","Get IPv4 Multicast Advanced","port.multicast.mode_extended.get()",""
+"152","Set IPv4 Multicast Source List","port.multicast.source_list.set()",""
+"153","Get IPv4 Multicast Source List","port.multicast.source_list.get()",""
+"154","Set IPv4 Multicast Header","port.multicast.header.set()",""
+"155","Set IPv4 Multicast Header","port.multicast.header.set()",""
+"156","Get IPv4 Multicast Header","port.multicast.header.get()",""
+"157","Enable UAT Mode","port.uat.mode.set()","Only applicable in Xena1564 test suite."
+"158","Disable UAT Mode","port.uat.mode.set()","Only applicable in Xena1564 test suite."
+"159","Get UAT Mode","port.uat.mode.get()","Only applicable in Xena1564 test suite."
+"160","Get UAT Frame Loss Ratio","port.uat.frame_loss_ratio.get()","Only applicable in Xena1564 test suite."
+"161","Get UAT Status","port.statistics.rx.uat.status.get()","Only applicable in Xena1564 test suite."
+"162","Get UAT Time","port.statistics.rx.uat.time.get()","Only applicable in Xena1564 test suite."
+"163","Set Capture Trigger Criteria","port.capturer.trigger.set()",""
+"164","Set Capture Trigger Criteria","port.capturer.trigger.set()",""
+"165","Set Capture Trigger Criteria","port.capturer.trigger.set()",""
+"166","Set Capture Trigger Criteria","port.capturer.trigger.set()",""
+"167","Set Capture Trigger Criteria","port.capturer.trigger.set()",""
+"168","Get Capture Trigger Criteria","port.capturer.trigger.get()",""
+"169","Set Frame to Keep ALL","port.capturer.keep.set()",""
+"170","Set Frame to Keep FCSERR","port.capturer.keep.set()",""
+"171","Set Frame to Keep NOTPLD","port.capturer.keep.set()",""
+"172","Set Frame to Keep PLDERR","port.capturer.keep.set()",""
+"173","Set Frame to Keep TPLD","port.capturer.keep.set()","TPLD == 5"
+"174","Set Frame to Keep FILTER","port.capturer.keep.set()","Filter index == 2"
+"175","Get Frame to Keep","port.capturer.keep.get()",""
+"176","Start Packet Capture","port.capturer.state.set_start()",""
+"177","Stop Packet Capture","port.capturer.state.set_stop()",""
+"178","Get Packet Capture State","port.capturer.state.get()",""
+"179","Get Capture Stats","port.capturer.stats.get()",""
+"180","Read Captured Packets","port.capturer.obtain_captured()",""
+"181","Create Filter","port.filters.create()",""
+"182","Obtain Filter","port.filters.obtain(key=0)",""
+"183","Obtain Multiple Filters","port.filters.obtain_multiple(*[0,1,2])",""
+"184","Sync Filters","port.filters.server_sync()",""
+"185","Remove Filter","port.filters.remove(position_idx=0)",""
+"186","Delete Filter","filter.delete()",""
+"187","Get Filter Index","filter.idx",""
+"188","Get Filter Module Index","filter.kind.module_id",""
+"189","Get Filter Port Index","filter.kind.port_id",""
+"190","Enable Filter","filter.enable.set_on()",""
+"191","Disable Filter","filter.enable.set_off()",""
+"192","Get Filter Enable","filter.enable.get()",""
+"193","Set Filter Comment","filter.comment.set()",""
+"194","Get Filter Comment","filter.comment.get()",""
+"195","Set Filter Condition","filter.condition.set()",""
+"196","Get Filter Condition","filter.condition.get()",""
+"197","Set Filter String","filter.string.set()",""
+"198","Get Filter String","filter.string.get()",""
+"199","Create Length Term","port.length_terms.create()",""
+"200","Obtain Length Term","port.length_terms.obtain(key=0)",""
+"201","Obtain Multiple Length Terms","port.length_terms.obtain_multiple(*[0,1,2])",""
+"202","Remove Length Term","port.length_terms.remove(position_idx=0)",""
+"203","Delete Length Term","length_term.delete()",""
+"204","Get Length Term Index","length_term.idx",""
+"205","Get Length Term Module Index","length_term.kind.module_id",""
+"206","Get Length Term Port Index","length_term.kind.port_id",""
+"207","Sync Length Terms","port.length_terms.server_sync()",""
+"208","Configure Length Term","length_term.length.set()",""
+"209","Configure Length Term","length_term.length.set()",""
+"210","Get Length Term Config","length_term.length.get()",""
+"211","Create Match Term","port.match_terms.create()",""
+"212","Obtain Match Term","port.match_terms.obtain(key=0)",""
+"213","Obtain Multiple Match Terms","port.match_terms.obtain_multiple(*[0,1,2])",""
+"214","Remove Match Term","port.match_terms.remove(position_idx=0)",""
+"215","Delete Match Term","match_term.delete()",""
+"216","Get Match Term Index","match_term.idx",""
+"217","Get Match Term Module Index","match_term.kind.module_id",""
+"218","Get Match Term Port Index","match_term.kind.port_id",""
+"219","Sync Match Terms","port.match_terms.server_sync()",""
+"220","Set Match Term Value","match_term.match.set()",""
+"221","Get Match Term Value","match_term.match.get()",""
+"222","Set Match Term Position","match_term.position.set()",""
+"223","Get Match Term Position","match_term.position.get()",""
+"224","Set Match Term Protocol","match_term.protocol.set()",""
+"225","Get Match Term Protocol","match_term.protocol.get()",""
+"226","Create Histogram","port.datasets.create()",""
+"227","Obtain Histogram","port.datasets.obtain(key=0)",""
+"228","Obtain Multiple Histograms","port.datasets.obtain_multiple(*[0,1,2])",""
+"229","Get Histogram Index","histogram.idx",""
+"230","Get Histogram Module Index","histogram.kind.module_id",""
+"231","Get Histogram Port Index","histogram.kind.port_id",""
+"232","Sync Histograms","port.datasets.server_sync()",""
+"233","Remove Histogram","port.datasets.remove(position_idx=0)",""
+"234","Delete Histogram","histogram.delete()",""
+"235","Enable Histogram","histogram.enable.set_on()",""
+"236","Disable Histogram","histogram.enable.set_off()",""
+"237","Get Histogram Enable","histogram.enable.get()",""
+"238","Configure Histogram Source TX_IFG","histogram.source.set()",""
+"239","Configure Histogram Source TX_LEN","histogram.source.set()",""
+"240","Configure Histogram Source RX_IFG","histogram.source.set()",""
+"241","Configure Histogram Source RX_LEN","histogram.source.set()",""
+"242","Configure Histogram Source RX_LATENCY","histogram.source.set()",""
+"243","Configure Histogram Source RX_JITTER","histogram.source.set()",""
+"244","Get Histogram Source","histogram.source.get()","first value going into the second bucket"
+"245","Configure Histogram Range","histogram.range.set()",""
+"246","Get Histogram Range","histogram.range.get()",""
+"247","Get Histogram Samples","histogram.samples.get()",""
+"248","Get Port Error Counter","port.errors_count.get()",""
+"249","Clear TX Statistics","port.statistics.tx.clear.set()","Clear all the transmit statistics for a port."
+"250","Get Total TX Traffic","port.statistics.tx.total.get()","Obtains statistics concerning all the packets transmitted on the port."
+"251","Get TX Non-TPLD Traffic","port.statistics.tx.no_tpld.get()","Obtains statistics concerning the packets without a test payload transmitted on the port."
+"252","Get Extra TX Counters","port.statistics.tx.extra.get()","Obtains additional statistics for packets transmitted on the port."
+"253","Get TX Stream Counters","port.statistics.tx.obtain_from_stream(stream=0).get()","Obtains statistics concerning the packets of a specific stream transmitted on the port."
+"254","Clear RX Statistics","port.statistics.rx.clear.set()","Clear all the receive statistics for a port."
+"255","Calibrate RX Latency","port.statistics.rx.calibrate.set()","Calibrate the latency calculation for packets received on the port."
+"256","Get Total RX Traffic","port.statistics.rx.total.get()","Obtains statistics concerning all the packets received on the port."
+"257","Get RX Non-TPLD Traffic","port.statistics.rx.no_tpld.get()","Obtains statistics concerning the packets without a test payload received on the port."
+"258","Get RX PFC Counters","port.statistics.rx.pfc_stats.get()","Obtains statistics of received Priority Flow Control (PFC) packets on the port."
+"259","Get Extra RX Counters","port.statistics.rx.extra.get()","Obtains statistics concerning special errors received on the port since received statistics were cleared."
+"260","Get Received TPLDs","port.statistics.rx.obtain_available_tplds()","Obtain the set of test payload IDs observed among the received packets since receive statistics were cleared."
+"261","Get RX Error Counters Per TPLD","port.statistics.rx.access_tpld(...).errors.get()","Obtains statistics concerning errors in the packets with a particular test payload id received on the port."
+"262","Get RX Latency Per TPLD","port.statistics.rx.access_tpld(...).latency.get()","Obtains statistics concerning the latency experienced by the packets with a particular test payload id received on the port."
+"263","Get RX Jitter Per TPLD","port.statistics.rx.access_tpld(...).jitter.get()","Obtains statistics concerning the jitter experienced by the packets with a particular test payload id received on the port."
+"264","Get RX Traffic Per TPLD","port.statistics.rx.access_tpld(...).traffic.get()","Obtains traffic statistics concerning the packets with a particular test payload identifier received on the port."
+"265","Get RX Filtered Traffic","port.statistics.rx.obtain_filter_statistics(filter=0).get()","Obtains statistics concerning the packets satisfying the condition of a particular filter for the port."
+"266","Set MDI/MDIX Mode Auto","port.mdix_mode.set_auto()",""
+"267","Set MDI/MDIX Mode MDI","port.mdix_mode.set_mdi()",""
+"268","Set MDI/MDIX Mode MDIX","port.mdix_mode.set_mdix()",""
+"269","Get MDI/MDIX Mode","port.mdix_mode.get()",""
+"270","Set BroadR Reach Master","port.brr.mode.set_master()",""
+"271","Set BroadR Reach Slave","port.brr.mode.set_slave()",""
+"272","Get BroadR Reach Mode","port.brr.mode.get()",""
+"273","Get BroadR Reach Status","port.brr.status.get()",""
+"274","Get EEE Capabilities","port.eee.capabilities.get()",""
+"275","Get EEE Partner Capabilities","port.eee.partner_capabilities.get()",""
+"276","Disable EEE","port.eee.enable.set_off()",""
+"277","Enable EEE","port.eee.enable.set_on()",""
+"278","Get EEE Enable","port.eee.enable.get()",""
+"279","Set EEE Low Power TX Off","port.eee.mode.set_off()",""
+"280","Set EEE Low Power TX On","port.eee.mode.set_on()",""
+"281","Get EEE Mode","port.eee.mode.get()",""
+"282","Get EEE RX Power","port.eee.rx_power.get()",""
+"283","Get EEE SNR Margin","port.eee.snr_margin.get()",""
+"284","Get EEE Status","port.eee.status.get()",""
+"285","Set Runt RX Length","port.runt.rx_length.set()","Runt - RX Length"
+"286","Get Runt RX Length","port.runt.rx_length.get()","Runt - RX Length"
+"287","Set Runt TX Length","port.runt.tx_length.set()","Runt - TX Length"
+"288","Get Runt TX Length","port.runt.tx_length.get()","Runt - TX Length"
+"289","Get Runt Length Errors","port.runt.has_length_errors.get()","Runt - Length Error"
+"290","Enable RX Preamble Insert","port.preamble.rx_insert.set()","RX Preamble Insert"
+"291","Disable RX Preamble Insert","port.preamble.rx_insert.set()","RX Preamble Insert"
+"292","Get RX Preamble Insert","port.preamble.rx_insert.get()","RX Preamble Insert"
+"293","Enable TX Preamble Remove","port.preamble.tx_remove.set()","TX Preamble Removal"
+"294","Disable TX Preamble Remove","port.preamble.tx_remove.set()","TX Preamble Removal"
+"295","Get TX Preamble Remove","port.preamble.tx_remove.get()","TX Preamble Removal"
+"296","Create MACsec Tx SCs","port.macsec.txscs.create()",""
+"297","Set Link Flap Config","port.layer1.impairment.link_flap.params.set()",""
+"298","Get Link Flap Config","port.layer1.impairment.link_flap.params.get()",""
+"299","Enable Link Flap","port.layer1.impairment.link_flap.enable.set_on()",""
+"300","Disable Link Flap","port.layer1.impairment.link_flap.enable.set_off()",""
+"301","Get Link Flap Enable","port.layer1.impairment.link_flap.enable.get()",""
+"302","Set PMA Error Inject Config","port.layer1.impairment.pma_error_inject.params.set()",""
+"303","Get PMA Error Inject Config","port.layer1.impairment.pma_error_inject.params.get()",""
+"304","Enable PMA Error Injection","port.layer1.impairment.pma_error_inject.enable.set_on()",""
+"305","Disable PMA Error Injection","port.layer1.impairment.pma_error_inject.enable.set_off()",""
+"306","Get PMA Error Injection Enable","port.layer1.impairment.pma_error_inject.enable.get()",""
+"307","Set RS Fault Signaling Disabled","port.layer1.rs_fault.signaling.set_disabled()",""
+"308","Set RS Fault Signaling Force Local","port.layer1.rs_fault.signaling.set_force_local()",""
+"309","Set RS Fault Signaling Force Remote","port.layer1.rs_fault.signaling.set_force_remote()",""
+"310","Set RS Fault Signaling Normal","port.layer1.rs_fault.signaling.set_normal()",""
+"311","Get RS Fault Signaling","port.layer1.rs_fault.signaling.get()",""
+"312","Get RS Fault Status","port.layer1.rs_fault.status.get()",""
+"313","Set FEC Mode RS_FEC","port.layer1.pcs_fec.fec_mode.set()",""
+"314","Set FEC Mode RS_FEC_KP","port.layer1.pcs_fec.fec_mode.set()",""
+"315","Set FEC Mode RS_FEC_KR","port.layer1.pcs_fec.fec_mode.set()",""
+"316","Set FEC Mode FC_FEC","port.layer1.pcs_fec.fec_mode.set()",""
+"317","Set FEC Mode OFF","port.layer1.pcs_fec.fec_mode.set()",""
+"318","Set FEC Mode ON","port.layer1.pcs_fec.fec_mode.set()",""
+"319","Get FEC Mode","port.layer1.pcs_fec.fec_mode.get()",""
+"320","Set PCS TX Config Skew","port.layer1.pcs_fec.lane[0].tx_config.set()",""
+"321","Get PCS RX Status Skew","port.layer1.pcs_fec.lane[0].rx_status.status.get()",""
+"322","Get Lane RX Errors","port.layer1.pcs_fec.lane[0].rx_status.errors.get()",""
+"323","Get Lane RX Lock","port.layer1.pcs_fec.lane[0].rx_status.lock.get()",""
+"324","Clear PCS/FEC Counters","port.layer1.pcs_fec.clear.set()",""
+"325","Get FEC Symbol Error Distribution","port.layer1.pcs_fec.fec_symbol_status.fec_status.get()",""
+"326","Get FEC Symbol Total Status","port.layer1.pcs_fec.fec_symbol_status.total_status.get()",""
+"327","Get PCS/FEC Alarms","port.layer1.pcs_fec.alarms.errors.get()",""
+"328","Set PRBS Configuration","port.layer1.prbs_config.set()",""
+"329","Get PRBS Configuration","port.layer1.prbs_config.get()",""
+"330","Enable PRBS","port.layer1.serdes[0].prbs.control.set_on()",""
+"331","Disable PRBS","port.layer1.serdes[0].prbs.control.set_off()",""
+"332","Get PRBS Status","port.layer1.serdes[0].prbs.status.get()",""
+"333","Set Gray Coding Configuration","port.layer1.serdes[0].pma.graycoding.set()",""
+"334","Get Gray Coding Configuration","port.layer1.serdes[0].pma.graycoding.get()",""
+"335","Set Precoding Configuration","port.layer1.serdes[0].pma.precoding.set()",""
+"336","Get Precoding Configuration","port.layer1.serdes[0].pma.precoding.get()",""
+"337","Enable P/N Swap TX","port.layer1.serdes[0].pma.pn_swap_tx.set_on()",""
+"338","Disable P/N Swap TX","port.layer1.serdes[0].pma.pn_swap_tx.set_off()",""
+"339","Get P/N Swap TX","port.layer1.serdes[0].pma.pn_swap_tx.get()",""
+"340","Enable P/N Swap RX","port.layer1.serdes[0].pma.pn_swap_rx.set_on()",""
+"341","Disable P/N Swap RX","port.layer1.serdes[0].pma.pn_swap_rx.set_off()",""
+"342","Get P/N Swap RX","port.layer1.serdes[0].pma.pn_swap_rx.get()",""
+"343","Set PCS Variant ETC","port.layer1.pcs_fec.pcs_variant.set()",""
+"344","Set PCS Variant IEEE","port.layer1.pcs_fec.pcs_variant.set()",""
+"345","Get PCS Variant","port.layer1.pcs_fec.pcs_variant.get()",""
+"346","Start FEC Error Injection","port.layer1.pcs_fec.fec_error_inject.control.set_start()",""
+"347","Stop FEC Error Injection","port.layer1.pcs_fec.fec_error_inject.control.set_stop()",""
+"348","Get FEC Error Injection Status","port.layer1.pcs_fec.fec_error_inject.control.get()",""
+"349","Set FEC Error Codeword Pattern","port.layer1.pcs_fec.fec_error_inject.cycle.set()",""
+"350","Get FEC Error Codeword Pattern","port.layer1.pcs_fec.fec_error_inject.cycle.get()",""
+"351","Set FEC Error Symbol Pattern","port.layer1.pcs_fec.fec_error_inject.err_symbols.set()",""
+"352","Get FEC Error Symbol Pattern","port.layer1.pcs_fec.fec_error_inject.err_symbols.get()",""
+"353","Set FEC Error Bit Mask","port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set()",""
+"354","Set FEC Error Bit Mask","port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set()",""
+"355","Set FEC Error Bit Mask","port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set()",""
+"356","Set FEC Error Bit Mask All","port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set_all_bits()",""
+"357","Set FEC Error Bit Mask None","port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set_no_bits()",""
+"358","Get FEC Error Bit Mask","port.layer1.pcs_fec.fec_error_inject.bit_err_mask.get()",""
+"359","Set FEC Error Engine","port.layer1.pcs_fec.fec_error_inject.engine.set_all_engines()",""
+"360","Get FEC Error Engine","port.layer1.pcs_fec.fec_error_inject.engine.get()",""
+"361","Get FEC Error Statistics","port.layer1.pcs_fec.fec_error_inject.statistics.get()",""
+"362","Clear FEC Error Statistics","port.layer1.pcs_fec.fec_error_inject.clear_stats.set()",""
+"363","Set Auto-Negotiation Settings","port.layer1.anlt.an.settings.set()",""
+"364","Get Auto-Negotiation Settings","port.layer1.anlt.an.settings.get()",""
+"365","Get Auto-Negotiation Status","port.layer1.anlt.an.status.get()",""
+"366","Set Link Training Settings","port.layer1.anlt.lt.settings.set()",""
+"367","Get Link Training Settings","port.layer1.anlt.lt.settings.get()",""
+"368","Get Link Training Status","port.layer1.serdes[0].lt_status.get()",""
+"369","Set ANLT Auto-Restart","port.layer1.anlt.set_autorestart(...)",""
+"370","Get ANLT Auto-Restart","port.layer1.anlt.get_autorestart()",""
+"371","Set ANLT Strict Mode","port.layer1.anlt.set_strict_mode(enable=False)",""
+"372","Get ANLT Strict Mode","port.layer1.anlt.get_strict_mode()",""
+"373","Set Auto-Negotiation Allow Loopback","port.layer1.anlt.an.set_allow_loopback(allow=True)",""
+"374","Get Auto-Negotiation Allow Loopback","port.layer1.anlt.an.get_allow_loopback()",""
+"375","Set Auto-Negotiation Empty NP","port.layer1.anlt.an.set_empty_np(enable=True)",""
+"376","Get Auto-Negotiation Empty NP","port.layer1.anlt.an.get_empty_np()",""
+"377","Get Auto-Negotiation Supported Abilities","port.layer1.anlt.an.abilities.get()",""
+"378","Set Auto-Negotiation Advertise","port.layer1.anlt.an.advertise.set()",""
+"379","Get Auto-Negotiation Advertise","port.layer1.anlt.an.advertise.get()",""
+"380","Set Link Training Algorithm","port.layer1.serdes[0].lt.set_algorithm_default()",""
+"381","Get Link Training Algorithm","port.layer1.serdes[0].lt.get_algorithm()",""
+"382","Set Link Training Modulation NRZ","port.layer1.serdes[0].lt.set_initial_modulation_nrz()",""
+"383","Set Link Training Modulation PAM4","port.layer1.serdes[0].lt.set_initial_modulation_pam4()",""
+"384","Set Link Training Modulation PAM4Precoding","port.layer1.serdes[0].lt.set_initial_modulation_pam4precoding()",""
+"385","Get Link Training Modulation","port.layer1.serdes[0].lt.get_initial_modulation()",""
+"386","Set Preset Native","port.layer1.serdes[0].lt.preset1.native.set()","Using the native values for Preset 1"
+"387","Get Preset Native","port.layer1.serdes[0].lt.preset1.native.get()","Using the native values for Preset 1"
+"388","Set Preset IEEE","port.layer1.serdes[0].lt.preset1.ieee.set()","Using the IEEE values for Preset 1"
+"389","Get Preset IEEE","port.layer1.serdes[0].lt.preset1.ieee.get()","Using the IEEE values for Preset 1"
+"390","Set Preset Level","port.layer1.serdes[0].lt.preset1.level.set()","Using the level values for Preset 1"
+"391","Get Preset Level","port.layer1.serdes[0].lt.preset1.level.get()","Using the level values for Preset 1"
+"392","Reset Preset to Default","port.layer1.serdes[0].lt.preset1.reset.set()",""
+"393","Set EQ Range Native","port.layer1.serdes[0].lt.range.main.native.set()","Using native values, set the response when reaches the min or max"
+"394","Get EQ Range Native","port.layer1.serdes[0].lt.range.main.native.get()","Using native values, set the response when reaches the min or max"
+"395","Set EQ Range IEEE","port.layer1.serdes[0].lt.range.main.ieee.set()","Using ieee values, set the response when reaches the min or max"
+"396","Get EQ Range IEEE","port.layer1.serdes[0].lt.range.main.ieee.get()","Using ieee values, set the response when reaches the min or max"
+"397","Set EQ Range Auto Native","port.layer1.serdes[0].lt.range.main.native.set()","When in Auto mode, the min and max values use the default values ignored"
+"398","Set EQ Range Auto IEEE","port.layer1.serdes[0].lt.range.main.ieee.set()","When in Auto mode, the min and max values use the default values ignored"
+"399","Set Link Training Config","port.layer1.anlt.lt_config.set()","Using IEEE standard OOS preset"
+"400","Set Link Training Config","port.layer1.anlt.lt_config.set()","Using IEEE standard OOS preset"
+"401","Control ANLT AN Only","port.layer1.anlt.ctrl.enable_an_only()","Only enable Auto-Negotiation"
+"402","Control ANLT AN & LT Auto","port.layer1.anlt.ctrl.enable_an_lt_auto()","Enable Auto-Negotiation and Link Training (auto mode)"
+"403","Control ANLT AN & LT Interactive","port.layer1.anlt.ctrl.enable_an_lt_interactive()","Enable Auto-Negotiation and Link Training (manual mode)"
+"404","Control ANLT LT Auto Only","port.layer1.anlt.ctrl.enable_lt_auto_only()","Only enable Link Training (auto mode), skipping Auto-Negotiation"
+"405","Control ANLT LT Interactive Only","port.layer1.anlt.ctrl.enable_lt_interactive_only()","Only enable Link Training (manual mode), skipping Auto-Negotiation"
+"406","Control ANLT Disable","port.layer1.anlt.ctrl.disable_anlt()","Disable both Auto-Negotiation and Link Training"
+"407","Send Link Training Modulation","port.layer1.serdes[0].lt.send_cmd_modulation()","Send PAM4 Request"
+"408","Send Link Training Modulation","port.layer1.serdes[0].lt.send_cmd_modulation()","Send PAM4Precoding Request"
+"409","Send Link Training Preset","port.layer1.serdes[0].lt.send_cmd_preset()","Send Preset Request"
+"410","Send Link Training Inc","port.layer1.serdes[0].lt.send_cmd_inc()","Send EQ Coefficient Inc Request"
+"411","Send Link Training Dec","port.layer1.serdes[0].lt.send_cmd_dec()","Send EQ Coefficient Dec Request"
+"412","Send Link Training No Equalization","port.layer1.serdes[0].lt.send_cmd_no_equalization()","Send No EQ"
+"413","Send Link Training Trained","port.layer1.serdes[0].lt.send_cmd_trained()","Send Trained Notification"
+"414","Get Link Training Command Result","port.layer1.serdes[0].lt.get_cmd_result_flag()","Check response status after sending any command"
+"415","Get Auto-Negotiation Results","port.layer1.anlt.an.results.get()","Get Auto-Negotiation results"
+"416","Get Auto-Negotiation Statistics","port.layer1.anlt.an.statistics.get()","Get Auto-Negotiation statistics"
+"417","Get Link Training Results","port.layer1.serdes[0].lt.results.get()","Get Link Training results, per-serdes"
+"418","Get Link Training Statistics","port.layer1.serdes[0].lt.statistics.get()","Get Link Training statistics, per-serdes"
+"419","Set Signal Integrity Sample Control","port.layer1.serdes[0].siv.control.set()",""
+"420","Get Signal Integrity Sample Data","port.layer1.serdes[0].siv.data.get()",""
+"421","Set TX Equalizer","port.layer1.serdes[0].medium.tx_equalizer.set()","Tx Equalizer Settings"
+"422","Set RX Equalizer","port.layer1.serdes[0].medium.rx_equalizer.set()","Rx Equalizer Settings"
+"423","Set TX Equalizer","port.layer1.serdes[0].medium.tx_equalizer.set()","Tx Equalizer Settings"
+"424","Set RX Equalizer","port.layer1.serdes[0].medium.rx_equalizer.set()","Rx Equalizer Settings"
+"425","Set TX Native","port.layer1.serdes[0].medium.tx.native.set()","Tx Equalizer Settings"
+"426","Set RX AGC","port.layer1.serdes[0].medium.rx.config.agc.set()","Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+"427","Set RX CDR","port.layer1.serdes[0].medium.rx.config.cdr.set()","Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+"428","Set RX CTLE High","port.layer1.serdes[0].medium.rx.config.ctle_high.set()","Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+"429","Set RX CTLE Low","port.layer1.serdes[0].medium.rx.config.ctle_low.set()","Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+"430","Set RX DFE","port.layer1.serdes[0].medium.rx.config.dfe.set()","Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+"431","Set RX OC","port.layer1.serdes[0].medium.rx.config.oc.set()","Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+"432","Set RX Post-FFE 1","port.layer1.serdes[0].medium.rx.config.post_ffe_1.set()","Post-FFE 1-23"
+"433","Set RX Pre-FFE 1","port.layer1.serdes[0].medium.rx.config.pre_ffe_1.set()","Pre-FFE 1-8"
+"434","Set TX IEEE","port.layer1.serdes[0].medium.tx.ieee.set()","Tx Equalizer Settings"
+"435","Transceiver Read/Write","port.transceiver.access_rw(...).set()","Provides read and write access to the"
+"436","Transceiver Read/Write","port.transceiver.access_rw(...).get()","Provides read and write access to the"
+"437","Transceiver Sequential Read/Write","port.transceiver.access_rw_seq(...).set()","I2C sequential access to a transceiver's register."
+"438","Transceiver Sequential Read/Write","port.transceiver.access_rw_seq(...).get()","I2C sequential access to a transceiver's register."
+"439","Transceiver Sequential Read/Write Banked","port.transceiver.access_rw_seq_bank(...).set()","I2C sequential access with bank selection."
+"440","Transceiver Sequential Read/Write Banked","port.transceiver.access_rw_seq_bank(...).get()","I2C sequential access with bank selection."
+"441","Transceiver MII Access","port.transceiver.access_mii(...).set()","Provides access to the register interface supported."
+"442","Transceiver MII Access","port.transceiver.access_mii(...).get()","Provides access to the register interface supported."
+"443","Configure I2C","port.transceiver.i2c_config.set()","Configures the I2C interface parameters"
+"444","Get TX Laser Power","port.transceiver.laser_power.tx_laser_power.get()","Reading of the optical power level of the Tx/Rx signal"
+"445","Get RX Laser Power","port.transceiver.laser_power.rx_laser_power.get()","Reading of the optical power level of the Tx/Rx signal"
+"446","Get CDB Instances Supported","port.transceiver.cmis.cdb_instances_supported.get()","Return the supported CDB instances from the CMIS transceiver"

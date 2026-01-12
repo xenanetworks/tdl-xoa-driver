@@ -1,24 +1,31 @@
 ``ports`` module
 =========================
 
-Port APIs
+Port APIs Overview
 --------------------
 
-.. csv-table:: Port APIs
-    :header: "#", "Action", "API", "Description"
+.. csv-table:: TG Port APIs Overview
+    :header: "Id", "Action", "API", "Description"
+    :widths: auto
     :file: ports.csv
 
 
-.. csv-table:: E100 Chimera Specific Port APIs
-    :header: "#", "Action", "API", "Description"
+.. csv-table:: Impairment Port APIs Overview
+    :header: "Id", "Action", "API", "Description"
     :file: ports_chimera.csv
 
 
-Examples - Traffic Generation (Port APIs)
+.. csv-table:: Stream APIs Overview
+    :header: "Id", "Action", "API", "Description"
+    :file: streams.csv
+
+
+
+Examples - Traffic Generation APIs
 ---------------------------------------------
 
 .. literalinclude:: ports.py
-    :caption: Examples - Traffic Generation - Port APIs
+    :caption: Examples - Traffic Generation APIs
     :start-at: [ports]
     :end-before: [Layer-1 Advanced Features]
 
@@ -48,21 +55,12 @@ Examples - E100 Chimera Specific Port APIs
     :caption: Examples - E100 Chimera Specific Port APIs
     :start-at: [chimera ports]
     :end-before: [end]
-    
 
 
-Stream APIs
---------------------
-
-.. csv-table:: Stream APIs
-    :header: "#", "Action", "API", "Description"
-    :file: streams.csv
-
-
-Examples - Traffic Generation (Stream APIs)
+Examples - Traffic Generation Stream APIs
 ---------------------------------------------
 
 .. literalinclude:: streams.py
-    :caption: Examples - Traffic Generation - Stream APIs
+    :caption: Examples - Traffic Generation Stream APIs
     :start-at: [streams]
     :end-before: [end]
