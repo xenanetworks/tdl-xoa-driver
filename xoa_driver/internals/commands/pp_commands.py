@@ -40,7 +40,6 @@ from .enums import (
     AutoNegTecAbility,
     AutoNegFECOption,
     PauseMode,
-    PauseModeHex,
     AutoNegFECType,
     AutoNegStatus,
     AutoNegFECStatus,
