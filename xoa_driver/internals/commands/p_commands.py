@@ -4991,14 +4991,14 @@ class P_MACSEC_TXSC_STARTING_PN:
     _txsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        start: int = field(XmpLong())
+        starting_pn: int = field(XmpLong())
         """integer, the starting PN number. Default to 1, maximum 2^64. Allowed to be 0."""
 
         mode: MACSecPNMode = field(XmpByte())
         """byte, defining how to continue the TX PN after the start-traffic. Default to CONTINUOUS."""
 
     class SetDataAttr(RequestBodyStruct):
-        start: int = field(XmpLong())
+        starting_pn: int = field(XmpLong())
         """integer, the starting PN number. Default to 1, maximum 2^64. Allowed to be 0."""
 
         mode: MACSecPNMode = field(XmpByte())
@@ -5226,11 +5226,11 @@ class P_MACSEC_TXSC_XPN_SSCI:
     _txsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        ssci: Hex = field(XmpHex(size=4))
+        xpn_ssci: Hex = field(XmpHex(size=4))
         """hex 4 bytes, The XPN Short SCI of the port's TX SC when XPN cipher suite is in use"""
 
     class SetDataAttr(RequestBodyStruct):
-        ssci: Hex = field(XmpHex(size=4))
+        xpn_ssci: Hex = field(XmpHex(size=4))
         """hex 4 bytes, The XPN Short SCI of the port's TX SC when XPN cipher suite is in use"""
 
     def get(self) -> Token[GetDataAttr]:
@@ -5266,11 +5266,11 @@ class P_MACSEC_TXSC_XPN_SALT:
     _txsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        salt: Hex = field(XmpHex(size=12))
+        xpn_salt: Hex = field(XmpHex(size=12))
         """hex 12 bytes, XPN salt of the port's TX SC when XPN cipher suite is in use."""
 
     class SetDataAttr(RequestBodyStruct):
-        salt: Hex = field(XmpHex(size=12))
+        xpn_salt: Hex = field(XmpHex(size=12))
         """hex 12 bytes, XPN salt of the port's TX SC when XPN cipher suite is in use."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -5560,9 +5560,9 @@ class P_MACSEC_RXSC_CIPHERSUITE:
 
 @register_command
 @dataclass
-class P_MACSEC_RXSC_STARTING_PN:
+class P_MACSEC_RXSC_LOWEST_PN:
     """
-    The first PN number of the port’s RX SC expects to receive.
+    The lowest PN number of the port’s RX SC expects to receive.
     """
 
     code: typing.ClassVar[int] = 511
@@ -5574,26 +5574,27 @@ class P_MACSEC_RXSC_STARTING_PN:
     _rxsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        value: int = field(XmpLong())
-        """integer, The first PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+        lowest_pn: Hex = field(XmpHex(size=8))
+        """hex, The lowest PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
 
     class SetDataAttr(RequestBodyStruct):
-        value: int = field(XmpLong())
-        """integer, The first PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+        lowest_pn: Hex = field(XmpHex(size=8))
+        """hex, The lowest PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the first PN number of the port’s RX SC expects to receive
+        """Get the lowest PN number of the port’s RX SC expects to receive
 
-        :return: the first PN number of the port’s RX SC expects to receive
-        :rtype: P_MACSEC_RXSC_STARTING_PN.GetDataAttr
+        :return: the lowest PN number of the port’s RX SC expects to receive
+        :rtype: P_MACSEC_RXSC_LOWEST_PN.GetDataAttr
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
 
     def set(self, value: int) -> Token[None]:
-        """Set the first PN number of the port’s RX SC expects to receive
+        """Set the lowest PN number of the port’s RX SC expects to receive
 
-        :param start: The first PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64.
-        :type start: int
+        :param value: The lowest PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64.
+        :type value: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], value=value))
 
@@ -5695,11 +5696,11 @@ class P_MACSEC_RXSC_XPN_SSCI:
     _rxsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        ssci: Hex = field(XmpHex(size=4))
+        xpn_ssci: Hex = field(XmpHex(size=4))
         """hex 4 bytes, The XPN Short SCI of the port's RX SC when XPN cipher suite is in use"""
 
     class SetDataAttr(RequestBodyStruct):
-        ssci: Hex = field(XmpHex(size=4))
+        xpn_ssci: Hex = field(XmpHex(size=4))
         """hex 4 bytes, The XPN Short SCI of the port's RX SC when XPN cipher suite is in use"""
 
     def get(self) -> Token[GetDataAttr]:
@@ -5735,11 +5736,11 @@ class P_MACSEC_RXSC_XPN_SALT:
     _rxsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        salt: Hex = field(XmpHex(size=12))
+        xpn_salt: Hex = field(XmpHex(size=12))
         """hex 12 bytes, XPN salt of the port's RX SC when XPN cipher suite is in use."""
 
     class SetDataAttr(RequestBodyStruct):
-        salt: Hex = field(XmpHex(size=12))
+        xpn_salt: Hex = field(XmpHex(size=12))
         """hex 12 bytes, XPN salt of the port's RX SC when XPN cipher suite is in use."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -6042,6 +6043,190 @@ class P_MACSEC_RX_ENABLE:
     """Enable the RX port MACSec.
     """
 
+
+@register_command
+@dataclass
+class P_MACSEC_RXSC_AN:
+    """
+    RX SC's next AN
+    """
+
+    code: typing.ClassVar[int] = 550
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _rxsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        next_an: int = field(XmpInt())
+        """integer, the next AN"""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get RX SC's next AN
+
+        :return: RX SC's next AN
+        :rtype: P_MACSEC_RXSC_AN.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
+    
+
+@register_command
+@dataclass
+class P_MACSEC_RXSC_NEXT_PN:
+    """
+    The next PN number of the port’s RX SC expects to receive.
+    """
+
+    code: typing.ClassVar[int] = 548
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _rxsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        next_pn: Hex = field(XmpHex(size=8))
+        """hex, The next PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+
+    class SetDataAttr(RequestBodyStruct):
+        next_pn: Hex = field(XmpHex(size=8))
+        """hex, The next PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the next PN number of the port’s RX SC expects to receive
+
+        :return: the next PN number of the port’s RX SC expects to receive
+        :rtype: P_MACSEC_RXSC_NEXT_PN.GetDataAttr
+        """
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
+
+    def set(self, value: int) -> Token[None]:
+        """Set the next PN number of the port’s RX SC expects to receive
+
+        :param value: The next PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64.
+        :type value: int
+        """
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], value=value))
+    
+
+@register_command
+@dataclass
+class P_MACSEC_TXSC_NEXT_PN:
+    """
+    The next PN number of the port’s TX SC expects to receive.
+    """
+
+    code: typing.ClassVar[int] = 547
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _txsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        next_pn: Hex = field(XmpHex(size=8))
+        """hex, The next PN number of the port’s TX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+    class SetDataAttr(RequestBodyStruct):
+        next_pn: Hex = field(XmpHex(size=8))
+        """hex, The next PN number of the port’s TX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the next PN number of the port’s TX SC expects to receive
+
+        NextPN is a monotonically incrementing 32 or 64 bit counter that is never zero. 
+
+        :return: the next PN number of the port’s TX SC expects to receive
+        :rtype: P_MACSEC_TXSC_NEXT_PN.GetDataAttr
+        """
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
+
+    def set(self, value: int) -> Token[None]:
+        """Set the next PN number of the port’s TX SC expects to receive
+
+        NextPN is a monotonically incrementing 32 or 64 bit counter that is never zero. 
+
+        :param value: The next PN number of the port’s TX SC expects to receive. Default to 1, maximum 2^64.
+        :type value: int
+        """
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], value=value))
+    
+
+
+@register_command
+@dataclass
+class P_MACSEC_RXSC_PN:
+    """
+    RX SC's next PN
+    """
+
+    code: typing.ClassVar[int] = 551
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _rxsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        pn: Hex = field(XmpHex(size=8))
+        """hex, 8-byte long, the latest recovered PN for the Rx SC"""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get RX SC's next PN
+        
+        :return: RX SC's next PN
+        :rtype: P_MACSEC_RXSC_PN.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
+
+
+@register_command
+@dataclass
+class P_MACSEC_TXSC_NEXT_AN:
+    """
+    The next AN number of the port’s TX SC expects to receive.
+    """
+
+    code: typing.ClassVar[int] = 549
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _txsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        next_an: int = field(XmpInt())
+        """integer, The next AN number of the port’s TX SC expects to receive.  Allowed to be 0."""
+
+    class SetDataAttr(RequestBodyStruct):
+        next_an: int = field(XmpInt())
+        """integer, The next AN number of the port’s TX SC expects to receive.  Allowed to be 0."""
+    
+    def get(self) -> Token[GetDataAttr]:
+        """Get the next AN number of the port’s TX SC expects to receive
+
+        :return: the next AN number of the port’s TX SC expects to receive
+        :rtype: P_MACSEC_TXSC_NEXT_AN.GetDataAttr
+        """
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
+
+    def set(self, value: int) -> Token[None]:
+        """Set the next AN number of the port’s TX SC expects to receive
+
+        :param value: The next AN number of the port’s TX SC expects to receive. 
+        :type value: int
+        """
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], value=value))
+    
+
 @register_command
 @dataclass
 class P_USED_TPLDID:
@@ -6191,7 +6376,7 @@ __all__ = [
     "P_MACSEC_RXSC_INDICES",
     "P_MACSEC_RXSC_SAK_VALUE",
     "P_MACSEC_RXSC_SCI",
-    "P_MACSEC_RXSC_STARTING_PN",
+    "P_MACSEC_RXSC_LOWEST_PN",
     "P_MACSEC_RXSC_STATS",
     "P_MACSEC_RXSC_TPLDID",
     "P_MACSEC_RXSC_XPN_SALT",
@@ -6266,4 +6451,9 @@ __all__ = [
     "P_XMITONE",
     "P_XMITONETIME",
     "P_EDUN_RX_STATUS",
+    "P_MACSEC_RXSC_AN",
+    "P_MACSEC_RXSC_NEXT_PN",
+    "P_MACSEC_TXSC_NEXT_PN",
+    "P_MACSEC_RXSC_PN",
+    "P_MACSEC_TXSC_NEXT_AN",
 ]
