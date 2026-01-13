@@ -1,7 +1,0 @@
-PMA
-=====
-
-.. toctree::
-    :glob:
-
-    *

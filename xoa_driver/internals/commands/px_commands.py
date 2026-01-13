@@ -1,3 +1,4 @@
+"""Port Transceiver Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
@@ -325,7 +326,7 @@ class PX_CDB_SUPPORT:
         .. code-block:: json 
         
             {
-                "cdb_instances_supported": 2
+              "cdb_instances_supported": 2
             }
         
        * ``cdb_instances_supported``: CDP instnaces supported
@@ -365,7 +366,7 @@ class PX_CDB_ABORT_PROCESSING:
         .. code-block:: json
         
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -413,7 +414,7 @@ class PX_CDB_CHANGE_PASSWORD:
         .. code-block:: json 
         
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -443,7 +444,7 @@ class PX_CDB_CHANGE_PASSWORD:
         .. code-block:: json 
         
             {
-                "new_password": [54,55,56,57]
+              "new_password": [54,55,56,57]
             }
 
         * ``new_password``: array of four integers, new password to be entered.
@@ -473,7 +474,7 @@ class PX_CDB_ENTER_PASSWORD:
         .. code-block:: json 
         
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -512,7 +513,7 @@ class PX_CDB_ENTER_PASSWORD:
         .. code-block:: json
         
             {
-                "password": [54,55,56,57]
+              "password": [54,55,56,57]
             }
 
         * ``password``: array of four integers, password to be entered.
@@ -542,8 +543,8 @@ class PX_CDB_QUERY_STATUS:
         .. code-block:: json
         
             {
-                "cdb_status": 0, 
-                "status": 0
+              "cdb_status": 0, 
+              "status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -562,7 +563,7 @@ class PX_CDB_QUERY_STATUS:
         .. code-block:: json
         
             {
-                "response_delay": 0
+              "response_delay": 0
             }
 
         * ``response_delay``: Programmable delay in ms for module responding to this command. A value of 0 asks for module response as fast as possible.
@@ -581,13 +582,14 @@ class PX_CDB_QUERY_STATUS:
     def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
+
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
         .. code-block:: json
         
             {
-                "response_delay": 0
+              "response_delay": 0
             }
 
         * ``response_delay``: Programmable delay in ms for module responding to this command. A value of 0 asks for module response as fast as possible.
@@ -618,8 +620,8 @@ class PX_CDB_EXTERNAL_FEATURES:
         .. code-block:: json
         
             {
-                "cdb_status": 0,
-                "supplement_support": "0x00"
+              "cdb_status": 0,
+              "supplement_support": "0x00"
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -669,19 +671,19 @@ class PX_CDB_FW_MGMT_FEATURES:
         .. code-block:: json
 
             {
-                "cdb_status": 0,
-                "feature_support_mask": "0x00",
-                "start_cmd_payload_size": 2,
-                "erased_byte": "0x00",
-                "read_write_length_ext": 2,
-                "write_mechanism": "0x00",
-                "read_mechanism": "0x00",
-                "hitless_restart": 0,
-                "max_duration_start": 123,
-                "max_duration_abort": 123,
-                "max_duration_write": 123,
-                "max_duration_complete": 123,
-                "max_duration_copy": 123
+              "cdb_status": 0,
+              "feature_support_mask": "0x00",
+              "start_cmd_payload_size": 2,
+              "erased_byte": "0x00",
+              "read_write_length_ext": 2,
+              "write_mechanism": "0x00",
+              "read_mechanism": "0x00",
+              "hitless_restart": 0,
+              "max_duration_start": 123,
+              "max_duration_abort": 123,
+              "max_duration_write": 123,
+              "max_duration_complete": 123,
+              "max_duration_copy": 123
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -742,17 +744,17 @@ class PX_CDB_GET_APP_ATTRIBUTES:
         .. code-block:: json
 
             {
-                "cdb_status": 0,
-                "application_number": 123,
-                "max_module_power": 123,
-                "prog_output_power_min": 123,
-                "prog_output_power_max": 123,
-                "pre_fec_ber_threshold": 123.123,
-                "rx_los_optical_power_threshold": 123,
-                "rx_power_high_alarm_threshold": 123,
-                "rx_power_low_alarm_threshold": 123,
-                "rx_power_high_warning_threshold": 123,
-                "rx_power_low_warning_threshold": 123
+              "cdb_status": 0,
+              "application_number": 123,
+              "max_module_power": 123,
+              "prog_output_power_min": 123,
+              "prog_output_power_max": 123,
+              "pre_fec_ber_threshold": 123.123,
+              "rx_los_optical_power_threshold": 123,
+              "rx_power_high_alarm_threshold": 123,
+              "rx_power_low_alarm_threshold": 123,
+              "rx_power_high_warning_threshold": 123,
+              "rx_power_low_warning_threshold": 123
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -794,13 +796,14 @@ class PX_CDB_GET_APP_ATTRIBUTES:
     def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
+
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
         .. code-block:: json
         
             {
-                "application_number": 1
+              "application_number": 1
             }
 
         * ``application_number``: integer, U16 Application number. 15-8: reserved (0). 7-4: NADBlockIndex (0-15) or 0. 3-0: AppSelCode (1-15)
@@ -830,16 +833,16 @@ class PX_CDB_GET_IF_CODE_DESCR:
         .. code-block:: json
 
             {
-                "cdb_status": 0,
-                "interface_id": "0x01",
-                "interface_location": "0x00",
-                "interfacre_name": "10G Ethernet",
-                "interfacre_description": "10G Ethernet",
-                "interfacre_data_rate": 10.3125,
-                "interfacre_lane_count": 1,
-                "lane_signaling_rate": 10.3125,
-                "modulation": "PAM4",
-                "bits_per_symbol": 2
+              "cdb_status": 0,
+              "interface_id": "0x01",
+              "interface_location": "0x00",
+              "interfacre_name": "10G Ethernet",
+              "interfacre_description": "10G Ethernet",
+              "interfacre_data_rate": 10.3125,
+              "interfacre_lane_count": 1,
+              "lane_signaling_rate": 10.3125,
+              "modulation": "PAM4",
+              "bits_per_symbol": 2
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -861,8 +864,8 @@ class PX_CDB_GET_IF_CODE_DESCR:
         .. code-block:: json
 
             {
-                "interface_id": "0x01",
-                "interface_location": "0x00"
+              "interface_id": "0x01",
+              "interface_location": "0x00"
             }
 
         * ``interface_id``: hex string, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
@@ -882,14 +885,15 @@ class PX_CDB_GET_IF_CODE_DESCR:
     def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
+
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
         .. code-block:: json
 
             {
-                "interface_id": "0x01",
-                "interface_location": "0x00"
+              "interface_id": "0x01",
+              "interface_location": "0x00"
             }
 
         * ``interface_id``: hex string, U16: HostInterfaceID or MediaInterfaceID. 15-8: reserved (0). 7-0: InterfaceID
@@ -920,13 +924,13 @@ class PX_CDB_MODULE_FEATURES:
         .. code-block:: json
 
             {
-                "cdb_status": 0,
-                "cmd_support_mask": "0x0000000000000000000000000000000000000000000000000000000000000000",
-                "max_completion_time": 1000
+              "cdb_status": 0,
+              "cmd_support_mask": "0x0000000000000000000000000000000000000000000000000000000000000000",
+              "max_completion_time": 1000
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
-        * ``cmd_support_mask``: :hex string, indicates support of CDB commands 0000h-00FFh. This array of 32 bytes indicates support of CDB commands CMD <i>, with identifiers 0 ≤ <i> ≤ 255, as follows: CMD <i> is supported when bit<j>=<i>mod 8 of byte<k> = 138+floor(<i>/8) is set.
+        * ``cmd_support_mask``: :hex string, indicates support of CDB commands 0000h-00FFh. This array of 32 bytes indicates support of CDB commands CMD <i>, with identifiers 0 <= <i> <= 255, as follows: CMD <i> is supported when bit<j>=<i>mod 8 of byte<k> = 138+floor(<i>/8) is set.
         * ``max_completion_time``: integer, U16 Maximum CDB command execution time in ms, of all supported CDB commands.
 
         """
@@ -972,20 +976,20 @@ class PX_CDB_SEC_FEAT_CAPABILITIES:
         .. code-block:: json
 
             {
-                "cdb_status": 0,
-                "cmd_support_mask": "0xFF",
-                "num_certificates": 0,
-                "cert_chain_supported": 0,
-                "certificate_format": 0,
-                "certificate_length_1": 0,
-                "certificate_length_2": 0,
-                "certificate_length_3": 0,
-                "certificate_length_4": 0,
-                "digest_length": 0,
-                "signature_time": 0,
-                "signature_length": 0,
-                "signature_format": 0,
-                "signature_pad_scheme": 0
+              "cdb_status": 0,
+              "cmd_support_mask": "0xFF",
+              "num_certificates": 0,
+              "cert_chain_supported": 0,
+              "certificate_format": 0,
+              "certificate_length_1": 0,
+              "certificate_length_2": 0,
+              "certificate_length_3": 0,
+              "certificate_length_4": 0,
+              "digest_length": 0,
+              "signature_time": 0,
+              "signature_length": 0,
+              "signature_format": 0,
+              "signature_pad_scheme": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1047,7 +1051,7 @@ class PX_CDB_ABORT_FW_DOWNLOAD:
         .. code-block:: json
         
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1095,7 +1099,7 @@ class PX_CDB_COMMIT_FW_IMAGE:
         .. code-block:: json
 
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1143,7 +1147,7 @@ class PX_CDB_COMPLETE_FW_DOWNLOAD:
         .. code-block:: json
         
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1191,9 +1195,9 @@ class PX_CDB_COPY_FW_IMAGE:
         .. code-block:: json
 
             {
-                "cdb_status": 0,
-                "copy_direction": "0xAB",
-                "copy_status": "0x00"
+              "cdb_status": 0,
+              "copy_direction": "0xAB",
+              "copy_status": "0x00"
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1225,13 +1229,14 @@ class PX_CDB_COPY_FW_IMAGE:
     def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
+        
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
         .. code-block:: json
         
             {
-                "copy_direction": "0xAB"
+              "copy_direction": "0xAB"
             }
 
         * ``copy_direction``: hex string, copy direction.
@@ -1264,21 +1269,21 @@ class PX_CDB_GET_FW_INFO:
         .. code-block:: json
 
             {
-                "cdb_status": 0,
-                "firmware_status": 0,
-                "image_information": 0,
-                "image_a_major": 0,
-                "image_a_minor": 0,
-                "image_a_build": 0,
-                "image_a_extra_string": "abcdef",
-                "image_b_major": 0,
-                "image_b_minor": 0,
-                "image_b_build": 0,
-                "image_b_extra_string": "abcdef",
-                "factory_boot_major": 0,
-                "factory_boot_minor": 0,
-                "factory_boot_build": 0,
-                "factory_boot_extra_string": "abcdef"
+              "cdb_status": 0,
+              "firmware_status": 0,
+              "image_information": 0,
+              "image_a_major": 0,
+              "image_a_minor": 0,
+              "image_a_build": 0,
+              "image_a_extra_string": "abcdef",
+              "image_b_major": 0,
+              "image_b_minor": 0,
+              "image_b_build": 0,
+              "image_b_extra_string": "abcdef",
+              "factory_boot_major": 0,
+              "factory_boot_minor": 0,
+              "factory_boot_build": 0,
+              "factory_boot_extra_string": "abcdef"
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1369,8 +1374,8 @@ class PX_CDB_READ_FW_BLOCK_EPL:
         .. code-block:: json
 
             {
-                "cdb_status": 0,
-                "image_data": "0x00010203040506070809"
+              "cdb_status": 0,
+              "image_data": "0x00010203040506070809"
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1403,8 +1408,8 @@ class PX_CDB_READ_FW_BLOCK_EPL:
         .. code-block:: json 
         
             {
-                "block_address": 12,
-                "length": 10
+              "block_address": 12,
+              "length": 10
             }
 
         * ``block_address``: integer, U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
@@ -1436,9 +1441,9 @@ class PX_CDB_READ_FW_BLOCK_LPL:
         .. code-block:: json
 
             {
-                "cdb_status": 0,
-                "base_address_block": "0x0000000C",
-                "image_data": "0x00010203040506070809"
+              "cdb_status": 0,
+              "base_address_block": "0x0000000C",
+              "image_data": "0x00010203040506070809"
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1471,8 +1476,8 @@ class PX_CDB_READ_FW_BLOCK_LPL:
         .. code-block:: json 
         
             {
-                "block_address": 12,
-                "length": 10
+              "block_address": 12,
+              "length": 10
             }
 
         * ``block_address``: integer, U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
@@ -1504,7 +1509,7 @@ class PX_CDB_RUN_FW_IMAGE:
         .. code-block:: json
 
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1517,8 +1522,8 @@ class PX_CDB_RUN_FW_IMAGE:
         .. code-block:: json
 
             {
-                "image_to_run": 0,
-                "delay_to_reset": 100
+              "image_to_run": 0,
+              "delay_to_reset": 100
             }
 
         * ``image_to_run``: integer, index of the image to run.
@@ -1544,14 +1549,15 @@ class PX_CDB_RUN_FW_IMAGE:
     def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
+
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
         .. code-block:: json
 
             {
-                "image_to_run": 0,
-                "delay_to_reset": 100
+              "image_to_run": 0,
+              "delay_to_reset": 100
             }
 
         * ``image_to_run``: integer, index of the image to run.
@@ -1588,7 +1594,7 @@ class PX_CDB_START_FW_DOWNLOAD:
         .. code-block:: json
 
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1601,8 +1607,8 @@ class PX_CDB_START_FW_DOWNLOAD:
         .. code-block:: json
 
             {
-                "image_size": 12,
-                "vendor_data": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              "image_size": 12,
+              "vendor_data": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
             }
 
         * ``image_size``: integer, U32 Size of firmware image to download into the module. This should be the file size including the LPL bytes sent as vendor data in this message.
@@ -1622,14 +1628,15 @@ class PX_CDB_START_FW_DOWNLOAD:
     def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
+
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
         .. code-block:: json
 
             {
-                "image_size": 12,
-                "vendor_data": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              "image_size": 12,
+              "vendor_data": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
             }
 
         * ``image_size``: integer, U32 Size of firmware image to download into the module. This should be the file size including the LPL bytes sent as vendor data in this message.
@@ -1660,7 +1667,7 @@ class PX_CDB_WRITE_FW_BLOCK_EPL:
         .. code-block:: json
 
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1683,14 +1690,15 @@ class PX_CDB_WRITE_FW_BLOCK_EPL:
     def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
+
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
         .. code-block:: json
 
             {   
-                "block_address": 12,
-                "firmware_block": "0x00010203040506070809"
+              "block_address": 12,
+              "firmware_block": "0x00010203040506070809"
             }
 
         * ``block_address``: integer, U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
@@ -1721,7 +1729,7 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
         .. code-block:: json
 
             {
-                "cdb_status": 0
+              "cdb_status": 0
             }
 
         * ``cdb_status``: integer, provides the status of the most recently triggered CDB command.
@@ -1744,14 +1752,15 @@ class PX_CDB_WRITE_FW_BLOCK_LPL:
     def set(self, cmd_data: dict) -> Token[None]:
         """
         Set CMD Data
+
         :param cmd_data: CMD DATA
         :type cmd_data: dict
 
         .. code-block:: json
 
             {
-                "block_address": 12,
-                "firmware_block": "0x00010203040506070809"
+              "block_address": 12,
+              "firmware_block": "0x00010203040506070809"
             }
 
         * ``block_address``: integer, U32 Starting byte address of this block of data within the supplied image file minus the size of the size of the “Start Command Payload Size”.
@@ -1785,21 +1794,24 @@ class PX_CUST_CMD:
     def set(self, cmd: dict) -> Token[None]:
         """
         Set CMD
+
         :param cmd: CMD
         :type cmd: dict
 
         .. code-block:: json
 
             {
-                "cmd_header": {
-                    "cmd_id": "0x00",
-                    "epl_length": 0,
-                    "lpl_length": 0,
-                    "rpl_length": 0,
-                    "rpl_check_code": 0
+              "cmd_header": 
+                {
+                  "cmd_id": "0x00",
+                  "epl_length": 0,
+                  "lpl_length": 0,
+                  "rpl_length": 0,
+                  "rpl_check_code": 0
                 },
-                "cmd_data": {
-                    "data": "0x00"
+              "cmd_data": 
+                {
+                  "data": "0x00"
                 }
             }
 
@@ -1826,17 +1838,17 @@ class PX_CUST_CMD:
         .. code-block:: json
 
             {
-                "reply_status": {
-                    "cdb_cmd_complete_flag": "0x00",
-                    "cdb_status": 0,
-                },
-                "reply_header": {
-                    "rpl_length": 9,
-                    "rpl_check_code": 9
-                }
-                "reply_data": {
-                    "data": "0x00"
-                }
+              "reply_status": {
+                "cdb_cmd_complete_flag": "0x00",
+                "cdb_status": 0,
+              },
+              "reply_header": {
+                "rpl_length": 9,
+                "rpl_check_code": 9
+              }
+              "reply_data": {
+                "data": "0x00"
+              }
             }
 
         * ``reply_status``: dict, JSON formatted string containing the following fields:
@@ -1981,3 +1993,35 @@ class PX_CUST_CMD:
 
     
 # endregion
+
+__all__ = [
+    "PX_CDB_ABORT_FW_DOWNLOAD",
+    "PX_CDB_ABORT_PROCESSING",
+    "PX_CDB_CHANGE_PASSWORD",
+    "PX_CDB_COMMIT_FW_IMAGE",
+    "PX_CDB_COMPLETE_FW_DOWNLOAD",
+    "PX_CDB_COPY_FW_IMAGE",
+    "PX_CDB_ENTER_PASSWORD",
+    "PX_CDB_EXTERNAL_FEATURES",
+    "PX_CDB_FW_MGMT_FEATURES",
+    "PX_CDB_GET_APP_ATTRIBUTES",
+    "PX_CDB_GET_FW_INFO",
+    "PX_CDB_GET_IF_CODE_DESCR",
+    "PX_CDB_MODULE_FEATURES",
+    "PX_CDB_QUERY_STATUS",
+    "PX_CDB_READ_FW_BLOCK_EPL",
+    "PX_CDB_READ_FW_BLOCK_LPL",
+    "PX_CDB_RUN_FW_IMAGE",
+    "PX_CDB_SEC_FEAT_CAPABILITIES",
+    "PX_CDB_START_FW_DOWNLOAD",
+    "PX_CDB_SUPPORT",
+    "PX_CDB_WRITE_FW_BLOCK_EPL",
+    "PX_CDB_WRITE_FW_BLOCK_LPL",
+    "PX_CUST_CMD",
+    "PX_I2C_CONFIG",
+    "PX_MII",
+    "PX_RW",
+    "PX_RW_SEQ",
+    "PX_RW_SEQ_BANK",
+    "PX_TEMPERATURE",
+]

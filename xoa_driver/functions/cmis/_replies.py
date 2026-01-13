@@ -142,14 +142,14 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         Value Maximum Number of Bytes (EPL)
 
         * 0:    8 bytes (no extension of general length limit)
-        * i:    8 * (1+i) bytes (0 ≤ i ≤ 255)
-        * 255:  8 * 256 = 2048 bytes
+        * i:    8 x (1+i) bytes (0 <= i <= 255)
+        * 255:  8 x 256 = 2048 bytes
 
         Value  Maximum Number of Bytes (LPL)
         
         * 0:     8 bytes (no extension of general length limit)
-        * i:     8 * (1+i) bytes (0 ≤ i ≤ 15)
-        * i:     8 * 16 = 128 bytes (16 ≤ i ≤ 256)
+        * i:     8 x (1+i) bytes (0 <= i <= 15)
+        * i:     8 x 16 = 128 bytes (16 <= i <= 256)
 
         """
         self.write_mechanism: int = reply['write_mechanism']

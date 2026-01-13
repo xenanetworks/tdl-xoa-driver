@@ -49,8 +49,6 @@ class ModuleFamilyEdun(ModuleL23):
 
         self.health = MHealth(conn, self.module_id)
         """Module health information"""
-
-# region Edun
         
 @typing.final
 @revisions.register_valkyrie_module(rev="Edun-800G-3S-1P-SMPX[a]")

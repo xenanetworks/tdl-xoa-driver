@@ -1,3 +1,4 @@
+"""Port (L47) Packet Engine Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
@@ -158,3 +159,11 @@ class P4E_ALLOCATION_INFO:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+__all__ = [
+    "P4E_ALLOCATE",
+    "P4E_ALLOCATION_INFO",
+    "P4E_ASSIGN",
+    "P4E_AVAILABLE",
+]

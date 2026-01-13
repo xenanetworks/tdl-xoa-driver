@@ -9,15 +9,18 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Union,
+    List,
+    Tuple,
 )
-from xoa_driver import enums, testers
+from xoa_driver import enums, ports
 from xoa_driver.utils import apply
 if TYPE_CHECKING:
-    from xoa_driver.internals.hli.ports.port_l23.family_l import FamilyL
-    from xoa_driver.internals.hli.ports.port_l23.family_l1 import FamilyFreya
-    from xoa_driver.ports import GenericAnyPort, GenericL23Port
+    from xoa_driver.ports import GenericL23Port, Z800FreyaPort, Z1600EdunPort, GenericAnyPort
     from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
-    from xoa_driver.testers import GenericAnyTester, L23Tester
+    from xoa_driver.testers import L23Tester
+    type FreyaEdunModule = Union[Z800FreyaModule, Z1600EdunModule]
+    type FreyaEdunPort = Union[Z800FreyaPort, Z1600EdunPort]
+    from xoa_driver.internals.commands.enums import MediaConfigurationType
 from .exceptions import (
     NotSupportMedia,
     NotSupportPortSpeed,
@@ -30,30 +33,31 @@ import json
 
 
 # region Testers
-async def reserve_tester(tester: GenericAnyTester, force: bool = True) -> None:
+async def reserve_tester(tester: L23Tester, force: bool = True) -> None:
     """
     Reserve a tester regardless whether it is owned by others or not.
 
     :param tester: The tester to reserve
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
     :param force: Should force reserve the tester
     :type force: boolean
     :return:
     :rtype: None
     """
+
     await release_tester(tester, force)
     await tester.reservation.set_reserve()
 
 
 async def release_tester(
-        tester: GenericAnyTester, 
+        tester: L23Tester, 
         should_release_modules_ports: bool = False,
         ) -> None:
     """
     Free a tester. If the tester is reserved by you, release the tester. If the tester is reserved by others, relinquish the tester. The tester should have no owner afterwards.
 
     :param tester: The tester to free
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
     :param should_release_modules_ports: should modules and ports also be freed, defaults to False
     :type should_release_modules_ports: bool, optional
     :return:
@@ -65,10 +69,10 @@ async def release_tester(
     elif r.operation == enums.ReservedStatus.RESERVED_BY_YOU:
         await tester.reservation.set_release()
     if should_release_modules_ports:
-        await asyncio.gather(*(release_module(m, True) for m in tester.modules))
+        await asyncio.gather(*(release_modules(list(tester.modules), True)))
 
 
-async def get_chassis_sys_uptime_sec(tester: L23Tester) -> int:
+async def get_chassis_sys_uptime(tester: L23Tester) -> int:
     """
     Get chassis system uptime in seconds
 
@@ -90,54 +94,53 @@ async def get_chassis_sys_uptime_sec(tester: L23Tester) -> int:
 # region Modules
 
 
-def get_module(tester: GenericAnyTester, module_id: int) -> GenericAnyModule:
+def obtain_modules_by_ids(tester: L23Tester, module_ids: List[str]) -> Tuple[GenericAnyModule, ...]:
     """
-    Get a module object of the tester.
+    Get the module objects of the tester specified by module index ids
 
     :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
-    :param module_id: the index id of the module
-    :type module_id: int
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
+    :param module_ids: the index ids of the modules.
+
+    Use "*" to get all modules.
+    
+    If the list is empty, return all modules of the tester
+
+    :type module_ids: List[str]
     :raises NoSuchModuleError: No such a module index on the tester
-    :return: module object
-    :rtype: :class:`~xoa_driver.modules.GenericAnyModule`
+    :return: module objects
+    :rtype: List[:class:`~xoa_driver.modules.GenericAnyModule`]
     """
-    return tester.modules.obtain(module_id)
+
+    if len(module_ids) == 0:
+        return tuple(tester.modules)
+    elif "*" in module_ids:
+        return tuple(tester.modules)
+    else:
+        return tuple(tester.modules.obtain(int(module_id)) for module_id in module_ids)
 
 
-def get_modules(tester: GenericAnyTester) -> tuple[GenericAnyModule, ...]:
+async def reserve_modules(modules: List[GenericAnyModule], force: bool = True) -> None:
     """
-    Get all modules of the tester
+    Reserve modules regardless whether they are owned by others or not.
 
-    :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
-    :return: List of module objects
-    :rtype: tuple[GenericAnyModule]
-    """
-    return tuple(tester.modules)
-
-
-async def reserve_module(module: GenericAnyModule, force: bool = True) -> None:
-    """
-    Reserve a module regardless whether it is owned by others or not.
-
-    :param module: The module to reserve
-    :type module: :class:`~xoa_driver.modules.GenericAnyModule`
+    :param modules: The modules to reserve
+    :type modules: List[:class:`~xoa_driver.modules.GenericAnyModule`]
     :param force: Should force reserve the module, defaults to True
     :type force: boolean
     :return:
     :rtype: None
     """
-    await release_module(module, force)
-    await module.reservation.set_reserve()
+
+    await release_modules(modules, force)
+    await asyncio.gather(*(module.reservation.set_reserve() for module in modules))
 
 
-async def release_module(
-    module: GenericAnyModule, should_release_ports: bool = False
+async def release_modules(
+    modules: List[GenericAnyModule], should_release_ports: bool = False
 ) -> None:
     """
-    Free a module. If the module is reserved by you, release the module. If the module is reserved by others, relinquish the module. The module should have no owner afterwards.
-
+    Free modules. If a module is reserved by you, release the module. If a module is reserved by others, relinquish the module. The modules should have no owner afterwards.
     :param module: The module to free
     :type module: :class:`~xoa_driver.modules.GenericAnyModule`
     :param should_release_ports: should ports also be freed, defaults to False
@@ -145,122 +148,34 @@ async def release_module(
     :return:
     :rtype: None
     """
-    r = await module.reservation.get()
-    if r.operation == enums.ReservedStatus.RESERVED_BY_OTHER:
-        await module.reservation.set_relinquish()
-    elif r.operation == enums.ReservedStatus.RESERVED_BY_YOU:
-        await module.reservation.set_release()
-    if should_release_ports:
-        await release_ports(*module.ports)
+
+    for module in modules:
+        r = await module.reservation.get()
+        if r.operation == enums.ReservedStatus.RESERVED_BY_OTHER:
+            await module.reservation.set_relinquish()
+        elif r.operation == enums.ReservedStatus.RESERVED_BY_YOU:
+            await module.reservation.set_release()
+        if should_release_ports:
+            await release_ports(list(module.ports))
 
 
-def get_module_supported_media(
-    module: GenericL23Module | ModuleChimera,
-) -> list[dict[str, Any]]:
-    """
-    Get a list of supported media, port speed and count of the module.
-
-    :param module: The module object
-    :type module: GenericAnyModule
-    :return: List of supported media, port speed and count
-    :rtype: list[dict[str, Any]]
-    """
-    supported_media_list = []
-    item = {}
-
-    for media_item in module.info.media_info_list:  # type: ignore
-        for sub_item in media_item.supported_configs:
-            item = dict()
-            item["media"] = media_item.cage_type
-            item["port_count"] = sub_item.port_count
-            item["port_speed"] = sub_item.port_speed
-            supported_media_list.append(item)
-
-    return supported_media_list
-
-
-async def set_module_media_config(
+def get_module_supported_configs(
     module: Union[GenericL23Module, ModuleChimera],
-    media: enums.MediaConfigurationType,
-    force: bool = True,
-) -> None:
+) -> List[Tuple[MediaConfigurationType, int, int]]:
     """
-    Set module's media configuration.
-
-    :param module: The module object
-    :type module: GenericAnyModule
-    :param media: Target media for the module
-    :type media: enums.MediaConfigurationType
-    :param force: Should reserve the module by force, defaults to True
-    :type force: bool, optional
-    :raises NotSupportMedia: The module does not support this media type
-    :return:
-    :rtype:
-    """
-
-    # reserve the module first
-    await reserve_module(module, force)
-
-    # get the supported media
-    supported_media_list = get_module_supported_media(module)
-
-    # set the module media if the target media is found in supported media
-    for item in supported_media_list:
-        if item["media"] == media:
-            await module.config.media.set(media_config=media)
-            await release_module(module, False)
-            return None
-
-    # raise exception is the target media is not found in the supported media
-    raise NotSupportMedia(module)
-
-
-async def set_module_port_config(
-    module: Union[GenericL23Module, ModuleChimera],
-    port_count: int,
-    port_speed: int,
-    force: bool = True,
-) -> None:
-    """
-    Set module's port-speed configuration
+    Get the module's supported configurations in a list. 
 
     :param module: The module object
     :type module: Union[GenericL23Module, ModuleChimera]
-    :param port_count: The port count
-    :type port_count: int
-    :param port_speed: The port speed in Mbps, e.g. 40000 for 40G
-    :type port_speed: int
-    :param force: Should reserve the module by force, defaults to True
-    :type force: bool, optional
-    :raises NotSupportPortSpeed: The module does not support the port-speed configuration under its current media configuration
-    :return:
-    :rtype:
+    :return: List of tuple(supported media, port count, port speed) (The port speed in Mbps, e.g. 40000 for 40G)
+    :rtype: List[Tuple[MediaConfigurationType, int, int]]
     """
+    supported_media_list = []
+    for media_item in module.info.media_info_list: # type: ignore
+        for port_speed_config in media_item.supported_configs:
+            supported_media_list.append((media_item.cage_type, port_speed_config.port_count, port_speed_config.port_speed))
 
-    # reserve the module first
-    await reserve_module(module, force)
-
-    # get the supported media by the module
-    supported_media_list = get_module_supported_media(module)
-
-    # get the current media of the module
-    reply = await module.config.media.get()
-    current_media = reply.media_config
-
-    # set the module port speed if we can find the port-speed in the corresponding media
-    for item in supported_media_list:
-        if all(
-            (
-                item["media"] == enums.MediaConfigurationType(current_media),
-                item["port_count"] == port_count,
-                item["port_speed"] == port_speed,
-            )
-        ):
-            portspeed_list = [port_count] + port_count * [port_speed]
-            await module.config.port_speed.set(portspeed_list=portspeed_list)
-            await release_module(module, False)
-            return None
-    raise NotSupportPortSpeed(module)
+    return supported_media_list
 
 
 async def set_module_config(
@@ -285,28 +200,51 @@ async def set_module_config(
     :raises NotSupportMediaPortSpeed: the provided media, port count and port speed configuration is not supported by the module
     """
 
-    # reserve the module first
-    await reserve_module(module, force)
+    await set_module_configs([(module, media, port_count, port_speed)], force)
 
-    # get the supported media
-    supported_media_list = get_module_supported_media(module)
 
-    # set the module media if the target media is found in supported media
-    for item in supported_media_list:
-        if all(
-            (
-                item["media"] == media,
-                item["port_count"] == port_count,
-                item["port_speed"] == port_speed,
-            )
-        ):
-            portspeed_list = [port_count] + port_count * [port_speed]
-            await module.config.media.set(media_config=media)
-            await module.config.port_speed.set(portspeed_list=portspeed_list)
-            await release_module(module, False)
-            return None
-    raise NotSupportMediaPortSpeed(module)
+async def set_module_configs(module_configs: List[Tuple[Union[GenericL23Module, ModuleChimera], enums.MediaConfigurationType, int, int]], force: bool = True) -> None:
 
+    """Configure multiple modules with specified media, port count and port speed.
+
+    :param module_configs: List of module configuration tuples. 
+    
+    Each tuple contains (module object, target media, target port count, target port speed in Mbps, should forcibly reserve the module)
+
+    :type module_configs: List[Tuple[Union[GenericL23Module, ModuleChimera], enums.MediaConfigurationType, int, int, bool]]
+
+    :param force: should forcibly reserve the modules, defaults to True
+    :type force: bool, optional
+
+    :raises NotSupportMediaPortSpeed: one of the provided media, port count and port speed configuration is not supported by the corresponding module.
+    """
+    # reserve the modules
+    await reserve_modules([module for (module, _, _, _) in module_configs], force)
+
+    for module_config in module_configs:
+        module, media, port_count, port_speed = module_config
+        
+        # get the supported media
+        supported_media_list = get_module_supported_configs(module)
+
+        # set the module media if the target media is found in supported media
+        for item in supported_media_list:
+            if all(
+                (
+                    item[0] == media,
+                    item[1] == port_count,
+                    item[2] == port_speed,
+                )
+            ):
+                portspeed_list = [port_count] + port_count * [port_speed]
+                await module.config.media.set(media_config=media)
+                await module.config.port_speed.set(portspeed_list=portspeed_list)
+                return None
+        raise NotSupportMediaPortSpeed(module)
+    
+    # release the modules
+    await release_modules([module for (module, _, _, _) in module_configs], False)
+        
 
 async def get_module_eol_date(module: GenericAnyModule) -> str:
     """
@@ -338,35 +276,27 @@ async def get_module_eol_days(module: GenericAnyModule) -> int:
     return timedelta.days
 
 
-    from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
-async def get_module_cage_insertion_count(module: Union[Z800FreyaModule, Z1600EdunModule], cage_index: int) -> int:
+async def get_cage_insertions(module: Union[Z800FreyaModule, Z1600EdunModule]) -> Tuple[int, ...]:
     """
-    Get module cage insertion count
+    Get module cage insertion count of each cage
 
-    :param module: The Z800 Freya module object
+    :param module: The Z800 Freya/Z1600 Edun module object
     :type module: Union[Z800FreyaModule, Z1600EdunModule]
-    :param cage_index: The cage index
-    :type module: int
-    :return: Insertion count of the cage
-    :rtype: int
+    :return: Insertion count of each cage
+    :rtype: Tuple[int, ...]
     """
     resp = await module.health.cage_insertion.get()
     info_js = resp.info
     info_dict = json.loads(info_js)
-    if 0 <= cage_index < len(info_dict['1']['data']):
-        result = info_dict['1']['data'][cage_index]['insert_count']
-    elif cage_index < 0:
-        result = -1
-    else:
-        result = -1
+    result = tuple(cage['insert_count'] for cage in info_dict['1']['data'])
     return result
 
 
-async def get_module_cage_count(module: Union[Z800FreyaModule, Z1600EdunModule]) -> int:
+async def get_cage_count(module: Union[Z800FreyaModule, Z1600EdunModule]) -> int:
     """
     Get module cage count
 
-    :param module: The Z800 Freya module object
+    :param module: The Z800 Freya/Z1600 Edun module object
     :type module: Union[Z800FreyaModule, Z1600EdunModule]
     :return: The number of cages in the module
     :rtype: int
@@ -384,76 +314,102 @@ async def get_module_cage_count(module: Union[Z800FreyaModule, Z1600EdunModule])
 # region Ports
 
 
-def get_all_ports(tester: GenericAnyTester) -> tuple[GenericAnyPort, ...]:
+def obtain_ports_by_ids(tester: L23Tester, port_ids: List[str], separator: str = "/") -> tuple[GenericAnyPort, ...]:
     """
-    Get all ports of the tester
+    Get ports of the tester specified by port ids
 
     :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
+    :param port_ids: The port ids.
+    
+        The port index with format ``m/p``, m is module index, p is port index, e.g. ["1/3", "2/4"]. 
+
+        Use ``1/*`` to get all ports of module 1.
+
+        Use ``*/1`` to get port 1 of all modules.
+
+        Use ``*``, or ``*/*`` to get all ports of all modules.
+    
+        Use an empty list to get all ports of all modules.
+
+    :type port_ids: List[str]
+    :param separator: The separator between module index and port index in port id, defaults to `/`
+    :type separator: str, optional
     :return: List of port objects
     :rtype: tuple[GenericAnyPort]
     """
-    all_ports_ = (m.ports for m in get_modules(tester))
-    return tuple(chain.from_iterable(all_ports_))
+
+    returned_ports = []
+    if len(port_ids) == 0 or f"*{separator}*" in port_ids or f"*" in port_ids: # [] or ["*/*"] or ["*"]
+        all_ports_ = (m.ports for m in tester.modules)
+        return tuple(chain.from_iterable(all_ports_))
+    else:
+        for port_id in port_ids:
+            if separator not in port_id:
+                continue
+            mid = port_id.split(separator)[0]
+            if mid != "*":
+                module = tester.modules.obtain(int(mid))
+                pid = port_id.split(separator)[1]
+                if pid == "*": # ["1/*"]
+                    returned_ports.extend(list(module.ports))
+                else: # ["1/3"]
+                    returned_ports.append(module.ports.obtain(int(pid)))
+            else: # ["*/1"]
+                pid = port_id.split(separator)[1]
+                for module in tester.modules:
+                    returned_ports.append(module.ports.obtain(int(pid)))
+        return tuple(returned_ports)
 
 
-def get_ports(tester: GenericAnyTester, module_id: int) -> tuple[GenericAnyPort, ...]:
-    """
-    Get all ports of the module
-
-    :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
-    :param module_id: The module index
-    :type module_id: int
-    :return: List of port objects
-    :rtype: tuple[GenericAnyPort]
-    """
-    module = get_module(tester, module_id)
-    return tuple(module.ports)
-
-
-def get_port(tester: GenericAnyTester, module_id: int, port_id: int) -> GenericAnyPort:
+def obtain_port_by_id(tester: L23Tester, port_id: str, separator: str = "/") -> GenericAnyPort:
     """
     Get a port of the module
 
     :param tester: The tester object
-    :type tester: :class:`~xoa_driver.testers.GenericAnyTester`
-    :param module_id: The module index
-    :type module_id: int
-    :param port_id: The port index
-    :type port_id: int
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
+    :param port_id: The port index with format "m/p", m is module index, p is port index, e.g. "1/3". Wildcard "*" is not allowed.
+    :type port_id: str
+    :param separator: The separator between module index and port index in port id, defaults to "/"
+    :type separator: str, optional
     :raises NoSuchPortError: No port found with the index
     :return: The port object
     :rtype: GenericAnyPort
     """
-    module = get_module(tester, module_id)
-    return module.ports.obtain(port_id)
+    if "*" in port_id:
+        raise ValueError("Wildcard '*' is not allowed in port_id for obtain_port_by_id function.")
+    if separator not in port_id:
+        raise ValueError(f"Invalid port_id format: {port_id}. Expected format 'm{separator}p'.")
+    return obtain_ports_by_ids(tester, [port_id], separator=separator)[0]
 
 
-async def reserve_port(port: GenericAnyPort, force: bool = True, reset: bool = False) -> None:
+async def reserve_ports(ports: list[GenericAnyPort], force: bool = True, reset: bool = False) -> None:
     """
     Reserve a port regardless whether it is owned by others or not.
 
-    :param port: The port to reserve
-    :type port: GenericAnyPort
-    :param force: Should force reserve the port
-    :type force: boolean
+    :param ports: The ports to reserve
+    :type ports: list[GenericAnyPort]
+    :param force: Should force reserve the ports, defaults to True
+    :type force: boolean, optional
+    :param reset: Should reset the ports after reserving, defaults to False
+    :type reset: boolean, optional
     :return:
     :rtype: None
     """
-    r = await port.reservation.get()
-    if force and r.status == enums.ReservedStatus.RESERVED_BY_OTHER:
-        await apply(
-            port.reservation.set_relinquish(),
-            port.reservation.set_reserve(),
-        )
-    elif r.status == enums.ReservedStatus.RELEASED:
-        await port.reservation.set_reserve()
-    if reset:
-        await port.reset.set()
+    for port in ports:
+        r = await port.reservation.get()
+        if force and r.status == enums.ReservedStatus.RESERVED_BY_OTHER:
+            await apply(
+                port.reservation.set_relinquish(),
+                port.reservation.set_reserve(),
+            )
+        elif r.status == enums.ReservedStatus.RELEASED:
+            await port.reservation.set_reserve()
+        if reset:
+            await port.reset.set()
 
 
-async def release_port(port: GenericAnyPort) -> None:
+async def release_ports(ports: List[GenericAnyPort]) -> None:
     """
     Free a port. If the port is reserved by you, release the port. If the port is reserved by others, relinquish the port. The port should have no owner afterwards.
 
@@ -462,23 +418,24 @@ async def release_port(port: GenericAnyPort) -> None:
     :return:
     :rtype: None
     """
-    r = await port.reservation.get()
-    if r.status == enums.ReservedStatus.RESERVED_BY_OTHER:
-        await port.reservation.set_relinquish()
-    elif r.status == enums.ReservedStatus.RESERVED_BY_YOU:
-        await port.reservation.set_release()
+    for port in ports:
+        r = await port.reservation.get()
+        if r.status == enums.ReservedStatus.RESERVED_BY_OTHER:
+            await port.reservation.set_relinquish()
+        elif r.status == enums.ReservedStatus.RESERVED_BY_YOU:
+            await port.reservation.set_release()
 
 
-async def release_ports(*ports: GenericAnyPort) -> None:
+async def reset_ports(ports: List[GenericAnyPort]) -> None:
     """
-    Free a list of ports. If the port is reserved by you, release the port. If the port is reserved by others, relinquish the port. The port should have no owner afterwards.
+    Reset a list of ports.
 
-    :param ports: The ports to free
-    :type ports: GenericAnyPort
+    :param ports: The ports to reset
+    :type ports: List[GenericAnyPort]
+    :return:
+    :rtype: None
     """
-    await asyncio.gather(*(release_port(port=p) for p in ports))
-
-
+    await asyncio.gather(*(port.reset.set() for port in ports))
 
 # endregion
 
@@ -498,24 +455,23 @@ async def remove_streams(port: GenericL23Port) -> None:
 # endregion
 
 __all__ = (
-    "release_module",
-    "release_port",
-    "release_ports",
+    "reserve_tester",
     "release_tester",
-    "get_all_ports",
-    "get_module",
+    "get_chassis_sys_uptime",
+    "obtain_modules_by_ids",
+    "reserve_modules",
+    "release_modules",
+    "get_module_supported_configs",
+    "set_module_configs",
+    "set_module_config",
     "get_module_eol_date",
     "get_module_eol_days",
-    "get_module_supported_media",
-    "get_modules",
-    "get_port",
-    "get_ports",
-    "reserve_module",
-    "reserve_port",
-    "reserve_tester",
-    "set_module_media_config",
-    "set_module_port_config",
+    "get_cage_insertions",
+    "get_cage_count",
+    "obtain_ports_by_ids",
+    "obtain_port_by_id",
+    "reserve_ports",
+    "release_ports",
+    "reset_ports",
     "remove_streams",
-    "get_module_cage_insertion_count",
-    "get_chassis_sys_uptime_sec",
 )

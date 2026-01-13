@@ -1,7 +1,0 @@
-ANLT
-=====
-
-.. toctree::
-    :glob:
-
-    *

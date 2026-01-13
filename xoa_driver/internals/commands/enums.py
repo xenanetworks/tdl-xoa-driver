@@ -1,3 +1,5 @@
+"""Enums used in various commands."""
+
 from enum import IntEnum, IntFlag
 from typing import Union
 
@@ -1274,55 +1276,6 @@ class PauseMode(IntEnum):
     """Asymmetric Pause"""
 
 
-class PauseModeHex:
-    """Wrapper class to handle PauseMode as hex string for protocol compatibility.
-
-    Accepts either a hex string (with or without '0x' prefix) or a PauseMode enum value.
-    """
-
-    def __init__(self, value: Union[str, "PauseMode"] = "0x00") -> None:
-        if isinstance(value, PauseMode):
-            # Convert enum to hex string (1 byte = 2 hex chars)
-            self._hex_string: str = "0x" + format(value.value, '02X')
-        else:
-            # Handle hex string input
-            hex_string = value
-            if hex_string.lower().startswith("0x"):
-                hex_string = hex_string[2:]
-            self._hex_string = "0x" + hex_string.upper().zfill(2)
-
-    def to_enum(self) -> "PauseMode":
-        """Convert this PauseModeHex to a PauseMode enum.
-
-        Returns:
-            The corresponding PauseMode enum value.
-
-        Raises:
-            ValueError: If the hex value doesn't correspond to a valid PauseMode.
-        """
-        int_value = int(self._hex_string, 16)
-        return PauseMode(int_value)
-
-    @property
-    def hex_string(self) -> str:
-        """Get the hex string value (with 0x prefix)."""
-        return self._hex_string
-
-    @hex_string.setter
-    def hex_string(self, val: str) -> None:
-        """Set the hex string value."""
-        if val.lower().startswith("0x"):
-            val = val[2:]
-        self._hex_string = "0x" + val.upper().zfill(2)
-
-    def to_int(self) -> int:
-        """Convert the hex string to an integer."""
-        return int(self._hex_string, 16)
-
-    def __str__(self) -> str:
-        return self._hex_string
-
-
 class MulticastHeaderFormat(IntEnum):
     """Additional Header to IGMPv2/v3 Packets"""
 
@@ -2121,61 +2074,61 @@ class AutoNegMode(IntEnum):
     """Auto Neg On"""
 
 
-class AutoNegTecAbility(IntEnum):
-    """Auto Neg Technical Abilities"""
+# class AutoNegTecAbility(IntEnum):
+#     """Auto Neg Technical Abilities"""
 
-    DEFAULT_TECH_MODE = 0
-    """Default Tech Mode"""
-    IEEE_10G_KR = 4
-    """IEEE 10G KR"""
-    IEEE_40G_CR4 = 16
-    """IEEE 40G CR4"""
-    IEEE_100G_KR4 = 128
-    """IEEE 100G KR4"""
-    IEEE_100G_CR4 = 256
-    """IEEE 100G CR4"""
-    IEEE_25GBASE_CRS_KRS = 512
-    """IEEE 25GBASE CRS KRS"""
-    IEEE_25GBASE_CR_KR = 1024
-    """IEEE 25GBASE CR KR"""
-    IEEE_50GBASE_CR_KR = 8192
-    """IEEE 50GBASE CR KR"""
-    IEEE_100GBASE_CR2_KR2 = 16384
-    """IEEE 100GBASE CR2 KR2"""
-    IEEE_200GBASE_CR4_KR4 = 32768
-    """IEEE 200GBASE CR4 KR4"""
-    IEEE_100GBASE_KR1 = 65536
-    """IEEE 100GBASE KR1"""
-    IEEE_200GBASE_KR2 = 131072
-    """IEEE 200GBASE KR2"""
-    IEEE_400GBASE_KR4 = 262144
-    """IEEE 400GBASE KR4"""
-    EC_25GBASE_KR1 = 16777216
-    """EC 25GBASE KR1"""
-    EC_25GBASE_CR1 = 33554432
-    """EC 25GBASE CR1"""
-    EC_50GBASE_KR2 = 67108864
-    """EC 50GBASE KR2"""
-    EC_50GBASE_CR2 = 134217728
-    """EC 50GBASE CR2"""
-    EC_400GBASE_KR8 = 268435456
-    """EC 400GBASE KR8"""
-    EC_800GBASE_KR8 = 536870912
-    """EC 800GBASE KR8"""
-    EC_50G_CR1_KR1 = 503
-    """EC 50G CR1 KR1"""
-    BAM_50G_CR1_KR1 = 504
-    """BAM 50G CR1 KR1"""
-    BAM_50G_CR2_KR2 = 505
-    """BAM 50G CR2 KR2"""
-    BAM_100G_CR2_KR2 = 1002
-    """BAM 100G CR2 KR2"""
-    BAM_100G_CR4_KR4 = 1003
-    """BAM 100G CR4 KR4"""
-    BAM_200G_CR2_KR2 = 2002
-    """BAM 200G CR2 KR2"""
-    BAM_400G_CR8_KR8 = 4001
-    """BAM 400G CR8 KR8"""
+#     DEFAULT_TECH_MODE = 0
+#     """Default Tech Mode"""
+#     IEEE_10G_KR = 4
+#     """IEEE 10G KR"""
+#     IEEE_40G_CR4 = 16
+#     """IEEE 40G CR4"""
+#     IEEE_100G_KR4 = 128
+#     """IEEE 100G KR4"""
+#     IEEE_100G_CR4 = 256
+#     """IEEE 100G CR4"""
+#     IEEE_25GBASE_CRS_KRS = 512
+#     """IEEE 25GBASE CRS KRS"""
+#     IEEE_25GBASE_CR_KR = 1024
+#     """IEEE 25GBASE CR KR"""
+#     IEEE_50GBASE_CR_KR = 8192
+#     """IEEE 50GBASE CR KR"""
+#     IEEE_100GBASE_CR2_KR2 = 16384
+#     """IEEE 100GBASE CR2 KR2"""
+#     IEEE_200GBASE_CR4_KR4 = 32768
+#     """IEEE 200GBASE CR4 KR4"""
+#     IEEE_100GBASE_KR1 = 65536
+#     """IEEE 100GBASE KR1"""
+#     IEEE_200GBASE_KR2 = 131072
+#     """IEEE 200GBASE KR2"""
+#     IEEE_400GBASE_KR4 = 262144
+#     """IEEE 400GBASE KR4"""
+#     EC_25GBASE_KR1 = 16777216
+#     """EC 25GBASE KR1"""
+#     EC_25GBASE_CR1 = 33554432
+#     """EC 25GBASE CR1"""
+#     EC_50GBASE_KR2 = 67108864
+#     """EC 50GBASE KR2"""
+#     EC_50GBASE_CR2 = 134217728
+#     """EC 50GBASE CR2"""
+#     EC_400GBASE_KR8 = 268435456
+#     """EC 400GBASE KR8"""
+#     EC_800GBASE_KR8 = 536870912
+#     """EC 800GBASE KR8"""
+#     EC_50G_CR1_KR1 = 503
+#     """EC 50G CR1 KR1"""
+#     BAM_50G_CR1_KR1 = 504
+#     """BAM 50G CR1 KR1"""
+#     BAM_50G_CR2_KR2 = 505
+#     """BAM 50G CR2 KR2"""
+#     BAM_100G_CR2_KR2 = 1002
+#     """BAM 100G CR2 KR2"""
+#     BAM_100G_CR4_KR4 = 1003
+#     """BAM 100G CR4 KR4"""
+#     BAM_200G_CR2_KR2 = 2002
+#     """BAM 200G CR2 KR2"""
+#     BAM_400G_CR8_KR8 = 4001
+#     """BAM 400G CR8 KR8"""
 
 
 class AutoNegFECOption(IntFlag):
@@ -2183,19 +2136,19 @@ class AutoNegFECOption(IntFlag):
 
     DEFAULT_FEC = 0
     """Default FEC"""
-    NO_FEC = 1
+    NO_FEC = 1<<0
     """No FEC"""
-    FCFEC = 2
+    FCFEC = 1<<1
     """Firecode FEC"""
-    RSFEC_CL91 = 4
+    RSFEC_CL91 = 1<<2
     """RS FEC Cl91"""
-    RS528 = 256
+    RS528 = 1<<8
     """RS 528"""
-    RS544 = 512
+    RS544 = 1<<9
     """RS 544"""
-    RS272 = 1024
+    RS272 = 1<<10
     """RS 272"""
-    RSFEC_CL161 = 8
+    RSFEC_CL161 = 1<<3
     """RS CL 161"""
 
 
@@ -2240,19 +2193,19 @@ class AutoNegFECStatus(IntFlag):
 
     DEFAULT_FEC = 0
     """Default FEC"""
-    NO_FEC = 1
+    NO_FEC = 1<<0
     """No FEC"""
-    FC_FEC = 2
+    FC_FEC = 1<<1
     """Firecode FEC"""
-    RSFEC_CL91 = 4
+    RSFEC_CL91 = 1<<2
     """RS FEC Cl91"""
-    RS528 = 256
+    RS528 = 1<<8
     """RS 528"""
-    RS544 = 512
+    RS544 = 1<<9
     """RS 544"""
-    RS272 = 1024
+    RS272 = 1<<10
     """RS 272"""
-    RSFEC_CL161 = 8
+    RSFEC_CL161 = 1<<3
     """RS CL 161"""
 
 
@@ -2577,50 +2530,50 @@ class LinkTrainAnnounce(IntEnum):
     """The lane is trained"""
 
 
-class AnLtLogControl(IntEnum):
+class AnLtLogControl(IntFlag):
     """
     ANLT log control bits
 
     """
 
     # 1st nibble
-    LOG_TYPE_DEBUG = 0x2
+    LOG_TYPE_DEBUG = 1<<1
     """debug log output"""
 
-    LOG_TYPE_AN_TRACE = 0x4
+    LOG_TYPE_AN_TRACE = 1<<2
     """autonegotiation trace output"""
 
-    LOG_TYPE_LT_TRACE = 0x8
+    LOG_TYPE_LT_TRACE = 1<<3
     """link training trace output"""
 
     # 2nd nibble
-    LOG_TYPE_ALG_TRACE = 0x10
+    LOG_TYPE_ALG_TRACE = 1<<4
     """link training algorithm trace"""
 
     # 5th nibble
-    LOG_TYPE_FSM_PORT = 0x10000
+    LOG_TYPE_FSM_PORT = 1<<16
     """port state machine transitions"""
 
-    LOG_TYPE_FSM_ANEG = 0x20000
+    LOG_TYPE_FSM_ANEG = 1<<17
     """autonegotiation state machine transitions. What we act on"""
 
-    LOG_TYPE_FSM_ANEG_STIMULI = 0x40000
+    LOG_TYPE_FSM_ANEG_STIMULI = 1<<18
     """autonegotiation stimuli state machine transitions. What we ask"""
 
-    LOG_TYPE_FSM_LT = 0x80000
+    LOG_TYPE_FSM_LT = 1<<19
     """link training state machine transitions"""
 
     # 6th nibble
-    LOG_TYPE_FSM_LT_COEFF = 0x100000
+    LOG_TYPE_FSM_LT_COEFF = 1<<20
     """link training coefficient state machine transitions. What we act on"""
 
-    LOG_TYPE_FSM_LT_STIMULI = 0x200000
+    LOG_TYPE_FSM_LT_STIMULI = 1<<21
     """link training stimuli state machine transitions. What we ask"""
 
-    LOG_TYPE_FSM_LT_ALG0 = 0x400000
+    LOG_TYPE_FSM_LT_ALG0 = 1<<22
     """link training algorithm 0 state machine transitions"""
 
-    LOG_TYPE_FSM_LT_ALG1 = 0x800000
+    LOG_TYPE_FSM_LT_ALG1 = 1<<23
     """link training algorithm -1 state machine transitions"""
 
 
@@ -2800,7 +2753,7 @@ class FreyaLinkTrainingMode(IntEnum):
     ENABLED_INTERACTIVE = 2
     """Link training in interactive mode, requiring manual operation."""
 
-class FreyaTecAbility(IntFlag):
+class AutoNegTecAbility(IntFlag):
     """Auto Neg Technical Abilities"""
 
     ETC_800G_CR8_KR8 = 1<<29
@@ -2893,7 +2846,10 @@ class FreyaTecAbility(IntFlag):
     IEEE_1000BASE_KX = 1<<0
     """IEEE_1000BASE_KX"""
 
-class FreyaFECAbility(IntFlag):
+    DEFAULT_TECH = 0
+    """Default Tech Ability"""
+
+class AutoNegFECAbility(IntFlag):
     """Auto Neg FEC ability"""
 
     RS_FEC_Int = 1<<4
@@ -2911,8 +2867,14 @@ class FreyaFECAbility(IntFlag):
     FC_FEC_10G_ABILITY = 1<<0
     """FC_FEC_10G_ABILITY"""
 
-class FreyaPauseAbility(IntFlag):
-    """Auto Neg Pause ability"""
+    DEFAULT_FEC = 0
+    """Default FEC Ability"""
+
+class AutoNegPauseAbility(IntFlag):
+    """AutoNeg Pause ability"""
+
+    NO_PAUSE = 0
+    """NO_PAUSE"""
 
     ASYM_PAUSE = 1<<1
     """ASYM_PAUSE"""
@@ -2920,8 +2882,8 @@ class FreyaPauseAbility(IntFlag):
     SYM_PAUSE = 1<<0
     """SYM_PAUSE"""
 
-class FreyaTechAbilityHCDStatus(IntEnum):
-    """Auto Neg Pause ability"""
+class AutoNegTechAbilityHCDStatus(IntEnum):
+    """Auto Neg Tech Ability HCD Status"""
 
     SUCCESS = 1
     """SUCCESS"""
@@ -2960,8 +2922,8 @@ class FreyaPCSVariant(IntEnum):
     ETC = 2
     """ETC"""
 
-class FreyaTecAbilityHCD(IntEnum):
-    """Auto Neg Technical Abilities"""
+class AutoNegTecAbilityHCD(IntEnum):
+    """Auto Neg Technical Abilities HCD"""
 
     ETC_800G_CR8_KR8 = 29
     """ETC_800G_CR8_KR8"""

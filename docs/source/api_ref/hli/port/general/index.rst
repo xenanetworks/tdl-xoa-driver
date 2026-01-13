@@ -1,7 +1,0 @@
-General
-========
-
-.. toctree::
-    :glob:
-
-    *

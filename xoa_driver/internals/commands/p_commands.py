@@ -1,3 +1,4 @@
+"""Port Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import ipaddress
@@ -28,8 +29,8 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     Hex,
 )
 from .subtypes import (
-    ArpChunk,
-    NdpChunk,
+    ArpEntry,
+    NdpEntry,
 )
 from .enums import (
     ReservedStatus,
@@ -198,6 +199,11 @@ class P_CAPABILITIES:
     _connection: 'interfaces.IConnection'
     _module: int
     _port: int
+
+    def __init__(self, conn: 'interfaces.IConnection', module_id: int, port_id: int) -> None:
+        self._connection = conn
+        self._module = module_id
+        self._port = port_id
 
     class GetDataAttr(ResponseBodyStruct):
         max_speed: int = field(XmpInt())
@@ -641,7 +647,7 @@ class P_CAPABILITIES:
         """min-value of individual TXEQ taps, SEQuential: <pre-n> <pre-(n-q)> ... <prr1> <main> <post1> <post2> ...."""
 
 
-    def get(self) -> Token[GetDataAttr]:
+    def get(self) -> Token[P_CAPABILITIES.GetDataAttr]:
         """Get the internal limits, aka. capabilities, of the port.
 
         :return: the internal limits, aka. capabilities, of the port.
@@ -2332,10 +2338,10 @@ class P_ARPRXTABLE:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        chunks: typing.List[ArpChunk] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        entries: typing.List[ArpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     class SetDataAttr(RequestBodyStruct):
-        chunks: typing.List[ArpChunk] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        entries: typing.List[ArpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     def get(self) -> Token[GetDataAttr]:
         """Get the port's ARP table used to reply to incoming ARP requests.
@@ -2350,18 +2356,18 @@ class P_ARPRXTABLE:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, chunks: typing.List[ArpChunk]) -> Token[None]:
+    def set(self, entries: typing.List[ArpEntry]) -> Token[None]:
         """Set the port's ARP table used to reply to incoming ARP requests.
 
-        :param chunks:
+        :param entries:
             * IP address to match to the Target IP address in the ARP requests
             * The prefix used for address matching
             * Whether the target MAC address will be patched with the part of the IP address that is not masked by the prefix
             * The target MAC address to return in the ARP reply
-        :type chunks: typing.List[subtypes.ArpChunkList]
+        :type entries: typing.List[subtypes.ArpChunkList]
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, chunks=chunks))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, entries=entries))
 
 
 @register_command
@@ -2379,10 +2385,10 @@ class P_NDPRXTABLE:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        chunks: typing.List[NdpChunk] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        entries: typing.List[NdpEntry] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     class SetDataAttr(RequestBodyStruct):
-        chunks: typing.List[NdpChunk] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
+        entries: typing.List[NdpEntry] = field(XmpSequence(types_chunk=[XmpIPv6Address(), XmpShort(), XmpByte(), XmpMacAddress()]))
 
     def get(self) -> Token[GetDataAttr]:
         """Get the port's NDP table used to reply to incoming NDP Neighbor Solicitation.
@@ -2397,19 +2403,18 @@ class P_NDPRXTABLE:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, chunks: typing.List[NdpChunk]) -> Token[None]:
+    def set(self, entries: typing.List[NdpEntry]) -> Token[None]:
         """Set the port's NDP table used to reply to incoming NDP Neighbor Solicitation.
 
-        :param chunks:
+        :param entries:
             * IP address to match to the Target IP address in the NDP Neighbor Solicitation
             * The prefix used for address matching
             * Whether the target MAC address will be patched with the part of the IP address that is not masked by the prefix
             * The target MAC address to return in the NDP Neighbor Advertisement
-        :type chunks: typing.List[subtypes.NdpChunkList]
+        :type entries: typing.List[subtypes.NdpChunkList]
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, chunks=chunks))
-
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, entries=entries))
 
 @register_command
 @dataclass
@@ -4986,14 +4991,14 @@ class P_MACSEC_TXSC_STARTING_PN:
     _txsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        start: int = field(XmpLong())
+        starting_pn: int = field(XmpLong())
         """integer, the starting PN number. Default to 1, maximum 2^64. Allowed to be 0."""
 
         mode: MACSecPNMode = field(XmpByte())
         """byte, defining how to continue the TX PN after the start-traffic. Default to CONTINUOUS."""
 
     class SetDataAttr(RequestBodyStruct):
-        start: int = field(XmpLong())
+        starting_pn: int = field(XmpLong())
         """integer, the starting PN number. Default to 1, maximum 2^64. Allowed to be 0."""
 
         mode: MACSecPNMode = field(XmpByte())
@@ -5007,15 +5012,15 @@ class P_MACSEC_TXSC_STARTING_PN:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
 
-    def set(self, start: int, mode: MACSecPNMode) -> Token[None]:
+    def set(self, starting_pn: int, mode: MACSecPNMode) -> Token[None]:
         """Set the starting PN number. Default to 1, maximum 2^64. Allowed to be 0.
 
-        :param start: the starting PN number. Default to 1, maximum 2^64.
-        :type start: int
+        :param starting_pn: the starting PN number. Default to 1, maximum 2^64.
+        :type starting_pn: int
         :param mode: defining how to continue the TX PN after the start-traffic.
         :type mode: MACSecPNMode
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], start=start, mode=mode))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], starting_pn=starting_pn, mode=mode))
     
 
 # @register_command
@@ -5221,11 +5226,11 @@ class P_MACSEC_TXSC_XPN_SSCI:
     _txsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        ssci: Hex = field(XmpHex(size=4))
+        xpn_ssci: Hex = field(XmpHex(size=4))
         """hex 4 bytes, The XPN Short SCI of the port's TX SC when XPN cipher suite is in use"""
 
     class SetDataAttr(RequestBodyStruct):
-        ssci: Hex = field(XmpHex(size=4))
+        xpn_ssci: Hex = field(XmpHex(size=4))
         """hex 4 bytes, The XPN Short SCI of the port's TX SC when XPN cipher suite is in use"""
 
     def get(self) -> Token[GetDataAttr]:
@@ -5236,13 +5241,13 @@ class P_MACSEC_TXSC_XPN_SSCI:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
 
-    def set(self, ssci: Hex) -> Token[None]:
+    def set(self, xpn_ssci: Hex) -> Token[None]:
         """Set the XPN Short SCI of the port's TX SC when XPN cipher suite is in use
 
-        :param ssci: the XPN Short SCI of the port's TX SC when XPN cipher suite is in use
-        :type ssci: int
+        :param xpn_ssci: the XPN Short SCI of the port's TX SC when XPN cipher suite is in use
+        :type xpn_ssci: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], ssci=ssci))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], xpn_ssci=xpn_ssci))
     
 
 @register_command
@@ -5261,11 +5266,11 @@ class P_MACSEC_TXSC_XPN_SALT:
     _txsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        salt: Hex = field(XmpHex(size=12))
+        xpn_salt: Hex = field(XmpHex(size=12))
         """hex 12 bytes, XPN salt of the port's TX SC when XPN cipher suite is in use."""
 
     class SetDataAttr(RequestBodyStruct):
-        salt: Hex = field(XmpHex(size=12))
+        xpn_salt: Hex = field(XmpHex(size=12))
         """hex 12 bytes, XPN salt of the port's TX SC when XPN cipher suite is in use."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -5276,13 +5281,13 @@ class P_MACSEC_TXSC_XPN_SALT:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
 
-    def set(self, salt: Hex) -> Token[None]:
+    def set(self, xpn_salt: Hex) -> Token[None]:
         """Set XPN salt of the port's TX SC when XPN cipher suite is in use.
 
-        :param salt: XPN salt of the port's TX SC when XPN cipher suite is in use.
-        :type salt: int
+        :param xpn_salt: XPN salt of the port's TX SC when XPN cipher suite is in use.
+        :type xpn_salt: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], salt=salt))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], xpn_salt=xpn_salt))
     
 
 @register_command
@@ -5555,9 +5560,9 @@ class P_MACSEC_RXSC_CIPHERSUITE:
 
 @register_command
 @dataclass
-class P_MACSEC_RXSC_STARTING_PN:
+class P_MACSEC_RXSC_LOWEST_PN:
     """
-    The first PN number of the port’s RX SC expects to receive.
+    The lowest PN number of the port’s RX SC expects to receive.
     """
 
     code: typing.ClassVar[int] = 511
@@ -5569,28 +5574,29 @@ class P_MACSEC_RXSC_STARTING_PN:
     _rxsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        value: int = field(XmpLong())
-        """integer, The first PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+        lowest_pn: Hex = field(XmpHex(size=8))
+        """hex, The lowest PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
 
     class SetDataAttr(RequestBodyStruct):
-        value: int = field(XmpLong())
-        """integer, The first PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+        lowest_pn: Hex = field(XmpHex(size=8))
+        """hex, The lowest PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the first PN number of the port’s RX SC expects to receive
+        """Get the lowest PN number of the port’s RX SC expects to receive
 
-        :return: the first PN number of the port’s RX SC expects to receive
-        :rtype: P_MACSEC_RXSC_STARTING_PN.GetDataAttr
+        :return: the lowest PN number of the port’s RX SC expects to receive
+        :rtype: P_MACSEC_RXSC_LOWEST_PN.GetDataAttr
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
 
-    def set(self, value: int) -> Token[None]:
-        """Set the first PN number of the port’s RX SC expects to receive
+    def set(self, lowest_pn: int) -> Token[None]:
+        """Set the lowest PN number of the port’s RX SC expects to receive
 
-        :param start: The first PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64.
-        :type start: int
+        :param lowest_pn: The lowest PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64.
+        :type lowest_pn: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], value=value))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], lowest_pn=lowest_pn))
 
 
 @register_command
@@ -5690,11 +5696,11 @@ class P_MACSEC_RXSC_XPN_SSCI:
     _rxsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        ssci: Hex = field(XmpHex(size=4))
+        xpn_ssci: Hex = field(XmpHex(size=4))
         """hex 4 bytes, The XPN Short SCI of the port's RX SC when XPN cipher suite is in use"""
 
     class SetDataAttr(RequestBodyStruct):
-        ssci: Hex = field(XmpHex(size=4))
+        xpn_ssci: Hex = field(XmpHex(size=4))
         """hex 4 bytes, The XPN Short SCI of the port's RX SC when XPN cipher suite is in use"""
 
     def get(self) -> Token[GetDataAttr]:
@@ -5705,13 +5711,13 @@ class P_MACSEC_RXSC_XPN_SSCI:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
 
-    def set(self, ssci: Hex) -> Token[None]:
+    def set(self, xpn_ssci: Hex) -> Token[None]:
         """Set the XPN Short SCI of the port's RX SC when XPN cipher suite is in use
 
-        :param ssci: the XPN Short SCI of the port's RX SC when XPN cipher suite is in use
-        :type ssci: int
+        :param xpn_ssci: the XPN Short SCI of the port's RX SC when XPN cipher suite is in use
+        :type xpn_ssci: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], ssci=ssci))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], xpn_ssci=xpn_ssci))
     
 
 @register_command
@@ -5730,11 +5736,11 @@ class P_MACSEC_RXSC_XPN_SALT:
     _rxsc_index: int
 
     class GetDataAttr(ResponseBodyStruct):
-        salt: Hex = field(XmpHex(size=12))
+        xpn_salt: Hex = field(XmpHex(size=12))
         """hex 12 bytes, XPN salt of the port's RX SC when XPN cipher suite is in use."""
 
     class SetDataAttr(RequestBodyStruct):
-        salt: Hex = field(XmpHex(size=12))
+        xpn_salt: Hex = field(XmpHex(size=12))
         """hex 12 bytes, XPN salt of the port's RX SC when XPN cipher suite is in use."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -5745,13 +5751,13 @@ class P_MACSEC_RXSC_XPN_SALT:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
 
-    def set(self, salt: Hex) -> Token[None]:
+    def set(self, xpn_salt: Hex) -> Token[None]:
         """Set XPN salt of the port's RX SC when XPN cipher suite is in use.
 
-        :param salt: XPN salt of the port's RX SC when XPN cipher suite is in use.
-        :type salt: int
+        :param xpn_salt: XPN salt of the port's RX SC when XPN cipher suite is in use.
+        :type xpn_salt: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], salt=salt))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], xpn_salt=xpn_salt))
 
 
 @register_command
@@ -6037,6 +6043,190 @@ class P_MACSEC_RX_ENABLE:
     """Enable the RX port MACSec.
     """
 
+
+@register_command
+@dataclass
+class P_MACSEC_RXSC_AN:
+    """
+    RX SC's next AN
+    """
+
+    code: typing.ClassVar[int] = 550
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _rxsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        next_an: int = field(XmpInt())
+        """integer, the next AN"""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get RX SC's next AN
+
+        :return: RX SC's next AN
+        :rtype: P_MACSEC_RXSC_AN.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
+    
+
+@register_command
+@dataclass
+class P_MACSEC_RXSC_NEXT_PN:
+    """
+    The next PN number of the port’s RX SC expects to receive.
+    """
+
+    code: typing.ClassVar[int] = 548
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _rxsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        next_pn: Hex = field(XmpHex(size=8))
+        """hex, The next PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+
+    class SetDataAttr(RequestBodyStruct):
+        next_pn: Hex = field(XmpHex(size=8))
+        """hex, The next PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the next PN number of the port’s RX SC expects to receive
+
+        :return: the next PN number of the port’s RX SC expects to receive
+        :rtype: P_MACSEC_RXSC_NEXT_PN.GetDataAttr
+        """
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
+
+    def set(self, value: int) -> Token[None]:
+        """Set the next PN number of the port’s RX SC expects to receive
+
+        :param value: The next PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64.
+        :type value: int
+        """
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], value=value))
+    
+
+@register_command
+@dataclass
+class P_MACSEC_TXSC_NEXT_PN:
+    """
+    The next PN number of the port’s TX SC expects to receive.
+    """
+
+    code: typing.ClassVar[int] = 547
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _txsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        next_pn: Hex = field(XmpHex(size=8))
+        """hex, The next PN number of the port’s TX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+    class SetDataAttr(RequestBodyStruct):
+        next_pn: Hex = field(XmpHex(size=8))
+        """hex, The next PN number of the port’s TX SC expects to receive. Default to 1, maximum 2^64. Allowed to be 0."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the next PN number of the port’s TX SC expects to receive
+
+        NextPN is a monotonically incrementing 32 or 64 bit counter that is never zero. 
+
+        :return: the next PN number of the port’s TX SC expects to receive
+        :rtype: P_MACSEC_TXSC_NEXT_PN.GetDataAttr
+        """
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
+
+    def set(self, next_pn: int) -> Token[None]:
+        """Set the next PN number of the port’s TX SC expects to receive
+
+        NextPN is a monotonically incrementing 32 or 64 bit counter that is never zero. 
+
+        :param next_pn: The next PN number of the port’s TX SC expects to receive. Default to 1, maximum 2^64.
+        :type next_pn: int
+        """
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], next_pn=next_pn))
+    
+
+
+@register_command
+@dataclass
+class P_MACSEC_RXSC_PN:
+    """
+    RX SC's next PN
+    """
+
+    code: typing.ClassVar[int] = 551
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _rxsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        pn: Hex = field(XmpHex(size=8))
+        """hex, 8-byte long, the latest recovered PN for the Rx SC"""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get RX SC's next PN
+        
+        :return: RX SC's next PN
+        :rtype: P_MACSEC_RXSC_PN.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
+
+
+@register_command
+@dataclass
+class P_MACSEC_TXSC_NEXT_AN:
+    """
+    The next AN number of the port’s TX SC expects to receive.
+    """
+
+    code: typing.ClassVar[int] = 549
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _txsc_index: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        next_an: int = field(XmpInt())
+        """integer, The next AN number of the port’s TX SC expects to receive.  Allowed to be 0."""
+
+    class SetDataAttr(RequestBodyStruct):
+        next_an: int = field(XmpInt())
+        """integer, The next AN number of the port’s TX SC expects to receive.  Allowed to be 0."""
+    
+    def get(self) -> Token[GetDataAttr]:
+        """Get the next AN number of the port’s TX SC expects to receive
+
+        :return: the next AN number of the port’s TX SC expects to receive
+        :rtype: P_MACSEC_TXSC_NEXT_AN.GetDataAttr
+        """
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
+
+    def set(self, next_an: int) -> Token[None]:
+        """Set the next AN number of the port’s TX SC expects to receive
+
+        :param next_an: The next AN number of the port’s TX SC expects to receive. 
+        :type next_an: int
+        """
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], next_an=next_an))
+    
+
 @register_command
 @dataclass
 class P_USED_TPLDID:
@@ -6063,3 +6253,207 @@ class P_USED_TPLDID:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+#################################################################
+#                                                               #
+#                   EDUN Temporary Commands                     #
+#                                                               #
+#################################################################
+
+@register_command
+@dataclass
+class P_EDUN_RX_STATUS:
+    """
+    Edun Rx status values for the specified SerDes index on the port.
+    """
+
+    code: typing.ClassVar[int] = 598
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _serdes_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        signal_detected: int = field(XmpByte())
+        """1=Detected, 0=not detected"""
+        pmd_lock: int = field(XmpByte())
+        """1=Lock, 0=No Lock"""
+        tuning_done: int = field(XmpByte())
+        """1=Done, 0=Not Done"""
+        eye_slicer_upper: int = field(XmpInt())
+        """Upper eye slicer value. Unit is in mV."""
+        eye_slicer_middle: int = field(XmpInt())
+        """Middle eye slicer value. Unit is in mV."""
+        eye_slicer_lower: int = field(XmpInt())
+        """Lower eye slicer value. Unit is in mV."""
+        snr: int = field(XmpInt())
+        """Signal to Noise ratio, 1/100 dB"""
+        vga: int = field(XmpInt())
+        """Variable Gain Amplifier setting (0 to 64)"""
+        dco: int = field(XmpInt())
+        """DC Offset compensation value"""
+        ffe_pre3: int = field(XmpInt())
+        """Pre-cursor 3 of the RX equalizer"""
+        ffe_pre2: int = field(XmpInt())
+        """Pre-cursor 2 of the RX equalizer"""
+        ffe_pre1: int = field(XmpInt())
+        """Pre-cursor 1 of the RX equalizer"""
+        ffe_main: int = field(XmpInt())
+        """Main cursor of the RX equalizer"""
+        ffe_post1: int = field(XmpInt())
+        """Post-cursor 1 of the RX equalizer"""
+        ffe_post2: int = field(XmpInt())
+        """Post-cursor 2 of the RX equalizer"""
+        tp0: int = field(XmpInt())
+        """RX Channel Loss hint given by user (dB)"""
+        tp1: int = field(XmpInt())
+        """RX Channel Loss (initial) estimate"""
+        tp2: int = field(XmpInt())
+        """AFE static bandwitdh setting (200G  == 0 else 100G if < 3 else 50GPAM4/NRZ if <5 else LinkCAT)"""
+        dfe1: int = field(XmpInt())
+        """ISI correction tap 1"""
+        dfe2: int = field(XmpInt())
+        """ISI correction tap 2"""
+        flt_m: int = field(XmpInt())
+        """Max. floating tap value"""
+        flt_s: int = field(XmpInt())
+        """Sum of floating taps"""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get Edun Rx status values for the specified SerDes index on the port.
+
+        :return: Edun Rx status values for the specified SerDes index on the port.
+        :rtype: P_EDUN_RX_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+    
+
+__all__ = [
+    "P_ARPREPLY",
+    "P_ARPRXTABLE",
+    "P_ARPV6REPLY",
+    "P_AUTONEGSELECTION",
+    "P_AUTOTRAIN",
+    "P_BRRMODE",
+    "P_BRRSTATUS",
+    "P_CAPABILITIES",
+    "P_CAPABILITIES_EXT",
+    "P_CAPTURE",
+    "P_CHECKSUM",
+    "P_COMMENT",
+    "P_DYNAMIC",
+    "P_EMULATE",
+    "P_ERRORS",
+    "P_FAULTSIGNALING",
+    "P_FAULTSTATUS",
+    "P_FLASH",
+    "P_GAPMONITOR",
+    "P_IGMPV3_GROUP_RECORD_BUNDLE",
+    "P_INTERFACE",
+    "P_INTERFRAMEGAP",
+    "P_IPADDRESS",
+    "P_IPV6ADDRESS",
+    "P_LATENCYMODE",
+    "P_LATENCYOFFSET",
+    "P_LOADMODE",
+    "P_LOOPBACK",
+    "P_LPENABLE",
+    "P_LPPARTNERAUTONEG",
+    "P_LPRXPOWER",
+    "P_LPSNRMARGIN",
+    "P_LPSTATUS",
+    "P_LPSUPPORT",
+    "P_LPTXMODE",
+    "P_MACADDRESS",
+    "P_MACSEC_RXSC_CIPHERSUITE",
+    "P_MACSEC_RXSC_CONF_OFFSET",
+    "P_MACSEC_RXSC_CREATE",
+    "P_MACSEC_RXSC_DELETE",
+    "P_MACSEC_RXSC_DESCR",
+    "P_MACSEC_RXSC_INDICES",
+    "P_MACSEC_RXSC_SAK_VALUE",
+    "P_MACSEC_RXSC_SCI",
+    "P_MACSEC_RXSC_LOWEST_PN",
+    "P_MACSEC_RXSC_STATS",
+    "P_MACSEC_RXSC_TPLDID",
+    "P_MACSEC_RXSC_XPN_SALT",
+    "P_MACSEC_RXSC_XPN_SSCI",
+    "P_MACSEC_RX_CLEAR",
+    "P_MACSEC_RX_ENABLE",
+    "P_MACSEC_RX_STATS",
+    "P_MACSEC_TXSC_CIPHERSUITE",
+    "P_MACSEC_TXSC_CONF_OFFSET",
+    "P_MACSEC_TXSC_CREATE",
+    "P_MACSEC_TXSC_DELETE",
+    "P_MACSEC_TXSC_DESCR",
+    "P_MACSEC_TXSC_ENCRYPT",
+    "P_MACSEC_TXSC_INDICES",
+    "P_MACSEC_TXSC_REKEY_MODE",
+    "P_MACSEC_TXSC_SAK_VALUE",
+    "P_MACSEC_TXSC_SCI",
+    "P_MACSEC_TXSC_SCI_MODE",
+    "P_MACSEC_TXSC_STARTING_PN",
+    "P_MACSEC_TXSC_STATS",
+    "P_MACSEC_TXSC_XPN_SALT",
+    "P_MACSEC_TXSC_XPN_SSCI",
+    "P_MACSEC_TX_CLEAR",
+    "P_MACSEC_TX_STATS",
+    "P_MAXHEADERLENGTH",
+    "P_MCSRCLIST",
+    "P_MDIXMODE",
+    "P_MIXLENGTH",
+    "P_MIXWEIGHTS",
+    "P_MULTICAST",
+    "P_MULTICASTEXT",
+    "P_MULTICASTHDR",
+    "P_NDPRXTABLE",
+    "P_PAUSE",
+    "P_PAYLOADMODE",
+    "P_PFCENABLE",
+    "P_PINGREPLY",
+    "P_PINGV6REPLY",
+    "P_RANDOMSEED",
+    "P_RATEFRACTION",
+    "P_RATEL2BPS",
+    "P_RATEPPS",
+    "P_RECEIVESYNC",
+    "P_RESERVATION",
+    "P_RESERVEDBY",
+    "P_RESET",
+    "P_RXPREAMBLE_INSERT",
+    "P_RXRUNTLENGTH",
+    "P_RXRUNTLEN_ERRS",
+    "P_SPEED",
+    "P_SPEEDREDUCTION",
+    "P_SPEEDSELECTION",
+    "P_SPEEDS_SUPPORTED",
+    "P_STATUS",
+    "P_TCVRSTATUS",
+    "P_TPLDMODE",
+    "P_TRAFFIC",
+    "P_TRAFFICERR",
+    "P_TXBURSTPERIOD",
+    "P_TXDELAY",
+    "P_TXENABLE",
+    "P_TXMODE",
+    "P_TXPACKETLIMIT",
+    "P_TXPREAMBLE_REMOVE",
+    "P_TXPREPARE",
+    "P_TXRUNTLENGTH",
+    "P_TXTIME",
+    "P_TXTIMELIMIT",
+    "P_UAT_FLR",
+    "P_UAT_MODE",
+    "P_USED_TPLDID",
+    "P_XMITONE",
+    "P_XMITONETIME",
+    "P_EDUN_RX_STATUS",
+    "P_MACSEC_RXSC_AN",
+    "P_MACSEC_RXSC_NEXT_PN",
+    "P_MACSEC_TXSC_NEXT_PN",
+    "P_MACSEC_RXSC_PN",
+    "P_MACSEC_TXSC_NEXT_AN",
+]

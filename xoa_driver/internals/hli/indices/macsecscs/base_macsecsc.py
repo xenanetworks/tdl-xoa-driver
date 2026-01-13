@@ -25,11 +25,16 @@ from xoa_driver.internals.commands import (
     P_MACSEC_RXSC_CONF_OFFSET,
     P_MACSEC_RXSC_CIPHERSUITE,
     P_MACSEC_RXSC_TPLDID,
-    P_MACSEC_RXSC_STARTING_PN,
+    P_MACSEC_RXSC_LOWEST_PN,
     P_MACSEC_TXSC_XPN_SSCI,
     P_MACSEC_TXSC_XPN_SALT,
     P_MACSEC_RXSC_XPN_SSCI,
     P_MACSEC_RXSC_XPN_SALT,
+    P_MACSEC_RXSC_AN,
+    P_MACSEC_RXSC_NEXT_PN,
+    P_MACSEC_TXSC_NEXT_PN,
+    P_MACSEC_RXSC_PN,
+    P_MACSEC_TXSC_NEXT_AN,
 )
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
@@ -109,6 +114,18 @@ class MACSecTxScConfig:
         :type: P_MACSEC_TXSC_XPN_SALT
         """
 
+        self.next_pn = P_MACSEC_TXSC_NEXT_PN(conn, module_id, port_id, txsc_idx)
+        """Configure TX SC's next expected PN value
+
+        :type: P_MACSEC_TXSC_NEXT_PN
+        """
+
+        self.next_an = P_MACSEC_TXSC_NEXT_AN(conn, module_id, port_id, txsc_idx)
+        """Configure TX SC's next AN value
+
+        :type: P_MACSEC_TXSC_NEXT_AN
+        """
+
 class MACSecRxScConfig:
     """MACSec RX SC Configuration"""
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, rxsc_idx: int) -> None:
@@ -137,8 +154,11 @@ class MACSecRxScConfig:
         :type: P_MACSEC_RXSC_CIPHERSUITE
         """
 
-        self.starting_pn = P_MACSEC_RXSC_STARTING_PN(conn, module_id, port_id, rxsc_idx)
-        """Configure RX SC's firset expected PN"""
+        self.lowest_pn = P_MACSEC_RXSC_LOWEST_PN(conn, module_id, port_id, rxsc_idx)
+        """Configure RX SC's lowest expected PN
+        
+        :type: P_MACSEC_RXSC_LOWEST_PN
+        """
 
         self.tpld_id = P_MACSEC_RXSC_TPLDID(conn, module_id, port_id, rxsc_idx)
         """Configure RX SC's TPLD ID value
@@ -156,6 +176,24 @@ class MACSecRxScConfig:
         """Configure RX SC's XPN Salt value
 
         :type: P_MACSEC_RXSC_XPN_SALT
+        """
+
+        self.an = P_MACSEC_RXSC_AN(conn, module_id, port_id, rxsc_idx)
+        """Configure RX SC's AN value
+
+        :type: P_MACSEC_RXSC_AN
+        """
+
+        self.next_pn = P_MACSEC_RXSC_NEXT_PN(conn, module_id, port_id, rxsc_idx)
+        """Configure RX SC's next expected PN value
+
+        :type: P_MACSEC_RXSC_NEXT_PN
+        """
+
+        self.pn = P_MACSEC_RXSC_PN(conn, module_id, port_id, rxsc_idx)
+        """ the latest recovered PN for the Rx SC., 64-bit in hex.
+        
+        :type: P_MACSEC_RXSC_PN
         """
 
 

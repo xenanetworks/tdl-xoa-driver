@@ -1,3 +1,4 @@
+"""Port Filter Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
@@ -377,3 +378,13 @@ class PF_STRING:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._filter_xindex], string_name=string_name))
+
+__all__ = [
+    "PF_COMMENT",
+    "PF_CONDITION",
+    "PF_CREATE",
+    "PF_DELETE",
+    "PF_ENABLE",
+    "PF_INDICES",
+    "PF_STRING",
+]

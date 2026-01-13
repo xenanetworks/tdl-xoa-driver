@@ -1,3 +1,4 @@
+"""Module (L47) Packet Engine Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
@@ -105,3 +106,8 @@ class M4E_RESERVE:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, mask=mask))
+
+__all__ = [
+    "M4E_MODE",
+    "M4E_RESERVE",
+]

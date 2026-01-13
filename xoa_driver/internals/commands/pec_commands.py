@@ -1,3 +1,4 @@
+"""Port (Impairment) Custom Distribution Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
@@ -263,3 +264,11 @@ class PEC_DISTTYPE:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._custom_distribution_xindex]))
+
+__all__ = [
+    "PEC_COMMENT",
+    "PEC_DELETE",
+    "PEC_DISTTYPE",
+    "PEC_INDICES",
+    "PEC_VAL",
+]

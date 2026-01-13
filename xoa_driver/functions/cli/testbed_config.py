@@ -136,7 +136,7 @@ async def load_testbed_config(tester: testers.L23Tester, path: str, mode: str = 
 
             # Free the module before applying configuration
             module = tester.modules.obtain(int(module_index))
-            await release_module(module=module, should_release_ports=True)
+            await release_modules([module], should_release_ports=True)
             # Reserve the module before applying configuration
             xm.reserve_module(module_index)
 

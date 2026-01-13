@@ -1,3 +1,4 @@
+"""Port Advanced Layer 1 Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
@@ -29,12 +30,12 @@ from .enums import (
     OnOff,
     FreyaLinkTrainingMode,
     FreyaAutonegMode,
-    FreyaTecAbility,
-    FreyaFECAbility,
-    FreyaPauseAbility,
+    AutoNegTecAbility,
+    AutoNegFECAbility,
+    AutoNegPauseAbility,
     AutoNegMode,
     AutoNegStatus,
-    FreyaTechAbilityHCDStatus,
+    AutoNegTechAbilityHCDStatus,
     FECMode,
     PauseMode,
     FreyaOutOfSyncPreset,
@@ -45,7 +46,7 @@ from .enums import (
     Layer1Control,
     Layer1Opcode,
     FreyaPCSVariant,
-    FreyaTecAbilityHCD,
+    AutoNegTecAbilityHCD,
     FecCodewordBitErrorMaskMode,
     StartOrStop,
     FreyaPresetResponse,
@@ -59,7 +60,7 @@ from .enums import (
 @dataclass
 class PL1_AUTONEGINFO:
     """
-    Get L1 auto-negotiation information. Information is split into a number of pages.
+    Get advanced auto-negotiation statistics. Statistics are split into a number of pages.
     """
 
     code: typing.ClassVar[int] = 385
@@ -448,11 +449,32 @@ class PL1_LT_PHYTXEQ_RANGE:
 
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the lower and the upper bound of transmit equalizer (native value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached."""
+        """Get the lower and the upper bound of transmit equalizer (native value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
+        
+        :return: lower and upper bound of transmit equalizer (native value) and response mode
+        :rtype: PL1_LT_PHYTXEQ_RANGE.GetDataAttr
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._tap_xindex]))
 
     def set(self, response:FreyaLinkTrainingRangeResponse, min: int, max: int) -> Token[None]:
-        """Set the lower and the upper bound of transmit equalizer (native value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached."""
+        """Set the lower and the upper bound of transmit equalizer (native value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
+        
+        :param response: byte, the response when either of the bounds is triggered. Default is AUTO.
+        :type response: FreyaLinkTrainingRangeResponse
+        :param min: integer, the lower bound of the tap. When set, the value is ignored when <response> == AUTO.
+
+            * For <tap_index> == PRE3/PRE/POST, negative, scaled by 1E3.
+            * For <tap_index> == MAIN/PRE2, positive, scaled by 1E3.
+        
+        :type min: int
+
+        :param max: integer, the upper bound of the tap. When set, the value is ignored when <response> == AUTO.
+
+            * For <tap_index> == PRE3/PRE/POST, negative, scaled by 1E3.
+            * For <tap_index> == MAIN/PRE2, positive, scaled by 1E3.
+
+        :type max: int
+        """
         return Token(
             self._connection,
             build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._tap_xindex], response=response, min=min, max=max))
@@ -519,11 +541,23 @@ class PL1_LT_PHYTXEQ_RANGE_COEFF:
 
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the lower and the upper bound of transmit equalizer (IEEE coefficient value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached."""
+        """Get the lower and the upper bound of transmit equalizer (IEEE coefficient value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
+        
+        :return: lower and upper bound of transmit equalizer (IEEE coefficient value) and response mode
+        :rtype: PL1_LT_PHYTXEQ_RANGE_COEFF.GetDataAttr
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._tap_xindex]))
 
     def set(self, response:FreyaLinkTrainingRangeResponse, min: int, max: int) -> Token[None]:
-        """Set the lower and the upper bound of transmit equalizer (IEEE coefficient value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached."""
+        """Set the lower and the upper bound of transmit equalizer (IEEE coefficient value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
+        
+        :param response: byte, the response when either of the bounds is triggered. Default is AUTO.
+        :type response: FreyaLinkTrainingRangeResponse
+        :param min: integer, the lower bound of the tap. When set, the value is ignored when <response> == AUTO.
+        :type min: int
+        :param max: integer, the upper bound of the tap. When set, the value is ignored when <response> == AUTO.
+        :type max: int
+        """
         return Token(
             self._connection,
             build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._tap_xindex], response=response, min=min, max=max))
@@ -625,6 +659,11 @@ class PL1_GET_DATA:
         """a set of 16 bit signed 2-complement sample values. With present hardware, the range of each sample is -64..63. In CLI scripting, each sample value is represented as two bytes, msb first."""
 
     def get(self) -> Token[GetDataAttr]:
+        """Get SIV sample data.
+
+        :return: SIV sample data
+        :rtype: PL1_GET_DATA.GetDataAttr
+        """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._func_xindex]))
 
@@ -761,11 +800,29 @@ class PL1_PRESET_CONFIG_LEVEL:
 
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the preset values (mV/dB values) of a serdes and the response to the received IC request"""
+        """Get the preset values (mV/dB values) of a serdes and the response to the received IC request
+
+        :return: Custom preset values and response
+        :rtype: PL1_PRESET_CONFIG_LEVEL.GetDataAttr
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._preset_xindex]))
 
     def set(self, response:FreyaPresetResponse, pre3:int, pre2: int, pre: int, main: int, post: int) -> Token[None]:
-        """Set the preset values (mV/dB values) of a serdes and the response to the received IC request"""
+        """Set the preset values (mV/dB values) of a serdes and the response to the received IC request
+
+        :param response: How to respond to the received IC request.
+        :type response: FreyaPresetResponse
+        :param pre3: The pre3 tap value in dB/10, ranges from 0 to 71.
+        :type pre3: int
+        :param pre2: The pre2 tap value in dB/10, ranges from 0 to 71.
+        :type pre2: int
+        :param pre: The pre tap value in dB/10, ranges from 0 to 187.
+        :type pre: int
+        :param main: The main tap value in mV, ranges from 507 to 998.
+        :type main: int
+        :param post: The post tap value in dB/10, ranges from 0 to 187.
+        :type post: int
+        """
         return Token(
             self._connection,
             build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._preset_xindex], response=response, pre3=pre3, pre2=pre2, pre=pre, main=main, post=post))
@@ -818,11 +875,29 @@ class PL1_PRESET_CONFIG_COEFF:
 
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the preset values (IEEE coefficient values) of a serdes and the response to the received IC request."""
+        """Get the preset values (IEEE coefficient values) of a serdes and the response to the received IC request.
+
+        :return: Custom preset values and response
+        :rtype: PL1_PRESET_CONFIG_COEFF.GetDataAttr
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._preset_xindex]))
 
     def set(self, response:FreyaPresetResponse, pre3:int, pre2: int, pre: int, main: int, post: int) -> Token[None]:
-        """Set the preset values (IEEE coefficient values) of a serdes and the response to the received IC request."""
+        """Set the preset values (IEEE coefficient values) of a serdes and the response to the received IC request.
+
+        :param response: How to respond to the received IC request.
+        :type response: FreyaPresetResponse
+        :param pre3: The pre3 tap value, negative, scaled by 1E3.
+        :type pre3: int
+        :param pre2: The pre2 tap value, positive, scaled by 1E3.
+        :type pre2: int
+        :param pre: The pre tap value, negative, scaled by 1E3.
+        :type pre: int
+        :param main: The main tap value, positive, scaled by 1E3.
+        :type main: int
+        :param post: The post tap value, negative, scaled by 1E3.
+        :type post: int
+        """
         return Token(
             self._connection,
             build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._preset_xindex], response=response, pre3=pre3, pre2=pre2, pre=pre, main=main, post=post))
@@ -838,14 +913,15 @@ class PL1_PHYTXEQ_LEVEL:
 
     - **Regular Freya**: Original fixed format [pre3, pre2, pre, main, post]
     - **Loki-4P and H-Freya/Edun**: Variable number in N*pre, main, M*post layout
-      [pre_n, pre_n-1, ..., pre_1, main, post_1, post_2, ..., post_m]
+        
+        ``[pre_n, pre_n-1, ..., pre_1, main, post_1, post_2, ..., post_m]``
 
-    Use P_CAPABILITIES to query ``numtxeqtaps`` and ``numtxeqpretaps`` to determine
+    Query port capabilities for ``numtxeqtaps`` and ``numtxeqpretaps`` to determine
     the number of taps and layout.
 
     .. note::
 
-        PL1_PHYTXEQ, PL1_PHYTXEQ_LEVEL, and PL1_PHYTXEQ_COEFF facilitate the configuration and retrieval of TX tap values, each offering a unique perspective. Modifications made with any of these parameters will result in updates to the read results across all of them.
+        ``PL1_PHYTXEQ``, ``PL1_PHYTXEQ_LEVEL``, and ``PL1_PHYTXEQ_COEFF`` facilitate the configuration and retrieval of TX tap values, each offering a unique perspective. Modifications made with any of these parameters will result in updates to the read results across all of them.
 
     """
 
@@ -911,7 +987,8 @@ class PL1_PHYTXEQ_COEFF:
 
     - **Regular Freya**: Original fixed format [pre3, pre2, pre, main, post]
     - **Loki-4P and H-Freya/Edun**: Variable number in N*pre, main, M*post layout
-      [pre_n, pre_n-1, ..., pre_1, main, post_1, post_2, ..., post_m]
+        
+        ``[pre_n, pre_n-1, ..., pre_1, main, post_1, post_2, ..., post_m]``
 
     Use P_CAPABILITIES to query ``numtxeqtaps`` and ``numtxeqpretaps`` to determine
     the number of taps and layout.
@@ -922,12 +999,12 @@ class PL1_PHYTXEQ_COEFF:
 
     The following rules apply:
 
-        * 0.5 approx. ≤ main ≤ 1
-        * -0.4 approx ≤ post ≤ 0
-        * -0.4 approx ≤ pre ≤ 0
-        * 0 ≤ pre2 ≤ 0.25 approx.
-        * -0.25 approx ≤ pre3 ≤ 0
-        * The sum of the absolute value of each coefficients must be ≤ 1.
+        * 0.5 approx. <= main <= 1
+        * -0.4 approx <= post <= 0
+        * -0.4 approx <= pre <= 0
+        * 0 <= pre2 <= 0.25 approx.
+        * -0.25 approx <= pre3 <= 0
+        * The sum of the absolute value of each coefficients must be <= 1.
         * A sum of 1 corresponds to a TX output voltage swing of 1000 mVpp approximately.
 
     """
@@ -1000,25 +1077,70 @@ class PL1_AUTONEG_STATUS:
 
     class GetDataAttr(ResponseBodyStruct):
         mode: AutoNegMode = field(XmpInt())
-        """Autoneg mode"""
+        """Autoneg mode
+        
+        :type mode: AutoNegMode
+        """
         autoneg_state: AutoNegStatus = field(XmpInt())
-        """Autoneg state"""
+        """Autoneg status
+        
+        :type autoneg_state: AutoNegStatus
+        """
+
         received_tech_abilities: Hex = field(XmpHex(size=8))
-        """Received technology abilities from the remote port"""
+        """Received technology abilities bitmask from the remote port
+
+        To parse the bitmask, refer to the :class:`AutoNegTecAbility` enum IntFlag.
+        
+        :type received_tech_abilities: Hex, 16 characters long.
+        """
+
         received_fec_abilities: Hex = field(XmpHex(size=1))
-        """Received FEC capabilities from the remote port"""
+        """Received FEC capabilities bitmask from the remote port
+
+        To parse the bitmask, refer to the :class:`AutoNegFECAbility` enum IntFlag.
+        
+        :type received_fec_abilities: Hex, 2 characters long.
+        """
+
         received_pause_mode: Hex = field(XmpHex(size=1))
-        """Received pause capabilities from the remote port"""
-        tech_ability_hcd_status: FreyaTechAbilityHCDStatus = field(XmpInt())
-        """HCD technology ability negotiation status"""
-        tech_ability_hcd_value: FreyaTecAbilityHCD = field(XmpInt())
-        """HCD technology ability negotiation result"""
+        """Received pause capabilities bitmask from the remote port
+
+        To parse the bitmask, refer to the :class:`AutoNegPauseAbility` enum IntFlag.
+        
+        :type received_pause_mode: Hex, 2 characters long.
+        """
+
+        tech_ability_hcd_status: AutoNegTechAbilityHCDStatus = field(XmpInt())
+        """HCD technology ability negotiation status
+        
+        :type tech_ability_hcd_status: AutoNegTechAbilityHCDStatus
+        """
+
+        tech_ability_hcd_value: AutoNegTecAbilityHCD = field(XmpInt())
+        """HCD technology ability negotiation result
+        
+        :type tech_ability_hcd_value: AutoNegTecAbilityHCD
+        """
+
         fec_mode_result: FECMode = field(XmpInt())
-        """FEC mode negotiation result"""
+        """FEC mode negotiation result
+        
+        :type fec_mode_result: FECMode
+        """
+        
         pause_mode_result: PauseMode = field(XmpInt())
-        """Pause mode negotiation result"""
+        """Pause mode negotiation result
+
+        :type pause_mode_result: PauseMode
+        """
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the autonegotiation status.
+
+        :return: The autonegotiation status
+        :rtype: PL1_AUTONEG_STATUS.GetDataAttr
+        """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
@@ -1038,16 +1160,30 @@ class PL1_AUTONEG_ABILITIES:
 
     class GetDataAttr(ResponseBodyStruct):
         tech_abilities_supported: Hex = field(XmpHex(size=8))
-        """supported technology abilities by the port. This returns a value in Hex of the format 0xHHHHHHHH (64 bits). Each bit corresponds to technology ability as shown below. A bit of 1 means the corresponding technology ability is supported by the port."""
+        """Supported technology abilities by the port. This returns a value in Hex of the format HHHHHHHH (64 bits). Each bit corresponds to technology ability as defined in :class:`AutoNegTecAbility`. A bit of 1 means the corresponding technology ability is supported by the port.
+        
+        
+        :type tech_abilities_supported: Hex, 16 characters long.
+        """
 
         fec_modes_supported: Hex = field(XmpHex(size=1))
-        """supported FEC modes by the port. This returns a value in Hex of the format 0xH (8 bits). Each bit corresponds to FEC mode as shown below. A bit of 1 means the corresponding FEC mode is supported by the port."""
+        """Supported FEC modes by the port. This returns a value in Hex of the format HH (8 bits). Each bit corresponds to FEC mode as defined in :class:`AutoNegFECAbility`. A bit of 1 means the corresponding FEC mode is supported by the port.
+        
+        :type fec_modes_supported: Hex, 2 characters long.
+        """
 
         pause_modes_supported: Hex = field(XmpHex(size=1))
-        """pause abilities supported by the port. This returns a value in Hex of the format 0xH (8 bits). Each bit corresponds to pause mode as shown below. A bit of 1 means the corresponding FEC mode is supported by the port."""
+        """Pause abilities supported by the port. This returns a value in Hex of the format HH (8 bits). Each bit corresponds to pause mode as defined in :class:`AutoNegPauseAbility`. A bit of 1 means the corresponding FEC mode is supported by the port.
+
+        :type pause_modes_supported: Hex, 2 characters long.
+        """
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the supported technology abilities, FEC abilities, and pause abilities of the port.
 
+        :return: The supported abilities
+        :rtype: Token[GetDataAttr]
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
     
 @register_command
@@ -1073,11 +1209,21 @@ class PL1_PCS_VARIANT:
         """PCS variant"""
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the PCS variant configuration.
+
+        :return: The PCS variant configuration
+        :rtype: PL1_PCS_VARIANT.GetDataAttr
+        """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, variant: FreyaPCSVariant) -> Token[None]:
+        """Set the PCS variant configuration.
 
+        :param variant: The PCS variant configuration to set
+        :type variant: FreyaPCSVariant
+        :return: A token indicating the completion of the set operation
+        """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, variant=variant))
 
 
@@ -1113,11 +1259,23 @@ class PL1_CWE_CYCLE:
         """The number of consecutive errored FEC codewords in a cycle, must not be larger than cycle_len"""
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the FEC codeword error injection cycle configuration.
 
+        :return: The FEC codeword error injection cycle configuration
+        :rtype: PL1_CWE_CYCLE.GetDataAttr
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, loop: int, cycle_len: int, error_len: int) -> Token[None]:
+        """Set the FEC codeword error injection cycle configuration.
 
+        :param loop: Loop count of the FEC codeword error injection cycle. <loop> == 0 means continuous.
+        :type loop: int
+        :param cycle_len: The number of FEC codewords in the cycle, must be larger than 0 and an even number.
+        :type cycle_len: int
+        :param error_len: The number of consecutive errored FEC codewords in a cycle, must not be larger than cycle_len
+        :type error_len: int
+        """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, loop=loop, cycle_len=cycle_len, error_len=error_len))
     
     set_continuous = functools.partialmethod(set, 0)
@@ -1168,9 +1326,19 @@ class PL1_CWE_ERR_SYM_INDICES:
         """
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the positions of the errored symbols in errored codewords.
+
+        :return: The positions of the errored symbols in errored codewords
+        :rtype: PL1_CWE_ERR_SYM_INDICES.GetDataAttr
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, error_sym_indices: typing.List[int]) -> Token[None]:
+        """Set the positions of the errored symbols in errored codewords.
+
+        :param error_sym_indices: The positions of the errored symbols in errored codewords
+        :type error_sym_indices: typing.List[int]
+        """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, error_sym_indices=error_sym_indices))
     
 
@@ -1201,9 +1369,21 @@ class PL1_CWE_BIT_ERR_MASK:
         """bit error mask for the errored symbols, big endian, only 10 bits are effective."""
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the bit error mask configuration.
+
+        :return: The bit error mask mode and bitmask
+        :rtype: PL1_CWE_BIT_ERR_MASK.GetDataAttr
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, mode: FecCodewordBitErrorMaskMode, bitmask: Hex) -> Token[None]:
+        """Set the bit error mask configuration.
+
+        :param mode: Bit error mask mode
+        :type mode: FecCodewordBitErrorMaskMode
+        :param bitmask: Bit error mask for the errored symbols, big endian, only 10 bits are effective
+        :type bitmask: Hex
+        """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, mode=mode, bitmask=bitmask))
     
     set_all_bits = functools.partialmethod(set, FecCodewordBitErrorMaskMode.STATIC, Hex("03FF"))
@@ -1250,9 +1430,19 @@ class PL1_CWE_FEC_ENGINE:
         """
 
     def get(self) -> Token[GetDataAttr]:
+        """Get which FEC engines are used.
+
+        :return: The FEC engines bitmask
+        :rtype: PL1_CWE_FEC_ENGINE.GetDataAttr
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, bitmask: Hex) -> Token[None]:
+        """Set which FEC engines to use.
+
+        :param bitmask: FEC engines bitmask
+        :type bitmask: Hex
+        """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, bitmask=bitmask))
     
     set_all_engines = functools.partialmethod(set, Hex("0F"))
@@ -1287,6 +1477,11 @@ class PL1_CWE_FEC_STATS:
         """Total injected symbol errors."""
 
     def get(self) -> Token[GetDataAttr]:
+        """Get FEC error injection statistics.
+
+        :return: FEC error injection statistics
+        :rtype: PL1_CWE_FEC_STATS.GetDataAttr
+        """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
@@ -1306,22 +1501,36 @@ class PL1_AUTONEG_CONFIG:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        advertised_tech_abilities: Hex = field(XmpHex(size=8))
-        advertised_fec_abilities: Hex = field(XmpHex(size=1))
-        advertised_pause_mode: Hex = field(XmpHex(size=1))
+        tech_abilities: Hex = field(XmpHex(size=8))
+        fec_abilities: Hex = field(XmpHex(size=1))
+        pause_mode: Hex = field(XmpHex(size=1))
 
     class SetDataAttr(RequestBodyStruct):
-        advertised_tech_abilities: Hex = field(XmpHex(size=8))
-        advertised_fec_abilities: Hex = field(XmpHex(size=1))
-        advertised_pause_mode: Hex = field(XmpHex(size=1))
+        tech_abilities: Hex = field(XmpHex(size=8))
+        fec_abilities: Hex = field(XmpHex(size=1))
+        pause_mode: Hex = field(XmpHex(size=1))
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the advertised technology abilities, FEC abilities, and pause abilities of the port.
+        
+        :return: The advertised abilities
+        :rtype: PL1_AUTONEG_CONFIG.GetDataAttr
+        """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, advertised_tech_abilities: Hex, advertised_fec_abilities: Hex, advertised_pause_mode: Hex) -> Token[None]:
+    def set(self, tech_abilities: Hex, fec_abilities: Hex, pause_mode: Hex) -> Token[None]:
+        """Set the advertised technology abilities, FEC abilities, and pause abilities of the port.
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, advertised_tech_abilities=advertised_tech_abilities, advertised_fec_abilities=advertised_fec_abilities, advertised_pause_mode=advertised_pause_mode))
+        :param tech_abilities: Advertised technology abilities bitmask
+        :type tech_abilities: Hex
+        :param fec_abilities: Advertised FEC abilities bitmask
+        :type fec_abilities: Hex
+        :param pause_mode: Advertised pause mode bitmask
+        :type pause_mode: Hex
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, advertised_tech_abilities=tech_abilities, advertised_fec_abilities=fec_abilities, advertised_pause_mode=pause_mode))
     
 @register_command
 @dataclass
@@ -1475,11 +1684,23 @@ class PL1_LINKTRAIN_CONFIG:
         timeout_mode: TimeoutMode = field(XmpByte())
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the current per-port link training settings.
+
+        :return: The current per-port link training settings
+        :rtype: PL1_LINKTRAIN_CONFIG.GetDataAttr
+        """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, oos_preset: FreyaOutOfSyncPreset, timeout_mode: TimeoutMode) -> Token[None]:
+        """Set the current per-port link training settings.
 
+        :param oos_preset: Out-of-sync preset value
+        :type oos_preset: FreyaOutOfSyncPreset
+        :param timeout_mode: Timeout mode value
+        :type timeout_mode: TimeoutMode
+        :return: A token indicating the completion of the set operation
+        """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, oos_preset=oos_preset, timeout_mode=timeout_mode))
     
 @register_command
@@ -1537,9 +1758,20 @@ class PL1_CWE_CONTROL:
         """Control action for FEC codeword error injection"""
 
     def get(self) -> Token[GetDataAttr]:
+        """Get the current control action for FEC codeword error injection.
+
+        :return: The current control action for FEC codeword error injection
+        :rtype: PL1_CWE_CONTROL.GetDataAttr
+        """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, action: StartOrStop) -> Token[None]:
+        """Set the control action for FEC codeword error injection.
+
+        :param action: Control action for FEC codeword error injection
+        :type action: StartOrStop
+        :return: A token indicating the completion of the set operation
+        """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, action=action))
     
     set_start = functools.partialmethod(set, StartOrStop.START)
@@ -1668,3 +1900,38 @@ class PL1_PNSWAP_RX:
     set_off = functools.partialmethod(set, OnOff.OFF)
     """Set P/N polarity swap of the SerDes in the receiving direction to OFF
     """
+
+__all__ = [
+    "PL1_ANLT",
+    "PL1_AUTONEGINFO",
+    "PL1_AUTONEG_ABILITIES",
+    "PL1_AUTONEG_CONFIG",
+    "PL1_AUTONEG_STATUS",
+    "PL1_CFG_TMP",
+    "PL1_CTRL",
+    "PL1_CWE_BIT_ERR_MASK",
+    "PL1_CWE_CONTROL",
+    "PL1_CWE_CYCLE",
+    "PL1_CWE_ERR_SYM_INDICES",
+    "PL1_CWE_FEC_ENGINE",
+    "PL1_CWE_FEC_STATS",
+    "PL1_CWE_FEC_STATS_CLEAR",
+    "PL1_GET_DATA",
+    "PL1_LINKTRAININFO",
+    "PL1_LINKTRAIN_CMD",
+    "PL1_LINKTRAIN_CONFIG",
+    "PL1_LINKTRAIN_STATUS",
+    "PL1_LOG",
+    "PL1_LT_PHYTXEQ_RANGE",
+    "PL1_LT_PHYTXEQ_RANGE_COEFF",
+    "PL1_PCS_VARIANT",
+    "PL1_PHYTXEQ",
+    "PL1_PHYTXEQ_COEFF",
+    "PL1_PHYTXEQ_LEVEL",
+    "PL1_PNSWAP_RX",
+    "PL1_PNSWAP_TX",
+    "PL1_PRESET_CONFIG",
+    "PL1_PRESET_CONFIG_COEFF",
+    "PL1_PRESET_CONFIG_LEVEL",
+    "PL1_PRESET_RESET",
+]

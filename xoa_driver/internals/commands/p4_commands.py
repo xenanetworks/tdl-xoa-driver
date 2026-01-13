@@ -1,3 +1,4 @@
+"""Port (L47) Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
@@ -1883,7 +1884,7 @@ class P4_DHCP_RESULT:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        dhcp_chunks: typing.List[subtypes.DhcpChunk] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpIPv4Address(), XmpIPv4Address(), XmpIPv4Address(), XmpInt(), XmpMacAddress()]))
+        dhcp_chunks: typing.List[subtypes.DhcpEntry] = field(XmpSequence(types_chunk=[XmpIPv4Address(), XmpIPv4Address(), XmpIPv4Address(), XmpIPv4Address(), XmpInt(), XmpMacAddress()]))
 
     def get(self) -> "Token[GetDataAttr]":
         """Get the port's the result of the last DHCP client process
@@ -2219,3 +2220,64 @@ class P4_APTITUDES:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+__all__ = [
+    "P4_APTITUDES",
+    "P4_ARP_CONFIG",
+    "P4_ARP_COUNTERS",
+    "P4_ARP_RX_COUNTERS",
+    "P4_ARP_TX_COUNTERS",
+    "P4_CAPABILITIES",
+    "P4_CAPTURE",
+    "P4_CAPTURE_GET_FIRST",
+    "P4_CAPTURE_GET_NEXT",
+    "P4_CLEAR",
+    "P4_CLEAR_COUNTERS",
+    "P4_DEV_NAME",
+    "P4_DHCP_CONFIG",
+    "P4_DHCP_RESULT",
+    "P4_DHCP_RUN",
+    "P4_DHCP_STATE",
+    "P4_DHCP_VLAN",
+    "P4_ETH_COUNTERS",
+    "P4_ETH_QUEUE_COUNTERS",
+    "P4_ETH_RX_COUNTERS",
+    "P4_ETH_TX_COUNTERS",
+    "P4_FW_VER",
+    "P4_ICMP_COUNTERS",
+    "P4_ICMP_RX_COUNTERS",
+    "P4_ICMP_TX_COUNTERS",
+    "P4_IPV4_COUNTERS",
+    "P4_IPV4_RX_COUNTERS",
+    "P4_IPV4_TX_COUNTERS",
+    "P4_IPV6_COUNTERS",
+    "P4_IPV6_RX_COUNTERS",
+    "P4_IPV6_TX_COUNTERS",
+    "P4_LICENSE_INFO",
+    "P4_MAX_PACKET_RATE",
+    "P4_NDP_CONFIG",
+    "P4_NDP_COUNTERS",
+    "P4_NDP_RX_COUNTERS",
+    "P4_NDP_TX_COUNTERS",
+    "P4_PCI_INFO",
+    "P4_PORT_COUNTERS",
+    "P4_PORT_RX_COUNTERS",
+    "P4_PORT_TX_COUNTERS",
+    "P4_PORT_TYPE",
+    "P4_RX_MTU",
+    "P4_RX_PACKET_SIZE",
+    "P4_SPEEDSELECTION",
+    "P4_STATE",
+    "P4_STATE_STATUS",
+    "P4_TCP_COUNTERS",
+    "P4_TCP_RX_COUNTERS",
+    "P4_TCP_TX_COUNTERS",
+    "P4_TRAFFIC",
+    "P4_TX_MTU",
+    "P4_TX_PACKET_SIZE",
+    "P4_UDP_COUNTERS",
+    "P4_UDP_RX_COUNTERS",
+    "P4_UDP_TX_COUNTERS",
+    "P4_VLAN_OFFLOAD",
+]

@@ -13,30 +13,21 @@ from .internals.hli.ports.port_l23.chimera.port_chimera import (
     PChi40G2S2P,
 )
 
-from .internals.hli.ports.port_l23.bases.port_l23 import BasePortL23
-from xoa_driver.internals.hli.ports.port_l23.family_combi import (
+from .internals.hli.ports.port_l23.trafficgen.port_l23 import BasePortL23
+from xoa_driver.internals.hli.ports.port_l23.family_odin import (
     POdin1G4S4PCombi,
     POdin1G4S4PCombi_b,
     POdin10G4S2PCombi,
     POdin10G4S2PCombi_b,
-)
-
-from xoa_driver.internals.hli.ports.port_l23.family_d import (
     POdin1G3S2PT,
     POdin1G3S6P,
     POdin1G3S6P_b,
     POdin1G3S6PE,
-)
-
-from xoa_driver.internals.hli.ports.port_l23.family_e import (
     POdin5G4S6PCU,
     POdin10G3S2PCU,
     POdin10G3S6PCU,
     POdin10G5S6PCU,
     POdin10G5S6PCU_b,
-)
-
-from xoa_driver.internals.hli.ports.port_l23.family_f import (
     POdin10G1S2P,
     POdin10G1S2P_b,
     POdin10G1S2P_c,
@@ -48,35 +39,28 @@ from xoa_driver.internals.hli.ports.port_l23.family_f import (
     POdin40G2S2P,
     POdin40G2S2PB,
     POdin10G6S6P_a,
+    POdin100G3S1P,
+    POdin1G3S6PT1RJ45,
 )
-
-from xoa_driver.internals.hli.ports.port_l23.family_g import (
+from xoa_driver.internals.hli.ports.port_l23.family_loki import (
     PLoki100G3S1P,
     PLoki100G3S1P_b,
     PLoki100G3S1PSE,
     PLoki100G3S1PB,
     PLoki100G3S1PB_b,
     PLoki100G5S4P_a,
-)
-
-from xoa_driver.internals.hli.ports.port_l23.family_h import (
     PLoki100G5S1P,
-    POdin100G3S1P,
+    PLoki100G5S2P,
 )
-
-from xoa_driver.internals.hli.ports.port_l23.family_i import PLoki100G5S2P
-from xoa_driver.internals.hli.ports.port_l23.family_j import PThor100G5S4P
-from xoa_driver.internals.hli.ports.port_l23.family_k import (
+from xoa_driver.internals.hli.ports.port_l23.family_thor import (
+    PThor100G5S4P,
     PThor400G7S1P,
     PThor400G7S1PLE,
-)
-from xoa_driver.internals.hli.ports.port_l23.family_l import (
     PThor400G7S1P_b,
     PThor400G7S1P_c,
     PThor400G7S1P_d,
 )
-
-from xoa_driver.internals.hli.ports.port_l23.family_l1 import (
+from xoa_driver.internals.hli.ports.port_l23.family_freya import (
     PFreya800G1S1P_a,
     PFreya800G1S1P_b,
     PFreya800G1S1POSFP_a,
@@ -95,12 +79,9 @@ from xoa_driver.internals.hli.ports.port_l23.family_l1 import (
     PFreya800G4S1POSFP_e,
     PFreya800G4S1POSFP_f,
 )
-
-from xoa_driver.internals.hli.ports.port_l23.family_m import POdin1G3S6PT1RJ45
-
 from xoa_driver.internals.hli.ports.port_l23.family_edun import (
     PEdun800G3S1PSMPX_a,
-    PEdun1600G4S1POSFP_a
+    PEdun1600G4S1POSFP_a,
 )
 
 Z10OdinPort = typing.Union[
