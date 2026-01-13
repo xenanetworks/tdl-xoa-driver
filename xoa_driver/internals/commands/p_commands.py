@@ -5012,15 +5012,15 @@ class P_MACSEC_TXSC_STARTING_PN:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
 
-    def set(self, start: int, mode: MACSecPNMode) -> Token[None]:
+    def set(self, starting_pn: int, mode: MACSecPNMode) -> Token[None]:
         """Set the starting PN number. Default to 1, maximum 2^64. Allowed to be 0.
 
-        :param start: the starting PN number. Default to 1, maximum 2^64.
-        :type start: int
+        :param starting_pn: the starting PN number. Default to 1, maximum 2^64.
+        :type starting_pn: int
         :param mode: defining how to continue the TX PN after the start-traffic.
         :type mode: MACSecPNMode
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], start=start, mode=mode))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], starting_pn=starting_pn, mode=mode))
     
 
 # @register_command
@@ -5241,13 +5241,13 @@ class P_MACSEC_TXSC_XPN_SSCI:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
 
-    def set(self, ssci: Hex) -> Token[None]:
+    def set(self, xpn_ssci: Hex) -> Token[None]:
         """Set the XPN Short SCI of the port's TX SC when XPN cipher suite is in use
 
-        :param ssci: the XPN Short SCI of the port's TX SC when XPN cipher suite is in use
-        :type ssci: int
+        :param xpn_ssci: the XPN Short SCI of the port's TX SC when XPN cipher suite is in use
+        :type xpn_ssci: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], ssci=ssci))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], xpn_ssci=xpn_ssci))
     
 
 @register_command
@@ -5281,13 +5281,13 @@ class P_MACSEC_TXSC_XPN_SALT:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
 
-    def set(self, salt: Hex) -> Token[None]:
+    def set(self, xpn_salt: Hex) -> Token[None]:
         """Set XPN salt of the port's TX SC when XPN cipher suite is in use.
 
-        :param salt: XPN salt of the port's TX SC when XPN cipher suite is in use.
-        :type salt: int
+        :param xpn_salt: XPN salt of the port's TX SC when XPN cipher suite is in use.
+        :type xpn_salt: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], salt=salt))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], xpn_salt=xpn_salt))
     
 
 @register_command
@@ -5590,13 +5590,13 @@ class P_MACSEC_RXSC_LOWEST_PN:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
 
-    def set(self, value: int) -> Token[None]:
+    def set(self, lowest_pn: int) -> Token[None]:
         """Set the lowest PN number of the port’s RX SC expects to receive
 
-        :param value: The lowest PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64.
-        :type value: int
+        :param lowest_pn: The lowest PN number of the port’s RX SC expects to receive. Default to 1, maximum 2^64.
+        :type lowest_pn: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], value=value))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], lowest_pn=lowest_pn))
 
 
 @register_command
@@ -5711,13 +5711,13 @@ class P_MACSEC_RXSC_XPN_SSCI:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
 
-    def set(self, ssci: Hex) -> Token[None]:
+    def set(self, xpn_ssci: Hex) -> Token[None]:
         """Set the XPN Short SCI of the port's RX SC when XPN cipher suite is in use
 
-        :param ssci: the XPN Short SCI of the port's RX SC when XPN cipher suite is in use
-        :type ssci: int
+        :param xpn_ssci: the XPN Short SCI of the port's RX SC when XPN cipher suite is in use
+        :type xpn_ssci: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], ssci=ssci))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], xpn_ssci=xpn_ssci))
     
 
 @register_command
@@ -5751,13 +5751,13 @@ class P_MACSEC_RXSC_XPN_SALT:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
 
-    def set(self, salt: Hex) -> Token[None]:
+    def set(self, xpn_salt: Hex) -> Token[None]:
         """Set XPN salt of the port's RX SC when XPN cipher suite is in use.
 
-        :param salt: XPN salt of the port's RX SC when XPN cipher suite is in use.
-        :type salt: int
+        :param xpn_salt: XPN salt of the port's RX SC when XPN cipher suite is in use.
+        :type xpn_salt: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], salt=salt))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], xpn_salt=xpn_salt))
 
 
 @register_command
@@ -6146,15 +6146,15 @@ class P_MACSEC_TXSC_NEXT_PN:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
 
-    def set(self, value: int) -> Token[None]:
+    def set(self, next_pn: int) -> Token[None]:
         """Set the next PN number of the port’s TX SC expects to receive
 
         NextPN is a monotonically incrementing 32 or 64 bit counter that is never zero. 
 
-        :param value: The next PN number of the port’s TX SC expects to receive. Default to 1, maximum 2^64.
-        :type value: int
+        :param next_pn: The next PN number of the port’s TX SC expects to receive. Default to 1, maximum 2^64.
+        :type next_pn: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], value=value))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], next_pn=next_pn))
     
 
 
@@ -6218,13 +6218,13 @@ class P_MACSEC_TXSC_NEXT_AN:
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
 
-    def set(self, value: int) -> Token[None]:
+    def set(self, next_an: int) -> Token[None]:
         """Set the next AN number of the port’s TX SC expects to receive
 
-        :param value: The next AN number of the port’s TX SC expects to receive. 
-        :type value: int
+        :param next_an: The next AN number of the port’s TX SC expects to receive. 
+        :type next_an: int
         """
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], value=value))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], next_an=next_an))
     
 
 @register_command
