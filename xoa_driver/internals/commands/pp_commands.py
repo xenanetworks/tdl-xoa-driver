@@ -1,3 +1,4 @@
+"""Port Basic Layer 1 Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
@@ -263,6 +264,14 @@ class PP_TXPRBSCONFIG:
                 error_on_off=error_on_off
             )
         )
+    
+    set_on = functools.partialmethod(set, 17, PRBSOnOff.PRBSON, ErrorOnOff.ERRORSOFF)
+    """Enable PRBS transmission on this SerDes without error injection.
+    """
+
+    set_off = functools.partialmethod(set, 17, PRBSOnOff.PRBSOFF, ErrorOnOff.ERRORSOFF)
+    """Disable PRBS transmission on this SerDes without error injection.
+    """
 
 
 @register_command
@@ -840,7 +849,7 @@ class PP_TXLASERPOWER:
 @dataclass
 class PP_PMAERRPUL_ENABLE:
     """
-    Enable / disable 'PMA pulse error inject'.
+    Enable / disable PMA pulse error inject.
     """
 
     code: typing.ClassVar[int] = 300
@@ -868,8 +877,8 @@ class PP_PMAERRPUL_ENABLE:
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, on_off: OnOff) -> Token[None]:
-        """Set the status of 'PMA pulse error inject'.
-
+        """Set the status of PMA pulse error inject.
+        
         :param on_off: whether PMA pulse error inject is enabled
         :type on_off: OnOff
         """
@@ -1946,8 +1955,7 @@ class PP_PHYRXEQSTATUS_EXT:
 @dataclass
 class PP_AUTONEG:
     """
-    Auto-negotiation settings of the PHY - for Thor-400G-7S-1P Thor-400G-7S-1P[b]
-    and [c]
+    Basic Auto-negotiation configuration and control
     """
 
     code: typing.ClassVar[int] = 381
@@ -1960,25 +1968,25 @@ class PP_AUTONEG:
     class GetDataAttr(ResponseBodyStruct):
         mode: AutoNegMode = field(XmpInt())
         """coded integer, mode"""
-        tec_ability: AutoNegTecAbility = field(XmpInt())
-        """coded integer, technical ability."""
-        fec_capable: int = field(XmpInt())
+        tec_ability: Hex = field(XmpHex(size=8))
+        """hex string, technical ability."""
+        fec_capable: Hex = field(XmpHex(size=1))
         """coded integer, FEC capable."""
-        fec_requested: int = field(XmpInt())
+        fec_requested: Hex = field(XmpHex(size=1))
         """coded integer, FEC requested."""
-        pause_mode: PauseMode = field(XmpInt())
+        pause_mode: Hex = field(XmpHex(size=1))
         """coded integer, pause mode."""
 
     class SetDataAttr(RequestBodyStruct):
         mode: AutoNegMode = field(XmpInt())
         """coded integer, mode"""
-        tec_ability: AutoNegTecAbility = field(XmpInt())
-        """coded integer, technical ability."""
-        fec_capable: int = field(XmpInt())
+        tec_ability: Hex = field(XmpHex(size=8))
+        """hex string, technical ability."""
+        fec_capable: Hex = field(XmpHex(size=1))
         """coded integer, FEC capable."""
-        fec_requested: int = field(XmpInt())
+        fec_requested: Hex = field(XmpHex(size=1))
         """coded integer, FEC requested."""
-        pause_mode: PauseMode = field(XmpInt())
+        pause_mode: Hex = field(XmpHex(size=1))
         """coded integer, pause mode."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -1990,19 +1998,19 @@ class PP_AUTONEG:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, mode: AutoNegMode, tec_ability: AutoNegTecAbility, fec_capable: AutoNegFECOption, fec_requested: AutoNegFECOption, pause_mode: PauseMode) -> Token[None]:
+    def set(self, mode: AutoNegMode, tec_ability: Hex, fec_capable: Hex, fec_requested: Hex, pause_mode: Hex) -> Token[None]:
         """Set the auto-negotiation settings of the PHY.
 
         :param mode: auto neg mode
         :type mode: AutoNegMode
-        :param tec_ability: technical ability
-        :type tec_ability: AutoNegTecAbility
+        :param tec_ability: technical ability (hex string with 0x prefix or AutoNegTecAbility enum)
+        :type tec_ability: Hex
         :param fec_capable: FEC capable
-        :type fec_capable: AutoNegFECOption
+        :type fec_capable: Hex
         :param fec_requested: FEC requested
-        :type fec_requested: AutoNegFECOption
-        :param pause_mode: pause mode
-        :type pause_mode: PauseMode
+        :type fec_requested: Hex
+        :param pause_mode: pause mode (hex string with 0x prefix or PauseMode enum)
+        :type pause_mode: Hex
         """
 
         return Token(
@@ -2024,7 +2032,7 @@ class PP_AUTONEG:
 @dataclass
 class PP_AUTONEGSTATUS:
     """
-    Status of auto-negotiation settings of the PHY - for Thor-400G-7S-1P[b] and [c]
+    Basic Auto-negotiation status
     """
 
     code: typing.ClassVar[int] = 382
@@ -2041,13 +2049,13 @@ class PP_AUTONEGSTATUS:
         """codec integer, FEC."""
         auto_state: AutoNegStatus = field(XmpInt())
         """coded integer, auto-negotiation state."""
-        tec_ability: AutoNegTecAbility = field(XmpInt())
+        tec_ability: Hex = field(XmpHex(size=8))
         """coded integer, technical ability."""
-        fec_capable: int = field(XmpInt())
+        fec_capable: Hex = field(XmpHex(size=1))
         """coded integer, FEC capable partner."""
-        fec_requested: int = field(XmpInt())
+        fec_requested: Hex = field(XmpHex(size=1))
         """coded integer, FEC requested partner."""
-        pause_mode: PauseMode = field(XmpInt())
+        pause_mode: Hex = field(XmpHex(size=1))
         """coded integer, pause mode."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -2328,3 +2336,52 @@ class PP_PRECODINGSTATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+
+
+__all__ = [
+    "PP_ALARMS_ERRORS",
+    "PP_AUTONEG",
+    "PP_AUTONEGSTATUS",
+    "PP_EYEBER",
+    "PP_EYEDWELLBITS",
+    "PP_EYEINFO",
+    "PP_EYEMEASURE",
+    "PP_EYEREAD",
+    "PP_EYERESOLUTION",
+    "PP_FECMODE",
+    "PP_GRAYCODING",
+    "PP_LINKFLAP_ENABLE",
+    "PP_LINKFLAP_PARAMS",
+    "PP_LINKTRAIN",
+    "PP_LINKTRAINSTATUS",
+    "PP_PHYAUTONEG",
+    "PP_PHYAUTOTUNE",
+    "PP_PHYRETUNE",
+    "PP_PHYRXEQ",
+    "PP_PHYRXEQSTATUS_EXT",
+    "PP_PHYRXEQ_EXT",
+    "PP_PHYSETTINGS",
+    "PP_PHYSIGNALSTATUS",
+    "PP_PHYTXEQ",
+    "PP_PMAERRPUL_ENABLE",
+    "PP_PMAERRPUL_PARAMS",
+    "PP_PRBSTYPE",
+    "PP_PRECODING",
+    "PP_PRECODINGSTATUS",
+    "PP_RXCLEAR",
+    "PP_RXFECSTATS",
+    "PP_RXLANEERRORS",
+    "PP_RXLANELOCK",
+    "PP_RXLANESTATUS",
+    "PP_RXLASERPOWER",
+    "PP_RXPRBSSTATUS",
+    "PP_RXPRBSTYPE",
+    "PP_RXTOTALSTATS",
+    "PP_TXERRORRATE",
+    "PP_TXINJECTONE",
+    "PP_TXLANECONFIG",
+    "PP_TXLANEINJECT",
+    "PP_TXLASERPOWER",
+    "PP_TXPRBSCONFIG",
+    "PP_TXPRBSTYPE",
+]

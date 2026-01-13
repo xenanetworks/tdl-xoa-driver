@@ -1,21 +1,26 @@
 #: All available test module types.
 """Xena test module types."""
-
+from typing import Union
 from .internals.hli.modules.modules_l23.module_l23_base import ModuleL23
-from .internals.hli.modules.modules_l23.family_d import (
+from .internals.hli.modules.module_l23ve import ModuleL23VE
+from .internals.hli.modules.module_chimera import (
+    ModuleChimera,
+    MChi100G5S2P,
+    MChi100G5S2P_b,
+    MChi40G2S2P,
+)
+from .internals.hli.modules.module_l47 import ModuleL47
+from .internals.hli.modules.module_l47ve import ModuleL47VE
+from .internals.hli.modules.modules_l23.family_odin import (
     MOdin1G3S2PT,
     MOdin1G3S6P,
     MOdin1G3S6P_b,
     MOdin1G3S6PE,
-)
-from .internals.hli.modules.modules_l23.family_e import (
     MOdin5G4S6PCU,
     MOdin10G3S2PCU,
     MOdin10G3S6PCU,
     MOdin10G5S6PCU,
     MOdin10G5S6PCU_b,
-)
-from .internals.hli.modules.modules_l23.family_f import (
     MOdin10G1S2P,
     MOdin10G1S2P_b,
     MOdin10G1S2P_c,
@@ -25,31 +30,32 @@ from .internals.hli.modules.modules_l23.family_f import (
     MOdin10G1S6P_b,
     MOdin10G1S12P,
     MOdin10G6S6P_a,
+    MOdin100G3S1P,
+    MOdin1G3S6PT1RJ45,
+    MOdin10G4S2PCombi,
+    MOdin10G4S2PCombi_b,
+    MOdin40G2S2P,
+    MOdin40G2S2PB,
 )
-from .internals.hli.modules.modules_l23.family_g import (
+from .internals.hli.modules.modules_l23.family_loki import (
     MLoki100G3S1P,
     MLoki100G3S1P_b,
     MLoki100G3S1PSE,
     MLoki100G3S1PB,
     MLoki100G3S1PB_b,
     MLoki100G5S4P_a,
-)
-from .internals.hli.modules.modules_l23.family_h import (
     MLoki100G5S1P,
-    MOdin100G3S1P,
+    MLoki100G5S2P,
 )
-from .internals.hli.modules.modules_l23.family_i import MLoki100G5S2P
-from .internals.hli.modules.modules_l23.family_j import MThor100G5S4P
-from .internals.hli.modules.modules_l23.family_k import (
+from .internals.hli.modules.modules_l23.family_thor import (
+    MThor100G5S4P,
     MThor400G7S1P,
     MThor400G7S1PLE,
-)
-from .internals.hli.modules.modules_l23.family_l import (
     MThor400G7S1P_b,
     MThor400G7S1P_c,
     MThor400G7S1P_d,
 )
-from .internals.hli.modules.modules_l23.family_l1 import (
+from .internals.hli.modules.modules_l23.family_freya import (
     MFreya800G1S1P_a,
     MFreya800G1S1P_b,
     MFreya800G1S1POSFP_a,
@@ -99,33 +105,11 @@ from .internals.hli.modules.modules_l23.family_l1 import (
     MFreya800G4S1POSFP_e_g2,
     MFreya800G4S1POSFP_f_g2,
 )
-from .internals.hli.modules.modules_l23.family_m import MOdin1G3S6PT1RJ45
-from .internals.hli.modules.modules_l23.family_n import (
-    MOdin40G2S2P,
-    MOdin40G2S2PB,
-)
-from .internals.hli.modules.modules_l23.family_combi import (
-    MOdin10G4S2PCombi,
-    MOdin10G4S2PCombi_b,
-)
-from .internals.hli.modules.module_l23ve import ModuleL23VE
-from .internals.hli.modules.module_chimera import (
-    ModuleChimera,
-    MChi100G5S2P,
-    MChi100G5S2P_b,
-    MChi40G2S2P,
-)
-from .internals.hli.modules.module_l47 import ModuleL47
-from .internals.hli.modules.module_l47ve import ModuleL47VE
-
 from .internals.hli.modules.modules_l23.family_edun import (
     MEdun800G3S1PSMPX_a,
     MEdun1600G4S1POSFP_a
 )
-
-import typing
-
-Z10OdinModule = typing.Union[
+Z10OdinModule = Union[
     MOdin1G3S2PT,
     MOdin1G3S6P,
     MOdin1G3S6P_b,
@@ -152,7 +136,7 @@ Z10OdinModule = typing.Union[
     MOdin100G3S1P,
 ]
 
-Z100LokiModule = typing.Union[
+Z100LokiModule = Union[
     MLoki100G3S1P,
     MLoki100G3S1P_b,
     MLoki100G3S1PSE,
@@ -163,7 +147,7 @@ Z100LokiModule = typing.Union[
     MLoki100G5S4P_a,
 ]
 
-Z400ThorModule = typing.Union[
+Z400ThorModule = Union[
     MThor100G5S4P,
     MThor400G7S1P,
     MThor400G7S1PLE,
@@ -172,7 +156,7 @@ Z400ThorModule = typing.Union[
     MThor400G7S1P_d,
 ]
 
-Z800FreyaModule = typing.Union[
+Z800FreyaModule = Union[
     MFreya800G1S1P_a,
     MFreya800G1S1P_b,
     MFreya800G1S1POSFP_a,
@@ -223,25 +207,25 @@ Z800FreyaModule = typing.Union[
     MFreya800G4S1POSFP_f_g2,
 ]
 
-Z1600EdunModule = typing.Union[
+Z1600EdunModule = Union[
     MEdun800G3S1PSMPX_a,
     MEdun1600G4S1POSFP_a
 ]
 
-E100ChimeraModule = typing.Union[
+E100ChimeraModule = Union[
     ModuleChimera,
     MChi100G5S2P,
     MChi100G5S2P_b,
     MChi40G2S2P,
 ]
 
-LegacyModule = typing.Union[
+LegacyModule = Union[
     ModuleL23VE,
     ModuleL47,
     ModuleL47VE,
 ]
 
-GenericL23Module = typing.Union[
+GenericL23Module = Union[
     "MOdin1G3S2PT",
     "MOdin1G3S6P",
     "MOdin1G3S6P_b",
@@ -336,7 +320,7 @@ GenericL23Module = typing.Union[
     "MEdun1600G4S1POSFP_a",
 ]
 
-GenericAnyModule = typing.Union[
+GenericAnyModule = Union[
     GenericL23Module,
     
     "ModuleL23VE",

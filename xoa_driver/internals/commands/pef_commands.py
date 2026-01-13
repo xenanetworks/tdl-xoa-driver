@@ -1,3 +1,4 @@
+"""Port (Impairment) Filter Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import ipaddress
@@ -2214,3 +2215,45 @@ class PEF_MODE:
 
     set_extended = functools.partialmethod(set, FilterMode.EXTENDED)
     """Set the filter mode to Extended."""
+
+
+__all__ = [
+    "PEF_ANYCONFIG",
+    "PEF_ANYSETTINGS",
+    "PEF_APPLY",
+    "PEF_CANCEL",
+    "PEF_ENABLE",
+    "PEF_ETHDESTADDR",
+    "PEF_ETHSETTINGS",
+    "PEF_ETHSRCADDR",
+    "PEF_INIT",
+    "PEF_IPV4DESTADDR",
+    "PEF_IPV4DSCP",
+    "PEF_IPV4SETTINGS",
+    "PEF_IPV4SRCADDR",
+    "PEF_IPV6DESTADDR",
+    "PEF_IPV6SETTINGS",
+    "PEF_IPV6SRCADDR",
+    "PEF_IPV6TC",
+    "PEF_ISSHADOWDIRTY",
+    "PEF_L2PUSE",
+    "PEF_L3USE",
+    "PEF_MASK",
+    "PEF_MODE",
+    "PEF_MPLSLABEL",
+    "PEF_MPLSSETTINGS",
+    "PEF_MPLSTOC",
+    "PEF_PROTOCOL",
+    "PEF_TCPDESTPORT",
+    "PEF_TCPSETTINGS",
+    "PEF_TCPSRCPORT",
+    "PEF_TPLDCONFIG",
+    "PEF_TPLDSETTINGS",
+    "PEF_UDPDESTPORT",
+    "PEF_UDPSETTINGS",
+    "PEF_UDPSRCPORT",
+    "PEF_VALUE",
+    "PEF_VLANPCP",
+    "PEF_VLANSETTINGS",
+    "PEF_VLANTAG",
+]

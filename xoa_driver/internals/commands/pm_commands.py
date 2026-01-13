@@ -1,3 +1,4 @@
+"""Port Match Term Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
@@ -254,3 +255,13 @@ class PM_MATCH:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._match_term_xindex], mask=mask, value=value))
+
+
+__all__ = [
+    "PM_CREATE",
+    "PM_DELETE",
+    "PM_INDICES",
+    "PM_MATCH",
+    "PM_POSITION",
+    "PM_PROTOCOL",
+]

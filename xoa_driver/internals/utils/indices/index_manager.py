@@ -60,7 +60,13 @@ class IndexManager(Generic[IT]):
         return self._indices[key]
 
     def obtain_multiple(self, *keys: int):
-        """Obtain multiple resources as a tuple of indices"""
+        """Obtain multiple index objects
+
+        :param keys: Indices of the desired index objects
+        :type keys: int
+        :return: Tuple of index objects corresponding to the provided keys
+        :rtype: tuple[IT, ...]
+        """
         return tuple(self._indices[k] for k in keys)
 
     def __detect_empty_idx_slot(self) -> int:
@@ -74,7 +80,7 @@ class IndexManager(Generic[IT]):
         ]
         return min(empties) if empties else len(existing_indices)
 
-    def __remove_from_slot(self, index_inst: Type) -> None:
+    def __remove_from_slot(self, index_inst: IT) -> None:
         # throws ValueError if element is not exists in list of indices
         self._indices.remove(index_inst)
 

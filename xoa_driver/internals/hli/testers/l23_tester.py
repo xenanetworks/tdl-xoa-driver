@@ -57,9 +57,7 @@ def get_module_type(revision: str) -> Type:
 
 class L23Tester(BaseTester["testers_state.GenuineTesterLocalState"]):
     """
-    This is a conceptual class of Xena Valkyrie Tester.
-    It is essentially an extended :class:`BaseTester`.
-
+    Create an instanace to connect to a Xena chassis.
 
     :param host: tester's address/hostname
     :type host: str
