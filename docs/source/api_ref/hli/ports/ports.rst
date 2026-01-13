@@ -20,6 +20,10 @@ Port APIs Overview
     :file: streams.csv
 
 
+.. csv-table:: MACsec APIs Overview
+    :header: "Id", "Action", "API", "Description"
+    :file: ports_macsec.csv
+
 
 Examples - Traffic Generation APIs
 ---------------------------------------------
@@ -62,5 +66,14 @@ Examples - Traffic Generation Stream APIs
 
 .. literalinclude:: streams.py
     :caption: Examples - Traffic Generation Stream APIs
-    :start-at: [streams]
+    :start-at: [streams]    
+    :end-before: [end]
+
+
+Examples - MACsec APIs
+---------------------------------------------
+
+.. literalinclude:: ports_macsec.py
+    :caption: Examples - MACsec APIs
+    :start-at: [ports]
     :end-before: [end]
