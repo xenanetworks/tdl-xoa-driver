@@ -45,7 +45,7 @@ def get_short_version(rel_path):
 
 # -- Project information -----------------------------------------------------
 
-company = f"Teledyne LeCroy Xena"
+company = f"Teledyne LeCroy"
 year = datetime.datetime.today().year
 month = datetime.datetime.today().month
 project = f"XOA Python API"
