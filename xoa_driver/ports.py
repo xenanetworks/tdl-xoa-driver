@@ -5,7 +5,7 @@ import typing
 
 from .internals.hli.ports.port_l47.main import PortL47
 
-from .internals.hli.ports.port_l23.port_l23ve import PortL23VE
+from .internals.hli.ports.port_l23.bases.port_l23ve import PortL23VE
 from .internals.hli.ports.port_l23.chimera.port_chimera import (
     PortChimera,
     PChi100G5S2P,
@@ -13,7 +13,7 @@ from .internals.hli.ports.port_l23.chimera.port_chimera import (
     PChi40G2S2P,
 )
 
-from .internals.hli.ports.port_l23.trafficgen.port_l23 import BasePortL23
+from .internals.hli.ports.port_l23.bases.port_l23 import BasePortL23
 from xoa_driver.internals.hli.ports.port_l23.family_odin import (
     POdin1G4S4PCombi,
     POdin1G4S4PCombi_b,

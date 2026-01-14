@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
-from .trafficgen.port_l23 import BasePortL23
-from .trafficgen.port_rx_stats import PortReceptionStatistics
-from .trafficgen.port_tx_stats import PortTxStats
+from .port_l23 import BasePortL23
+from ..trafficgen.rx_stats import PortReceptionStatistics
+from ..trafficgen.tx_stats import PortTxStats
 
 from xoa_driver.internals.commands import (
     P_MDIXMODE,
