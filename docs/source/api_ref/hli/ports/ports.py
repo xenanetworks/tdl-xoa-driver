@@ -3,6 +3,7 @@ from xoa_driver import testers, modules, ports, enums, utils, misc
 from xoa_driver.hlfuncs import * 
 from xoa_driver.misc import Hex, ArpEntry, NdpEntry
 import ipaddress
+from xoa_driver.internals.hli.ports.port_l23.bases.port_l23_genuine import BasePortL23Genuine
 
 async def my_awesome_func(stop_event: asyncio.Event):
 
@@ -189,26 +190,25 @@ async def my_awesome_func(stop_event: asyncio.Event):
 
     """Speed Mode Selection"""
     # Set or get the speed mode selection.
-    await port.speed.mode.selection.set_auto()
-    await port.speed.mode.selection.set_f10m()
-    await port.speed.mode.selection.set_f10m100m()
-    await port.speed.mode.selection.set_f10mhdx()
-    await port.speed.mode.selection.set_f100m()
-    await port.speed.mode.selection.set_f100m1g()
-    await port.speed.mode.selection.set_f100m1g10g()
-    await port.speed.mode.selection.set_f100m1g2500m()
-    await port.speed.mode.selection.set_f100mhdx()
-    await port.speed.mode.selection.set_f1g()
-    await port.speed.mode.selection.set_f2500m()
-    await port.speed.mode.selection.set_f5g()
-    await port.speed.mode.selection.set_f10g()
-    await port.speed.mode.selection.set_f40g()
-    await port.speed.mode.selection.set_f100g()
-    resp_obj = await port.speed.mode.selection.get()
-
+    await port.speed.selection.set_auto()
+    await port.speed.selection.set_f10m()
+    await port.speed.selection.set_f10m100m()
+    await port.speed.selection.set_f10mhdx()
+    await port.speed.selection.set_f100m()
+    await port.speed.selection.set_f100m1g()
+    await port.speed.selection.set_f100m1g10g()
+    await port.speed.selection.set_f100m1g2500m()
+    await port.speed.selection.set_f100mhdx()
+    await port.speed.selection.set_f1g()
+    await port.speed.selection.set_f2500m()
+    await port.speed.selection.set_f5g()
+    await port.speed.selection.set_f10g()
+    await port.speed.selection.set_f40g()
+    await port.speed.selection.set_f100g()
+    resp_obj = await port.speed.selection.get()
 
     """Supported Speed Modes"""
-    resp_obj = await port.speed.mode.supported.get()
+    resp_obj = await port.speed.supported.get()
 
 
     """Current Speed"""
@@ -226,13 +226,13 @@ async def my_awesome_func(stop_event: asyncio.Event):
 
     """LAYER-2 CONTROL"""
     """MAC Address"""
-    await port.net_config.mac_address.set(mac_address=Hex("000000000000"))
-    resp_obj = await port.net_config.mac_address.get()
+    await port.net_config.mac.address.set(mac_address=Hex("000000000000"))
+    resp_obj = await port.net_config.mac.address.get()
 
 
     """Auto MAC Training"""
-    await port.autotrain.set(interval=1)
-    resp_obj = await port.autotrain.get()
+    await port.net_config.mac.autotrain.set(interval=1)
+    resp_obj = await port.net_config.mac.autotrain.get()
 
 
     """PAUSE and PFC"""
@@ -322,14 +322,14 @@ async def my_awesome_func(stop_event: asyncio.Event):
 
     """LOOPBACK"""
     """Loopback Modes"""
-    await port.loop_back.set_none()
-    await port.loop_back.set_l1rx2tx()
-    await port.loop_back.set_l2rx2tx()
-    await port.loop_back.set_l3rx2tx()
-    await port.loop_back.set_port2port()
-    await port.loop_back.set_txoff2rx()
-    await port.loop_back.set_txon2rx()
-    resp_obj = await port.loop_back.get()
+    await port.loopback.set_none()
+    await port.loopback.set_l1rx2tx()
+    await port.loopback.set_l2rx2tx()
+    await port.loopback.set_l3rx2tx()
+    await port.loopback.set_port2port()
+    await port.loopback.set_txoff2rx()
+    await port.loopback.set_txon2rx()
+    resp_obj = await port.loopback.get()
 
 
     """LATENCY CONFIG"""
@@ -519,7 +519,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
     # one-second interval as a Severely Errored Second (SES). 
     # In accordance with Xena1564, Unavailable Time (UAT) is declared after 
     # the occurrence of 10 consecutive SES intervals.
-    resp = await port.uat.frame_loss_ratio.get()
+    resp = await port.uat.flr.get()
 
 
     """UAT Status"""
@@ -1116,37 +1116,37 @@ async def my_awesome_func(stop_event: asyncio.Event):
 
         """PCS/FEC"""
         """FEC Mode"""
-        await port.layer1.pcs_fec.fec_mode.set(mode=enums.FECMode.RS_FEC)
-        await port.layer1.pcs_fec.fec_mode.set(mode=enums.FECMode.RS_FEC_KP)
-        await port.layer1.pcs_fec.fec_mode.set(mode=enums.FECMode.RS_FEC_KR)
-        await port.layer1.pcs_fec.fec_mode.set(mode=enums.FECMode.FC_FEC)
-        await port.layer1.pcs_fec.fec_mode.set(mode=enums.FECMode.OFF)
-        await port.layer1.pcs_fec.fec_mode.set(mode=enums.FECMode.ON)
-        resp_obj = await port.layer1.pcs_fec.fec_mode.get()
+        await port.layer1.pcs.fec_mode.set(mode=enums.FECMode.RS_FEC)
+        await port.layer1.pcs.fec_mode.set(mode=enums.FECMode.RS_FEC_KP)
+        await port.layer1.pcs.fec_mode.set(mode=enums.FECMode.RS_FEC_KR)
+        await port.layer1.pcs.fec_mode.set(mode=enums.FECMode.FC_FEC)
+        await port.layer1.pcs.fec_mode.set(mode=enums.FECMode.OFF)
+        await port.layer1.pcs.fec_mode.set(mode=enums.FECMode.ON)
+        resp_obj = await port.layer1.pcs.fec_mode.get()
 
 
         """PCS TX Configuration - Skew"""
-        await port.layer1.pcs_fec.lane[0].tx_config.set(virt_lane_index=0, skew=0)
+        await port.layer1.pcs.lane[0].tx_config.set(virt_lane_index=0, skew=0)
 
 
         """PCS RX Status - Skew"""
-        resp_obj = await port.layer1.pcs_fec.lane[0].rx_status.status.get()
+        resp_obj = await port.layer1.pcs.lane[0].rx_status.status.get()
 
 
         """PCS Lane BER and Error Counters"""
-        resp_obj = await port.layer1.pcs_fec.lane[0].rx_status.errors.get()
+        resp_obj = await port.layer1.pcs.lane[0].rx_status.errors.get()
 
 
         """PCS Header Lock & Align Lock"""
-        resp_obj = await port.layer1.pcs_fec.lane[0].rx_status.lock.get()
+        resp_obj = await port.layer1.pcs.lane[0].rx_status.lock.get()
 
 
         """Clear Counters"""
-        await port.layer1.pcs_fec.clear.set()
+        await port.layer1.pcs.clear.set()
 
 
         """FEC Symbol Error Distribution Status"""
-        resp_obj = await port.layer1.pcs_fec.fec_symbol_status.fec_status.get()
+        resp_obj = await port.layer1.pcs.fec_symbol_status.fec_status.get()
 
 
         """FEC Symbol Total Status"""
@@ -1156,12 +1156,12 @@ async def my_awesome_func(stop_event: asyncio.Event):
         # Corrected Symbols
         # Pre-FEC BER
         # Post-FEC BER
-        resp_obj = await port.layer1.pcs_fec.fec_symbol_status.total_status.get()
+        resp_obj = await port.layer1.pcs.fec_symbol_status.total_status.get()
 
 
         """Error Counters"""
         # Total Alarms, LOS Errors, Alignment Errors, BIP Errors, FEC Errors, Header Errors, Higher Layer Errors, PCS Errors, Valid Mask
-        resp_obj = await port.layer1.pcs_fec.alarms.errors.get()
+        resp_obj = await port.layer1.pcs.alarms.errors.get()
 
 
         """PRBS PATTERN GENERATION"""
@@ -1209,49 +1209,49 @@ async def my_awesome_func(stop_event: asyncio.Event):
 
             """PCS VARIANT"""
             # [Z800 Freya, Z1600 Edun Specific APIs]
-            await port.layer1.pcs_fec.pcs_variant.set(variant=enums.FreyaPCSVariant.ETC)
-            await port.layer1.pcs_fec.pcs_variant.set(variant=enums.FreyaPCSVariant.IEEE)
-            resp_obj = await port.layer1.pcs_fec.pcs_variant.get()
+            await port.layer1.pcs.variant.set(variant=enums.FreyaPCSVariant.ETC)
+            await port.layer1.pcs.variant.set(variant=enums.FreyaPCSVariant.IEEE)
+            resp_obj = await port.layer1.pcs.variant.get()
 
 
             """FEC ERROR INSERTION"""
             # [Z800 Freya, Z1600 Edun Specific APIs]
             """FEC Error Insertion - Control"""
-            await port.layer1.pcs_fec.fec_error_inject.control.set_start()
-            await port.layer1.pcs_fec.fec_error_inject.control.set_stop()
-            resp = await port.layer1.pcs_fec.fec_error_inject.control.get()
+            await port.layer1.pcs.fec_error_inject.control.set_start()
+            await port.layer1.pcs.fec_error_inject.control.set_stop()
+            resp = await port.layer1.pcs.fec_error_inject.control.get()
 
 
             """FEC Error Insertion - Codeword Error Pattern"""
-            await port.layer1.pcs_fec.fec_error_inject.cycle.set(loop=0, cycle_len=8, error_len=4)
-            resp = await port.layer1.pcs_fec.fec_error_inject.cycle.get()
+            await port.layer1.pcs.fec_error_inject.cycle.set(loop=0, cycle_len=8, error_len=4)
+            resp = await port.layer1.pcs.fec_error_inject.cycle.get()
 
 
             """FEC Error Insertion - Symbol Error Pattern"""
-            await port.layer1.pcs_fec.fec_error_inject.err_symbols.set(error_sym_indices=[543, 542, 541, 50, 44, 76, 88])
-            resp = await port.layer1.pcs_fec.fec_error_inject.err_symbols.get()
+            await port.layer1.pcs.fec_error_inject.err_symbols.set(error_sym_indices=[543, 542, 541, 50, 44, 76, 88])
+            resp = await port.layer1.pcs.fec_error_inject.err_symbols.get()
 
 
             """FEC Error Insertion - Bit Error Mask"""
-            await port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set(mode=enums.FecCodewordBitErrorMaskMode.STATIC, bitmask=Hex("000F"))
-            await port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set(mode=enums.FecCodewordBitErrorMaskMode.ROTATE_HIGH, bitmask=Hex("000F"))
-            await port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set(mode=enums.FecCodewordBitErrorMaskMode.INC, bitmask=Hex("000F"))
-            await port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set_all_bits()
-            await port.layer1.pcs_fec.fec_error_inject.bit_err_mask.set_no_bits()
-            resp = await port.layer1.pcs_fec.fec_error_inject.bit_err_mask.get()
+            await port.layer1.pcs.fec_error_inject.bit_err_mask.set(mode=enums.FecCodewordBitErrorMaskMode.STATIC, bitmask=Hex("000F"))
+            await port.layer1.pcs.fec_error_inject.bit_err_mask.set(mode=enums.FecCodewordBitErrorMaskMode.ROTATE_HIGH, bitmask=Hex("000F"))
+            await port.layer1.pcs.fec_error_inject.bit_err_mask.set(mode=enums.FecCodewordBitErrorMaskMode.INC, bitmask=Hex("000F"))
+            await port.layer1.pcs.fec_error_inject.bit_err_mask.set_all_bits()
+            await port.layer1.pcs.fec_error_inject.bit_err_mask.set_no_bits()
+            resp = await port.layer1.pcs.fec_error_inject.bit_err_mask.get()
 
 
             """FEC Error Insertion - FEC Engine Control"""
-            await port.layer1.pcs_fec.fec_error_inject.engine.set_all_engines()
-            resp = await port.layer1.pcs_fec.fec_error_inject.engine.get()
+            await port.layer1.pcs.fec_error_inject.engine.set_all_engines()
+            resp = await port.layer1.pcs.fec_error_inject.engine.get()
 
 
             """FEC Error Insertion - Statistics"""
-            resp = await port.layer1.pcs_fec.fec_error_inject.statistics.get()
+            resp = await port.layer1.pcs.fec_error_inject.statistics.get()
 
 
             """FEC Error Insertion - Clear Statistics"""
-            await port.layer1.pcs_fec.fec_error_inject.clear_stats.set()
+            await port.layer1.pcs.fec_error_inject.clear_stats.set()
         
 
         """AUTO-NEGOTIATION AND LINK TRAINING"""
