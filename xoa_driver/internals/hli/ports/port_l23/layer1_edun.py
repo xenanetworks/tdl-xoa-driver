@@ -61,7 +61,7 @@ class EdunPcsLayer(PcsLayer):
         module_id, port_id = port.kind
         PcsLayer.__init__(self, conn, port)
     
-        self.pcs_variant = PL1_PCS_VARIANT(conn, module_id, port_id)
+        self.variant = PL1_PCS_VARIANT(conn, module_id, port_id)
         """PCS variant configuration
         """
 
@@ -84,7 +84,7 @@ class Layer1:
         """RS Fault configuration and status
         """
 
-        self.pcs_fec = EdunPcsLayer(conn, port)
+        self.pcs = EdunPcsLayer(conn, port)
         """Edun PCS and FEC configuration and status
         """
 
