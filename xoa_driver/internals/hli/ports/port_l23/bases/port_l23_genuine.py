@@ -20,24 +20,22 @@ from xoa_driver.internals.hli.indices.filter.genuine_filter import GenuineFilter
 from xoa_driver.internals.hli.indices.port_dataset import PortDatasetIdx
 from xoa_driver.internals.state_storage import ports_state
 
-from .port_l23 import (
-    BasePortL23,
-    Speed,
-    # TxConfiguration,
-)
+from .port_l23 import BasePortL23
 
 from ..tcvr.transceiver import Transceiver
-from .port_rx_stats import GenuinePortReceptionStatistics
-from .port_tx_stats import GenuinePortTransmissionStatistics
+from ..trafficgen.rx_stats import GenuinePortReceptionStatistics
+from ..trafficgen.tx_stats import GenuinePortTransmissionStatistics
+from ..trafficgen.tgen import *
 
 StreamIndices = idx_mgr.IndexManager[GenuineStreamIdx]
 FilterIndices = idx_mgr.IndexManager[GenuineFilterIdx]
 PortDatasetIndices = idx_mgr.IndexManager[PortDatasetIdx]
 
-class SpeedMode:
-    """L23 port's speed mode"""
 
+class GenuineSpeed(Speed):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        super().__init__(conn, module_id, port_id)
+        
         self.selection = P_SPEEDSELECTION(conn, module_id, port_id)
         """L23 port speed mode selection.
 
@@ -51,13 +49,6 @@ class SpeedMode:
         """
 
 
-class GenuineSpeed(Speed):
-    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
-        super().__init__(conn, module_id, port_id)
-        self.mode = SpeedMode(conn, module_id, port_id)
-        """L23 port's speed mode."""
-
-
 class UnAvailableTime:
     """UnAvailable Time"""
 
@@ -68,7 +59,7 @@ class UnAvailableTime:
         :type: P_UAT_MODE
         """
 
-        self.frame_loss_ratio = P_UAT_FLR(conn, module_id, port_id)
+        self.flr = P_UAT_FLR(conn, module_id, port_id)
         """L23 port's Frame Loss Ratio for UAT.
 
         :type: P_UAT_FLR

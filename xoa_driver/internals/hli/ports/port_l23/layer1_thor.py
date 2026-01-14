@@ -54,7 +54,7 @@ class Layer1:
         self.rs_fault = RsFault(conn, module_id, port_id)
         """RS Fault Management"""
 
-        self.pcs_fec = PcsLayer(conn, port)
+        self.pcs = PcsLayer(conn, port)
         """PCS/FEC layer"""
 
         self.prbs_config = PP_PRBSTYPE(conn, module_id, port_id)

@@ -12,7 +12,7 @@ from xoa_driver.internals.utils import attributes as utils
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 
-from .trafficgen.port_l23_genuine import BasePortL23Genuine
+from .bases.port_l23_genuine import BasePortL23Genuine
 from .layer1_freya import Layer1
 
 

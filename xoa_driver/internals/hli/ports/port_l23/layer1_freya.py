@@ -61,7 +61,7 @@ class FreyaPcsLayer(PcsLayer):
         module_id, port_id = port.kind
         PcsLayer.__init__(self, conn, port)
     
-        self.pcs_variant = PL1_PCS_VARIANT(conn, module_id, port_id)
+        self.variant = PL1_PCS_VARIANT(conn, module_id, port_id)
         """PCS variant configuration
         """
 
@@ -85,7 +85,7 @@ class Layer1:
         """RS Fault configuration and status
         """
 
-        self.pcs_fec = FreyaPcsLayer(conn, port)
+        self.pcs = FreyaPcsLayer(conn, port)
         """Freya PCS and FEC configuration and status
         """
 
