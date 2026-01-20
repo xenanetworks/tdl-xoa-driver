@@ -18,8 +18,8 @@ if TYPE_CHECKING:
     from xoa_driver.ports import GenericL23Port, Z800FreyaPort, Z1600EdunPort, GenericAnyPort
     from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
     from xoa_driver.testers import L23Tester
-    type FreyaEdunModule = Union[Z800FreyaModule, Z1600EdunModule]
-    type FreyaEdunPort = Union[Z800FreyaPort, Z1600EdunPort]
+    FreyaEdunModule = Union[Z800FreyaModule, Z1600EdunModule]
+    FreyaEdunPort = Union[Z800FreyaPort, Z1600EdunPort]
     from xoa_driver.internals.commands.enums import MediaConfigurationType
 from .exceptions import (
     NotSupportMedia,
