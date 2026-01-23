@@ -420,7 +420,7 @@ class PL1AD_RX_ERR_CW_CNT:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        error_cw_count: int = field(XmpInt(signed=False))
+        err_cw_count: int = field(XmpInt(signed=False))
         """Number of erroneous 64b/66b codewords since the previous query."""
 
 

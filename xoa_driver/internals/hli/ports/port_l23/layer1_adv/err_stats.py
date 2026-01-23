@@ -12,10 +12,11 @@ if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 
 
-class PortErrStats:
-    """Port Error Statistics"""
+class ErrStats:
+    """Port PCS Error Statistics"""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+
         self.rx_lf_count = PL1AD_RX_LF_CNT(conn, module_id, port_id)
         """Returns the number of cumulated Local Fault conditions since last query.
         
@@ -40,10 +41,11 @@ class PortErrStats:
         :type: PL1AD_RX_LOSYNC_CNT
         """
 
-class PcsLaneErrStats:
-    """PCS Lane Error Statistics"""
+class PcsLaneAdv:
+    """PCS Lane Advanced Statistics"""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, lane_idx: int) -> None:
+
         self.rx_lol = PL1AD_RX_LOL(conn, module_id, port_id, lane_idx)
         """Returns the current and the latched CDR Loss of Lock (LOL) status of the specified PCS lane.
 

@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 
 from .bases.port_l23_genuine import BasePortL23Genuine
 from .layer1_freya import Layer1
+from .layer1_adv_freya import Layer1Adv
 
 
 class FamilyFreya(BasePortL23Genuine):
@@ -30,6 +31,10 @@ class FamilyFreya(BasePortL23Genuine):
 
         self.layer1 = Layer1(self._conn, self)
         """Layer 1"""
+
+        self.layer1_adv = Layer1Adv(self._conn, self)
+        """Layer 1 Advanced"""
+
         return self
 
     on_dynamic_change = functools.partialmethod(utils.on_event, P_DYNAMIC)

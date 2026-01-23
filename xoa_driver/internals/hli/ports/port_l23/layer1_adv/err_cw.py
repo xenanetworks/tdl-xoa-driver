@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 
 
-class ErrCw:
+class ErrorCodeword:
     """Erroneous Codeword (CW) Management"""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
