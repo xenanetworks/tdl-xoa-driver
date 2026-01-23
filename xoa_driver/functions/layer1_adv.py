@@ -29,6 +29,8 @@ async def get_current_tx_frequency(port: "Z800FreyaPort") -> int:
     :return: The current Tx frequency in Hz.
     :rtype: int
     """
+
+
     return 1
 
 
