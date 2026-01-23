@@ -1,4 +1,4 @@
-"""Port Advanced Layer 1 Commands"""
+"""Port Layer 1 Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
