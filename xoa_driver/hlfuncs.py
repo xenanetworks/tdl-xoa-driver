@@ -10,6 +10,7 @@ from xoa_driver.functions import (
     headers,
     cmis,
     layer1_adv,
+    async_wrapper,
 )
 
 __all__ = (
@@ -21,4 +22,5 @@ __all__ = (
     "headers",
     "cmis",
     "layer1_adv",
+    "async_wrapper",
 )
