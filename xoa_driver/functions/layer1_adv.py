@@ -95,38 +95,49 @@ async def get_rx_frequencies(port: "Z800FreyaPort") -> Tuple[int, int, int]:
     return (resp1.frequency_hz, resp2.frequency_hz, resp3.frequency_hz)
 
 
-async def get_loss_of_lock(port: "Z800FreyaPort", lane_index: int) -> Tuple[bool, bool]:
+async def get_loss_of_locks(port: "Z800FreyaPort", lane_indices: List[int]) -> List[Tuple[bool, bool]]:
     """
-    Returns current + sticky Loss of Lock (LOL) status of the specified SerDes.
+    Returns current + sticky Loss of Lock (LOL) status of the specified PCS lanes.
 
     Sticky means latched clear-on-read.
 
     :param port: The port instance.
     :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
-    :param lane_index: The index of the PCS lane.
-    :type lane_index: int
-    :return: A tuple containing current and sticky LOL status.
-    :rtype: Tuple[bool, bool]
+    :param lane_indices: The indices of the PCS lanes.
+    :type lane_indices: List[int]
+    :return: A list of tuples containing current and sticky LOL status for each lane.
+    :rtype: List[Tuple[bool, bool]]
     """
+    results = []
+    cmds = []
+    for lane in lane_indices:
+        cmds.append(port.layer1_adv.lane[lane].rx_lol.get())
+    resps = await apply(*cmds)
+    for resp in resps:
+        curr = True if resp.current_lol.value == 1 else False
+        latched = True if resp.latched_lol.value == 1 else False
+        results.append((curr, latched))
+    return results
 
-    resp = await port.layer1_adv.lane[lane_index].rx_lol.get()
-    curr = True if resp.current_lol.value == 1 else False
-    latched = True if resp.latched_lol.value == 1 else False
-    return (curr, latched)
 
-
-async def get_rx_lane_skew(port: "Z800FreyaPort", lane_index: int) -> int:
-    """Returns relative skew of the PCS lane measured in bits
+async def get_rx_lane_skews(port: "Z800FreyaPort", lane_indices: List[int]) -> List[int]:
+    """Returns relative skew of the PCS lanes measured in bits
 
     :param port: The port instance.
     :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
-    :param lane_index: The index of the PCS lane.
-    :type lane_index: int
-    :return: Relative skew of the PCS lane measured in bits
-    :rtype: int
+    :param lane_indices: The indices of the PCS lanes.
+    :type lane_indices: List[int]
+    :return: Relative skew of the PCS lanes measured in bits
+    :rtype: List[int]
     """
-    resp = await port.layer1_adv.lane[lane_index].rx_skew.get()
-    return resp.skew_bits
+    results = []
+    cmds = []
+    for lane in lane_indices:
+        cmds.append(port.layer1_adv.lane[lane].rx_skew.get())
+    resps = await apply(*cmds)
+    for resp in resps:
+        results.append(resp.skew_bits)
+    return results
 
 
 async def get_hi_ber(port: "Z800FreyaPort") -> Tuple[bool, bool]:
@@ -309,8 +320,8 @@ __all__ = (
     "get_minimum_rx_frequency",
     "get_maximum_rx_frequency",
     "get_rx_frequencies",
-    "get_loss_of_lock",
-    "get_rx_lane_skew",
+    "get_loss_of_locks",
+    "get_rx_lane_skews",
     "get_hi_ber",
     "get_hi_ser",
     "get_degraded_ser",
