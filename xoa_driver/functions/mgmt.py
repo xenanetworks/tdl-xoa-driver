@@ -15,8 +15,8 @@ from typing import (
 from xoa_driver import enums, ports
 from xoa_driver.utils import apply
 if TYPE_CHECKING:
-    from xoa_driver.ports import GenericL23Port, Z800FreyaPort, Z1600EdunPort, GenericAnyPort
-    from xoa_driver.modules import GenericAnyModule, GenericL23Module, ModuleChimera, Z800FreyaModule, Z1600EdunModule
+    from xoa_driver.ports import GenericL23Port, Z800FreyaPort, Z1600EdunPort, GenericAnyPort, E100ChimeraPort
+    from xoa_driver.modules import GenericAnyModule, GenericL23Module, Z800FreyaModule, Z1600EdunModule, E100ChimeraModule
     from xoa_driver.testers import L23Tester
     FreyaEdunModule = Union[Z800FreyaModule, Z1600EdunModule]
     FreyaEdunPort = Union[Z800FreyaPort, Z1600EdunPort]
@@ -94,7 +94,7 @@ async def get_chassis_sys_uptime(tester: L23Tester) -> int:
 # region Modules
 
 
-def obtain_modules_by_ids(tester: L23Tester, module_ids: List[str]) -> Tuple[GenericAnyModule, ...]:
+async def obtain_modules_by_ids(tester: L23Tester, module_ids: List[str], reserve: bool = False) -> Tuple[GenericL23Module | E100ChimeraModule, ...]:
     """
     Get the module objects of the tester specified by module index ids
 
@@ -107,25 +107,76 @@ def obtain_modules_by_ids(tester: L23Tester, module_ids: List[str]) -> Tuple[Gen
     If the list is empty, return all modules of the tester
 
     :type module_ids: List[str]
+    :param reserve: should reserve the modules, defaults to False
+    :type reserve: bool, optional
     :raises NoSuchModuleError: No such a module index on the tester
     :return: module objects
-    :rtype: List[:class:`~xoa_driver.modules.GenericAnyModule`]
+    :rtype: List[:class:`~xoa_driver.modules.GenericL23Module` | :class:`~xoa_driver.modules.E100ChimeraModule`]
     """
 
-    if len(module_ids) == 0:
-        return tuple(tester.modules)
-    elif "*" in module_ids:
+    if len(module_ids) == 0 or "*" in module_ids:
+        module_list = [m for m in tuple(tester.modules)]
+        if reserve:
+            await reserve_modules(modules=module_list, force=reserve)
         return tuple(tester.modules)
     else:
+        module_list = [tester.modules.obtain(int(module_id)) for module_id in module_ids]
+        if reserve:
+            await reserve_modules(modules=module_list, force=reserve)
         return tuple(tester.modules.obtain(int(module_id)) for module_id in module_ids)
+    
+
+async def obtain_module_by_id(tester: L23Tester, module_id: str, reserve: bool = False) -> Union[GenericL23Module, E100ChimeraModule]:
+    """
+    Get the module object of the tester specified by module index id
+
+    :param tester: The tester object
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
+    :param module_id: the index id of the module.
+
+    :type module_id: str
+    :param reserve: should reserve the module, defaults to False
+    :type reserve: bool, optional
+    :raises NoSuchModuleError: No such a module index on the tester
+    :return: module object
+    :rtype: Union[:class:`~xoa_driver.modules.GenericL23Module`, :class:`~xoa_driver.modules.E100ChimeraModule`]
+    """
+    if reserve:
+        await reserve_modules([tester.modules.obtain(int(module_id))], force=reserve)
+    return tester.modules.obtain(int(module_id))
 
 
-async def reserve_modules(modules: List[GenericAnyModule], force: bool = True) -> None:
+async def obtain_module_by_port_id(tester: L23Tester, port_id: str, separator: str = "/", reserve: bool = False) -> Union[GenericL23Module, E100ChimeraModule]:
+    """
+    Get the module object of the tester specified by the port index id
+
+    :param tester: The tester object
+    :type tester: :class:`~xoa_driver.testers.L23Tester`
+    :param port_id: the index id of the port.
+
+    :type port_id: str
+    :param separator: The separator between module index and port index in port id, defaults to "/"
+    :type separator: str, optional
+    :param reserve: should reserve the module, defaults to False
+    :type reserve: bool, optional
+    :raises NoSuchModuleError: No such a module index on the tester
+    :return: module object
+    :rtype: Union[:class:`~xoa_driver.modules.GenericL23Module`, :class:`~xoa_driver.modules.E100ChimeraModule`]
+    """
+    if separator not in port_id:
+        raise ValueError(f"Invalid port_id format: {port_id}. Expected format 'm{separator}p'.")
+    module_id = port_id.split(separator)[0]
+    if reserve:
+        await reserve_modules([tester.modules.obtain(int(module_id))], force=reserve)
+    return tester.modules.obtain(int(module_id))
+
+
+async def reserve_modules(modules: List[GenericL23Module | E100ChimeraModule], force: bool = True) -> None:
     """
     Reserve modules regardless whether they are owned by others or not.
 
     :param modules: The modules to reserve
-    :type modules: List[:class:`~xoa_driver.modules.GenericAnyModule`]
+    :type modules: List[Union[:class:`~xoa_driver.modules.GenericL23Module`, :class:`~xoa_driver.modules.E100ChimeraModule`]]
     :param force: Should force reserve the module, defaults to True
     :type force: boolean
     :return:
@@ -137,12 +188,12 @@ async def reserve_modules(modules: List[GenericAnyModule], force: bool = True) -
 
 
 async def release_modules(
-    modules: List[GenericAnyModule], should_release_ports: bool = False
+    modules: List[GenericL23Module | E100ChimeraModule], should_release_ports: bool = False
 ) -> None:
     """
     Free modules. If a module is reserved by you, release the module. If a module is reserved by others, relinquish the module. The modules should have no owner afterwards.
     :param module: The module to free
-    :type module: :class:`~xoa_driver.modules.GenericAnyModule`
+    :type module: Union[:class:`~xoa_driver.modules.GenericL23Module`, :class:`~xoa_driver.modules.E100ChimeraModule`]
     :param should_release_ports: should ports also be freed, defaults to False
     :type should_release_ports: bool, optional
     :return:
@@ -160,13 +211,13 @@ async def release_modules(
 
 
 def get_module_supported_configs(
-    module: Union[GenericL23Module, ModuleChimera],
+    module: Union[GenericL23Module, E100ChimeraModule],
 ) -> List[Tuple[MediaConfigurationType, int, int]]:
     """
     Get the module's supported configurations in a list. 
 
     :param module: The module object
-    :type module: Union[GenericL23Module, ModuleChimera]
+    :type module: Union[GenericL23Module, E100ChimeraModule]
     :return: List of tuple(supported media, port count, port speed) (The port speed in Mbps, e.g. 40000 for 40G)
     :rtype: List[Tuple[MediaConfigurationType, int, int]]
     """
@@ -179,7 +230,7 @@ def get_module_supported_configs(
 
 
 async def set_module_config(
-    module: Union[GenericL23Module, ModuleChimera],
+    module: Union[GenericL23Module, E100ChimeraModule],
     media: enums.MediaConfigurationType,
     port_count: int,
     port_speed: int,
@@ -188,7 +239,7 @@ async def set_module_config(
     """Change the module configuration to the target media, port count and port speed.
 
     :param module: the module object
-    :type module: Union[GenericL23Module, ModuleChimera]
+    :type module: Union[GenericL23Module, E100ChimeraModule]
     :param media: the target media for the module
     :type media: enums.MediaConfigurationType
     :param port_count: the target port count
@@ -203,7 +254,7 @@ async def set_module_config(
     await set_module_configs([(module, media, port_count, port_speed)], force)
 
 
-async def set_module_configs(module_configs: List[Tuple[Union[GenericL23Module, ModuleChimera], enums.MediaConfigurationType, int, int]], force: bool = True) -> None:
+async def set_module_configs(module_configs: List[Tuple[Union[GenericL23Module, E100ChimeraModule], enums.MediaConfigurationType, int, int]], force: bool = True) -> None:
 
     """Configure multiple modules with specified media, port count and port speed.
 
@@ -211,7 +262,7 @@ async def set_module_configs(module_configs: List[Tuple[Union[GenericL23Module, 
     
     Each tuple contains (module object, target media, target port count, target port speed in Mbps, should forcibly reserve the module)
 
-    :type module_configs: List[Tuple[Union[GenericL23Module, ModuleChimera], enums.MediaConfigurationType, int, int, bool]]
+    :type module_configs: List[Tuple[Union[GenericL23Module, E100ChimeraModule], enums.MediaConfigurationType, int, int, bool]]
 
     :param force: should forcibly reserve the modules, defaults to True
     :type force: bool, optional
@@ -246,12 +297,12 @@ async def set_module_configs(module_configs: List[Tuple[Union[GenericL23Module, 
     await release_modules([module for (module, _, _, _) in module_configs], False)
         
 
-async def get_module_eol_date(module: GenericAnyModule) -> str:
+async def get_module_eol_date(module: Union[GenericL23Module, E100ChimeraModule]) -> str:
     """
     Get module's End-of-Life date
 
     :param module: The module object
-    :type module: GenericAnyModule
+    :type module: Union[GenericL23Module, E100ChimeraModule]
     :return: Module's EOL date
     :rtype: str
     """
@@ -260,12 +311,12 @@ async def get_module_eol_date(module: GenericAnyModule) -> str:
     return MODULE_EOL_INFO.get(module_key, "2999-01-01")
 
 
-async def get_module_eol_days(module: GenericAnyModule) -> int:
+async def get_module_eol_days(module: Union[GenericL23Module, E100ChimeraModule]) -> int:
     """
     Get days until module's End-of-Life date
 
     :param module: The module object
-    :type module: GenericAnyModule
+    :type module: Union[GenericL23Module, E100ChimeraModule]
     :return: days until module's End-of-Life date
     :rtype: int
     """
@@ -314,7 +365,7 @@ async def get_cage_count(module: Union[Z800FreyaModule, Z1600EdunModule]) -> int
 # region Ports
 
 
-def obtain_ports_by_ids(tester: L23Tester, port_ids: List[str], separator: str = "/") -> tuple[GenericAnyPort, ...]:
+async def obtain_ports_by_ids(tester: L23Tester, port_ids: List[str], separator: str = "/", reserve: bool = False) -> tuple[Union[GenericL23Port, E100ChimeraPort], ...]:
     """
     Get ports of the tester specified by port ids
 
@@ -335,13 +386,17 @@ def obtain_ports_by_ids(tester: L23Tester, port_ids: List[str], separator: str =
     :type port_ids: List[str]
     :param separator: The separator between module index and port index in port id, defaults to `/`
     :type separator: str, optional
+    :param reserve: should reserve the ports, defaults to False
+    :type reserve: bool, optional
     :return: List of port objects
-    :rtype: tuple[GenericAnyPort]
+    :rtype: tuple[Union[GenericL23Port, E100ChimeraPort]]
     """
 
     returned_ports = []
     if len(port_ids) == 0 or f"*{separator}*" in port_ids or f"*" in port_ids: # [] or ["*/*"] or ["*"]
         all_ports_ = (m.ports for m in tester.modules)
+        if reserve:
+            await reserve_ports(list(chain.from_iterable(all_ports_)), force=reserve)
         return tuple(chain.from_iterable(all_ports_))
     else:
         for port_id in port_ids:
@@ -359,10 +414,12 @@ def obtain_ports_by_ids(tester: L23Tester, port_ids: List[str], separator: str =
                 pid = port_id.split(separator)[1]
                 for module in tester.modules:
                     returned_ports.append(module.ports.obtain(int(pid)))
+        if reserve:
+            await reserve_ports(returned_ports, force=reserve)
         return tuple(returned_ports)
 
 
-def obtain_port_by_id(tester: L23Tester, port_id: str, separator: str = "/") -> GenericAnyPort:
+async def obtain_port_by_id(tester: L23Tester, port_id: str, separator: str = "/", reserve: bool = False) -> Union[GenericL23Port, E100ChimeraPort]:
     """
     Get a port of the module
 
@@ -372,23 +429,26 @@ def obtain_port_by_id(tester: L23Tester, port_id: str, separator: str = "/") -> 
     :type port_id: str
     :param separator: The separator between module index and port index in port id, defaults to "/"
     :type separator: str, optional
+    :param reserve: should reserve the port, defaults to False
+    :type reserve: bool, optional
     :raises NoSuchPortError: No port found with the index
     :return: The port object
-    :rtype: GenericAnyPort
+    :rtype: Union[GenericL23Port, E100ChimeraPort]
     """
     if "*" in port_id:
         raise ValueError("Wildcard '*' is not allowed in port_id for obtain_port_by_id function.")
     if separator not in port_id:
         raise ValueError(f"Invalid port_id format: {port_id}. Expected format 'm{separator}p'.")
-    return obtain_ports_by_ids(tester, [port_id], separator=separator)[0]
+    port_obj = (await obtain_ports_by_ids(tester, [port_id], separator=separator, reserve=reserve))[0]
+    return port_obj
 
 
-async def reserve_ports(ports: list[GenericAnyPort], force: bool = True, reset: bool = False) -> None:
+async def reserve_ports(ports: list[Union[GenericL23Port, E100ChimeraPort]], force: bool = True, reset: bool = False) -> None:
     """
     Reserve a port regardless whether it is owned by others or not.
 
     :param ports: The ports to reserve
-    :type ports: list[GenericAnyPort]
+    :type ports: list[Union[GenericL23Port, E100ChimeraPort]]
     :param force: Should force reserve the ports, defaults to True
     :type force: boolean, optional
     :param reset: Should reset the ports after reserving, defaults to False
@@ -409,12 +469,12 @@ async def reserve_ports(ports: list[GenericAnyPort], force: bool = True, reset: 
             await port.reset.set()
 
 
-async def release_ports(ports: List[GenericAnyPort]) -> None:
+async def release_ports(ports: List[Union[GenericL23Port, E100ChimeraPort]]) -> None:
     """
     Free a port. If the port is reserved by you, release the port. If the port is reserved by others, relinquish the port. The port should have no owner afterwards.
 
     :param port: The port to free
-    :type port: GenericAnyPort
+    :type port: Union[GenericL23Port, E100ChimeraPort]
     :return:
     :rtype: None
     """
@@ -426,12 +486,12 @@ async def release_ports(ports: List[GenericAnyPort]) -> None:
             await port.reservation.set_release()
 
 
-async def reset_ports(ports: List[GenericAnyPort]) -> None:
+async def reset_ports(ports: List[Union[GenericL23Port, E100ChimeraPort]]) -> None:
     """
     Reset a list of ports.
 
     :param ports: The ports to reset
-    :type ports: List[GenericAnyPort]
+    :type ports: List[Union[GenericL23Port, E100ChimeraPort]]
     :return:
     :rtype: None
     """
