@@ -64,7 +64,7 @@ class POdin1G3S6PE(POdin1G3S6P):
     ...
 
 
-class POdin1G3S2PT(FamilyOdin):
+class POdin1G3S2PT(POdin1G3S6P):
     """L23 port on Odin-1G-3S-2P-T module.
     """
     ...
