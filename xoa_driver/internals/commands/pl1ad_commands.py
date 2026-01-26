@@ -146,7 +146,7 @@ class PL1AD_RX_LOL:
         :rtype: PL1AD_RX_LOL.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lane_xindex]))
 
 
 @register_command
@@ -176,7 +176,7 @@ class PL1AD_RX_SKEW:
         :rtype: PL1AD_RX_SKEW.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lane_xindex]))
     
 
 
