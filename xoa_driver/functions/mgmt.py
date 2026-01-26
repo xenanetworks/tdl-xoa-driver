@@ -519,6 +519,7 @@ __all__ = (
     "release_tester",
     "get_chassis_sys_uptime",
     "obtain_modules_by_ids",
+    "obtain_module_by_id",
     "reserve_modules",
     "release_modules",
     "get_module_supported_configs",
