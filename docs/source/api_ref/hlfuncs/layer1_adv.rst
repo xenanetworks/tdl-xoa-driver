@@ -23,6 +23,7 @@ The ``layer1_adv`` module offers high-level functions for advanced Layer 1 confi
     get_cw_error_count
     get_itb_count
     get_link_sync_loss_count
+    get_loss_of_alignment
     get_local_fault_count
     get_remote_fault_count
 

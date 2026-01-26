@@ -314,6 +314,19 @@ async def get_remote_fault_count(port: "Z800FreyaPort") -> int:
     return resp.rf_count
 
 
+async def get_loss_of_alignment(port: "Z800FreyaPort") -> int:
+    """
+    Reports the number of cumulated Loss of Alignment (LOA) events since the previous query.
+
+    :param port: The port instance.
+    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :return: Number of cumulated Loss of Alignment (LOA) events since the previous query
+    :rtype: int
+    """
+    resp = await port.layer1_adv.err_stats.rx_loa_count.get()
+    return resp.loa_count
+
+
 __all__ = (
     "get_current_tx_frequency",
     "get_current_rx_frequency",
@@ -332,4 +345,5 @@ __all__ = (
     "get_link_sync_loss_count",
     "get_local_fault_count",
     "get_remote_fault_count",
+    "get_loss_of_alignment",
 )
