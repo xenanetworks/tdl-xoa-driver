@@ -32,7 +32,7 @@ async def get_current_tx_frequency(port: "Z800FreyaPort") -> int:
     """
 
     resp = await port.layer1_adv.freq.tx_curr.get()
-    return resp.frequency_hz
+    return resp.frequency_hz*10
 
 
 async def get_current_rx_frequency(port: "Z800FreyaPort") -> int:
