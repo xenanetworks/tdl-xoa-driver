@@ -17,6 +17,8 @@ The ``mgmt`` module offers high-level functions for managing test chassis, modul
 .. autosummary::
 
     obtain_modules_by_ids
+    obtain_module_by_id
+    obtain_module_by_port_id
     reserve_modules
     release_modules
     get_module_supported_configs
