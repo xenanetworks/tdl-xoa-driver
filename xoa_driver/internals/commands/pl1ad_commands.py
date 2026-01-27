@@ -119,7 +119,7 @@ class PL1AD_RX_FREQ_MAX:
 @dataclass
 class PL1AD_RX_LOL:
     """
-    Returns the current and the latched CDR Loss of Lock (LOL) status of the specified PCS lane.
+    Returns the current and the latched CDR Loss of Lock (LOL) status of the specified Serdes.
 
     """
 
@@ -129,7 +129,7 @@ class PL1AD_RX_LOL:
     _connection: 'interfaces.IConnection'
     _module: int
     _port: int
-    _lane_xindex: int
+    _serdes_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
         current_lol: TrueFalse = field(XmpByte())
@@ -140,20 +140,20 @@ class PL1AD_RX_LOL:
 
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the current and latched CDR Loss of Lock (LOL) status of the specified PCS lane.
+        """Get the current and latched CDR Loss of Lock (LOL) status of the specified Serdes.
 
-        :return: Current and latched CDR Loss of Lock (LOL) status of the specified PCS lane
+        :return: Current and latched CDR Loss of Lock (LOL) status of the specified Serdes
         :rtype: PL1AD_RX_LOL.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lane_xindex]))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
 
 
 @register_command
 @dataclass
 class PL1AD_RX_SKEW:
     """
-    Returns the relative skew of the PCS lane measured in bits.
+    Returns the relative skew in bits of the specified PCS lane.
 
     """
 

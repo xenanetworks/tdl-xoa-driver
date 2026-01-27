@@ -72,10 +72,15 @@ class FreyaPcsLayer(PcsLayer):
 class Layer1:
     def __init__(self, conn: "itf.IConnection", port: "FamilyFreya") -> None:
         module_id, port_id = port.kind
+
         self.serdes: Tuple[SerDesFreya, ...] = tuple(
                 SerDesFreya(conn, module_id, port_id, serdes_xindex=idx)
                 for idx in range(port.info.capabilities.serdes_count)
                 )
+        """SerDes Lane
+        
+        :type: Tuple[SerDesFreya, ...]
+        """
         
         self.impairment = Impair(conn, module_id, port_id)
         """Impairment functions
