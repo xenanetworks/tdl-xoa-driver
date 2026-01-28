@@ -9,6 +9,8 @@ from xoa_driver.functions import (
     exceptions,
     headers,
     cmis,
+    layer1_adv,
+    async_wrapper,
 )
 
 __all__ = (
@@ -19,4 +21,6 @@ __all__ = (
     "config_io",
     "headers",
     "cmis",
+    "layer1_adv",
+    "async_wrapper",
 )

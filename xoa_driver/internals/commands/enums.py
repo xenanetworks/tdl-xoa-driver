@@ -3310,3 +3310,13 @@ class MACSecPNMode(IntEnum):
     """Reset the PN value"""
 
 # endregion
+
+
+class TrueFalse(IntEnum):
+    """True or False"""
+
+    FALSE = 0
+    """False"""
+    
+    TRUE = 1
+    """True"""

@@ -17,7 +17,7 @@ def main():
         long_description_content_type="text/markdown",
         author="Leonard Yu, Zoltan Hanisch",
         author_email="Leonard.Yu@teledyne.com, Zoltan.Hanisch@teledyne.com",
-        maintainer="Teledyne LeCroy Xena",
+        maintainer="Teledyne LeCroy",
         maintainer_email="xena-sales@teledyne.com",
         url="https://github.com/xenanetworks/tdl-xoa-driver",
         packages=setuptools.find_packages(),
