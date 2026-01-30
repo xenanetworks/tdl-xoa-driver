@@ -10,5 +10,6 @@
     headers
     config_io
     anlt
+    xcvr
     cmis/index
     layer1_adv

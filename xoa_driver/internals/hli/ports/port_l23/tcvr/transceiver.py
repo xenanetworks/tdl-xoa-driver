@@ -45,7 +45,7 @@ class Transceiver:
         """
 
     def access_rw(self, page_address: int, register_address: int) -> "PX_RW":
-        """Access to register interface by the transceiver.
+        """R/W access (4 bytes) to register interface by the transceiver.
 
         :param page_address: page address
         :type page_address: int
@@ -64,7 +64,7 @@ class Transceiver:
         )
 
     def access_mii(self, register_address: int) -> "PX_MII":
-        """Access to the register interface supported by the media-independent interface (MII) transceiver.
+        """R/W access (2 bytes) to the register interface supported by MII transceiver.
 
         :param register_address: register address
         :type register_address: int
@@ -79,7 +79,7 @@ class Transceiver:
         )
 
     def access_rw_seq(self, page_address: int, register_address: int, byte_count: int) -> "PX_RW_SEQ":
-        """Sequential read/write a number of bytes to the register interface supported by the media-independent interface (MII) transceiver.
+        """Sequential R/W a number of bytes to the register interface.
 
         :param page_address: page address (0-255)
         :type page_address: int
@@ -100,7 +100,7 @@ class Transceiver:
         )
     
     def access_rw_seq_bank(self, bank_address: int, page_address: int, register_address: int, byte_count: int) -> "PX_RW_SEQ_BANK":
-        """Sequential read/write a number of bytes to the register interface supported by the media-independent interface (MII) transceiver.
+        """Sequential R/W a number of bytes to the register interface.
 
         :param bank_address: bank address (0-255)
         :type bank_address: int
