@@ -11,6 +11,7 @@ from xoa_driver.functions import (
     cmis,
     layer1_adv,
     async_wrapper,
+    xcvr,
 )
 
 __all__ = (
@@ -23,4 +24,5 @@ __all__ = (
     "cmis",
     "layer1_adv",
     "async_wrapper",
+    "xcvr",
 )
