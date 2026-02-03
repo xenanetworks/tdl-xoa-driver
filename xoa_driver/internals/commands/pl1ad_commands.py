@@ -35,7 +35,7 @@ class PL1AD_RX_FREQ_CURR:
 
     """
 
-    code: typing.ClassVar[int] = 1303
+    code: typing.ClassVar[int] = 553
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -65,7 +65,7 @@ class PL1AD_RX_FREQ_MIN:
 
     """
 
-    code: typing.ClassVar[int] = 1305
+    code: typing.ClassVar[int] = 554
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -94,7 +94,7 @@ class PL1AD_RX_FREQ_MAX:
 
     """
 
-    code: typing.ClassVar[int] = 1304
+    code: typing.ClassVar[int] = 555
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -123,7 +123,7 @@ class PL1AD_RX_LOL:
 
     """
 
-    code: typing.ClassVar[int] = 1312
+    code: typing.ClassVar[int] = 556
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -157,7 +157,7 @@ class PL1AD_RX_SKEW:
 
     """
 
-    code: typing.ClassVar[int] = 1315
+    code: typing.ClassVar[int] = 557
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -187,7 +187,7 @@ class PL1AD_RX_HIBER:
     Returns the current and the latched High BER status of the port.
     """
 
-    code: typing.ClassVar[int] = 1306
+    code: typing.ClassVar[int] = 558
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -222,7 +222,7 @@ class PL1AD_RX_HISER:
 
     """
 
-    code: typing.ClassVar[int] = 1307
+    code: typing.ClassVar[int] = 559
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -258,7 +258,7 @@ class PL1AD_RX_HISER_ALARM:
 
     """
 
-    code: typing.ClassVar[int] = 1308
+    code: typing.ClassVar[int] = 560
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -303,7 +303,7 @@ class PL1AD_RX_DEG_SER:
 
     """
 
-    code: typing.ClassVar[int] = 1300
+    code: typing.ClassVar[int] = 561
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -351,7 +351,7 @@ class PL1AD_RX_DEG_SER_THRESH:
 
     """
 
-    code: typing.ClassVar[int] = 1301
+    code: typing.ClassVar[int] = 562
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -412,7 +412,7 @@ class PL1AD_RX_ERR_CW_CNT:
 
     """
 
-    code: typing.ClassVar[int] = 1302
+    code: typing.ClassVar[int] = 563
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -444,7 +444,7 @@ class PL1AD_RX_ITB_CNT:
 
     """
 
-    code: typing.ClassVar[int] = 1309
+    code: typing.ClassVar[int] = 564
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -477,7 +477,7 @@ class PL1AD_RX_LOSYNC_CNT:
 
     """
 
-    code: typing.ClassVar[int] = 1313
+    code: typing.ClassVar[int] = 565
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -511,7 +511,7 @@ class PL1AD_RX_LF_CNT:
 
     """
 
-    code: typing.ClassVar[int] = 1310
+    code: typing.ClassVar[int] = 566
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -544,7 +544,7 @@ class PL1AD_RX_RF_CNT:
 
     """
 
-    code: typing.ClassVar[int] = 1314
+    code: typing.ClassVar[int] = 567
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -576,7 +576,7 @@ class PL1AD_RX_LOA_CNT:
     Use ``PP_RXCLEAR`` to reset the counter.
     """
 
-    code: typing.ClassVar[int] = 1311
+    code: typing.ClassVar[int] = 568
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -606,7 +606,7 @@ class PL1AD_TX_FREQ_CURR:
     Return the current port Tx frequency in Hz.
     """
 
-    code: typing.ClassVar[int] = 1317
+    code: typing.ClassVar[int] = 570
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -636,7 +636,7 @@ class PL1AD_TX_ERR_CW:
 
     """
 
-    code: typing.ClassVar[int] = 1316
+    code: typing.ClassVar[int] = 571
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -661,7 +661,7 @@ class PL1AD_TX_ITB:
 
     """
 
-    code: typing.ClassVar[int] = 1318
+    code: typing.ClassVar[int] = 572
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
