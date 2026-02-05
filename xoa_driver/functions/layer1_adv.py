@@ -344,7 +344,7 @@ async def set_itb(port: "Z800FreyaPort") -> None:
 
 async def set_hi_ser_alarm(port: "Z800FreyaPort", on: bool) -> None:
     """
-    Trigger a HI-SER alarm immediately when called.
+    Set the HI-SER alarm on or off on the port.
 
     :param port: The port instance.
     :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
