@@ -18,6 +18,9 @@ if TYPE_CHECKING:
     FreyaEdunPort = Union[Z800FreyaPort, Z1600EdunPort]
 
 from ..utils import apply
+from ..enums import (
+    OnOff,
+)
 
 
 
@@ -95,7 +98,7 @@ async def get_rx_freq_all(port: "Z800FreyaPort") -> Tuple[int, int, int]:
     return (resp1.frequency_hz, resp2.frequency_hz, resp3.frequency_hz)
 
 
-async def get_cdr_lol_since_last(port: "Z800FreyaPort", serdes_indices: List[int]) -> List[Tuple[bool, bool]]:
+async def get_cdr_lol(port: "Z800FreyaPort", serdes_indices: List[int]) -> List[Tuple[bool, bool]]:
     """
     Get the current and latched CDR LOL status of the specified Serdes.
 
@@ -109,7 +112,7 @@ async def get_cdr_lol_since_last(port: "Z800FreyaPort", serdes_indices: List[int
     results = []
     cmds = []
     for serdes_id in serdes_indices:
-        cmds.append(port.layer1_adv.serdes[serdes_id].rx_cdr_lol_since_last.get())
+        cmds.append(port.layer1_adv.serdes[serdes_id].rx_cdr_lol.get())
     resps = await apply(*cmds)
     for resp in resps:
         curr = True if resp.current_lol.value == 1 else False
@@ -153,7 +156,7 @@ async def get_hi_ber(port: "Z800FreyaPort") -> Tuple[bool, bool]:
     return (curr, latched)
 
 
-async def get_hi_ser(port: "Z800FreyaPort") -> Tuple[bool, bool]:
+async def get_hi_ser(port: "Z800FreyaPort") -> Tuple[bool, bool, bool]:
     """
     Get the current and latched HI-SER status of the specified port.
 
@@ -161,13 +164,14 @@ async def get_hi_ser(port: "Z800FreyaPort") -> Tuple[bool, bool]:
 
     :param port: The port instance.
     :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
-    :return: A tuple containing current and latched HI-SER status.
-    :rtype: Tuple[bool, bool]
+    :return: A tuple containing alarm state, current and latched HI-SER status.
+    :rtype: Tuple[bool, bool, bool]
     """
     resp = await port.layer1_adv.pcs.hi_ser.status.get()
+    alarm_state = True if resp.alarm_state == OnOff.ON else False
     curr = True if resp.current_hiser.value == 1 else False
     latched = True if resp.latched_hiser.value == 1 else False
-    return (curr, latched)
+    return (alarm_state, curr, latched)
 
 
 async def get_deg_ser(port: "Z800FreyaPort") -> Tuple[bool, bool]:
@@ -318,13 +322,48 @@ async def get_total_loa_since_last(port: "Z800FreyaPort") -> int:
     return resp.loa_count
 
 
+async def set_cw_err(port: "Z800FreyaPort") -> None:
+    """
+    Inject a 64b/66b codeword error (CW Err) from the port immediately when called.
+
+    :param port: The port instance.
+    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    """
+    await port.layer1_adv.pcs.err_cw.tx_err_cw.set()
+
+
+async def set_itb(port: "Z800FreyaPort") -> None:
+    """
+    Inject an invalid 256b/257b transcode block (ITB) from the port immediately when called.
+
+    :param port: The port instance.
+    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    """
+    await port.layer1_adv.pcs.itb.tx_itb.set()
+
+
+async def set_hi_ser_alarm(port: "Z800FreyaPort", on: bool) -> None:
+    """
+    Trigger a HI-SER alarm immediately when called.
+
+    :param port: The port instance.
+    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :param on: Set to `True` to enable the HI-SER alarm, or `False` to disable the HI-SER alarm.
+    """
+    if on:
+        await port.layer1_adv.pcs.hi_ser.alarm.set_on()
+    else:
+        await port.layer1_adv.pcs.hi_ser.alarm.set_off()
+
+
+
 __all__ = (
     "get_tx_freq_curr",
     "get_rx_freq_curr",
     "get_rx_freq_min",
     "get_rx_freq_max",
     "get_rx_freq_all",
-    "get_cdr_lol_since_last",
+    "get_cdr_lol",
     "get_rx_lane_skew",
     "get_hi_ber",
     "get_hi_ser",
@@ -337,4 +376,7 @@ __all__ = (
     "get_local_fault_since_last",
     "get_remote_fault_since_last",
     "get_total_loa_since_last",
+    "set_cw_err",
+    "set_itb",
+    "set_hi_ser_alarm",
 )
