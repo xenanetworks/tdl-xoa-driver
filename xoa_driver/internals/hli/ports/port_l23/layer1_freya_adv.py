@@ -19,7 +19,7 @@ class SerdesAdv:
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_idx: int) -> None:
 
-        self.rx_cdr_lol_since_last = PL1AD_RX_LOL(conn, module_id, port_id, serdes_idx)
+        self.rx_cdr_lol = PL1AD_RX_LOL(conn, module_id, port_id, serdes_idx)
         """Returns the current and the latched CDR Loss of Lock (LOL) status of the specified Serdes.
 
         :type: PL1AD_RX_LOL

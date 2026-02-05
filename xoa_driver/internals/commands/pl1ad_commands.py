@@ -291,6 +291,13 @@ class PL1AD_RX_HISER_ALARM:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, alarm_state=alarm_state))
+    
+
+    set_off = functools.partialmethod(set, OnOff.OFF)
+    """Set the High SER Alarm state of the port to `OFF`, disabling the alarm."""
+    
+    set_on = functools.partialmethod(set, OnOff.ON)
+    """Set the High SER Alarm state of the port to `ON`, enabling the alarm."""
 
 
 @register_command
