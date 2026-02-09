@@ -9,6 +9,7 @@ The ``layer1_adv`` module offers high-level functions for advanced Layer 1 confi
 .. autosummary::
 
     get_rx_lane_skew
+    clear_layer1_counters
 
 
 .. autosummary::

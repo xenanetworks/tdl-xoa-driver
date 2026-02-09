@@ -7,6 +7,7 @@ from typing import (
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
+    from xoa_driver.internals.hli.ports.port_l23.family_edun import FamilyEdun
 
 from xoa_driver.internals.commands import (
     PL1AD_RX_HIBER,
@@ -42,14 +43,8 @@ class PcsLaneAdv:
         # """
 
 
-        # self.rx_loa_since_last = PL1AD_RX_LOA_CNT(conn, module_id, port_id, lane_idx)
-        # """Returns the number of cumulated Loss of Alignment conditions on the PCS lane since last query
-
-        # :type: PL1AD_RX_LOA_CNT
-        # """
-
-        # self.tx_loa = PL1AD_TX_LOA(conn, module_id, port_id, lane_idx)
-        # """Sends a Loss of Alignment from the Tx lane immediately when called.
+        # self.tx_loa = PL1AD_TX_LOA(conn, module_id, port_id)
+        # """Sends a Loss of Alignment to the port immediately when called.
         
         # :type: PL1AD_TX_LOA
         # """
@@ -156,7 +151,7 @@ class ErrorCodeword:
 class PcsLayerAdv:
     """Adv. Layer-1 - PCS layer configuration and status."""
 
-    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya") -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya | FamilyEdun") -> None:
         self._conn = conn
         self.__port = port
         module_id, port_id = port.kind

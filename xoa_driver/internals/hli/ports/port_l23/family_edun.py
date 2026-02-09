@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 from .bases.port_l23_genuine import BasePortL23Genuine
 from .layer1_edun import Layer1
-
+from .layer1adv import Layer1Adv
 
 
 class FamilyEdun(BasePortL23Genuine):
@@ -28,8 +28,13 @@ class FamilyEdun(BasePortL23Genuine):
 
     async def _setup(self) -> Self:
         await super()._setup()
+
         self.layer1 = Layer1(self._conn, self)
         """Layer 1"""
+
+        self.layer1_adv = Layer1Adv(self._conn, self)
+        """Layer 1 Advanced"""
+
         return self
 
     on_dynamic_change = functools.partialmethod(utils.on_event, P_DYNAMIC)
