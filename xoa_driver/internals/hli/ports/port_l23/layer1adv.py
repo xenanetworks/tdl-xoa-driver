@@ -5,9 +5,11 @@ from typing import (
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
+    from xoa_driver.internals.hli.ports.port_l23.family_edun import FamilyEdun
     
 from xoa_driver.internals.commands import (
     PL1AD_RX_LOL,
+    PP_RXCLEAR,
 )
 
 from .layer1_adv.freq import FrequencyAdv
@@ -27,7 +29,7 @@ class SerdesAdv:
 
 
 class Layer1Adv:
-    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya") -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya | FamilyEdun") -> None:
         module_id, port_id = port.kind
 
         self.serdes: Tuple["SerdesAdv", ...] = tuple(
@@ -55,7 +57,11 @@ class Layer1Adv:
         """PCS configuration and status
         """
 
-        
+        self.clear = PP_RXCLEAR(conn, module_id, port_id)
+        """Clear Layer 1 advanced statistics counters on the port.
+
+        :type: PP_RXCLEAR
+        """
 
 
         

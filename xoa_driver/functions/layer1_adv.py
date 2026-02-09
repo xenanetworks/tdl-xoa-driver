@@ -24,12 +24,12 @@ from ..enums import (
 
 
 
-async def get_tx_freq_curr(port: "Z800FreyaPort") -> int:
+async def get_tx_freq_curr(port: "FreyaEdunPort") -> int:
     """
     Get the current Tx frequency in Hz of the specified port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: The current Tx frequency in Hz.
     :rtype: int
     """
@@ -38,12 +38,12 @@ async def get_tx_freq_curr(port: "Z800FreyaPort") -> int:
     return resp.frequency_hz*10
 
 
-async def get_rx_freq_curr(port: "Z800FreyaPort") -> int:
+async def get_rx_freq_curr(port: "FreyaEdunPort") -> int:
     """
     Get the current Rx frequency in Hz of the specified port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: The current Rx frequency in Hz.
     :rtype: int
     """
@@ -51,12 +51,12 @@ async def get_rx_freq_curr(port: "Z800FreyaPort") -> int:
     return resp.frequency_hz
 
 
-async def get_rx_freq_min(port: "Z800FreyaPort") -> int:
+async def get_rx_freq_min(port: "FreyaEdunPort") -> int:
     """
     Get the minimum Rx frequency in Hz since last query.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: The minimum Rx frequency in Hz since last query.
     :rtype: int
     """
@@ -64,12 +64,12 @@ async def get_rx_freq_min(port: "Z800FreyaPort") -> int:
     return resp.frequency_hz
 
 
-async def get_rx_freq_max(port: "Z800FreyaPort") -> int:
+async def get_rx_freq_max(port: "FreyaEdunPort") -> int:
     """
     Get the maximum Rx frequency in Hz since last query.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: The maximum Rx frequency in Hz since last query.
     :rtype: int
     """
@@ -77,14 +77,14 @@ async def get_rx_freq_max(port: "Z800FreyaPort") -> int:
     return resp.frequency_hz
 
 
-async def get_rx_freq_all(port: "Z800FreyaPort") -> Tuple[int, int, int]:
+async def get_rx_freq_all(port: "FreyaEdunPort") -> Tuple[int, int, int]:
     """
     Get the current, minimum, and maximum Rx frequencies in Hz of the specified port.
 
     The minimum and maximum values are since last query.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: The current, minimum, and maximum Rx frequencies in Hz of the specified port.
     :rtype: Tuple[int, int, int]
     """
@@ -98,12 +98,12 @@ async def get_rx_freq_all(port: "Z800FreyaPort") -> Tuple[int, int, int]:
     return (resp1.frequency_hz, resp2.frequency_hz, resp3.frequency_hz)
 
 
-async def get_cdr_lol(port: "Z800FreyaPort", serdes_indices: List[int]) -> List[Tuple[bool, bool]]:
+async def get_cdr_lol(port: "FreyaEdunPort", serdes_indices: List[int]) -> List[Tuple[bool, bool]]:
     """
     Get the current and latched CDR LOL status of the specified Serdes.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :param serdes_indices: The indices of the Serdes.
     :type serdes_indices: List[int]
     :return: A list of tuples containing current and latched CDR LOL status for each Serdes.
@@ -121,11 +121,11 @@ async def get_cdr_lol(port: "Z800FreyaPort", serdes_indices: List[int]) -> List[
     return results
 
 
-async def get_rx_lane_skew(port: "Z800FreyaPort", lane_indices: List[int]) -> List[int]:
+async def get_rx_lane_skew(port: "FreyaEdunPort", lane_indices: List[int]) -> List[int]:
     """Get Rx relative skew measured in bits of the specified PCS lanes.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :param lane_indices: The indices of the PCS lanes.
     :type lane_indices: List[int]
     :return: Relative skew of the specified PCS lanes measured in bits
@@ -141,12 +141,12 @@ async def get_rx_lane_skew(port: "Z800FreyaPort", lane_indices: List[int]) -> Li
     return results
 
 
-async def get_hi_ber(port: "Z800FreyaPort") -> Tuple[bool, bool]:
+async def get_hi_ber(port: "FreyaEdunPort") -> Tuple[bool, bool]:
     """
     Get the current and latched HI-BER status of the specified port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: A tuple containing current and latched HI-BER status.
     :rtype: Tuple[bool, bool]
     """
@@ -156,14 +156,14 @@ async def get_hi_ber(port: "Z800FreyaPort") -> Tuple[bool, bool]:
     return (curr, latched)
 
 
-async def get_hi_ser(port: "Z800FreyaPort") -> Tuple[bool, bool, bool]:
+async def get_hi_ser(port: "FreyaEdunPort") -> Tuple[bool, bool, bool]:
     """
     Get the current and latched HI-SER status of the specified port.
 
     HI-SER is signalled if 5560 RS-FEC symbol errors are detected in contiguous block of 8192 non-overlapping RS-FEC codewords.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: A tuple containing alarm state, current and latched HI-SER status.
     :rtype: Tuple[bool, bool, bool]
     """
@@ -174,7 +174,7 @@ async def get_hi_ser(port: "Z800FreyaPort") -> Tuple[bool, bool, bool]:
     return (alarm_state, curr, latched)
 
 
-async def get_deg_ser(port: "Z800FreyaPort") -> Tuple[bool, bool]:
+async def get_deg_ser(port: "FreyaEdunPort") -> Tuple[bool, bool]:
     """
     Get the current and latched Degraded SER status of the specified port.
 
@@ -182,7 +182,7 @@ async def get_deg_ser(port: "Z800FreyaPort") -> Tuple[bool, bool]:
     :py:func:`set_deg_ser_thresholds`.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: A tuple containing current and latched Degraded SER status.
     :rtype: Tuple[bool, bool]
     """
@@ -192,7 +192,7 @@ async def get_deg_ser(port: "Z800FreyaPort") -> Tuple[bool, bool]:
     return (curr, latched)
 
 
-async def set_deg_ser_thresholds(port: "Z800FreyaPort", activate_threshold: int, deactivate_threshold: int, interval: int) -> None:
+async def set_deg_ser_thresholds(port: "FreyaEdunPort", activate_threshold: int, deactivate_threshold: int, interval: int) -> None:
     """
     Configure signaling Degraded SER thresholds of the port.
 
@@ -213,7 +213,7 @@ async def set_deg_ser_thresholds(port: "Z800FreyaPort", activate_threshold: int,
     An uncorrectable codeword is counted as 16 erroneous RS-FEC symbols.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :param activate_threshold: The activate threshold.
     :type activate_threshold: int
     :param deactivate_threshold: The deactivate threshold.
@@ -229,13 +229,13 @@ async def set_deg_ser_thresholds(port: "Z800FreyaPort", activate_threshold: int,
 
 
 async def get_deg_ser_thresholds(
-    port: "Z800FreyaPort",
+    port: "FreyaEdunPort",
 ) -> Tuple[int, int, int]:
     """
     Get signaling Degraded SER thresholds of the port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: A tuple containing activate threshold, deactivate threshold, and interval.
     :rtype: Tuple[int, int, int]
     """
@@ -244,12 +244,12 @@ async def get_deg_ser_thresholds(
     return (resp.act_thresh, resp.deact_thresh, resp.degrade_interval)
 
 
-async def get_cw_err_since_last(port: "Z800FreyaPort") -> int:
+async def get_cw_err_since_last(port: "FreyaEdunPort") -> int:
     """
     Get the number of erroneous 64b/66b codewords since the previous query per port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: Number of erroneous 64b/66b codewords since the previous query per port.
     :rtype: int
     """
@@ -257,12 +257,12 @@ async def get_cw_err_since_last(port: "Z800FreyaPort") -> int:
     return resp.err_cw_count
 
 
-async def get_itb_since_last(port: "Z800FreyaPort") -> int:
+async def get_itb_since_last(port: "FreyaEdunPort") -> int:
     """
     Get the number of invalid 256b/257b transcode blocks since the previous query per port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: Number of invalid 256b/257b transcode blocks since the previous query per port.
     :rtype: int
     """
@@ -270,12 +270,12 @@ async def get_itb_since_last(port: "Z800FreyaPort") -> int:
     return resp.itb_count
 
 
-async def get_link_sync_loss_since_last(port: "Z800FreyaPort") -> int:
+async def get_link_sync_loss_since_last(port: "FreyaEdunPort") -> int:
     """
     Get the number of cumulated link sync loss events since the previous query per port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: Number of cumulated link sync loss events since the previous query per port.
     :rtype: int
     """
@@ -283,12 +283,12 @@ async def get_link_sync_loss_since_last(port: "Z800FreyaPort") -> int:
     return resp.losync_count
 
 
-async def get_local_fault_since_last(port: "Z800FreyaPort") -> int:
+async def get_local_fault_since_last(port: "FreyaEdunPort") -> int:
     """
     Get the number of cumulated local fault conditions since the previous query per port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: Number of cumulated local fault conditions since the previous query per port.
     :rtype: int
     """
@@ -296,12 +296,12 @@ async def get_local_fault_since_last(port: "Z800FreyaPort") -> int:
     return resp.lf_count
 
 
-async def get_remote_fault_since_last(port: "Z800FreyaPort") -> int:
+async def get_remote_fault_since_last(port: "FreyaEdunPort") -> int:
     """
     Get the number of cumulated remote fault conditions since the previous query per port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: Number of cumulated remote fault conditions since the previous query per port.
     :rtype: int
     """
@@ -309,12 +309,12 @@ async def get_remote_fault_since_last(port: "Z800FreyaPort") -> int:
     return resp.rf_count
 
 
-async def get_total_loa_since_last(port: "Z800FreyaPort") -> int:
+async def get_total_loa_since_last(port: "FreyaEdunPort") -> int:
     """
     Get the number of cumulated Loss of Alignment (LOA) events since the previous query per port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: Number of cumulated Loss of Alignment (LOA) events since the previous query per port.
     :rtype: int
     """
@@ -322,38 +322,46 @@ async def get_total_loa_since_last(port: "Z800FreyaPort") -> int:
     return resp.loa_count
 
 
-async def set_cw_err(port: "Z800FreyaPort") -> None:
+async def set_cw_err(port: "FreyaEdunPort") -> None:
     """
     Inject a 64b/66b codeword error (CW Err) from the port immediately when called.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     """
     await port.layer1_adv.pcs.err_cw.tx_err_cw.set()
 
 
-async def set_itb(port: "Z800FreyaPort") -> None:
+async def set_itb(port: "FreyaEdunPort") -> None:
     """
     Inject an invalid 256b/257b transcode block (ITB) from the port immediately when called.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     """
     await port.layer1_adv.pcs.itb.tx_itb.set()
 
 
-async def set_hi_ser_alarm(port: "Z800FreyaPort", on: bool) -> None:
+async def set_hi_ser_alarm(port: "FreyaEdunPort", on: bool) -> None:
     """
     Set the HI-SER alarm on or off on the port.
 
     :param port: The port instance.
-    :type port: :class:`~xoa_driver.ports.Z800FreyaPort`
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :param on: Set to `True` to enable the HI-SER alarm, or `False` to disable the HI-SER alarm.
     """
     if on:
         await port.layer1_adv.pcs.hi_ser.alarm.set_on()
     else:
         await port.layer1_adv.pcs.hi_ser.alarm.set_off()
+
+
+async def clear_layer1_counters(port: "FreyaEdunPort") -> None:
+    """
+    Clear Layer 1 advanced statistics counters on the port.
+    """
+
+    await port.layer1_adv.clear.set()
 
 
 
@@ -379,4 +387,5 @@ __all__ = (
     "set_cw_err",
     "set_itb",
     "set_hi_ser_alarm",
+    "clear_layer1_counters",
 )
