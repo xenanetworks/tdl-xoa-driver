@@ -8,23 +8,45 @@ if TYPE_CHECKING:
     from xoa_driver.internals.hli.ports.port_l23.family_edun import FamilyEdun
     
 from xoa_driver.internals.commands import (
-    PL1AD_RX_LOL,
-    PP_RXCLEAR,
+    PL1_CLEAR,
+    PL1_CDRLOL_STATUS,
+    PL1_RX_FREQ,
+    PL1_TX_FREQ,
+    PL1_RX_DATARATE,
+    PL1_TX_DATARATE,
+    PL1_RX_PPM,
+    PL1_TX_PPM,
 )
 
-from .layer1_adv.freq import FrequencyAdv
-from .layer1_adv.pcs_fec import PcsLayerAdv
-from .layer1_adv.rs_fault import *
+from .layer1_adv.pcs import PcsLayerAdv
 
 class SerdesAdv:
     """Serdes Advanced Statistics"""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_idx: int) -> None:
 
-        self.rx_cdr_lol = PL1AD_RX_LOL(conn, module_id, port_id, serdes_idx)
+        self.rx_cdr_lol = PL1_CDRLOL_STATUS(conn, module_id, port_id, serdes_idx)
         """Returns the current and the latched CDR Loss of Lock (LOL) status of the specified Serdes.
 
-        :type: PL1AD_RX_LOL
+        :type: PL1_CDRLOL_STATUS
+        """
+        
+        self.rx_freq = PL1_RX_FREQ(conn, module_id, port_id, serdes_idx)
+        """Return the current, minimum and maximum port Rx frequency in Hz of the specified SerDes.
+        
+        :type: PL1_RX_FREQ
+        """
+
+        self.rx_ppm = PL1_RX_PPM(conn, module_id, port_id, serdes_idx)
+        """Return the current port Rx frequency offset in parts per million (ppm) of the specified SerDes.
+
+        :type: PL1_RX_PPM
+        """
+
+        self.rx_datarate = PL1_RX_DATARATE(conn, module_id, port_id, serdes_idx)
+        """Return the current port Rx datarate in bits per second (bps) of the specified SerDes.
+
+        :type: PL1_RX_DATARATE
         """
 
 
@@ -41,26 +63,34 @@ class Layer1Adv:
         :type: Tuple[SerdesAdv, ...]
         """
 
-        self.freq = FrequencyAdv(conn, module_id, port_id)
-        """Frequency Management
+        self.tx_freq = PL1_TX_FREQ(conn, module_id, port_id)
+        """Return the current port Tx frequency in Hz.
 
-        :type: FrequencyAdv
+        :type: PL1_TX_FREQ
         """
 
-        self.rs_fault = RsFault(conn, module_id, port_id)
-        """RS Fault Management
+        self.tx_ppm = PL1_TX_PPM(conn, module_id, port_id)
+        """Return the current port Tx frequency offset in parts per million (ppm).
 
-        :type: RsFault
+        :type: PL1_TX_PPM
+        """
+
+        self.tx_datarate = PL1_TX_DATARATE(conn, module_id, port_id)
+        """Return the current port Tx datarate in bits per second (bps).
+
+        :type: PL1_TX_DATARATE
         """
 
         self.pcs = PcsLayerAdv(conn, port)
         """PCS configuration and status
+
+        :type: PcsLayerAdv
         """
 
-        self.clear = PP_RXCLEAR(conn, module_id, port_id)
+        self.clear = PL1_CLEAR(conn, module_id, port_id)
         """Clear Layer 1 advanced statistics counters on the port.
 
-        :type: PP_RXCLEAR
+        :type: PL1_CLEAR
         """
 
 

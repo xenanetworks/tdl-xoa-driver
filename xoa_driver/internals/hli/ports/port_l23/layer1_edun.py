@@ -10,7 +10,7 @@ from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
     PP_LINKTRAINSTATUS,
 )
-from .layer1.pcs_fec import PcsLayer, FreyaFecCodewordErrorInject
+from .layer1.pcs import PcsLayer, FreyaFecCodewordErrorInject
 from .layer1.impair import Impair
 from .layer1.prbs import Prbs
 from .layer1.pma import FreyaPMA

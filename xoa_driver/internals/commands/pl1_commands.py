@@ -53,6 +53,9 @@ from .enums import (
     FreyaPresetIndex,
     FreyaTapIndex,
     FreyaLinkTrainingRangeResponse,
+    ErrorStatus,
+    PcsErrorInjectionType,
+    ClearStatsDirection,
 )
 
 
@@ -1901,6 +1904,664 @@ class PL1_PNSWAP_RX:
     """Set P/N polarity swap of the SerDes in the receiving direction to OFF
     """
 
+
+@register_command
+@dataclass
+class PL1_CDRLOL_STATUS:
+    """
+    Returns the current and the latched CDR Loss of Lock (LOL) status of the specified SerDes lane.
+
+    """
+
+    code: typing.ClassVar[int] = 556
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _serdes_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: ErrorStatus = field(XmpByte())
+        """Current CDR Loss of Lock (LOL) status. `True` indicates a current LOL condition."""
+
+        latched: ErrorStatus = field(XmpByte())
+        """Latched CDR Loss of Lock (LOL) status. `True` indicates a LOL condition has occurred."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current and latched CDR Loss of Lock (LOL) status of the specified SerDes lane.
+
+        :return: Current and latched CDR Loss of Lock (LOL) status of the specified SerDes lane
+        :rtype: PL1_CDRLOL_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+
+
+
+@register_command
+@dataclass
+class PL1_LOA_STATUS:
+    """
+    Returns the current and the latched LOA status of the port.
+
+    """
+
+    code: typing.ClassVar[int] = 557
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: ErrorStatus = field(XmpByte())
+        """Current LOA status. `True` indicates a current LOA condition."""
+
+        latched: ErrorStatus = field(XmpByte())
+        """Latched LOA status. `True` indicates a LOA condition has occurred."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current and latched LOA status of the port.
+
+        :return: Current and latched LOA status of the port
+        :rtype: PL1_LOA_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+    
+
+
+@register_command
+@dataclass
+class PL1_HIBER_STATUS:
+    """
+    Returns the current and the latched High BER status of the port.
+    """
+
+    code: typing.ClassVar[int] = 558
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        current: ErrorStatus = field(XmpByte())
+        """Current High BER status. `True` indicates a current High BER condition."""
+
+        latched: ErrorStatus = field(XmpByte())
+        """Latched High BER status. `True` indicates a High BER condition has occurred."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current and latched High BER status of the port.
+
+        :return: Current and latched High BER status of the port
+        :rtype: PL1_HIBER_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+    
+
+
+
+@register_command
+@dataclass
+class PL1_HISER_STATUS:
+    """
+    Returns the current and latched High SER status of the port, when High SER Alarm, controlled by ``PL1_HISER_ALARM`` command, is enabled. If High SER Alarm is disabled, both status will be `False`.
+
+    High SER status is set if 5560 RS-FEC symbol errors are detected in a contiguous block of 8192 non-overlapping RS-FEC codewords.
+
+    """
+
+    code: typing.ClassVar[int] = 559
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        alarm_state: OnOff = field(XmpByte())
+        """Current state of the High SER Alarm of the port. `ON` indicates that High SER Alarm is enabled, `OFF` indicates it is disabled. The same alarm state can also be retrieved using ``PL1_HISER_ALARM``."""
+
+        current: ErrorStatus = field(XmpByte())
+        """Current High SER status. `True` indicates a current High SER condition."""
+
+        latched: ErrorStatus = field(XmpByte())
+        """Latched High SER status. `True` indicates a High SER condition has occurred."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current and latched High SER status of the port.
+
+        :return: Current and latched High SER status of the port
+        :rtype: PL1_HISER_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+    
+
+@register_command
+@dataclass
+class PL1_HISER_ALARM:
+    """
+    Controls the High SER Alarm state of the port. When enabled, the port will signal a High SER Alarm if 5560 RS-FEC symbol errors are detected in a contiguous block of 8192 non-overlapping RS-FEC codewords (Use ``PL1_HISER_STATUS`` to retrieve the status). When disabled, the High SER Alarm will not be signaled regardless of the symbol error rate.
+
+    """
+
+    code: typing.ClassVar[int] = 560
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        alarm_state: OnOff = field(XmpByte())
+        """Enables or disables the High SER Alarm on the port. `ON` enables the alarm, `OFF` disables it."""
+
+    class SetDataAttr(RequestBodyStruct):
+        alarm_state: OnOff = field(XmpByte())
+        """Enables or disables the High SER Alarm on the port. `ON` enables the alarm, `OFF` disables it."""
+        
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the High SER Alarm state of the port.
+
+        :return: High SER Alarm state of the port
+        :rtype: PL1_HISER_ALARM.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+    
+    def set(self, alarm_state: OnOff) -> Token[None]:
+        """Set the High SER Alarm state of the port.
+
+        :param alarm_state: Enables or disables the High SER Alarm on the port. `ON` enables the alarm, `OFF` disables it.
+        :type alarm_state: OnOff
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, alarm_state=alarm_state))
+    
+
+    set_off = functools.partialmethod(set, OnOff.OFF)
+    """Set the High SER Alarm state of the port to `OFF`, disabling the alarm."""
+    
+    set_on = functools.partialmethod(set, OnOff.ON)
+    """Set the High SER Alarm state of the port to `ON`, enabling the alarm."""
+
+
+
+@register_command
+@dataclass
+class PL1_DEGSER_STATUS:
+    """
+    This command retrieves the current and latched Degraded SER status of the port.
+
+    A Degraded SER (Symbol Error Rate) Alarm indicates that the pre-FEC (Forward Error Correction) SER has exceeded a predefined threshold, signaling potential signal degradation.
+
+    """
+
+    code: typing.ClassVar[int] = 561
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: ErrorStatus = field(XmpByte())
+        """Current Degraded SER status. `True` indicates a current Degraded SER condition."""
+
+        latched: ErrorStatus = field(XmpByte())
+        """Latched Degraded SER status. `True` indicates a Degraded SER condition has occurred."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current and latched Degraded SER status of the port.
+
+        :return: Current and latched Degraded SER status of the port
+        :rtype: PL1_DEGSER_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+    
+    
+
+@register_command
+@dataclass
+class PL1_DEGSER_THRESH:
+    """
+    This command configures the thresholds for the Degraded SER Alarm.
+
+    A Degraded SER (Symbol Error Rate) Alarm indicates that the pre-FEC (Forward Error Correction) SER has exceeded a predefined threshold, signaling potential signal degradation.
+
+    Degraded SER is signaled when more than ``act_thresh`` RS-FEC symbol errors are detected within a contiguous block of ``degrade_interval`` RS-FEC codewords. It is no longer signaled when the error count falls below ``deact_thresh`` within a similar degrade_interval.
+
+    An uncorrectable RS-FEC codeword is counted as 16 erroneous symbols to account for the worst-case scenario of complete codeword failure.
+
+    Threshold changes take effect immediately. The activation threshold must be strictly greater than the deactivation threshold.
+
+    The ``degrade_interval`` parameter must be an even number and a multiple of the number of PCS flows as follows:
+
+        - 100G:      2 flows (1 PCS flow, but must be even)
+        - 200G/400G: 2 flows (2 PCS flows)
+        - 800G/1.6T: 4 flows (4 PCS flows)
+
+    """
+
+    code: typing.ClassVar[int] = 562
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        act_thresh: int = field(XmpInt(signed=False))
+        """Number of RS-FEC symbol errors in the specified ``degrade_interval`` to activate Degraded SER Alarm. Valid range is 1 to 65535. ``act_thresh`` must be strictly greater than ``deact_thresh``"""
+
+        deact_thresh: int = field(XmpInt(signed=False))
+        """Number of RS-FEC symbol errors in the specified ``degrade_interval`` to deactivate Degraded SER Alarm. Valid range is 0 to 65534. ``deact_thresh`` must be strictly less than ``act_thresh``."""
+
+        degrade_interval: int = field(XmpInt(signed=False))
+        """Number of RS-FEC codewords over which to monitor for symbol errors. Valid range is 2 to 65534. Must be an even number and a multiple of the number of PCS flows."""
+
+    class SetDataAttr(RequestBodyStruct):
+        act_thresh: int = field(XmpInt(signed=False))
+        """Number of RS-FEC symbol errors in the specified ``degrade_interval`` to activate Degraded SER Alarm. Valid range is 1 to 65535. ``act_thresh`` must be strictly greater than ``deact_thresh``"""
+
+        deact_thresh: int = field(XmpInt(signed=False))
+        """Number of RS-FEC symbol errors in the specified ``degrade_interval`` to deactivate Degraded SER Alarm. Valid range is 0 to 65534. ``deact_thresh`` must be strictly less than ``act_thresh``."""
+
+        degrade_interval: int = field(XmpInt(signed=False))
+        """Number of RS-FEC codewords over which to monitor for symbol errors. Valid range is 2 to 65534. Must be an even number and a multiple of the number of PCS flows."""
+        
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the thresholds for the Degraded SER Alarm.
+
+        :return: Thresholds for the Degraded SER Alarm
+        :rtype: PL1_DEGSER_THRESH.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+    
+    def set(self, act_thresh: int, deact_thresh: int, degrade_interval: int) -> Token[None]:
+        """Set the thresholds for the Degraded SER Alarm.
+
+        :param act_thresh: Number of RS-FEC symbol errors in the specified ``degrade_interval`` to activate Degraded SER Alarm.
+        :type act_thresh: int
+        :param deact_thresh: Number of RS-FEC symbol errors in the specified ``degrade_interval`` to deactivate Degraded SER Alarm.
+        :type deact_thresh: int
+        :param degrade_interval: Number of RS-FEC codewords over which to monitor for symbol errors.
+        :type degrade_interval: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, act_thresh=act_thresh, deact_thresh=deact_thresh, degrade_interval=degrade_interval))
+
+
+
+@register_command
+@dataclass
+class PL1_LINKDOWN_STATUS:
+    """
+    Returns the current and the latched Link Down status of the port.
+    """
+
+    code: typing.ClassVar[int] = 563
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: ErrorStatus = field(XmpByte())
+        """Current Link Down status. `True` indicates a current Link Down condition."""
+
+        latched: ErrorStatus = field(XmpByte())
+        """Latched Link Down status. `True` indicates a Link Down condition has occurred."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current and latched Link Down status of the port.
+
+        :return: Current and latched Link Down status of the port
+        :rtype: PL1_LINKDOWN_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+    
+    
+
+@register_command
+@dataclass
+class PL1_RX_CNT:
+    """
+    Returns the cumulative number of Layer-1 errors since last clearance.
+    """
+
+    code: typing.ClassVar[int] = 564
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        loa_count: int = field(XmpLong(signed=False))
+        """Number of cumulated Loss of Alignment (LOA) events since the last clearance."""
+
+        itb_count: int = field(XmpLong(signed=False))
+        """Number of cumulated Invalid 256b/257b Transcode Blocks since the last clearance."""
+
+        err_cw_count: int = field(XmpLong(signed=False))
+        """Number of erroneous 64b/66b codewords since the last clearance."""
+
+        link_down_count: int = field(XmpLong(signed=False))
+        """Number of cumulated Link Down events since the last clearance."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the cumulative number of Layer-1 errors since last clearance.
+
+        :return: Cumulative number of Layer-1 errors since last clearance
+        :rtype: PL1_RX_CNT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+@register_command
+@dataclass
+class PL1_INJECT_ERR:
+    """
+    Inject an error on the Tx port immediately when called.
+
+    """
+
+    code: typing.ClassVar[int] = 565
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class SetDataAttr(RequestBodyStruct):
+        type: PcsErrorInjectionType = field(XmpByte())
+        """Type of error to inject."""
+
+    def set(self, type: PcsErrorInjectionType) -> Token[None]:
+        """Inject an error on the Tx port immediately when called.
+        
+        :param type: Type of error to inject
+        :type type: PcsErrorInjectionType
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, type=type))
+
+
+
+@register_command
+@dataclass
+class PL1_CLEAR:
+    """
+    Clear Layer 1 counters in the specified direction(s).
+
+    """
+
+    code: typing.ClassVar[int] = 566
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class SetDataAttr(RequestBodyStruct):
+        direction: ClearStatsDirection = field(XmpByte())
+        """Direction of counters to clear."""
+
+    def set(self, direction: ClearStatsDirection) -> Token[None]:
+        """Clear Layer 1 counters in the specified direction(s).
+        
+        :param direction: Direction of counters to clear
+        :type direction: ClearStatsDirection
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, direction=direction))
+    
+    set_none = functools.partialmethod(set, ClearStatsDirection.NONE)
+    """Clear no counters"""
+
+    set_rx = functools.partialmethod(set, ClearStatsDirection.RX)
+    """Clear RX counters"""
+
+    set_tx = functools.partialmethod(set, ClearStatsDirection.TX)
+    """Clear TX counters"""
+
+    set_all = functools.partialmethod(set, ClearStatsDirection.ALL)
+    """Clear all counters"""
+
+
+
+@register_command
+@dataclass
+class PL1_RX_FREQ:
+    """
+    Return the current, minimum and maximum port Rx frequency in Hz of the specified SerDes.
+
+    """
+
+    code: typing.ClassVar[int] = 553
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _serdes_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: int = field(XmpInt(signed=False))
+        """Current port Rx frequency in Hz."""
+
+        minimum: int = field(XmpInt(signed=False))
+        """Minimum port Rx frequency in Hz."""
+
+        maximum: int = field(XmpInt(signed=False))
+        """Maximum port Rx frequency in Hz."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current, minimum and maximum port Rx frequency in Hz of the specified SerDes.
+
+        :return: Current, minimum and maximum port Rx frequency in Hz
+        :rtype: PL1_RX_FREQ.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+    
+
+
+@register_command
+@dataclass
+class PL1_TX_FREQ:
+    """
+    Return the current port Tx frequency in Hz.
+    """
+
+    code: typing.ClassVar[int] = 567
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: int = field(XmpInt(signed=False))
+        """Current port Tx frequency in Hz."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current port Tx frequency in Hz.
+
+        :return: Current port Tx frequency in Hz
+        :rtype: PL1_TX_FREQ.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+
+@register_command
+@dataclass
+class PL1_RX_DATARATE:
+    """
+    Return the current, minimum and maximum Rx data rates of the specified SerDes in bits per second (bps).
+    """
+
+    code: typing.ClassVar[int] = 568
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _serdes_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: int = field(XmpInt(signed=False))
+        """Current Rx data rate in bps."""
+
+        minimum: int = field(XmpInt(signed=False))
+        """Minimum Rx data rate in bps."""
+
+        maximum: int = field(XmpInt(signed=False))
+        """Maximum Rx data rate in bps."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current, minimum and maximum Rx data rates of the specified SerDes.
+
+        :return: Current, minimum and maximum Rx data rates
+        :rtype: PL1_RX_DATARATE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+
+
+@register_command
+@dataclass
+class PL1_TX_DATARATE:
+    """
+    Return the current, minimum and maximum Tx data rates of the port in bits per second (bps).
+    """
+
+    code: typing.ClassVar[int] = 569
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: int = field(XmpInt(signed=False))
+        """Current Tx data rate in bps."""
+
+        minimum: int = field(XmpInt(signed=False))
+        """Minimum Tx data rate in bps."""
+
+        maximum: int = field(XmpInt(signed=False))
+        """Maximum Tx data rate in bps."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current, minimum and maximum Tx data rates of the specified port.
+
+        :return: Current, minimum and maximum Tx data rates
+        :rtype: PL1_TX_DATARATE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+
+@register_command
+@dataclass
+class PL1_RX_PPM:
+    """
+    Return the current, minimum and maximum Rx PPM of the specified SerDes.
+    """
+
+    code: typing.ClassVar[int] = 554
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _serdes_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: int = field(XmpInt(signed=False))
+        """Current Rx PPM."""
+
+        minimum: int = field(XmpInt(signed=False))
+        """Minimum Rx PPM."""
+
+        maximum: int = field(XmpInt(signed=False))
+        """Maximum Rx PPM."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current, minimum and maximum Rx PPM of the specified SerDes.
+
+        :return: Current, minimum and maximum Rx PPM
+        :rtype: PL1_RX_PPM.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+
+
+@register_command
+@dataclass
+class PL1_TX_PPM:
+    """
+    Return the current, minimum and maximum Tx PPM of the port.
+    """
+
+    code: typing.ClassVar[int] = 555
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: int = field(XmpInt(signed=False))
+        """Current Tx PPM."""
+
+        minimum: int = field(XmpInt(signed=False))
+        """Minimum Tx PPM."""
+
+        maximum: int = field(XmpInt(signed=False))
+        """Maximum Tx PPM."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current, minimum and maximum Tx PPM of the specified port.
+
+        :return: Current, minimum and maximum Tx PPM
+        :rtype: PL1_TX_PPM.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+
+
 __all__ = [
     "PL1_ANLT",
     "PL1_AUTONEGINFO",
@@ -1934,4 +2595,21 @@ __all__ = [
     "PL1_PRESET_CONFIG_COEFF",
     "PL1_PRESET_CONFIG_LEVEL",
     "PL1_PRESET_RESET",
+    "PL1_CDRLOL_STATUS",
+    "PL1_LOA_STATUS",
+    "PL1_HIBER_STATUS",
+    "PL1_HISER_STATUS",
+    "PL1_HISER_ALARM",
+    "PL1_DEGSER_STATUS",
+    "PL1_DEGSER_THRESH",
+    "PL1_LINKDOWN_STATUS",
+    "PL1_RX_CNT",
+    "PL1_INJECT_ERR",
+    "PL1_CLEAR",
+    "PL1_RX_FREQ",
+    "PL1_TX_FREQ",
+    "PL1_RX_DATARATE",
+    "PL1_TX_DATARATE",
+    "PL1_RX_PPM",
+    "PL1_TX_PPM",
 ]

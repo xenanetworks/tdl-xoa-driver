@@ -10,7 +10,7 @@ from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
 )
 from .layer1.prbs import Prbs
-from .layer1.pcs_fec import PcsLayer
+from .layer1.pcs import PcsLayer
 from .layer1.impair import Impair
 from .layer1.medium import BasicMedium
 from .layer1.eye_diagram import EyeDiagram

@@ -14,34 +14,54 @@ The ``layer1_adv`` module offers high-level functions for advanced Layer 1 confi
 
 .. autosummary::
 
-    get_hi_ber
-    set_hi_ser_alarm
-    get_hi_ser
-    get_deg_ser
+    get_cdr_lol_status
+    get_rx_pcsl_skew
+    get_hi_ber_status
+    get_hi_ser_status
+    get_deg_ser_status
     set_deg_ser_thresholds
     get_deg_ser_thresholds
-    get_cdr_lol
-    get_cw_err_since_last
-    get_itb_since_last
-    get_total_loa_since_last
-    get_link_sync_loss_since_last
-    get_local_fault_since_last
-    get_remote_fault_since_last
+    get_lf_status
+    get_rf_status
+    get_link_down_status
+
+.. autosummary::
+
+    get_errcwd_cnt_since_clear
+    get_itb_cnt_since_clear
+    get_link_down_cnt_since_clear
+    get_loa_cnt_since_clear
+    get_lf_cnt_since_clear
+    get_rf_cnt_since_clear
+    clear_layer1_counters
     
 
 .. autosummary::
 
-    set_cw_err
+    set_errcwd
     set_itb
+    set_loa
+    set_hi_ser
+    set_hi_ser_alarm
 
 
 .. autosummary::
 
+    get_tx_ppm_curr
+    get_rx_ppm_curr
+    get_rx_ppm_min
+    get_rx_ppm_max
+    get_rx_ppm
+    get_tx_datarate_curr
+    get_rx_datarate_curr
+    get_rx_datarate_min
+    get_rx_datarate_max
+    get_rx_datarate
     get_tx_freq_curr
     get_rx_freq_curr
     get_rx_freq_min
     get_rx_freq_max
-    get_rx_freq_all
+    get_rx_freq
     
 
 

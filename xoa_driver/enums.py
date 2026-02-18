@@ -62,7 +62,7 @@ from .internals.commands.enums import (
     LinkTrainingMode,
     LinkTrainingStatus,
     LinkTrainingStatusMode,
-    LocalFaultStatus,
+    ErrorStatus,
     LoopbackMode,
     LoopBandwidth,
     MDIXMode,
@@ -100,7 +100,6 @@ from .internals.commands.enums import (
     PRBSStatisticsMode,
     ProtocolOption,
     ReconciliationSublayerSupport,
-    RemoteFaultStatus,
     ReplayParserState,
     ReplaySchedulingMode,
     ReplaySyncBasedOn,
@@ -201,6 +200,8 @@ from .internals.commands.enums import (
     MACSecPNMode,
     ModuleConfigStatus,
     TrueFalse,
+    PcsErrorInjectionType,
+    ClearStatsDirection,
 )
 
 __all__ = (
@@ -263,7 +264,7 @@ __all__ = (
     "LinkTrainingMode",
     "LinkTrainingStatus",
     "LinkTrainingStatusMode",
-    "LocalFaultStatus",
+    "ErrorStatus",
     "LoopbackMode",
     "LoopBandwidth",
     "MDIXMode",
@@ -301,7 +302,6 @@ __all__ = (
     "PRBSStatisticsMode",
     "ProtocolOption",
     "ReconciliationSublayerSupport",
-    "RemoteFaultStatus",
     "ReplayParserState",
     "ReplaySchedulingMode",
     "ReplaySyncBasedOn",
@@ -402,4 +402,6 @@ __all__ = (
     "MACSecPNMode",
     "ModuleConfigStatus",
     "TrueFalse",
+    "PcsErrorInjectionType",
+    "ClearStatsDirection",
 )

@@ -56,8 +56,7 @@ from .enums import (
     RXCState,
     LinkState,
     FaultSignaling,
-    LocalFaultStatus,
-    RemoteFaultStatus,
+    ErrorStatus,
     TPLDMode,
     MulticastHeaderFormat,
     TrafficError,
@@ -69,6 +68,7 @@ from .enums import (
     MACSecRekeyMode,
     MACSecEncryptionMode,
     MACSecPNMode,
+    TrueFalse,
 )
 
 
@@ -3850,9 +3850,7 @@ class P_FAULTSIGNALING:
 @dataclass
 class P_FAULTSTATUS:
     """
-    Shows if a local or remote fault is currently being detected by the
-    Reconciliation Sub-layer of the port.
-
+    Returns the current and the latched Local and Remote Fault status of the port.
     """
 
     code: typing.ClassVar[int] = 349
@@ -3863,17 +3861,23 @@ class P_FAULTSTATUS:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        local_fault_status: LocalFaultStatus = field(XmpByte())
-        """coded byte, specifying the local fault."""
-        remote_fault_status: RemoteFaultStatus = field(XmpByte())
-        """coded byte, specifying the remote fault."""
+        lf_current: ErrorStatus = field(XmpByte())
+        """current local fault status of the port."""
+        rf_current: ErrorStatus = field(XmpByte())
+        """current remote fault status of the port."""
+        lf_latched: ErrorStatus = field(XmpByte())
+        """latched local fault status of the port."""
+        rf_latched: ErrorStatus = field(XmpByte())
+        """latched remote fault status of the port."""
 
     def get(self) -> Token[GetDataAttr]:
-        """Get whether a local or remote fault is currently being detected by the Reconciliation Sub-layer of the port.
+        """Get the current and latched Local and Remote Fault status of the port.
 
-        :return: whether a local or remote fault is currently being detected.
+        :return: current and latched Local and Remote Fault status of the port.
             * specifying the local fault
             * specifying the remote fault
+            * specifying the latched local fault
+            * specifying the latched remote fault
         :rtype: P_FAULTSTATUS.GetDataAttr
         """
 
@@ -6331,6 +6335,41 @@ class P_EDUN_RX_STATUS:
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
     
 
+
+
+@register_command
+@dataclass
+class P_FAULTCNT:
+    """
+    Returns the number of LF and RF conditions since last clearance. Use PP_RXCLEAR or PL1_CLEAR to reset the counters.
+    """
+
+    code: typing.ClassVar[int] = 338
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        lf_count: int = field(XmpLong(signed=False))
+        """Number of Local Fault conditions since last clearance."""
+
+        rf_count: int = field(XmpLong(signed=False))
+        """Number of Remote Fault conditions since the last clearance."""
+
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the number of LF and RF conditions since last clearance.
+
+        :return: Number of LF and RF conditions since last clearance
+        :rtype: P_FAULTCNT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
 __all__ = [
     "P_ARPREPLY",
     "P_ARPRXTABLE",
@@ -6456,4 +6495,6 @@ __all__ = [
     "P_MACSEC_TXSC_NEXT_PN",
     "P_MACSEC_RXSC_PN",
     "P_MACSEC_TXSC_NEXT_AN",
+    "P_EDUN_RX_STATUS",
+    "P_FAULTCNT",
 ]
