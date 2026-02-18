@@ -2505,13 +2505,13 @@ class PL1_RX_PPM:
     _serdes_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        current: int = field(XmpInt(signed=False))
+        current: int = field(XmpInt(signed=True))
         """Current Rx PPM."""
 
-        minimum: int = field(XmpInt(signed=False))
+        minimum: int = field(XmpInt(signed=True))
         """Minimum Rx PPM."""
 
-        maximum: int = field(XmpInt(signed=False))
+        maximum: int = field(XmpInt(signed=True))
         """Maximum Rx PPM."""
 
 
@@ -2540,13 +2540,13 @@ class PL1_TX_PPM:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        current: int = field(XmpInt(signed=False))
+        current: int = field(XmpInt(signed=True))
         """Current Tx PPM."""
 
-        minimum: int = field(XmpInt(signed=False))
+        minimum: int = field(XmpInt(signed=True))
         """Minimum Tx PPM."""
 
-        maximum: int = field(XmpInt(signed=False))
+        maximum: int = field(XmpInt(signed=True))
         """Maximum Tx PPM."""
 
 
