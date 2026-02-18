@@ -566,23 +566,45 @@ class P_CAPABILITIES:
         max_i2c_frequency: int = field(XmpInt(), min_version=463)
         """maximum I2C frequency"""
         can_eyescan: int = field(XmpInt(), min_version=463)
-        """Bit 0 ==1 => Sampled Eye Scan supported."""
+        """
+        * Bit 0: Sampled Eyescan supported.
+        * Bit 1: Statistical Eye Scan supported (the Z100 Loki eye-scan).
+        * Bit 2: Eye slice supported for Edun.
+        """
+
         layer1_misc: int = field(XmpInt(), min_version=465)
         """
         * Bit 0: Can IEEE variant
         * Bit 1: Can ETC (Ethernet Consortium) PCS variant
-        * Bit 2: Can monitor PCS RX Lane Map
-        * Bit 3: Can control PCS TX Lane Map
-        * Bit 4: Can monitor PCS RX Lane Skew
-        * Bit 5: Can control PCS TX Lane Skew
+        * Bit 2: Can monitor PCS Rx Lane Map
+        * Bit 3: Can control PCS Tx Lane Map
+        * Bit 4: Can monitor PCS Rx Lane Skew
+        * Bit 5: Can control PCS Tx Lane Skew
         * Bit 6: Can FEC error injection
+        * Bit 7: Can P/N Polarity Swap
         * Bit 8: Can Pre-coding
         * Bit 9: Can Gray-coding
+        * Bit 10: Can Rx Pre-coding config
+        * Bit 11: Can Rx Pre-coding Endianness
+        * Bit 12: Can Tx Pre-coding config
+        * Bit 13: Can Tx Pre-coding Endianness
+        * Bit 14: Can Rx Gray-coding config
+        * Bit 15: Can Rx Gray-coding Endianness
+        * Bit 16: Can Tx Gray-coding config
+        * Bit 17: Can Tx Gray-coding Endianness
+        * Bit 18: Can PMA Bit-mux config
+        * Bit 19: Can PMA Sym-mux config
         """
+
         # fec_engines: int = field(XmpInt(), min_version=465)
         # """The number of FEC engines available"""
-        can_macsec: int = field(XmpInt(), min_version=470)
-        """If the port supports MACsec"""
+
+        layer2_misc: int = field(XmpInt(), min_version=470)
+        """
+        * Bit 0: Can MACsec
+        * Bit 1: Can LLDP
+        """
+
         editable_mixlength_indices: int = field(XmpInt(), min_version=470)
         """
         * Bit 0: Is Mix length index 0 editable
