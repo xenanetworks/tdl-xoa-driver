@@ -69,7 +69,7 @@ async def release_tester(
     elif r.operation == enums.ReservedStatus.RESERVED_BY_YOU:
         await tester.reservation.set_release()
     if should_release_modules_ports:
-        await asyncio.gather(*(release_modules(list(tester.modules), True)))
+        await release_modules(list(tester.modules), True)
 
 
 async def get_chassis_sys_uptime(tester: L23Tester) -> int:
