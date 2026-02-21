@@ -2391,7 +2391,7 @@ class PL1_RX_FREQ:
 @dataclass
 class PL1_TX_FREQ:
     """
-    Return the current port Tx frequency in Hz.
+    Return the current, minimum and maximum port Tx frequency in Hz.
     """
 
     code: typing.ClassVar[int] = 567
@@ -2405,11 +2405,17 @@ class PL1_TX_FREQ:
         current: int = field(XmpInt(signed=False))
         """Current port Tx frequency in Hz."""
 
+        minimum: int = field(XmpInt(signed=False))
+        """Minimum port Tx frequency in Hz."""
+
+        maximum: int = field(XmpInt(signed=False))
+        """Maximum port Tx frequency in Hz."""
+
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the current port Tx frequency in Hz.
+        """Get the current, minimum and maximum port Tx frequency in Hz.
 
-        :return: Current port Tx frequency in Hz
+        :return: Current, minimum and maximum port Tx frequency in Hz
         :rtype: PL1_TX_FREQ.GetDataAttr
         """
 
@@ -2560,6 +2566,42 @@ class PL1_TX_PPM:
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
 
+@register_command
+@dataclass
+class PL1_INJECT_ERR_CNT:
+    """
+    Returns the cumulative number of Tx Layer-1 errors since last clearance.
+    """
+
+    code: typing.ClassVar[int] = 570
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        loa_count: int = field(XmpLong(signed=False))
+        """Number of cumulated Tx Loss of Alignment (LOA) events since the last clearance."""
+
+        itb_count: int = field(XmpLong(signed=False))
+        """Number of cumulated Tx Invalid 256b/257b Transcode Blocks since the last clearance."""
+
+        err_cw_count: int = field(XmpLong(signed=False))
+        """Number of erroneous Tx 64b/66b codewords since the last clearance."""
+
+        link_down_count: int = field(XmpLong(signed=False))
+        """Number of cumulated Tx Link Down events since the last clearance."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the cumulative number of Tx Layer-1 errors since last clearance.
+
+        :return: Cumulative number of Tx Layer-1 errors since last clearance
+        :rtype: PL1_INJECT_ERR_CNT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
 
 __all__ = [
@@ -2612,4 +2654,5 @@ __all__ = [
     "PL1_TX_DATARATE",
     "PL1_RX_PPM",
     "PL1_TX_PPM",
+    "PL1_INJECT_ERR_CNT",
 ]

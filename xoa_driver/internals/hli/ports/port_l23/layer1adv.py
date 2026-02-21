@@ -38,13 +38,13 @@ class SerdesAdv:
         """
 
         self.rx_ppm = PL1_RX_PPM(conn, module_id, port_id, serdes_idx)
-        """Return the current port Rx frequency offset in parts per million (ppm) of the specified SerDes.
+        """Return the current, minimum and maximum port Rx frequency offset in parts per million (ppm) of the specified SerDes.
 
         :type: PL1_RX_PPM
         """
 
         self.rx_datarate = PL1_RX_DATARATE(conn, module_id, port_id, serdes_idx)
-        """Return the current port Rx datarate in bits per second (bps) of the specified SerDes.
+        """Return the current, minimum and maximum port Rx datarate in bits per second (bps) of the specified SerDes.
 
         :type: PL1_RX_DATARATE
         """
@@ -64,19 +64,19 @@ class Layer1Adv:
         """
 
         self.tx_freq = PL1_TX_FREQ(conn, module_id, port_id)
-        """Return the current port Tx frequency in Hz.
+        """Return the current, minimum and maximum port Tx frequency in Hz.
 
         :type: PL1_TX_FREQ
         """
 
         self.tx_ppm = PL1_TX_PPM(conn, module_id, port_id)
-        """Return the current port Tx frequency offset in parts per million (ppm).
+        """Return the current, minimum and maximum port Tx frequency offset in parts per million (ppm).
 
         :type: PL1_TX_PPM
         """
 
         self.tx_datarate = PL1_TX_DATARATE(conn, module_id, port_id)
-        """Return the current port Tx datarate in bits per second (bps).
+        """Return the current, minimum and maximum port Tx datarate in bits per second (bps).
 
         :type: PL1_TX_DATARATE
         """

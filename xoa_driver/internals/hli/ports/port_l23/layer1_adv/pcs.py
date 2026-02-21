@@ -20,6 +20,7 @@ from xoa_driver.internals.commands import (
     PL1_LINKDOWN_STATUS,
     PL1_RX_CNT,
     PL1_INJECT_ERR,
+    PL1_INJECT_ERR_CNT,
 )
 
 
@@ -101,7 +102,27 @@ class LinkDown:
         """
 
 
+class ErrorInjection:
+    """Error Injection Management"""
 
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        self.inject = PL1_INJECT_ERR(conn, module_id, port_id)
+        """Error Injection management
+
+        :type: PL1_INJECT_ERR
+        """
+
+        self.tx_cnt = PL1_INJECT_ERR_CNT(conn, module_id, port_id)
+        """Returns the count of injected errors.
+
+        :type: PL1_INJECT_ERR_CNT
+        """
+
+        self.rx_cnt = PL1_RX_CNT(conn, module_id, port_id)
+        """Returns the count of received errors.
+
+        :type: PL1_RX_CNT
+        """
 
 class PcsLayerAdv:
     """Adv. Layer-1 - PCS layer configuration and status."""
@@ -120,11 +141,11 @@ class PcsLayerAdv:
         :type: Tuple[PcsLaneAdv, ...]
         """
 
-        self.rx_stats = PL1_RX_CNT(conn, module_id, port_id)
-        """Returns the Rx statistics counters of the port.
+        # self.rx_stats = PL1_RX_CNT(conn, module_id, port_id)
+        # """Returns the Rx statistics counters of the port.
 
-        :type: PL1_RX_CNT
-        """
+        # :type: PL1_RX_CNT
+        # """
 
         self.deg_ser = DegradedSer(conn, module_id, port_id)
         """Degraded Symbol Error Rate (SER) Management
@@ -144,14 +165,20 @@ class PcsLayerAdv:
         :type: HighSer
         """
 
-        self.tx_err_inject = PL1_INJECT_ERR(conn, module_id, port_id)
-        """Error Injection management
+        # self.tx_err_inject = PL1_INJECT_ERR(conn, module_id, port_id)
+        # """Error Injection management
 
-        :type: PL1_INJECT_ERR
-        """ 
+        # :type: PL1_INJECT_ERR
+        # """ 
 
         self.link_down = LinkDown(conn, module_id, port_id)
         """Link Down Status
 
         :type: LinkDown
+        """
+
+        self.err_inject = ErrorInjection(conn, module_id, port_id)
+        """Error Injection management
+
+        :type: ErrorInjection
         """

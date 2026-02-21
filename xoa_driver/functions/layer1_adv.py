@@ -23,6 +23,60 @@ from ..enums import (
     PcsErrorInjectionType,
 )
 
+async def get_tx_freq_curr(port: "FreyaEdunPort") -> int:
+    """
+    Get the current Tx frequency in Hz of the specified port.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The current Tx frequency in Hz.
+    :rtype: int
+    """
+
+    resp = await port.layer1_adv.tx_freq.get()
+    return resp.current
+
+
+async def get_tx_freq_min(port: "FreyaEdunPort") -> int:
+    """
+    Get the minimum Tx frequency in Hz of the specified port.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The minimum Tx frequency in Hz.
+    :rtype: int
+    """
+
+    resp = await port.layer1_adv.tx_freq.get()
+    return resp.minimum
+
+
+async def get_tx_freq_max(port: "FreyaEdunPort") -> int:
+    """
+    Get the maximum Tx frequency in Hz of the specified port.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The maximum Tx frequency in Hz.
+    :rtype: int
+    """
+
+    resp = await port.layer1_adv.tx_freq.get()
+    return resp.maximum
+
+
+async def get_tx_freq_all(port: "FreyaEdunPort") -> Tuple[int, int, int]:
+    """
+    Get the current, minimum, and maximum Tx frequency in Hz of the specified port.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The current, minimum, and maximum Tx frequency in Hz.
+    :rtype: Tuple[int, int, int]
+    """
+
+    resp = await port.layer1_adv.tx_freq.get()
+    return (resp.current, resp.minimum, resp.maximum)
 
 
 async def get_tx_ppm_curr(port: "FreyaEdunPort") -> int:
@@ -39,16 +93,163 @@ async def get_tx_ppm_curr(port: "FreyaEdunPort") -> int:
     return resp.current
 
 
-async def get_rx_ppm_curr(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int] | int:
+async def get_tx_ppm_min(port: "FreyaEdunPort") -> int:
     """
-    Get the current Rx PPM of the specified port.
+    Get the minimum Tx PPM of the specified port.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The minimum Tx PPM.
+    :rtype: int
+    """
+
+    resp = await port.layer1_adv.tx_ppm.get()
+    return resp.minimum
+
+
+async def get_tx_ppm_max(port: "FreyaEdunPort") -> int:
+    """
+    Get the maximum Tx PPM of the specified port.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The maximum Tx PPM.
+    :rtype: int
+    """
+
+    resp = await port.layer1_adv.tx_ppm.get()
+    return resp.maximum
+
+async def get_tx_ppm_all(port: "FreyaEdunPort") -> Tuple[int, int, int]:
+    """
+    Get the current, minimum, and maximum Tx PPM of the specified port.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The current, minimum, and maximum Tx PPM.
+    :rtype: Tuple[int, int, int]
+    """
+
+    resp = await port.layer1_adv.tx_ppm.get()
+    return (resp.current, resp.minimum, resp.maximum)
+
+
+async def get_tx_freq(port: "FreyaEdunPort") -> Tuple[int, int, int, int, int, int]:
+    """
+    Get the current, minimum, and maximum Tx frequency and frequency offset (ppm) of the specified port.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: Tx frequency current, minimum, and maximum, and frequency offset (ppm) current, minimum, and maximum.
+    :rtype: Tuple[int, int, int, int, int, int]
+    """
+
+    freq_resp, ppm_resp = await apply(
+        port.layer1_adv.tx_freq.get(),
+        port.layer1_adv.tx_ppm.get(),
+        )
+    return (freq_resp.current, freq_resp.minimum, freq_resp.maximum,
+            ppm_resp.current, ppm_resp.minimum, ppm_resp.maximum)
+
+
+async def get_rx_freq_curr(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int]:
+    """
+    Get the current Rx frequency in Hz of the specified port.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :param serdes_indices: The indices of the Serdes.
     :type serdes_indices: List[int]
-    :return: The current Rx PPM. If multiple Serdes indices are provided, a list of PPM values is returned.
-    :rtype: int or List[int]
+    :return: The current Rx frequency in Hz of the specified Serdes.
+    :rtype: List[int]
+    """
+
+    results = []
+    cmds = []
+    for serdes_id in serdes_indices:
+        cmds.append(port.layer1_adv.serdes[serdes_id].rx_freq.get())
+    resps = await apply(*cmds)
+    for resp in resps:
+        results.append(resp.current)
+    return results
+
+
+async def get_rx_freq_min(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int]:
+    """
+    Get the minimum Rx frequency in Hz since last query of the specified Serdes.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :param serdes_indices: The indices of the Serdes.
+    :type serdes_indices: List[int]
+    :return: The minimum Rx frequency in Hz since last query of the specified Serdes.
+    :rtype: List[int]
+    """
+    results = []
+    cmds = []
+    for serdes_id in serdes_indices:
+        cmds.append(port.layer1_adv.serdes[serdes_id].rx_freq.get())
+    resps = await apply(*cmds)
+    for resp in resps:
+        results.append(resp.minimum)
+    return results
+
+
+async def get_rx_freq_max(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int]:
+    """
+    Get the maximum Rx frequency in Hz since last query of the specified Serdes.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :param serdes_indices: The indices of the Serdes.
+    :type serdes_indices: List[int]
+    :return: The maximum Rx frequency in Hz since last query of the specified Serdes.
+    :rtype: List[int]
+    """
+    results = []
+    cmds = []
+    for serdes_id in serdes_indices:
+        cmds.append(port.layer1_adv.serdes[serdes_id].rx_freq.get())
+    resps = await apply(*cmds)
+    for resp in resps:
+        results.append(resp.maximum)
+    return results
+
+
+async def get_rx_freq_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[Tuple[int, int, int]]:
+    """
+    Get the current, minimum, and maximum Rx frequencies in Hz of the specified Serdes.
+
+    The minimum and maximum values are since last query.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :param serdes_indices: The indices of the Serdes.
+    :type serdes_indices: List[int]
+    :return: The current, minimum, and maximum Rx frequencies in Hz of the specified Serdes.
+    :rtype: List[Tuple[int, int, int]]
+    """
+
+    results = []
+    cmds = []
+    for serdes_id in serdes_indices:
+        cmds.append(port.layer1_adv.serdes[serdes_id].rx_freq.get())
+    resps = await apply(*cmds)
+    for resp in resps:
+        results.append((resp.current, resp.minimum, resp.maximum))
+    return results
+
+
+async def get_rx_ppm_curr(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int]:
+    """
+    Get the current Rx PPM of the specified Serdes.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :param serdes_indices: The indices of the Serdes.
+    :type serdes_indices: List[int]
+    :return: The current Rx PPM of the specified Serdes.
+    :rtype: List[int]
     """
 
     results = []
@@ -58,21 +259,19 @@ async def get_rx_ppm_curr(port: "FreyaEdunPort", serdes_indices: List[int] = [0]
     resps = await apply(*cmds)
     for resp in resps:
         results.append(resp.current)
-    if len(results) == 1:
-        return results[0]
     return results
 
 
-async def get_rx_ppm_min(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int] | int:
+async def get_rx_ppm_min(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int]:
     """
-    Get the minimum Rx PPM since last query.
+    Get the minimum Rx PPM since last query of the specified Serdes.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :param serdes_indices: The indices of the Serdes.
     :type serdes_indices: List[int]
-    :return: The minimum Rx PPM since last query. If multiple Serdes indices are provided, a list of minimum PPM values is returned.
-    :rtype: int or List[int]
+    :return: The minimum Rx PPM since last query of the specified Serdes.
+    :rtype: List[int]
     """
     results = []
     cmds = []
@@ -81,21 +280,19 @@ async def get_rx_ppm_min(port: "FreyaEdunPort", serdes_indices: List[int] = [0])
     resps = await apply(*cmds)
     for resp in resps:
         results.append(resp.minimum)
-    if len(results) == 1:
-        return results[0]
     return results
 
 
-async def get_rx_ppm_max(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int] | int:
+async def get_rx_ppm_max(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int]:
     """
-    Get the maximum Rx PPM since last query.
+    Get the maximum Rx PPM since last query of the specified Serdes.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :param serdes_indices: The indices of the Serdes.
     :type serdes_indices: List[int]
-    :return: The maximum Rx PPM since last query. If multiple Serdes indices are provided, a list of maximum PPM values is returned.
-    :rtype: int or List[int]
+    :return: The maximum Rx PPM since last query of the specified Serdes.
+    :rtype: List[int]
     """
     results = []
     cmds = []
@@ -104,14 +301,12 @@ async def get_rx_ppm_max(port: "FreyaEdunPort", serdes_indices: List[int] = [0])
     resps = await apply(*cmds)
     for resp in resps:
         results.append(resp.maximum)
-    if len(results) == 1:
-        return results[0]
     return results
 
 
-async def get_rx_ppm(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[Tuple[int, int, int]] | Tuple[int, int, int]:
+async def get_rx_ppm_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[Tuple[int, int, int]]:
     """
-    Get the current, minimum, and maximum Rx PPM of the specified port.
+    Get the current, minimum, and maximum Rx PPM of the specified Serdes.
 
     The minimum and maximum values are since last query.
 
@@ -119,8 +314,8 @@ async def get_rx_ppm(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> 
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :param serdes_indices: The indices of the Serdes.
     :type serdes_indices: List[int]
-    :return: The current, minimum, and maximum Rx PPM of the specified port. If multiple Serdes indices are provided, a list of tuples is returned.
-    :rtype: Tuple[int, int, int] or List[Tuple[int, int, int]]
+    :return: The current, minimum, and maximum Rx PPM of the specified Serdes.
+    :rtype: List[Tuple[int, int, int]]
     """
 
     results = []
@@ -130,10 +325,31 @@ async def get_rx_ppm(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> 
     resps = await apply(*cmds)
     for resp in resps:
         results.append((resp.current, resp.minimum, resp.maximum))
-    if len(results) == 1:
-        return results[0]
     return results
 
+
+async def get_rx_freq(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[Tuple[int, int, int, int, int, int]]:
+    """
+    Get the current, minimum, and maximum Rx frequency and frequency offset (ppm) of the specified Serdes.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: Rx frequency current, minimum, and maximum, and frequency offset (ppm) current, minimum, and maximum of the specified Serdes.
+    :rtype: List[Tuple[int, int, int, int, int, int]]
+    """
+
+    results = []
+    cmds = []
+    for serdes_id in serdes_indices:
+        cmds.append(port.layer1_adv.serdes[serdes_id].rx_freq.get())
+        cmds.append(port.layer1_adv.serdes[serdes_id].rx_ppm.get())
+    resps = await apply(*cmds)
+    for i in range(0, len(resps), 2):
+        freq_resp = resps[i]
+        ppm_resp = resps[i + 1]
+        results.append((freq_resp.current, freq_resp.minimum, freq_resp.maximum,
+                        ppm_resp.current, ppm_resp.minimum, ppm_resp.maximum))
+    return results
 
 
 async def get_tx_datarate_curr(port: "FreyaEdunPort") -> int:
@@ -148,6 +364,46 @@ async def get_tx_datarate_curr(port: "FreyaEdunPort") -> int:
 
     resp = await port.layer1_adv.tx_datarate.get()
     return resp.current
+
+
+async def get_tx_datarate_min(port: "FreyaEdunPort") -> int:
+    """
+    Get the minimum Tx datarate in bps since last query.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The minimum Tx datarate in bps since last query.
+    :rtype: int
+    """
+
+    resp = await port.layer1_adv.tx_datarate.get()
+    return resp.minimum
+
+async def get_tx_datarate_max(port: "FreyaEdunPort") -> int:
+    """
+    Get the maximum Tx datarate in bps since last query.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The maximum Tx datarate in bps since last query.
+    :rtype: int
+    """
+
+    resp = await port.layer1_adv.tx_datarate.get()
+    return resp.maximum
+
+async def get_tx_datarate_all(port: "FreyaEdunPort") -> Tuple[int, int, int]:
+    """
+    Get the current, minimum, and maximum Tx datarate in bps of the specified port.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The current, minimum, and maximum Tx datarate in bps.
+    :rtype: Tuple[int, int, int]
+    """
+
+    resp = await port.layer1_adv.tx_datarate.get()
+    return (resp.current, resp.minimum, resp.maximum)
 
 
 async def get_rx_datarate_curr(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int] | int:
@@ -220,9 +476,9 @@ async def get_rx_datarate_max(port: "FreyaEdunPort", serdes_indices: List[int] =
     return results
 
 
-async def get_rx_datarate(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[Tuple[int, int, int]] | Tuple[int, int, int]:
+async def get_rx_datarate_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[Tuple[int, int, int]]:
     """
-    Get the current, minimum, and maximum Rx datarates in bps of the specified port.
+    Get the current, minimum, and maximum Rx datarates in bps of the specified Serdes.
 
     The minimum and maximum values are since last query.
 
@@ -230,8 +486,8 @@ async def get_rx_datarate(port: "FreyaEdunPort", serdes_indices: List[int] = [0]
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :param serdes_indices: The indices of the Serdes.
     :type serdes_indices: List[int]
-    :return: The current, minimum, and maximum Rx datarates in bps of the specified port. If multiple Serdes indices are provided, a list of tuples is returned.
-    :rtype: Tuple[int, int, int] or List[Tuple[int, int, int]]
+    :return: The current, minimum, and maximum Rx datarates in bps of the specified Serdes. 
+    :rtype: List[Tuple[int, int, int]]
     """
 
     results = []
@@ -241,120 +497,7 @@ async def get_rx_datarate(port: "FreyaEdunPort", serdes_indices: List[int] = [0]
     resps = await apply(*cmds)
     for resp in resps:
         results.append((resp.current, resp.minimum, resp.maximum))
-    if len(results) == 1:
-        return results[0]
     return results
-
-
-async def get_tx_freq_curr(port: "FreyaEdunPort") -> int:
-    """
-    Get the current Tx frequency in Hz of the specified port.
-
-    :param port: The port instance.
-    :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :return: The current Tx frequency in Hz.
-    :rtype: int
-    """
-
-    resp = await port.layer1_adv.tx_freq.get()
-    return resp.current
-
-
-async def get_rx_freq_curr(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int] | int:
-    """
-    Get the current Rx frequency in Hz of the specified port.
-
-    :param port: The port instance.
-    :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :param serdes_indices: The indices of the Serdes.
-    :type serdes_indices: List[int]
-    :return: The current Rx frequency in Hz. If multiple Serdes indices are provided, a list of frequencies is returned.
-    :rtype: int or List[int]
-    """
-
-    results = []
-    cmds = []
-    for serdes_id in serdes_indices:
-        cmds.append(port.layer1_adv.serdes[serdes_id].rx_freq.get())
-    resps = await apply(*cmds)
-    for resp in resps:
-        results.append(resp.current)
-    if len(results) == 1:
-        return results[0]
-    return results
-
-
-async def get_rx_freq_min(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int] | int:
-    """
-    Get the minimum Rx frequency in Hz since last query.
-
-    :param port: The port instance.
-    :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :param serdes_indices: The indices of the Serdes.
-    :type serdes_indices: List[int]
-    :return: The minimum Rx frequency in Hz since last query. If multiple Serdes indices are provided, a list of minimum frequencies is returned.
-    :rtype: int or List[int]
-    """
-    results = []
-    cmds = []
-    for serdes_id in serdes_indices:
-        cmds.append(port.layer1_adv.serdes[serdes_id].rx_freq.get())
-    resps = await apply(*cmds)
-    for resp in resps:
-        results.append(resp.minimum)
-    if len(results) == 1:
-        return results[0]
-    return results
-
-
-async def get_rx_freq_max(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int] | int:
-    """
-    Get the maximum Rx frequency in Hz since last query.
-
-    :param port: The port instance.
-    :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :param serdes_indices: The indices of the Serdes.
-    :type serdes_indices: List[int]
-    :return: The maximum Rx frequency in Hz since last query. If multiple Serdes indices are provided, a list of maximum frequencies is returned.
-    :rtype: int or List[int]
-    """
-    results = []
-    cmds = []
-    for serdes_id in serdes_indices:
-        cmds.append(port.layer1_adv.serdes[serdes_id].rx_freq.get())
-    resps = await apply(*cmds)
-    for resp in resps:
-        results.append(resp.maximum)
-    if len(results) == 1:
-        return results[0]
-    return results
-
-
-async def get_rx_freq(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[Tuple[int, int, int]] | Tuple[int, int, int]:
-    """
-    Get the current, minimum, and maximum Rx frequencies in Hz of the specified port.
-
-    The minimum and maximum values are since last query.
-
-    :param port: The port instance.
-    :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :param serdes_indices: The indices of the Serdes.
-    :type serdes_indices: List[int]
-    :return: The current, minimum, and maximum Rx frequencies in Hz of the specified port. If multiple Serdes indices are provided, a list of tuples is returned.
-    :rtype: Tuple[int, int, int] or List[Tuple[int, int, int]]
-    """
-
-    results = []
-    cmds = []
-    for serdes_id in serdes_indices:
-        cmds.append(port.layer1_adv.serdes[serdes_id].rx_freq.get())
-    resps = await apply(*cmds)
-    for resp in resps:
-        results.append((resp.current, resp.minimum, resp.maximum))
-    if len(results) == 1:
-        return results[0]
-    return results
-
 
 
 
@@ -546,6 +689,25 @@ async def get_rf_status(port: "FreyaEdunPort") -> Tuple[bool, bool]:
     return (curr, latched)
 
 
+async def get_lf_rf_status(port: "FreyaEdunPort") -> Tuple[bool, bool, bool, bool]:
+    """
+    Get the current and latched Local Fault and Remote Fault status of the specified port.
+
+    True means error condition is present, while False means error condition is not present.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: A tuple containing current and latched Local Fault and Remote Fault status.
+    :rtype: Tuple[bool, bool, bool, bool]
+    """
+    resp = await port.layer1.rs_fault.status.get()
+    lf_curr = True if resp.lf_current.value == 1 else False
+    lf_latched = True if resp.lf_latched.value == 1 else False
+    rf_curr = True if resp.rf_current.value == 1 else False
+    rf_latched = True if resp.rf_latched.value == 1 else False
+    return (lf_curr, lf_latched, rf_curr, rf_latched)
+
+
 async def get_link_down_status(port: "FreyaEdunPort") -> Tuple[bool, bool]:
     """
     Get the current and latched Link Down status of the specified port.
@@ -562,123 +724,75 @@ async def get_link_down_status(port: "FreyaEdunPort") -> Tuple[bool, bool]:
     latched = True if resp.latched.value == 1 else False
     return (curr, latched)
 
-async def get_errcwd_cnt_since_clear(port: "FreyaEdunPort") -> int:
+async def get_rx_errors_since_clear(port: "FreyaEdunPort") -> Tuple[int, int, int, int, int, int]:
     """
-    Get the number of erroneous 64b/66b codewords since the last counter clear.
+    Get the Rx number of the number of LOA, 256b/257 ITBs, 64b/66b erroneous codewords, link down, local fault, and remote fault events since the last counter clear.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :return: Number of erroneous 64b/66b codewords since the last counter clear per port.
-    :rtype: int
+    :return: A tuple containing the received number of LOA, 256b/257 ITBs, 64b/66b erroneous codewords, link down, local fault, and remote fault events, since the last counter clear per port.
+    :rtype: Tuple[int, int, int, int, int, int]
     """
-    resp = await port.layer1_adv.pcs.rx_stats.get()
-    return resp.err_cw_count
+
+    resp1, resp2 = await apply(
+        port.layer1_adv.pcs.err_inject.rx_cnt.get(),
+        port.layer1.rs_fault.stats.get(),
+    )
+    return (resp1.loa_count, resp1.itb_count, resp1.err_cw_count, resp1.link_down_count, resp2.lf_count, resp2.rf_count)
 
 
-async def get_itb_cnt_since_clear(port: "FreyaEdunPort") -> int:
+async def get_tx_errors_since_clear(port: "FreyaEdunPort") -> Tuple[int, int, int, int]:
     """
-    Get the number of invalid 256b/257b transcode blocks since the last counter clear.
+    Get the inject (Tx) number of LOA, 256b/257 ITBs, 64b/66b erroneous codewords, and link down events since the last counter clear.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :return: Number of invalid 256b/257b transcode blocks since the last counter clear per port.
-    :rtype: int
+    :return: A tuple containing the injected number of LOA, 256b/257 ITBs, 64b/66b erroneous codewords, and link down events, since the last counter clear per port.
+    :rtype: Tuple[int, int, int, int]
     """
-    resp = await port.layer1_adv.pcs.rx_stats.get()
-    return resp.itb_count
+
+    resp = await port.layer1_adv.pcs.err_inject.tx_cnt.get()
+    return (resp.loa_count, resp.itb_count, resp.err_cw_count, resp.link_down_count)
 
 
-async def get_link_down_cnt_since_clear(port: "FreyaEdunPort") -> int:
+async def inject_errcwd_once(port: "FreyaEdunPort") -> None:
     """
-    Get the number of cumulated link down events since the last counter clear per port.
-
-    :param port: The port instance.
-    :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :return: Number of cumulated link down events since the last counter clear per port.
-    :rtype: int
-    """
-    resp = await port.layer1_adv.pcs.rx_stats.get()
-    return resp.link_down_count
-
-
-async def get_loa_cnt_since_clear(port: "FreyaEdunPort") -> int:
-    """
-    Get the number of cumulated Loss of Alignment (LOA) events since the last counter clear per port.
-
-    :param port: The port instance.
-    :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :return: Number of cumulated Loss of Alignment (LOA) events since the last counter clear per port.
-    :rtype: int
-    """
-    resp = await port.layer1_adv.pcs.rx_stats.get()
-    return resp.loa_count
-
-
-async def get_lf_cnt_since_clear(port: "FreyaEdunPort") -> int:
-    """
-    Get the number of cumulated local fault conditions since the last counter clear per port.
-
-    :param port: The port instance.
-    :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :return: Number of cumulated local fault conditions since the last counter clear per port.
-    :rtype: int
-    """
-    resp = await port.layer1.rs_fault.stats.get()
-    return resp.lf_count
-
-
-async def get_rf_cnt_since_clear(port: "FreyaEdunPort") -> int:
-    """
-    Get the number of cumulated remote fault conditions since the last counter clear per port.
-
-    :param port: The port instance.
-    :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :return: Number of cumulated remote fault conditions since the last counter clear per port.
-    :rtype: int
-    """
-    resp = await port.layer1.rs_fault.stats.get()
-    return resp.rf_count
-
-
-
-async def set_errcwd(port: "FreyaEdunPort") -> None:
-    """
-    Inject a 64b/66b codeword error (CW Err) from the port immediately when called.
+    Inject a 64b/66b codeword error from the port immediately when called.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     """
-    await port.layer1_adv.pcs.tx_err_inject.set(type=PcsErrorInjectionType.ERRCWD)
+    await port.layer1_adv.pcs.err_inject.inject.set(type=PcsErrorInjectionType.ERRCWD)
 
 
-async def set_itb(port: "FreyaEdunPort") -> None:
+async def inject_itb_once(port: "FreyaEdunPort") -> None:
     """
     Inject an invalid 256b/257b transcode block (ITB) from the port immediately when called.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     """
-    await port.layer1_adv.pcs.tx_err_inject.set(type=PcsErrorInjectionType.ITB)
+    await port.layer1_adv.pcs.err_inject.inject.set(type=PcsErrorInjectionType.ITB)
 
 
-async def set_loa(port: "FreyaEdunPort") -> None:
+async def inject_loa_once(port: "FreyaEdunPort") -> None:
     """
     Inject a Loss of Alignment (LOA) event from the port immediately when called.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     """
-    await port.layer1_adv.pcs.tx_err_inject.set(type=PcsErrorInjectionType.LOA)
+    await port.layer1_adv.pcs.err_inject.inject.set(type=PcsErrorInjectionType.LOA)
 
 
-async def set_hi_ser(port: "FreyaEdunPort") -> None:
+async def inject_hi_ser_once(port: "FreyaEdunPort") -> None:
     """
     Inject a High SER (HI-SER) event from the port immediately when called.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     """
-    await port.layer1_adv.pcs.tx_err_inject.set(type=PcsErrorInjectionType.HISER)
+    await port.layer1_adv.pcs.err_inject.inject.set(type=PcsErrorInjectionType.HISER)
 
 
 async def set_hi_ser_alarm(port: "FreyaEdunPort", on: bool) -> None:
@@ -695,31 +809,50 @@ async def set_hi_ser_alarm(port: "FreyaEdunPort", on: bool) -> None:
         await port.layer1_adv.pcs.hi_ser.alarm.set_off()
 
 
-async def clear_layer1_counters(port: "FreyaEdunPort") -> None:
+async def clear_rx_err_cnt(port: "FreyaEdunPort") -> None:
     """
-    Clear Layer 1 advanced statistics counters on the port.
+    Clear Rx Layer 1 advanced statistics error counters on the port.
     """
 
-    await port.layer1_adv.clear.set_all()
+    await port.layer1_adv.clear.set_rx()
+
+
+async def clear_tx_err_cnt(port: "FreyaEdunPort") -> None:
+    """
+    Clear Tx Layer 1 advanced statistics error counters on the port.
+    """
+
+    await port.layer1_adv.clear.set_tx()
 
 
 
 __all__ = (
-    "get_tx_ppm_curr",
-    "get_rx_ppm_curr",
-    "get_rx_ppm_min",
-    "get_rx_ppm_max",
-    "get_rx_ppm",
-    "get_tx_datarate_curr",
-    "get_rx_datarate_curr",
-    "get_rx_datarate_min",
-    "get_rx_datarate_max",
-    "get_rx_datarate",
     "get_tx_freq_curr",
+    "get_tx_freq_min",
+    "get_tx_freq_max",
+    "get_tx_freq_all",
+    "get_tx_ppm_curr",
+    "get_tx_ppm_min",
+    "get_tx_ppm_max",
+    "get_tx_ppm_all",
+    "get_tx_freq",
     "get_rx_freq_curr",
     "get_rx_freq_min",
     "get_rx_freq_max",
+    "get_rx_freq_all",
+    "get_rx_ppm_curr",
+    "get_rx_ppm_min",
+    "get_rx_ppm_max",
+    "get_rx_ppm_all",
     "get_rx_freq",
+    "get_tx_datarate_curr",
+    "get_tx_datarate_min",
+    "get_tx_datarate_max",
+    "get_tx_datarate_all",
+    "get_rx_datarate_curr",
+    "get_rx_datarate_min",
+    "get_rx_datarate_max",
+    "get_rx_datarate_all",
     "get_cdr_lol_status",
     "get_rx_pcsl_skew",
     "get_hi_ber_status",
@@ -729,17 +862,15 @@ __all__ = (
     "get_deg_ser_thresholds",
     "get_lf_status",
     "get_rf_status",
+    "get_lf_rf_status",
     "get_link_down_status",
-    "get_errcwd_cnt_since_clear",
-    "get_itb_cnt_since_clear",
-    "get_link_down_cnt_since_clear",
-    "get_loa_cnt_since_clear",
-    "get_lf_cnt_since_clear",
-    "get_rf_cnt_since_clear",
-    "set_errcwd",
-    "set_itb",
-    "set_loa",
-    "set_hi_ser",
+    "get_rx_errors_since_clear",
+    "get_tx_errors_since_clear",
+    "inject_errcwd_once",
+    "inject_itb_once",
+    "inject_loa_once",
+    "inject_hi_ser_once",
     "set_hi_ser_alarm",
-    "clear_layer1_counters",
+    "clear_rx_err_cnt",
+    "clear_tx_err_cnt",
 )
