@@ -6,6 +6,8 @@ Command Data Block (CDB) is a data structure used in SCSI (Small Computer System
 
 .. currentmodule:: xoa_driver.hlfuncs.cmis.cdb
 
+.. rubric:: CDB Commands and Replies
+
 .. autosummary::
 
     cmd_0000h_query_status_cmd
@@ -52,6 +54,11 @@ Command Data Block (CDB) is a data structure used in SCSI (Small Computer System
     cmd_010ah_commit_firmware_image_reply
     cmd_custom_cmd_reply
     cmd_custom_cmd_request
+
+.. rubric:: CDB Reply Data Structures
+    
+.. autosummary::
+
     CMD0000hQueryStatusReply
     CMD0001hEnterPasswordReply
     CMD0002hChangePasswordReply
@@ -74,6 +81,12 @@ Command Data Block (CDB) is a data structure used in SCSI (Small Computer System
     CMD0109hRunFirmwareImageReply
     CMD010AhCommitFirmwareImageReply
     CustomCMDReply
+
+
+.. rubric:: CDB Firmware Download Procedure
+    
+.. autosummary::
+
     firmware_download_procedure
     
 Module Contents

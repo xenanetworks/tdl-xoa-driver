@@ -1144,22 +1144,13 @@ class FaultSignaling(IntEnum):
     """Disabled"""
 
 
-class LocalFaultStatus(IntEnum):
-    """Local Fault Status"""
+class ErrorStatus(IntEnum):
+    """Error Status"""
 
-    OK = 0
-    """OK"""
-    LOCAL_FAULT = 1
-    """Local Fault"""
-
-
-class RemoteFaultStatus(IntEnum):
-    """Remote Fault Status"""
-
-    OK = 0
-    """OK"""
-    REMOTE_FAULT = 1
-    """Remote Fault"""
+    FALSE = 0
+    """No error"""
+    TRUE = 1
+    """Error is present"""
 
 
 class TPLDMode(IntEnum):
@@ -3320,3 +3311,38 @@ class TrueFalse(IntEnum):
     
     TRUE = 1
     """True"""
+
+
+class PcsErrorInjectionType(IntEnum):
+    """PCS Error Injection Type"""
+
+    UNKNOWN = 0
+    """Unknown"""
+
+    LOA = 1
+    """Loss of Alignment (LOA) error injection"""
+
+    HISER = 2
+    """HI-SER error injection"""
+
+    ITB = 3
+    """Invalid Transmission Block (ITB) error injection"""
+
+    ERRCWD = 4
+    """64b/66b Error Codeword (ERRCWD) error injection"""
+
+
+class ClearStatsDirection(IntFlag):
+    """Direction for clearing stats"""
+
+    NONE = 0
+    """No counter will be cleared"""
+
+    RX = 1
+    """Clear RX stats"""
+
+    TX = 2
+    """Clear TX stats"""
+
+    ALL = 3
+    """Clear all stats (RX and TX)"""
