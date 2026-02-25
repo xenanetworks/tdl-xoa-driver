@@ -6,29 +6,33 @@ The ``layer1_adv`` module offers high-level functions for advanced Layer 1 confi
 .. currentmodule:: xoa_driver.hlfuncs.layer1_adv
 
 
+.. rubric:: PCSL Skew
+
 .. autosummary::
 
     get_rx_pcsl_skew
+
+
+.. rubric:: CDR LOL
 
 .. autosummary::
 
     get_cdr_lol_status
 
+
+.. rubric:: PCS Alarms
+
 .. autosummary::
     
     get_hi_ber_status
-
-
-.. autosummary::
-
     set_hi_ser_alarm
     get_hi_ser_status
-
-.. autosummary::
-
     get_deg_ser_status
     set_deg_ser_thresholds
     get_deg_ser_thresholds
+
+
+.. rubric:: Reconc. Sublayer Alarms
 
 .. autosummary::
 
@@ -36,6 +40,9 @@ The ``layer1_adv`` module offers high-level functions for advanced Layer 1 confi
     get_rf_status
     get_lf_rf_status
     get_link_down_status
+
+
+.. rubric:: Tx/Rx Error Statistics
 
 .. autosummary::
 
@@ -45,6 +52,10 @@ The ``layer1_adv`` module offers high-level functions for advanced Layer 1 confi
     clear_rx_err_cnt
     clear_tx_err_cnt
 
+
+.. rubric:: PCS Error Injection
+
+
 .. autosummary::
 
     inject_errcwd_once
@@ -53,47 +64,55 @@ The ``layer1_adv`` module offers high-level functions for advanced Layer 1 confi
     inject_hi_ser_once
     
 
+.. rubric:: Port Tx/Rx Frequency and PPM (current, min, max)
+
 .. autosummary::
 
     get_tx_freq
     get_rx_freq
 
 
+.. rubric:: Port Tx/Rx Frequency (Hz)
+
+If you only want to get frequency parameters, you can use the following functions.
+
 .. autosummary::
 
     get_tx_freq_all
-    get_tx_ppm_all
-    get_tx_datarate_all
-
-    get_rx_freq_all
-    get_rx_ppm_all
-    get_rx_datarate_all
-
-
-.. autosummary::
-
     get_tx_freq_curr
     get_tx_freq_min
     get_tx_freq_max
-    
-    get_tx_ppm_curr
-    get_tx_ppm_min
-    get_tx_ppm_max
-
-    get_tx_datarate_curr
-    get_tx_datarate_min
-    get_tx_datarate_max
-    
-.. autosummary::
-
+    get_rx_freq_all
     get_rx_freq_curr
     get_rx_freq_min
     get_rx_freq_max
+
+
+.. rubric:: Port Tx/Rx Frequency Offset (PPM)
+
+If you only want to get frequency offset parameters, you can use the following functions.
+
+.. autosummary::
     
+    get_tx_ppm_all
+    get_tx_ppm_curr
+    get_tx_ppm_min
+    get_tx_ppm_max
+    get_rx_ppm_all
     get_rx_ppm_curr
     get_rx_ppm_min
     get_rx_ppm_max
+
     
+.. rubric:: Port Tx/Rx Data Rate (bps)
+
+.. autosummary::
+
+    get_tx_datarate_all
+    get_tx_datarate_curr
+    get_tx_datarate_min
+    get_tx_datarate_max
+    get_rx_datarate_all
     get_rx_datarate_curr
     get_rx_datarate_min
     get_rx_datarate_max

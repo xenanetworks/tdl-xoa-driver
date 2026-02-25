@@ -136,7 +136,7 @@ async def get_tx_ppm_all(port: "FreyaEdunPort") -> Tuple[int, int, int]:
 
 async def get_tx_freq(port: "FreyaEdunPort") -> Tuple[int, int, int, int, int, int]:
     """
-    Get the current, minimum, and maximum Tx frequency and frequency offset (ppm) of the specified port.
+    Get the current, minimum, and maximum Tx frequency (Hz) and frequency offset (ppm) of the specified port.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
@@ -330,7 +330,7 @@ async def get_rx_ppm_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0])
 
 async def get_rx_freq(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[Tuple[int, int, int, int, int, int]]:
     """
-    Get the current, minimum, and maximum Rx frequency and frequency offset (ppm) of the specified Serdes.
+    Get the current, minimum, and maximum Rx frequency (Hz) and frequency offset (ppm) of the specified Serdes.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]

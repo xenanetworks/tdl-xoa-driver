@@ -18,14 +18,46 @@ The module is designed to be used in conjunction with the HLAPI ``stream.packet.
 
 .. currentmodule:: xoa_driver.hlfuncs.headers
 
+.. rubric:: MPLS/IP/TCP/UDP Headers
+
 .. autosummary::
 
+    MPLS
     IPV4
     IPV6
     UDP
     TCP
+    
+.. rubric:: PTP and eCPRI Headers
+
+.. autosummary::
+
     PTP
     eCPRIGeneralDataTransfer
+
+.. rubric:: PFC and Pause Headers
+
+.. autosummary::
+
+    MACControlPFC
+    MACControlPause
+
+.. rubric:: InfiniBand Headers
+
+.. autosummary::
+
+    BTH
+    RETH
+    AETH
+    RDETH
+    DETH
+    IB
+    
+
+.. rubric:: DHCPv4 Headers
+
+.. autosummary::
+
     DHCPV4
     DHCPOptionMessageType
     DHCPOptionClientIdentifier
@@ -33,15 +65,6 @@ The module is designed to be used in conjunction with the HLAPI ``stream.packet.
     DHCPOptionParamRequestList
     DHCPOptionPad
     DHCPOptionEnd
-    MACControlPFC
-    MACControlPause
-    BTH
-    RETH
-    AETH
-    RDETH
-    DETH
-    IB
-    MPLS
 
 Module Contents
 -----------------

@@ -5,11 +5,15 @@ The ``config_io`` module offers high-level functions to save and load Xena Port 
 
 .. currentmodule:: xoa_driver.hlfuncs.config_io
 
+.. rubric:: Port Configuration File
+
 .. autosummary::
 
     save_port_config
     load_port_config
     port_config_from_file
+
+.. rubric:: Testbed Configuration File
 
 .. autosummary::
     
