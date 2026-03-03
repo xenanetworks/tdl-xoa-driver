@@ -2439,13 +2439,13 @@ class PL1_RX_DATARATE:
     _serdes_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        current: int = field(XmpInt(signed=False))
+        current: int = field(XmpLong(signed=False))
         """Current Rx data rate in bps."""
 
-        minimum: int = field(XmpInt(signed=False))
+        minimum: int = field(XmpLong(signed=False))
         """Minimum Rx data rate in bps."""
 
-        maximum: int = field(XmpInt(signed=False))
+        maximum: int = field(XmpLong(signed=False))
         """Maximum Rx data rate in bps."""
 
 
@@ -2474,13 +2474,13 @@ class PL1_TX_DATARATE:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        current: int = field(XmpInt(signed=False))
+        current: int = field(XmpLong(signed=False))
         """Current Tx data rate in bps."""
 
-        minimum: int = field(XmpInt(signed=False))
+        minimum: int = field(XmpLong(signed=False))
         """Minimum Tx data rate in bps."""
 
-        maximum: int = field(XmpInt(signed=False))
+        maximum: int = field(XmpLong(signed=False))
         """Maximum Tx data rate in bps."""
 
 
