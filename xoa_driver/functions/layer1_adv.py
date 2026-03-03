@@ -520,8 +520,8 @@ async def get_cdr_lol_status(port: "FreyaEdunPort", serdes_indices: List[int]) -
         cmds.append(port.layer1_adv.serdes[serdes_id].rx_cdr_lol.get())
     resps = await apply(*cmds)
     for resp in resps:
-        curr = True if resp.current_lol.value == 1 else False
-        latched = True if resp.latched_lol.value == 1 else False
+        curr = True if resp.current.value == 1 else False
+        latched = True if resp.latched.value == 1 else False
         results.append((curr, latched))
     return results
 
@@ -849,7 +849,7 @@ async def get_cdr_lol(port: "FreyaEdunPort", serdes_indices: List[int]) -> List[
 
     """
 
-    warnings.warn(message="get_cdr_lol is deprecated and will be removed in a future release. Please use get_cdr_lol_status instead.", category=DeprecationWarning)
+    warnings.warn(message="get_cdr_lol is deprecated and will be removed in a future release. Please use get_cdr_lol_status instead.", category=DeprecationWarning, stacklevel=2)
 
     return await get_cdr_lol_status(port, serdes_indices)
 
@@ -871,7 +871,7 @@ async def get_rx_lane_skew(port: "FreyaEdunPort", lane_indices: List[int]) -> Li
     :rtype: List[Tuple[int, int]]
     """
 
-    warnings.warn(message="get_rx_lane_skew is deprecated and will be removed in a future release. Please use get_rx_lane_skew_status instead.", category=DeprecationWarning)
+    warnings.warn(message="get_rx_lane_skew is deprecated and will be removed in a future release. Please use get_rx_lane_skew_status instead.", category=DeprecationWarning, stacklevel=2)
 
     return await get_rx_pcsl_skew(port, lane_indices)
 
@@ -893,7 +893,7 @@ async def get_hi_ber(port: "FreyaEdunPort") -> Tuple[bool, bool]:
     :rtype: Tuple[bool, bool]
     """
 
-    warnings.warn(message="get_hi_ber is deprecated and will be removed in a future release. Please use get_hi_ber_status instead.", category=DeprecationWarning)
+    warnings.warn(message="get_hi_ber is deprecated and will be removed in a future release. Please use get_hi_ber_status instead.", category=DeprecationWarning, stacklevel=2)
 
     return await get_hi_ber_status(port)
 
@@ -914,7 +914,7 @@ async def get_hi_ser(port: "FreyaEdunPort") -> Tuple[bool, bool, bool]:
     :return: A tuple containing the current and latched HI-SER status of the port.
     :rtype: Tuple[bool, bool, bool]
     """
-    warnings.warn(message="get_hi_ser is deprecated and will be removed in a future release. Please use get_hi_ser_status instead.", category=DeprecationWarning)
+    warnings.warn(message="get_hi_ser is deprecated and will be removed in a future release. Please use get_hi_ser_status instead.", category=DeprecationWarning, stacklevel=2)
 
     return await get_hi_ser_status(port)
 
@@ -935,7 +935,7 @@ async def get_deg_ser(port: "FreyaEdunPort") -> Tuple[bool, bool]:
     :rtype: Tuple[bool, bool]
     """
 
-    warnings.warn(message="get_deg_ser is deprecated and will be removed in a future release. Please use get_deg_ser_status instead.", category=DeprecationWarning)
+    warnings.warn(message="get_deg_ser is deprecated and will be removed in a future release. Please use get_deg_ser_status instead.", category=DeprecationWarning, stacklevel=2)
 
     return await get_deg_ser_status(port)
 
@@ -953,7 +953,7 @@ async def set_cw_err(port: "FreyaEdunPort") -> None:
     :type port: Union[Z800FreyaPort, Z1600EdunPort
     """
 
-    warnings.warn(message="set_cw_err is deprecated and will be removed in a future release. Please use inject_errcwd_once instead.", category=DeprecationWarning)
+    warnings.warn(message="set_cw_err is deprecated and will be removed in a future release. Please use inject_errcwd_once instead.", category=DeprecationWarning, stacklevel=2)
 
     await inject_errcwd_once(port)
 
@@ -971,7 +971,7 @@ async def set_itb(port: "FreyaEdunPort") -> None:
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     """
 
-    warnings.warn(message="set_itb is deprecated and will be removed in a future release. Please use inject_itb_once instead.", category=DeprecationWarning)
+    warnings.warn(message="set_itb is deprecated and will be removed in a future release. Please use inject_itb_once instead.", category=DeprecationWarning, stacklevel=2)
 
     await inject_itb_once(port)
 
@@ -991,7 +991,7 @@ async def get_cw_err_since_last(port: "FreyaEdunPort") -> int:
     :rtype: int
     """
 
-    warnings.warn(message="get_cw_err_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+    warnings.warn(message="get_cw_err_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning, stacklevel=2)
 
     resp = await port.layer1_adv.pcs.err_inject.rx_cnt.get()
     return resp.err_cw_count
@@ -1012,7 +1012,7 @@ async def get_itb_since_last(port: "FreyaEdunPort") -> int:
     :rtype: int
     """
 
-    warnings.warn(message="get_itb_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+    warnings.warn(message="get_itb_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning, stacklevel=2)
 
     resp = await port.layer1_adv.pcs.err_inject.rx_cnt.get()
     return resp.itb_count
@@ -1032,7 +1032,7 @@ async def get_total_loa_since_last(port: "FreyaEdunPort") -> int:
     :return: The number of LOA events received since last counter clear.
     :rtype: int
     """
-    warnings.warn(message="get_total_loa_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+    warnings.warn(message="get_total_loa_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning, stacklevel=2)
 
     resp = await port.layer1_adv.pcs.err_inject.rx_cnt.get()
     return resp.loa_count
@@ -1053,7 +1053,7 @@ async def get_link_down_since_last(port: "FreyaEdunPort") -> int:
     :rtype: int
     """
 
-    warnings.warn(message="get_link_down_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+    warnings.warn(message="get_link_down_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning, stacklevel=2)
 
     resp = await port.layer1_adv.pcs.err_inject.rx_cnt.get()
     return resp.link_down_count
@@ -1073,7 +1073,7 @@ async def get_local_fault_since_last(port: "FreyaEdunPort") -> int:
     :rtype: int
     """
 
-    warnings.warn(message="get_local_fault_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+    warnings.warn(message="get_local_fault_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning, stacklevel=2)
 
     resp = await port.layer1.rs_fault.stats.get()
     return resp.lf_count
@@ -1094,7 +1094,7 @@ async def get_remote_fault_since_last(port: "FreyaEdunPort") -> int:
     :rtype: int
     """
 
-    warnings.warn(message="get_remote_fault_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+    warnings.warn(message="get_remote_fault_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning, stacklevel=2)
 
     resp = await port.layer1.rs_fault.stats.get()
     return resp.rf_count
