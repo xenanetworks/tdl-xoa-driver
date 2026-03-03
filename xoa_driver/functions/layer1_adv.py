@@ -22,6 +22,7 @@ from ..enums import (
     OnOff,
     PcsErrorInjectionType,
 )
+import warnings
 
 async def get_tx_freq_curr(port: "FreyaEdunPort") -> int:
     """
@@ -500,7 +501,6 @@ async def get_rx_datarate_all(port: "FreyaEdunPort", serdes_indices: List[int] =
     return results
 
 
-
 async def get_cdr_lol_status(port: "FreyaEdunPort", serdes_indices: List[int]) -> List[Tuple[bool, bool]]:
     """
     Get the current and latched CDR LOL status of the specified Serdes.
@@ -524,6 +524,9 @@ async def get_cdr_lol_status(port: "FreyaEdunPort", serdes_indices: List[int]) -
         latched = True if resp.latched_lol.value == 1 else False
         results.append((curr, latched))
     return results
+
+
+
 
 
 async def get_rx_pcsl_skew(port: "FreyaEdunPort", lane_indices: List[int]) -> List[Tuple[int, int]]:
@@ -753,8 +756,8 @@ async def get_tx_errors_since_clear(port: "FreyaEdunPort") -> Tuple[int, int, in
 
     resp = await port.layer1_adv.pcs.err_inject.tx_cnt.get()
     return (resp.loa_count, resp.itb_count, resp.err_cw_count, resp.link_down_count)
-
-
+    
+        
 async def inject_errcwd_once(port: "FreyaEdunPort") -> None:
     """
     Inject a 64b/66b codeword error from the port immediately when called.
@@ -825,6 +828,279 @@ async def clear_tx_err_cnt(port: "FreyaEdunPort") -> None:
     await port.layer1_adv.clear.set_tx()
 
 
+# Deprecated functions
+async def get_cdr_lol(port: "FreyaEdunPort", serdes_indices: List[int]) -> List[Tuple[bool, bool]]:
+
+    """
+    :py:func:`get_cdr_lol` is deprecated and will be removed in a future release. Please use :py:func:`get_cdr_lol_status` instead.
+
+    .. deprecated:: 1.8
+    
+    Get the current and latched CDR LOL status of the specified Serdes.
+
+    True means error condition is present, while False means error condition is not present.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :param serdes_indices: The indices of the Serdes.
+    :type serdes_indices: List[int]
+    :return: A list of tuples containing the current and latched CDR LOL status for each specified Serdes.
+    :rtype: List[Tuple[bool, bool]]
+
+    """
+
+    warnings.warn(message="get_cdr_lol is deprecated and will be removed in a future release. Please use get_cdr_lol_status instead.", category=DeprecationWarning)
+
+    return await get_cdr_lol_status(port, serdes_indices)
+
+
+async def get_rx_lane_skew(port: "FreyaEdunPort", lane_indices: List[int]) -> List[Tuple[int, int]]:
+
+    """
+    :py:func:`get_rx_lane_skew` is deprecated and will be removed in a future release. Please use :py:func:`get_rx_pcsl_skew` instead.
+
+    .. deprecated:: 1.8
+
+    Get Rx relative skew measured in bits of the specified PCS lanes.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :param lane_indices: The indices of the PCS lanes.
+    :type lane_indices: List[int]
+    :return: A list of tuples containing the current and latched RX lane skew for each specified PCS lane.
+    :rtype: List[Tuple[int, int]]
+    """
+
+    warnings.warn(message="get_rx_lane_skew is deprecated and will be removed in a future release. Please use get_rx_lane_skew_status instead.", category=DeprecationWarning)
+
+    return await get_rx_pcsl_skew(port, lane_indices)
+
+
+async def get_hi_ber(port: "FreyaEdunPort") -> Tuple[bool, bool]:
+
+    """
+    :py:func:`get_hi_ber` is deprecated and will be removed in a future release. Please use :py:func:`get_hi_ber_status` instead.
+
+    .. deprecated:: 1.8
+
+    Get the current and latched HI-BER status of the specified port.
+
+    True means error condition is present, while False means error condition is not present.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: A tuple containing the current and latched HI-BER status of the port.
+    :rtype: Tuple[bool, bool]
+    """
+
+    warnings.warn(message="get_hi_ber is deprecated and will be removed in a future release. Please use get_hi_ber_status instead.", category=DeprecationWarning)
+
+    return await get_hi_ber_status(port)
+
+
+async def get_hi_ser(port: "FreyaEdunPort") -> Tuple[bool, bool, bool]:
+
+    """
+    :py:func:`get_hi_ser` is deprecated and will be removed in a future release. Please use :py:func:`get_hi_ser_status` instead.
+
+    .. deprecated:: 1.8
+
+    Get the current and latched HI-SER status of the specified port.
+    True means error condition is present, while False means error condition is not present.
+    HI-SER is signalled if 5560 RS-FEC symbol errors are detected in contiguous block of 8192 non-overlapping RS-FEC codewords.
+    
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: A tuple containing the current and latched HI-SER status of the port.
+    :rtype: Tuple[bool, bool, bool]
+    """
+    warnings.warn(message="get_hi_ser is deprecated and will be removed in a future release. Please use get_hi_ser_status instead.", category=DeprecationWarning)
+
+    return await get_hi_ser_status(port)
+
+
+async def get_deg_ser(port: "FreyaEdunPort") -> Tuple[bool, bool]:
+
+    """
+    :py:func:`get_deg_ser` is deprecated and will be removed in a future release. Please use :py:func:`get_deg_ser_status` instead.
+
+    .. deprecated:: 1.8
+
+    Get the current and latched DEG-SER status of the specified port.
+    True means error condition is present, while False means error condition is not present.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: A tuple containing the current and latched DEG-SER status of the port.
+    :rtype: Tuple[bool, bool]
+    """
+
+    warnings.warn(message="get_deg_ser is deprecated and will be removed in a future release. Please use get_deg_ser_status instead.", category=DeprecationWarning)
+
+    return await get_deg_ser_status(port)
+
+
+async def set_cw_err(port: "FreyaEdunPort") -> None:
+
+    """
+    :py:func:`set_cw_err` is deprecated and will be removed in a future release. Please use :py:func:`inject_errcwd_once` instead.
+
+    .. deprecated:: 1.8
+
+    Inject a 64b/66b codeword error from the port immediately when called.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort
+    """
+
+    warnings.warn(message="set_cw_err is deprecated and will be removed in a future release. Please use inject_errcwd_once instead.", category=DeprecationWarning)
+
+    await inject_errcwd_once(port)
+
+
+async def set_itb(port: "FreyaEdunPort") -> None:
+
+    """
+    :py:func:`set_itb` is deprecated and will be removed in a future release. Please use :py:func:`inject_itb_once` instead.
+
+    .. deprecated:: 1.8
+
+    Inject an invalid 256b/257b transcode block (ITB) from the port immediately when called.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    """
+
+    warnings.warn(message="set_itb is deprecated and will be removed in a future release. Please use inject_itb_once instead.", category=DeprecationWarning)
+
+    await inject_itb_once(port)
+
+
+async def get_cw_err_since_last(port: "FreyaEdunPort") -> int:
+
+    """
+    :py:func:`get_cw_err_since_last` is deprecated and will be removed in a future release. Please use :py:func:`get_rx_errors_since_clear` instead.
+
+    .. deprecated:: 1.8
+
+    Get the number of 64b/66b erroneous codewords received since last counter clear.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The number of 64b/66b erroneous codewords received since last counter clear.
+    :rtype: int
+    """
+
+    warnings.warn(message="get_cw_err_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+
+    resp = await port.layer1_adv.pcs.err_inject.rx_cnt.get()
+    return resp.err_cw_count
+
+
+async def get_itb_since_last(port: "FreyaEdunPort") -> int:
+
+    """
+    :py:func:`get_itb_since_last` is deprecated and will be removed in a future release. Please use :py:func:`get_rx_errors_since_clear` instead.
+
+    .. deprecated:: 1.8
+
+    Get the number of 256b/257 ITBs received since last counter clear.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The number of 256b/257 ITBs received since last counter clear.
+    :rtype: int
+    """
+
+    warnings.warn(message="get_itb_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+
+    resp = await port.layer1_adv.pcs.err_inject.rx_cnt.get()
+    return resp.itb_count
+
+
+async def get_total_loa_since_last(port: "FreyaEdunPort") -> int:
+
+    """
+    :py:func:`get_total_loa_since_last` is deprecated and will be removed in a future release. Please use :py:func:`get_rx_errors_since_clear` instead.
+
+    .. deprecated:: 1.8
+
+    Get the number of LOA events received since last counter clear.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The number of LOA events received since last counter clear.
+    :rtype: int
+    """
+    warnings.warn(message="get_total_loa_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+
+    resp = await port.layer1_adv.pcs.err_inject.rx_cnt.get()
+    return resp.loa_count
+
+
+async def get_link_down_since_last(port: "FreyaEdunPort") -> int:
+
+    """
+    :py:func:`get_link_down_since_last` is deprecated and will be removed in a future release. Please use :py:func:`get_rx_errors_since_clear` instead.
+
+    .. deprecated:: 1.8
+
+    Get the number of link down events received since last counter clear.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The number of link down events received since last counter clear.
+    :rtype: int
+    """
+
+    warnings.warn(message="get_link_down_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+
+    resp = await port.layer1_adv.pcs.err_inject.rx_cnt.get()
+    return resp.link_down_count
+
+async def get_local_fault_since_last(port: "FreyaEdunPort") -> int:
+
+    """
+    :py:func:`get_local_fault_since_last` is deprecated and will be removed in a future release. Please use :py:func:`get_rx_errors_since_clear` instead.
+
+    .. deprecated:: 1.8
+
+    Get the number of local fault events received since last counter clear.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The number of local fault events received since last counter clear.
+    :rtype: int
+    """
+
+    warnings.warn(message="get_local_fault_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+
+    resp = await port.layer1.rs_fault.stats.get()
+    return resp.lf_count
+
+async def get_remote_fault_since_last(port: "FreyaEdunPort") -> int:
+
+    """
+    
+    :py:func:`get_remote_fault_since_last` is deprecated and will be removed in a future release. Please use :py:func:`get_rx_errors_since_clear` instead.
+
+    .. deprecated:: 1.8
+
+    Get the number of remote fault events received since last counter clear.
+
+    :param port: The port instance.
+    :type port: Union[Z800FreyaPort, Z1600EdunPort]
+    :return: The number of remote fault events received since last counter clear.
+    :rtype: int
+    """
+
+    warnings.warn(message="get_remote_fault_since_last is deprecated and will be removed in a future release. Please use get_rx_errors_since_clear instead.", category=DeprecationWarning)
+
+    resp = await port.layer1.rs_fault.stats.get()
+    return resp.rf_count
+
+
+
 
 __all__ = (
     "get_tx_freq_curr",
@@ -873,4 +1149,19 @@ __all__ = (
     "set_hi_ser_alarm",
     "clear_rx_err_cnt",
     "clear_tx_err_cnt",
+    # Deprecated functions
+    "get_cdr_lol",
+    "get_rx_lane_skew",
+    "get_hi_ber",
+    "get_hi_ser",
+    "get_deg_ser",
+    "set_cw_err",
+    "set_itb",
+    # Functions to get individual Rx error counters since last clear.
+    "get_cw_err_since_last",
+    "get_itb_since_last",
+    "get_total_loa_since_last",
+    "get_link_down_since_last",
+    "get_local_fault_since_last",
+    "get_remote_fault_since_last",
 )

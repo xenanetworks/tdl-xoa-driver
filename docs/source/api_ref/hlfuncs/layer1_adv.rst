@@ -116,6 +116,25 @@ If you only want to get frequency offset parameters, you can use the following f
     get_rx_datarate_curr
     get_rx_datarate_min
     get_rx_datarate_max
+
+
+.. rubric:: Deprecated Functions
+
+.. autosummary::
+    
+    get_cdr_lol
+    get_rx_lane_skew
+    get_hi_ber
+    get_hi_ser
+    get_deg_ser
+    set_cw_err
+    set_itb
+    get_cw_err_since_last
+    get_itb_since_last
+    get_total_loa_since_last
+    get_link_down_since_last
+    get_local_fault_since_last
+    get_remote_fault_since_last
     
 
 Module Contents
