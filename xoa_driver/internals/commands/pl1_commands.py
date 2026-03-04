@@ -2402,13 +2402,13 @@ class PL1_TX_FREQ:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        current: int = field(XmpInt(signed=False))
+        current: int = field(XmpLong(signed=False))
         """Current port Tx frequency in Hz."""
 
-        minimum: int = field(XmpInt(signed=False))
+        minimum: int = field(XmpLong(signed=False))
         """Minimum port Tx frequency in Hz."""
 
-        maximum: int = field(XmpInt(signed=False))
+        maximum: int = field(XmpLong(signed=False))
         """Maximum port Tx frequency in Hz."""
 
 
