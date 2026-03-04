@@ -2584,14 +2584,16 @@ class PL1_INJECT_ERR_CNT:
         loa_count: int = field(XmpLong(signed=False))
         """Number of cumulated Tx Loss of Alignment (LOA) events since the last clearance."""
 
+        hi_ser_count: int = field(XmpLong(signed=False))
+        """Number of cumulated Tx High SER events since the last clearance."""
+        
         itb_count: int = field(XmpLong(signed=False))
         """Number of cumulated Tx Invalid 256b/257b Transcode Blocks since the last clearance."""
 
         err_cw_count: int = field(XmpLong(signed=False))
         """Number of erroneous Tx 64b/66b codewords since the last clearance."""
 
-        link_down_count: int = field(XmpLong(signed=False))
-        """Number of cumulated Tx Link Down events since the last clearance."""
+        
 
 
     def get(self) -> Token[GetDataAttr]:

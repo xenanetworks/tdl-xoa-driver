@@ -746,16 +746,16 @@ async def get_rx_errors_since_clear(port: "FreyaEdunPort") -> Tuple[int, int, in
 
 async def get_tx_errors_since_clear(port: "FreyaEdunPort") -> Tuple[int, int, int, int]:
     """
-    Get the inject (Tx) number of LOA, 256b/257 ITBs, 64b/66b erroneous codewords, and link down events since the last counter clear.
+    Get the inject (Tx) number of LOA, HI-SER, 256b/257 ITBs, 64b/66b erroneous codewords since the last counter clear.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
-    :return: A tuple containing the injected number of LOA, 256b/257 ITBs, 64b/66b erroneous codewords, and link down events, since the last counter clear per port.
+    :return: A tuple containing the injected number of LOA, HI-SER, 256b/257 ITBs, 64b/66b erroneous codewords, since the last counter clear per port.
     :rtype: Tuple[int, int, int, int]
     """
 
     resp = await port.layer1_adv.pcs.err_inject.tx_cnt.get()
-    return (resp.loa_count, resp.itb_count, resp.err_cw_count, resp.link_down_count)
+    return (resp.loa_count, resp.hi_ser_count, resp.itb_count, resp.err_cw_count)
     
         
 async def inject_errcwd_once(port: "FreyaEdunPort") -> None:
