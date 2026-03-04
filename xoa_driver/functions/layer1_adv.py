@@ -871,7 +871,7 @@ async def get_rx_lane_skew(port: "FreyaEdunPort", lane_indices: List[int]) -> Li
     :rtype: List[Tuple[int, int]]
     """
 
-    warnings.warn(message="get_rx_lane_skew is deprecated and will be removed in a future release. Please use get_rx_lane_skew_status instead.", category=DeprecationWarning, stacklevel=2)
+    warnings.warn(message="get_rx_lane_skew is deprecated and will be removed in a future release. Please use get_rx_pcsl_skew instead.", category=DeprecationWarning, stacklevel=2)
 
     return await get_rx_pcsl_skew(port, lane_indices)
 
