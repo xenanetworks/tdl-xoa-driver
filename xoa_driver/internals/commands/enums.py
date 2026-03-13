@@ -1062,7 +1062,7 @@ class MediaConfigurationType(IntEnum):
     OSFP_NRZ = 120
     """OSFP, 56G serdes, NRZ"""
 
-    QSFP_DD_NRZ_ANLT = 121
+    QSFP_DD_NRZ_ANLT = QSFPDD_NRZ_ANLT = 121
     """QSFP-DD, 25G serdes, L1/ANLT"""
 
     OSFP_NRZ_ANLT = 122
@@ -1071,16 +1071,16 @@ class MediaConfigurationType(IntEnum):
     QSFP28_NRZ_ANLT = 123
     """QSFP28, 25G serdes, L1/ANLT"""
 
-    SMPX_112 = 124
+    SMPX_112 = SMPX112 = 124
     """SMPX 112Gbps serdes"""
 
-    SMPX_224 = 125
+    SMPX_224 = SMPX224 = 125
     """SMPX 224Gbps serdes"""
 
-    OSFP_1600 = 126
+    OSFP_1600 = OSFP1600 = 126
     """OSFP 1.6T"""
     
-    OSFP_1600_ANLT = 127
+    OSFP_1600_ANLT = OSFP1600_ANLT = 127
     """OSFP 1.6T, L1/ANLT"""
 
     UNKNOWN = 255
