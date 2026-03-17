@@ -90,6 +90,7 @@ class P_LLDP_CONFIG:
     _connection: 'interfaces.IConnection'
     _module: int
     _port: int
+    _lldp_agent_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
         
@@ -149,7 +150,7 @@ class P_LLDP_CONFIG:
         :rtype: P_LLDP_CONFIG.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
 
     def set(self, reinit_delay: int, tx_interval: int, tx_hold_multiplier: int, tx_delay: int) -> Token[None]:
         """Set the LLDP configuration for the port.
@@ -164,7 +165,7 @@ class P_LLDP_CONFIG:
         :type tx_delay: int
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, reinit_delay=reinit_delay, tx_interval=tx_interval, tx_hold_multiplier=tx_hold_multiplier, tx_delay=tx_delay))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex], reinit_delay=reinit_delay, tx_interval=tx_interval, tx_hold_multiplier=tx_hold_multiplier, tx_delay=tx_delay))
 
 
 @register_command
@@ -208,6 +209,7 @@ class P_LLDP_DATA:
     _connection: 'interfaces.IConnection'
     _module: int
     _port: int
+    _lldp_agent_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
         
@@ -226,7 +228,7 @@ class P_LLDP_DATA:
         :rtype: P_LLDP_DATA.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
 
     def set(self, data_unit: Hex) -> Token[None]:
         """Set the LLDPDU for the specified LLDP agent on the port.
@@ -235,7 +237,7 @@ class P_LLDP_DATA:
         :type data_unit: Hex
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, data_unit=data_unit))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex], data_unit=data_unit))
     
 
 @register_command
@@ -279,6 +281,7 @@ class P_LLDP_HEADER:
     _connection: 'interfaces.IConnection'
     _module: int
     _port: int
+    _lldp_agent_xindex: int
 
 
     class GetDataAttr(ResponseBodyStruct):
@@ -310,7 +313,7 @@ class P_LLDP_HEADER:
         :rtype: P_LLDP_HEADER.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
 
     def set(self, header: Hex) -> Token[None]:
         """Set the description of the port.
@@ -319,7 +322,7 @@ class P_LLDP_HEADER:
         :type header: Hex
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, header=header))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex], header=header))
     
 
 @register_command
@@ -409,6 +412,7 @@ class P_LLDP_OPMODE:
     _connection: 'interfaces.IConnection'
     _module: int
     _port: int
+    _lldp_agent_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
         
@@ -427,7 +431,7 @@ class P_LLDP_OPMODE:
         :rtype: P_LLDP_OPMODE.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
 
     def set(self, op_mode: LLDPOpMode) -> Token[None]:
         """Set the LLDP operational mode of the port.
@@ -436,7 +440,7 @@ class P_LLDP_OPMODE:
         :type op_mode: LLDPOpMode
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, op_mode=op_mode))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex], op_mode=op_mode))
 
 
 @register_command
