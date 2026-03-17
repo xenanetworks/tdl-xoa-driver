@@ -60,6 +60,22 @@ class P_LLDP_CLEAR:
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target=target))
     
+    clear_none = functools.partialmethod(set, LLDPClearTarget.NONE)
+    """Not clear LLDP stats or neighbors
+    """
+
+    clear_neighbor = functools.partialmethod(set, LLDPClearTarget.NEIGHBOR)
+    """Clear LLDP neighbor information, but not LLDP statistics.
+    """
+
+    clear_stats = functools.partialmethod(set, LLDPClearTarget.STATS)
+    """Clear LLDP statistics, but not LLDP neighbor information.
+    """
+
+    clear_all = functools.partialmethod(set, LLDPClearTarget.ALL)
+    """Clear both LLDP statistics and neighbor information.
+    """
+    
 
 @register_command
 @dataclass
@@ -149,7 +165,6 @@ class P_LLDP_CONFIG:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, reinit_delay=reinit_delay, tx_interval=tx_interval, tx_hold_multiplier=tx_hold_multiplier, tx_delay=tx_delay))
-  
 
 
 @register_command

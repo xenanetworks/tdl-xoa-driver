@@ -15,15 +15,22 @@ if TYPE_CHECKING:
 from .bases.port_l23_genuine import BasePortL23Genuine
 from .layer1_freya import Layer1
 from .layer1adv import Layer1Adv
+from .protocol.lldp import LLDP
 
 
 class FamilyFreya(BasePortL23Genuine):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
         self.dynamic = P_DYNAMIC(conn, module_id, port_id)
-        """L23 port's dynamic traffic change.
+        """Dynamic traffic change allows stream rate and packet size to be changed on the fly without stopping the traffic.
         
         :type: P_DYNAMIC
+        """
+
+        self.lldp = LLDP(conn, module_id, port_id)
+        """LLDP protocol support for the port.
+        
+        :type: LLDP
         """
 
     async def _setup(self) -> Self:
