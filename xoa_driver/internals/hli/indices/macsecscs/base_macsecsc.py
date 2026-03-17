@@ -197,7 +197,8 @@ class MACSecRxScConfig:
         """
 
 
-BS = TypeVar("BS")
+MST = TypeVar("MST")
+MSR = TypeVar("MSR")
 
 
 class BaseMacSecTxScIdx(BaseIndex):
@@ -226,7 +227,7 @@ class BaseMacSecTxScIdx(BaseIndex):
         return list(resp.txsc_indices)
 
     @classmethod
-    async def _new(cls: Type[BS], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> BS:
+    async def _new(cls: Type[MST], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> MST:
         await P_MACSEC_TXSC_CREATE(conn, *kind).set()
         return cls(conn, kind, observer) # type: ignore
 
@@ -257,6 +258,6 @@ class BaseMacSecRxScIdx(BaseIndex):
         return list(resp.rxsc_indices)
 
     @classmethod
-    async def _new(cls: Type[BS], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> BS:
+    async def _new(cls: Type[MSR], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> MSR:
         await P_MACSEC_RXSC_CREATE(conn, *kind).set()
         return cls(conn, kind, observer) # type: ignore
