@@ -3362,3 +3362,33 @@ class ClearStatsDirection(IntFlag):
 
     ALL = 3
     """Clear all stats (RX and TX)"""
+
+class LLDPClearTarget(IntFlag):
+    """LLDP Clear Target"""
+
+    NONE = 0
+    """Clear no entries"""
+
+    NEIGHBOR = 1
+    """Clear LLDP neighbor information."""
+
+    STATS = 2
+    """Clear LLDP statistics."""
+
+    ALL = 3
+    """Clear all LLDP information."""
+
+class LLDPOpMode(IntEnum):
+    """LLDP Operation Mode"""
+
+    DISABLE = 0
+    """Disable LLDP on the port. (Default)"""
+
+    TX_RX = 1
+    """Enable LLDP on the port in both transmission and reception modes."""
+
+    TX_ONLY = 2
+    """Enable LLDP with transmission mode only on the port."""
+
+    RX_ONLY = 3
+    """Enable LLDP with reception mode only on the port."""
