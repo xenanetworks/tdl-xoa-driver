@@ -53,12 +53,11 @@ class LLDPAgentIdx(BaseIndex):
         :type: P_LLDP_OPMODE
         """
 
-    async def delete(self):
-        await P_LLDP_DELETE(self._conn, *self.kind).set()
+    async def delete(self) -> None:
         """Delete the LLDP agent.
-
-        :type: P_LLDP_DELETE
         """
+
+        await P_LLDP_DELETE(self._conn, *self.kind).set()
 
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
