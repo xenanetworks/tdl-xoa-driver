@@ -36,13 +36,17 @@ from xoa_driver.internals.commands import (
     P_MACSEC_RXSC_PN,
     P_MACSEC_TXSC_NEXT_AN,
 )
+
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.utils import kind
+
 from xoa_driver.internals.utils.indices import observer as idx_obs
 from xoa_driver.internals.utils.indices import header_modifier_manager as hmm
 from ..base_index import BaseIndex
 
+MST = TypeVar("MST")
+MSR = TypeVar("MSR")
 
 class MACSecTxScConfig:
     """MACSec TX SC Configuration"""
@@ -195,10 +199,6 @@ class MACSecRxScConfig:
         
         :type: P_MACSEC_RXSC_PN
         """
-
-
-MST = TypeVar("MST")
-MSR = TypeVar("MSR")
 
 
 class BaseMacSecTxScIdx(BaseIndex):

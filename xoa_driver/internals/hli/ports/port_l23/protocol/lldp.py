@@ -18,7 +18,16 @@ LLDPAgentIndices = idx_mgr.IndexManager[LLDPAgentIdx]
 class LLDP:
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
 
-        self.agents: LLDPAgentIndices = idx_mgr.IndexManager(conn, LLDPAgentIdx, module_id, port_id)
+        self.agents: LLDPAgentIndices = idx_mgr.IndexManager(
+            conn, 
+            LLDPAgentIdx, 
+            module_id, 
+            port_id
+        )
+        """LLDP agents on the port.
+
+        :type: LLDPAgentIndices
+        """
 
         self.clear = P_LLDP_CLEAR(conn, module_id, port_id)
         """Clears LLDP data on a L23 port.

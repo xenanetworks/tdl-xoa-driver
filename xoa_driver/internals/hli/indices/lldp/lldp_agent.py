@@ -17,9 +17,9 @@ from xoa_driver.internals.commands import (
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.utils import kind
-    from xoa_driver.internals.utils.indices import observer as idx_obs
-from ..base_index import BaseIndex
 
+from xoa_driver.internals.utils.indices import observer as idx_obs
+from ..base_index import BaseIndex
 
 LA = TypeVar("LA")
 
