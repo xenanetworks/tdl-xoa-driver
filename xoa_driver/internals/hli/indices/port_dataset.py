@@ -52,13 +52,13 @@ class PortDatasetIdx(BaseIndex):
         :type: PD_SAMPLES
         """
 
-    async def delete(self):
-        await PD_DELETE(self._conn, *self.kind).set()
+    async def delete(self) -> None:
         """Delete a histogram.
 
         :type: PD_ENABLE
         """
 
+        await PD_DELETE(self._conn, *self.kind).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

@@ -44,13 +44,13 @@ class MatchTermIdx(BaseIndex):
         :type: PM_MATCH
         """
 
-    async def delete(self):
-        await PM_DELETE(self._conn, *self.kind).set()
+    async def delete(self) -> None:
         """Delete the match term.
         
         :type: PM_DELETE
         """
 
+        await PM_DELETE(self._conn, *self.kind).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

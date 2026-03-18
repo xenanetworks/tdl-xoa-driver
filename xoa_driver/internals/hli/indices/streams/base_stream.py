@@ -384,7 +384,7 @@ class BaseStreamIdx(BaseIndex):
         :type: PS_OPTIONS
         """
 
-    async def delete(self):
+    async def delete(self) -> None:
         """Delete the stream
 
         :type: PS_DELETE

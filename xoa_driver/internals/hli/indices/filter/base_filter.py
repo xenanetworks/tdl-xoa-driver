@@ -45,7 +45,7 @@ class BaseFilterIdx(BaseIndex):
         :type:  PF_CONDITION
         """
 
-    async def delete(self):
+    async def delete(self) -> None:
         """Delete filter.
         
         :type:  PF_DELETE

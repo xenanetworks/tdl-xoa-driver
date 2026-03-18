@@ -212,7 +212,7 @@ class BaseMacSecTxScIdx(BaseIndex):
         :type: MACSecTxScConfig
         """
 
-    async def delete(self):
+    async def delete(self) -> None:
         """Delete the TX SC
 
         :type: P_MACSEC_TXSC_DELETE
@@ -243,7 +243,7 @@ class BaseMacSecRxScIdx(BaseIndex):
         :type: MACSecRxScConfig
         """
 
-    async def delete(self):
+    async def delete(self) -> None:
         """Delete the RX SC
 
         :type: P_MACSEC_RXSC_DELETE
