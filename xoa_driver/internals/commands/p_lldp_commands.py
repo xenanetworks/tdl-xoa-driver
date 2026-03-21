@@ -442,6 +442,18 @@ class P_LLDP_OPMODE:
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex], op_mode=op_mode))
 
+    set_disable = functools.partialmethod(set, LLDPOpMode.DISABLE)
+    """Disable LLDP on the port. The port will not transmit LLDP frames, and any received LLDP frames will be discarded."""
+
+    set_tx_only = functools.partialmethod(set, LLDPOpMode.TX_ONLY)
+    """Enable LLDP transmission only. The port will transmit LLDP frames, but any received LLDP frames will be discarded."""
+
+    set_rx_only = functools.partialmethod(set, LLDPOpMode.RX_ONLY)
+    """Enable LLDP reception only. The port will not transmit LLDP frames, but it will process any received LLDP frames and learn neighbors."""
+
+    set_tx_rx = functools.partialmethod(set, LLDPOpMode.TX_RX)
+    """Enable both LLDP transmission and reception on the port. The port will transmit LLDP frames, and it will also process any received LLDP frames and learn neighbors."""
+
 
 @register_command
 @dataclass
