@@ -12,14 +12,15 @@ from xoa_driver.internals.commands import (
     PM_POSITION,
     PM_MATCH,
 )
+
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.utils import kind
+
 from xoa_driver.internals.utils.indices import observer as idx_obs
 from .base_index import BaseIndex
 
 MT = TypeVar("MT")
-
 
 class MatchTermIdx(BaseIndex):
     """L23 Match Term Index Manager"""
@@ -44,13 +45,13 @@ class MatchTermIdx(BaseIndex):
         :type: PM_MATCH
         """
 
-    async def delete(self):
-        await PM_DELETE(self._conn, *self.kind).set()
+    async def delete(self) -> None:
         """Delete the match term.
         
         :type: PM_DELETE
         """
 
+        await PM_DELETE(self._conn, *self.kind).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

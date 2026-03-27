@@ -56,8 +56,7 @@ from .enums import (
     RXCState,
     LinkState,
     FaultSignaling,
-    LocalFaultStatus,
-    RemoteFaultStatus,
+    ErrorStatus,
     TPLDMode,
     MulticastHeaderFormat,
     TrafficError,
@@ -69,6 +68,7 @@ from .enums import (
     MACSecRekeyMode,
     MACSecEncryptionMode,
     MACSecPNMode,
+    TrueFalse,
 )
 
 
@@ -566,23 +566,45 @@ class P_CAPABILITIES:
         max_i2c_frequency: int = field(XmpInt(), min_version=463)
         """maximum I2C frequency"""
         can_eyescan: int = field(XmpInt(), min_version=463)
-        """Bit 0 ==1 => Sampled Eye Scan supported."""
+        """
+        * Bit 0: Sampled Eyescan supported.
+        * Bit 1: Statistical Eye Scan supported (the Z100 Loki eye-scan).
+        * Bit 2: Eye slice supported for Edun.
+        """
+
         layer1_misc: int = field(XmpInt(), min_version=465)
         """
         * Bit 0: Can IEEE variant
         * Bit 1: Can ETC (Ethernet Consortium) PCS variant
-        * Bit 2: Can monitor PCS RX Lane Map
-        * Bit 3: Can control PCS TX Lane Map
-        * Bit 4: Can monitor PCS RX Lane Skew
-        * Bit 5: Can control PCS TX Lane Skew
+        * Bit 2: Can monitor PCS Rx Lane Map
+        * Bit 3: Can control PCS Tx Lane Map
+        * Bit 4: Can monitor PCS Rx Lane Skew
+        * Bit 5: Can control PCS Tx Lane Skew
         * Bit 6: Can FEC error injection
+        * Bit 7: Can P/N Polarity Swap
         * Bit 8: Can Pre-coding
         * Bit 9: Can Gray-coding
+        * Bit 10: Can Rx Pre-coding config
+        * Bit 11: Can Rx Pre-coding Endianness
+        * Bit 12: Can Tx Pre-coding config
+        * Bit 13: Can Tx Pre-coding Endianness
+        * Bit 14: Can Rx Gray-coding config
+        * Bit 15: Can Rx Gray-coding Endianness
+        * Bit 16: Can Tx Gray-coding config
+        * Bit 17: Can Tx Gray-coding Endianness
+        * Bit 18: Can PMA Bit-mux config
+        * Bit 19: Can PMA Sym-mux config
         """
+
         # fec_engines: int = field(XmpInt(), min_version=465)
         # """The number of FEC engines available"""
-        can_macsec: int = field(XmpInt(), min_version=470)
-        """If the port supports MACsec"""
+
+        layer2_misc: int = field(XmpInt(), min_version=470)
+        """
+        * Bit 0: Can MACsec
+        * Bit 1: Can LLDP
+        """
+
         editable_mixlength_indices: int = field(XmpInt(), min_version=470)
         """
         * Bit 0: Is Mix length index 0 editable
@@ -3850,9 +3872,7 @@ class P_FAULTSIGNALING:
 @dataclass
 class P_FAULTSTATUS:
     """
-    Shows if a local or remote fault is currently being detected by the
-    Reconciliation Sub-layer of the port.
-
+    Returns the current and the latched Local and Remote Fault status of the port.
     """
 
     code: typing.ClassVar[int] = 349
@@ -3863,17 +3883,23 @@ class P_FAULTSTATUS:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        local_fault_status: LocalFaultStatus = field(XmpByte())
-        """coded byte, specifying the local fault."""
-        remote_fault_status: RemoteFaultStatus = field(XmpByte())
-        """coded byte, specifying the remote fault."""
+        lf_current: ErrorStatus = field(XmpByte())
+        """current local fault status of the port."""
+        rf_current: ErrorStatus = field(XmpByte())
+        """current remote fault status of the port."""
+        lf_latched: ErrorStatus = field(XmpByte())
+        """latched local fault status of the port."""
+        rf_latched: ErrorStatus = field(XmpByte())
+        """latched remote fault status of the port."""
 
     def get(self) -> Token[GetDataAttr]:
-        """Get whether a local or remote fault is currently being detected by the Reconciliation Sub-layer of the port.
+        """Get the current and latched Local and Remote Fault status of the port.
 
-        :return: whether a local or remote fault is currently being detected.
+        :return: current and latched Local and Remote Fault status of the port.
             * specifying the local fault
             * specifying the remote fault
+            * specifying the latched local fault
+            * specifying the latched remote fault
         :rtype: P_FAULTSTATUS.GetDataAttr
         """
 
@@ -6331,6 +6357,41 @@ class P_EDUN_RX_STATUS:
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
     
 
+
+
+@register_command
+@dataclass
+class P_FAULTCNT:
+    """
+    Returns the number of LF and RF conditions since last clearance. Use PP_RXCLEAR or PL1_CLEAR to reset the counters.
+    """
+
+    code: typing.ClassVar[int] = 338
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        lf_count: int = field(XmpLong(signed=False))
+        """Number of Local Fault conditions since last clearance."""
+
+        rf_count: int = field(XmpLong(signed=False))
+        """Number of Remote Fault conditions since the last clearance."""
+
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the number of LF and RF conditions since last clearance.
+
+        :return: Number of LF and RF conditions since last clearance
+        :rtype: P_FAULTCNT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
 __all__ = [
     "P_ARPREPLY",
     "P_ARPRXTABLE",
@@ -6456,4 +6517,6 @@ __all__ = [
     "P_MACSEC_TXSC_NEXT_PN",
     "P_MACSEC_RXSC_PN",
     "P_MACSEC_TXSC_NEXT_AN",
+    "P_EDUN_RX_STATUS",
+    "P_FAULTCNT",
 ]

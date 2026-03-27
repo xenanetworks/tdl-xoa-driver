@@ -987,103 +987,119 @@ class LoopBandwidth(IntEnum):
 class MediaConfigurationType(IntEnum):
     """Module Media Configuration Type"""
 
-    CFP4 = 0
-    """CFP4"""
+    ####################################################
+    SMPX112 = SMPX_112 = 124
+    """SMPX 112Gbps serdes"""
 
-    QSFP28 = QSFP28_NRZ = 1
-    """QSFP28, 25G serdes"""
+    SMPXX224 = SMP_224 = 125
+    """SMPX 224Gbps serdes"""
 
-    CXP = 2
-    """CXP"""
+    ####################################################
+    OSFP1600_TG = OSFP_1600 = OSFP1600 = 126
+    """OSFP 1.6T, Traffic Generation"""
+    
+    OSFP1600_L1 = OSFP_1600_ANLT = OSFP1600_ANLT = 127
+    """OSFP 1.6T, Layer 1"""
 
-    SFP28 = 3
-    """SFP28, 25G serdes"""
+    ####################################################
+    QSFPDD800_TG = QSFPDD800 = 110
+    """QSFP-DD800, 112G serdes, Traffic Generation"""
 
-    QSFP56 = QSFP56_PAM4 = 4
-    """QSFP56, 56G serdes"""
+    QSFPDD800_L1 = QSFPDD800_ANLT = 113
+    """QSFPDD800, 112G serdes, Layer 1"""
 
-    QSFPDD = QSFPDD_PAM4 = 5
-    """QSFP-DD, 56G serdes"""
+    ####################################################
+    QSFPDD_TG = QSFPDD = QSFPDD_PAM4 = 5
+    """QSFP-DD, 56G serdes, Traffic Generation"""
 
-    SFP56 = 6
-    """SFP56"""
+    QSFPDD_L1 = QSFPDD_ANLT = 117
+    """QSFP-DD, 56G serdes, Layer 1"""
 
-    SFP_DD = SFPDD = 7
+    ####################################################
+    QSFPDD_NRZ_TG = QSFP_DD_NRZ = QSFPDD_NRZ = 9
+    """QSFP-DD, 25G serdes, Traffic Generation"""
+
+    QSFPDD_NRZ_L1 = QSFP_DD_NRZ_ANLT = QSFPDD_NRZ_ANLT = 121
+    """QSFP-DD, 25G serdes, Layer 1"""
+
+    ####################################################
+    QSFP112_TG = QSFP112 = 111
+    """QSFP112, 112G serdes, Traffic Generation"""
+    
+    QSFP112_L1 = QSFP112_ANLT = 114
+    """QSFP112, 112G serdes, Layer 1"""
+
+    ####################################################
+    QSFP56_TG = QSFP56 = QSFP56_PAM4 = 4
+    """QSFP56, 56G serdes, Traffic Generation"""
+
+    QSFP56_L1 = QSFP56_ANLT = 118
+    """QSFP56, 56G serdes, Layer 1"""
+
+    ####################################################
+    QSFP28_NRZ_TG = QSFP28 = QSFP28_NRZ = 1
+    """QSFP28, 25G serdes, Traffic Generation"""
+
+    QSFP28_NRZ_L1 = QSFP28_NRZ_ANLT = 123
+    """QSFP28, 25G serdes, Layer 1"""
+
+    QSFP28_PAM4 = 10
+    """QSFP28 4x26G KP -> 2x53G KP PAM4"""
+
+    ####################################################
+    OSFP800_TG = OSFP800 = 112
+    """OSFP800, 112G serdes, Traffic Generation"""
+
+    OSFP800_L1 = OSFP800_ANLT = 115
+    """OSFP800, 112G serdes, Layer 1"""
+
+    ####################################################
+    OSFP_TG = OSFP = 116
+    """OSFP, 56G serdes, Traffic Generation"""
+
+    OSFP_L1 = OSFP_ANLT = 119
+    """OSFP, 56G serdes, Layer 1"""
+
+    ####################################################
+    OSFP_NRZ_TG = OSFP_NRZ = 120
+    """OSFP, NRZ, Traffic Generation"""
+
+    OSFP_NRZ_L1 = OSFP_NRZ_ANLT = 122
+    """OSFP, NRZ, Layer 1"""
+
+    ####################################################
+    SFPDD = SFP_DD = 7
     """SFP-DD"""
 
     SFP112 = 8
     """SFP112"""
 
-    QSFP_DD_NRZ = QSFPDD_NRZ = 9
-    """QSFP-DD, 25G serdes"""
+    SFP56 = 6
+    """SFP56"""
 
-    QSFP28_PAM4 = 10
-    """QSFP28 4x26G KP -> 2x53G KP PAM4"""
+    SFP28 = 3
+    """SFP28, 25G serdes"""
 
-    CFP = 99
-    """CFP"""
-
+    ####################################################
     BASE_T1 = 100
     """BASE-T1"""
 
     BASE_T1S = 101
     """BASE-T1S"""
 
-    QSFPDD800 = 110
-    """QSFP-DD800, 112G serdes"""
+    ####################################################
+    CFP = 99
+    """CFP"""
 
-    QSFP112 = 111
-    """QSFP112, 112G serdes"""
+    CFP4 = 0
+    """CFP4"""
 
-    OSFP800 = 112
-    """OSFP800, 112G serdes"""
+    CXP = 2
+    """CXP"""
 
-    QSFPDD800_ANLT = 113
-    """QSFPDD800, 112G serdes, L1/ANLT"""
-
-    QSFP112_ANLT = 114
-    """QSFP112, 112G serdes, L1/ANLT"""
-
-    OSFP800_ANLT = 115
-    """OSFP800, 112G serdes, L1/ANLT"""
-
-    OSFP = 116
-    """OSFP, 56G serdes"""
-
-    QSFPDD_ANLT = 117
-    """QSFP-DD, 56G serdes, L1/ANLT"""
-
-    QSFP56_ANLT = 118
-    """QSFP56, 56G serdes, L1/ANLT"""
-
-    OSFP_ANLT = 119
-    """OSFP, 56G serdes, L1/ANLT"""
-
-    OSFP_NRZ = 120
-    """OSFP, 56G serdes, NRZ"""
-
-    QSFP_DD_NRZ_ANLT = 121
-    """QSFP-DD, 25G serdes, L1/ANLT"""
-
-    OSFP_NRZ_ANLT = 122
-    """OSFP, 25G serdes, L1/ANLT"""
-
-    QSFP28_NRZ_ANLT = 123
-    """QSFP28, 25G serdes, L1/ANLT"""
-
-    SMPX_112 = 124
-    """SMPX 112Gbps serdes"""
-
-    SMPX_224 = 125
-    """SMPX 224Gbps serdes"""
-
-    OSFP_1600 = 126
-    """OSFP 1.6T"""
-    
-    OSFP_1600_ANLT = 127
-    """OSFP 1.6T, L1/ANLT"""
-
+    ####################################################
     UNKNOWN = 255
+    """Unknown media configuration type"""
 
 
 class TXHState(IntEnum):
@@ -1144,22 +1160,13 @@ class FaultSignaling(IntEnum):
     """Disabled"""
 
 
-class LocalFaultStatus(IntEnum):
-    """Local Fault Status"""
+class ErrorStatus(IntEnum):
+    """Error Status"""
 
-    OK = 0
-    """OK"""
-    LOCAL_FAULT = 1
-    """Local Fault"""
-
-
-class RemoteFaultStatus(IntEnum):
-    """Remote Fault Status"""
-
-    OK = 0
-    """OK"""
-    REMOTE_FAULT = 1
-    """Remote Fault"""
+    FALSE = 0
+    """No error"""
+    TRUE = 1
+    """Error is present"""
 
 
 class TPLDMode(IntEnum):
@@ -3320,3 +3327,68 @@ class TrueFalse(IntEnum):
     
     TRUE = 1
     """True"""
+
+
+class PcsErrorInjectionType(IntEnum):
+    """PCS Error Injection Type"""
+
+    UNKNOWN = 0
+    """Unknown"""
+
+    LOA = 1
+    """Loss of Alignment (LOA) error injection"""
+
+    HISER = 2
+    """HI-SER error injection"""
+
+    ITB = 3
+    """Invalid Transmission Block (ITB) error injection"""
+
+    ERRCWD = 4
+    """64b/66b Error Codeword (ERRCWD) error injection"""
+
+
+class ClearStatsDirection(IntFlag):
+    """Direction for clearing stats"""
+
+    NONE = 0
+    """No counter will be cleared"""
+
+    RX = 1
+    """Clear RX stats"""
+
+    TX = 2
+    """Clear TX stats"""
+
+    ALL = 3
+    """Clear all stats (RX and TX)"""
+
+class LLDPClearTarget(IntFlag):
+    """LLDP Clear Target"""
+
+    NONE = 0
+    """Clear no entries"""
+
+    NEIGHBOR = 1
+    """Clear LLDP neighbor information."""
+
+    STATS = 2
+    """Clear LLDP statistics."""
+
+    ALL = 3
+    """Clear all LLDP information."""
+
+class LLDPOpMode(IntEnum):
+    """LLDP Operation Mode"""
+
+    DISABLE = 0
+    """Disable LLDP on the port. (Default)"""
+
+    TX_RX = 1
+    """Enable LLDP on the port in both transmission and reception modes."""
+
+    TX_ONLY = 2
+    """Enable LLDP with transmission mode only on the port."""
+
+    RX_ONLY = 3
+    """Enable LLDP with reception mode only on the port."""

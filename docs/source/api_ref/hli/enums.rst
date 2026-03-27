@@ -64,7 +64,7 @@
     LinkTrainingMode
     LinkTrainingStatus
     LinkTrainingStatusMode
-    LocalFaultStatus
+    ErrorStatus
     LoopbackMode
     LoopBandwidth
     MDIXMode
@@ -102,7 +102,6 @@
     PRBSStatisticsMode
     ProtocolOption
     ReconciliationSublayerSupport
-    RemoteFaultStatus
     ReplayParserState
     ReplaySchedulingMode
     ReplaySyncBasedOn
@@ -194,9 +193,16 @@
     FreyaTapIndex
     FreyaLinkTrainingRangeResponse
     FreyaAutorestartMode
+    MACSecSCIMode
+    MACSecCipherSuite
+    MACSecEncryptionMode
+    MACSecRekeyMode
     ModifierEndianness
     MACSecPNMode
     ModuleConfigStatus
+    TrueFalse
+    PcsErrorInjectionType
+    ClearStatsDirection
 
 Module Contents
 -----------------

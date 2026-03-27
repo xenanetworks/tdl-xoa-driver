@@ -14,9 +14,9 @@ from xoa_driver.internals.commands import (
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.utils import kind
+
 from xoa_driver.internals.utils.indices import observer as idx_obs
 from .base_index import BaseIndex
-
 
 LT = TypeVar("LT")
 
@@ -30,12 +30,12 @@ class LengthTermIdx(BaseIndex):
         :type: PL_LENGTH
         """
 
-    async def delete(self):
-        await PL_DELETE(self._conn, *self.kind).set()
+    async def delete(self) -> None:
         """Delete length term.
         :type: PL_DELETE
         """
 
+        await PL_DELETE(self._conn, *self.kind).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

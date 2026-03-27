@@ -84,7 +84,8 @@ class IndexManager(Generic[IT]):
         # throws ValueError if element is not exists in list of indices
         self._indices.remove(index_inst)
 
-    async def create(self):
+    async def create(self) -> IT:
+        """Create a new index on the port and return the index object"""
         async with self._lock:
             index_kind = kind.IndicesKind(
                 self._module_id,

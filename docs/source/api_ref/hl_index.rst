@@ -1,4 +1,4 @@
-High-level API Reference Guide
+High-Level API Reference Guide
 ===============================
 
 .. toctree::

@@ -36,13 +36,17 @@ from xoa_driver.internals.commands import (
     P_MACSEC_RXSC_PN,
     P_MACSEC_TXSC_NEXT_AN,
 )
+
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.utils import kind
+
 from xoa_driver.internals.utils.indices import observer as idx_obs
 from xoa_driver.internals.utils.indices import header_modifier_manager as hmm
 from ..base_index import BaseIndex
 
+MST = TypeVar("MST")
+MSR = TypeVar("MSR")
 
 class MACSecTxScConfig:
     """MACSec TX SC Configuration"""
@@ -197,9 +201,6 @@ class MACSecRxScConfig:
         """
 
 
-BS = TypeVar("BS")
-
-
 class BaseMacSecTxScIdx(BaseIndex):
     """Base MACSec TX SC Index Manager"""
     def __init__(self, conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> None:
@@ -211,7 +212,7 @@ class BaseMacSecTxScIdx(BaseIndex):
         :type: MACSecTxScConfig
         """
 
-    async def delete(self):
+    async def delete(self) -> None:
         """Delete the TX SC
 
         :type: P_MACSEC_TXSC_DELETE
@@ -226,7 +227,7 @@ class BaseMacSecTxScIdx(BaseIndex):
         return list(resp.txsc_indices)
 
     @classmethod
-    async def _new(cls: Type[BS], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> BS:
+    async def _new(cls: Type[MST], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> MST:
         await P_MACSEC_TXSC_CREATE(conn, *kind).set()
         return cls(conn, kind, observer) # type: ignore
 
@@ -242,7 +243,7 @@ class BaseMacSecRxScIdx(BaseIndex):
         :type: MACSecRxScConfig
         """
 
-    async def delete(self):
+    async def delete(self) -> None:
         """Delete the RX SC
 
         :type: P_MACSEC_RXSC_DELETE
@@ -257,6 +258,6 @@ class BaseMacSecRxScIdx(BaseIndex):
         return list(resp.rxsc_indices)
 
     @classmethod
-    async def _new(cls: Type[BS], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> BS:
+    async def _new(cls: Type[MSR], conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> MSR:
         await P_MACSEC_RXSC_CREATE(conn, *kind).set()
         return cls(conn, kind, observer) # type: ignore

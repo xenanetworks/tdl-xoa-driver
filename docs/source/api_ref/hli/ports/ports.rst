@@ -25,6 +25,11 @@ Port APIs Overview
     :file: ports_macsec.csv
 
 
+.. csv-table:: LLDP APIs Overview
+    :header: "Id", "Action", "API", "Description"
+    :file: ports_lldp.csv
+
+
 Examples - Traffic Generation APIs
 ---------------------------------------------
 
@@ -76,4 +81,13 @@ Examples - MACsec APIs
 .. literalinclude:: ports_macsec.py
     :caption: Examples - MACsec APIs
     :start-at: [ports]
+    :end-before: [end]
+
+
+Examples - LLDP APIs
+---------------------------------------------
+
+.. literalinclude:: ports_lldp.py
+    :caption: Examples - LLDP APIs
+    :start-at: [LLDP]
     :end-before: [end]

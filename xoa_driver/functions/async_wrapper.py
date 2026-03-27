@@ -13,7 +13,7 @@ for you to wrap tdl-xoa-driver's async function inside and use it
 as a regular Python function.
 """
 
-from typing import Any, Awaitable, Callable, TypeVar
+from typing import Any, Awaitable, Callable, TypeVar, Coroutine
 import asyncio
 import threading
 import queue
@@ -86,7 +86,7 @@ class XenaAsyncWrapper:
         asyncio.set_event_loop(self.loop)
         self.loop.run_forever()
 
-    def run_coroutine_threadsafe(self, coro: Awaitable[T]) -> T:
+    def run_coroutine_threadsafe(self, coro: Coroutine[Any, Any, T]) -> T:
         if not self.loop:
             raise RuntimeError("Event loop is not running")
         future_ = asyncio.run_coroutine_threadsafe(coro, self.loop)

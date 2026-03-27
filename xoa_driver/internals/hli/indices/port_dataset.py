@@ -17,12 +17,11 @@ from xoa_driver.internals.commands import (
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.utils import kind
+
 from xoa_driver.internals.utils.indices import observer as idx_obs
 from .base_index import BaseIndex
 
-
 PD = TypeVar("PD")
-
 
 class PortDatasetIdx(BaseIndex):
     """L23 Histogram Index Manager"""
@@ -52,13 +51,13 @@ class PortDatasetIdx(BaseIndex):
         :type: PD_SAMPLES
         """
 
-    async def delete(self):
-        await PD_DELETE(self._conn, *self.kind).set()
+    async def delete(self) -> None:
         """Delete a histogram.
 
         :type: PD_ENABLE
         """
 
+        await PD_DELETE(self._conn, *self.kind).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

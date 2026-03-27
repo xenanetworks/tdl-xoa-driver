@@ -44,6 +44,7 @@ from xoa_driver.internals.commands import (
     PS_OPTIONS,
     PS_MODIFIER_ENDIAN,
 )
+
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.utils import kind
@@ -51,6 +52,7 @@ from xoa_driver.internals.utils.indices import observer as idx_obs
 from xoa_driver.internals.utils.indices import header_modifier_manager as hmm
 from ..base_index import BaseIndex
 
+BS = TypeVar("BS")
 
 class SRate:
     """L23 Stream Rate Configuration"""
@@ -298,9 +300,6 @@ class SBurst:
         """
 
 
-BS = TypeVar("BS")
-
-
 class BaseStreamIdx(BaseIndex):
     """Base L23 Stream Index Manager"""
     def __init__(self, conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "idx_obs.IndicesObserver") -> None:
@@ -384,7 +383,7 @@ class BaseStreamIdx(BaseIndex):
         :type: PS_OPTIONS
         """
 
-    async def delete(self):
+    async def delete(self) -> None:
         """Delete the stream
 
         :type: PS_DELETE
