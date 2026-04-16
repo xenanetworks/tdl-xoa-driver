@@ -126,37 +126,40 @@ async def get_tx_ppm_max(port: "FreyaEdunPort") -> int:
     return resp.maximum
 
 
-TxPPM = namedtuple("TxPPM", ["current", "minimum", "maximum"])
-async def get_tx_ppm_all(port: "FreyaEdunPort") -> TxPPM:
+TxPpm = namedtuple("TxPpm", ["current", "minimum", "maximum"])
+async def get_tx_ppm_all(port: "FreyaEdunPort") -> TxPpm:
     """
     Get the current, minimum, and maximum Tx PPM of the specified port.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: The current, minimum, and maximum Tx PPM.
-    :rtype: TxPPM
+    :rtype: TxPpm
     """
 
     resp = await port.layer1_adv.tx_ppm.get()
-    return TxPPM(current=resp.current, minimum=resp.minimum, maximum=resp.maximum)
+    return TxPpm(current=resp.current, minimum=resp.minimum, maximum=resp.maximum)
 
 
-async def get_tx_freq(port: "FreyaEdunPort") -> Tuple[TxFreq, TxPPM]:
+TxFreqPpm = namedtuple("TxFreqPpm", ["freq", "ppm"])
+async def get_tx_freq(port: "FreyaEdunPort") -> TxFreqPpm:
     """
     Get the current, minimum, and maximum Tx frequency (Hz) and frequency offset (ppm) of the specified port.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: Tx frequency current, minimum, and maximum, and frequency offset (ppm) current, minimum, and maximum.
-    :rtype: Tuple[TxFreq, TxPPM]
+    :rtype: TxFreqPpm
     """
 
     freq_resp, ppm_resp = await apply(
         port.layer1_adv.tx_freq.get(),
         port.layer1_adv.tx_ppm.get(),
         )
-    return (TxFreq(current=freq_resp.current, minimum=freq_resp.minimum, maximum=freq_resp.maximum),
-            TxPPM(current=ppm_resp.current, minimum=ppm_resp.minimum, maximum=ppm_resp.maximum))
+    return TxFreqPpm(
+        freq=TxFreq(current=freq_resp.current, minimum=freq_resp.minimum, maximum=freq_resp.maximum),
+        ppm=TxPpm(current=ppm_resp.current, minimum=ppm_resp.minimum, maximum=ppm_resp.maximum)
+    )
 
 
 async def get_rx_freq_curr(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[int]:
@@ -312,8 +315,8 @@ async def get_rx_ppm_max(port: "FreyaEdunPort", serdes_indices: List[int] = [0])
     return results
 
 
-RxPPM = namedtuple("RxPPM", ["current", "minimum", "maximum"])
-async def get_rx_ppm_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[RxPPM]:
+RxPpm = namedtuple("RxPpm", ["current", "minimum", "maximum"])
+async def get_rx_ppm_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[RxPpm]:
     """
     Get the current, minimum, and maximum Rx PPM of the specified Serdes.
 
@@ -324,7 +327,7 @@ async def get_rx_ppm_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0])
     :param serdes_indices: The indices of the Serdes.
     :type serdes_indices: List[int]
     :return: The current, minimum, and maximum Rx PPM of the specified Serdes.
-    :rtype: List[RxPPM]
+    :rtype: List[RxPpm]
     """
 
     results = []
@@ -333,18 +336,19 @@ async def get_rx_ppm_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0])
         cmds.append(port.layer1_adv.serdes[serdes_id].rx_ppm.get())
     resps = await apply(*cmds)
     for resp in resps:
-        results.append(RxPPM(current=resp.current, minimum=resp.minimum, maximum=resp.maximum))
+        results.append(RxPpm(current=resp.current, minimum=resp.minimum, maximum=resp.maximum))
     return results
 
 
-async def get_rx_freq(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[Tuple[RxFreq, RxPPM]]:
+RxFreqPpm = namedtuple("RxFreqPpm", ["freq", "ppm"])
+async def get_rx_freq(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[RxFreqPpm]:
     """
     Get the current, minimum, and maximum Rx frequency (Hz) and frequency offset (ppm) of the specified Serdes.
 
     :param port: The port instance.
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: Rx frequency current, minimum, and maximum, and frequency offset (ppm) current, minimum, and maximum of the specified Serdes.
-    :rtype: List[Tuple[RxFreq, RxPPM]]
+    :rtype: List[RxFreqPpm]
     """
 
     results = []
@@ -356,8 +360,10 @@ async def get_rx_freq(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) ->
     for i in range(0, len(resps), 2):
         freq_resp = resps[i]
         ppm_resp = resps[i + 1]
-        results.append((RxFreq(current=freq_resp.current, minimum=freq_resp.minimum, maximum=freq_resp.maximum),
-                        RxPPM(current=ppm_resp.current, minimum=ppm_resp.minimum, maximum=ppm_resp.maximum)))
+        results.append(RxFreqPpm(
+            freq=RxFreq(current=freq_resp.current, minimum=freq_resp.minimum, maximum=freq_resp.maximum),
+            ppm=RxPpm(current=ppm_resp.current, minimum=ppm_resp.minimum, maximum=ppm_resp.maximum)
+        ))
     return results
 
 
@@ -846,7 +852,18 @@ async def clear_tx_err_cnt(port: "FreyaEdunPort") -> None:
     await port.layer1_adv.clear.set_tx()
 
 
-# Deprecated functions
+
+
+
+
+
+
+
+##########################################
+#                                        #
+# Deprecated functions                   #
+#                                        #
+##########################################
 async def get_cdr_lol(port: "FreyaEdunPort", serdes_indices: List[int]) -> List[Tuple[bool, bool]]:
 
     """
