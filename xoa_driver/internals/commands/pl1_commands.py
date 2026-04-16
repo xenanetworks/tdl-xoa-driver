@@ -56,6 +56,7 @@ from .enums import (
     ErrorStatus,
     PcsErrorInjectionType,
     ClearStatsDirection,
+    PcsLaneErrorInjectionType,
 )
 
 
@@ -2305,6 +2306,15 @@ class PL1_INJECT_ERR:
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, type=type))
 
+    inject_hiser = functools.partialmethod(set, PcsErrorInjectionType.HISER)
+    """Inject HI-SER error"""
+
+    inject_itb = functools.partialmethod(set, PcsErrorInjectionType.ITB)
+    """Inject ITB error"""
+
+    inject_errcwd = functools.partialmethod(set, PcsErrorInjectionType.ERRCWD)
+    """Inject ERRCWD error"""
+
 
 
 @register_command
@@ -2581,8 +2591,6 @@ class PL1_INJECT_ERR_CNT:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        loa_count: int = field(XmpLong(signed=False))
-        """Number of cumulated Tx Loss of Alignment (LOA) events since the last clearance."""
 
         hi_ser_count: int = field(XmpLong(signed=False))
         """Number of cumulated Tx High SER events since the last clearance."""
@@ -2593,8 +2601,6 @@ class PL1_INJECT_ERR_CNT:
         err_cw_count: int = field(XmpLong(signed=False))
         """Number of erroneous Tx 64b/66b codewords since the last clearance."""
 
-        
-
 
     def get(self) -> Token[GetDataAttr]:
         """Returns the cumulative number of Tx Layer-1 errors since last clearance.
@@ -2604,6 +2610,222 @@ class PL1_INJECT_ERR_CNT:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+
+@register_command
+@dataclass
+class PL1_PCSL_LOA_STATUS:
+    """
+    Returns the current and the latched LOA status of the specified PCS lane.
+    """
+
+    code: typing.ClassVar[int] = 571
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _pcsl_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        current: ErrorStatus = field(XmpByte())
+        """Current LOA status. `True` indicates a current LOA condition."""
+
+        latched: ErrorStatus = field(XmpByte())
+        """Latched LOA status. `True` indicates a LOA condition has occurred."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current and latched LOA status of the specified PCS lane.
+
+        :return: Current and latched LOA status of the specified PCS lane
+        :rtype: PL1_PCSL_LOA_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._pcsl_xindex]))
+
+
+
+@register_command
+@dataclass
+class PL1_PCSL_AM_CORR:
+    """
+    Set the AM corruption parameters on the specified PCS lane.
+
+    Select which nibbles in Alignment Marker (AM) to be corrupted and how many successive corrupted AMs should be sent on a specified PCSL.
+
+    To successfully inject an LOA error on a PCSL, the following conditions must be met:
+
+      * When RS-FEC is enabled, at least 4 nibbles in CM should be errored.
+      * When RS-FEC is disabled, a single errored bit in CM is enough to trigger an LOA.
+
+    To trigger an LOA error on the PCSL, am_bad_count should be:
+
+      * At least 4, for 40G (no FEC or FC-FEC), 50G ETC (no FEC or FC-FEC), 50GAUI-2 (RS-FEC KP), 100G (no FEC)
+      * At least 5, for 50G ETC (RS-FEC KR), 50G IEEE (RS-FEC KP), 100G (RS-FEC KR, RS-FEC KP, RS-FEC KP-Int), 200G (RS-FEC KP-Int), 400G (RS-FEC KP-Int), 800G (RS-FEC KP-Int), 1.6T (RS-FEC KP-Int)
+    
+    """
+
+    code: typing.ClassVar[int] = 572
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _pcsl_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        am_bad_count: int = field(XmpInt(signed=False))
+        """The number of successive AMs with the configured CM to be sent on the specified PCSL. Default value = 5."""
+
+        cm_nibble_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """The indices of the nibbles in CM to be corrupted. The valid range of nibble index is from 0 to 11 (6 bytes in total). The index list is allowed to be empty, which means no CM nibble will be corrupted. Duplicated indices are allowed but not recommended. Default value = empty list.
+        """
+
+    class SetDataAttr(RequestBodyStruct):
+        am_bad_count: int = field(XmpInt(signed=False))
+        """The number of successive AMs with the configured CM to be sent on the specified PCSL. Default value = 5."""
+
+        cm_nibble_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """The indices of the nibbles in CM to be corrupted. The valid range of nibble index is from 0 to 11 (6 bytes in total). The index list is allowed to be empty, which means no CM nibble will be corrupted. Duplicated indices are allowed but not recommended. Default value = empty list.
+        """
+        
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current PCSL AM corruption configuration.
+
+        :return: Current PCSL AM corruption configuration
+        :rtype: PL1_PCSL_AM_CORR.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._pcsl_xindex]))
+    
+    def set(self, am_bad_count: int, cm_nibble_indices: typing.List[int]) -> Token[None]:
+        """Set the PCSL AM corruption configuration.
+
+        :param am_bad_count: The number of successive AMs with the configured CM to be sent on the specified PCSL.
+        :type am_bad_count: int
+        :param cm_nibble_indices: The indices of the nibbles in CM to be corrupted.
+        :type cm_nibble_indices: typing.List[int]
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, am_bad_count=am_bad_count, cm_nibble_indices=cm_nibble_indices, indices=[self._pcsl_xindex]))
+
+
+
+
+@register_command
+@dataclass
+class PL1_PCSL_AM_ENCODING:
+    """
+    Get the alignment marker (AM) encoding of the specified PCSL. 
+    """
+
+    code: typing.ClassVar[int] = 573
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _pcsl_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        cm0: Hex = field(XmpHex(size=8))
+        """Common Marker 0"""
+
+        cm1: Hex = field(XmpHex(size=8))
+        """Common Marker 1"""
+
+        cm2: Hex = field(XmpHex(size=8))
+        """Common Marker 2"""
+
+        cm3: Hex = field(XmpHex(size=8))
+        """Common Marker 3"""
+
+        cm4: Hex = field(XmpHex(size=8))
+        """Common Marker 4"""
+
+        cm5: Hex = field(XmpHex(size=8))
+        """Common Marker 5"""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get Alignment Marker (AM) 2encoding of the specified PCSL.
+
+        :return: Current AM encoding of the specified PCSL
+        :rtype: PL1_PCSL_AM_ENCODING.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._pcsl_xindex]))
+
+
+
+@register_command
+@dataclass
+class PL1_PCSL_INJECT_ERR:
+    """
+    Inject an error on the specified PCSL immediately when called.
+
+    """
+
+    code: typing.ClassVar[int] = 574
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _pcsl_xindex: int
+
+    class SetDataAttr(RequestBodyStruct):
+        type: PcsLaneErrorInjectionType = field(XmpByte())
+        """Type of error to inject."""
+
+    def set(self, type: PcsLaneErrorInjectionType) -> Token[None]:
+        """Inject an error on the specified PCSL immediately when called.
+        
+        :param type: Type of error to inject
+        :type type: PcsLaneErrorInjectionType
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, type=type))
+
+    inject_am = functools.partialmethod(set, PcsLaneErrorInjectionType.AM)
+    """Inject Alignment Marker (AM) error"""
+
+
+
+@register_command
+@dataclass
+class PL1_PCSL_INJECT_ERR_CNT:
+    """
+    Returns the per-pcsl cumulative number of Tx Layer-1 error events since last clearance. 
+    """
+
+    code: typing.ClassVar[int] = 575
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _pcsl_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        tx_am_err_count: int = field(XmpLong(signed=False))
+        """Number of cumulated Tx Alignment Marker (AM) errors since the last clearance."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the per-pcsl cumulative number of Tx Layer-1 error events since last clearance. 
+
+        :return: Per-PCSL cumulative number of Tx Layer-1 errors since last clearance
+        :rtype: PL1_PCSL_INJECT_ERR_CNT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._pcsl_xindex]))
+
+
 
 
 __all__ = [
@@ -2657,4 +2879,9 @@ __all__ = [
     "PL1_RX_PPM",
     "PL1_TX_PPM",
     "PL1_INJECT_ERR_CNT",
+    "PL1_PCSL_LOA_STATUS",
+    "PL1_PCSL_AM_CORR",
+    "PL1_PCSL_AM_ENCODING",
+    "PL1_PCSL_INJECT_ERR",
+    "PL1_PCSL_INJECT_ERR_CNT",
 ]

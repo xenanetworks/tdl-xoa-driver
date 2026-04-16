@@ -21,11 +21,16 @@ from xoa_driver.internals.commands import (
     PL1_RX_CNT,
     PL1_INJECT_ERR,
     PL1_INJECT_ERR_CNT,
+    PL1_PCSL_LOA_STATUS,
+    PL1_PCSL_AM_CORR,
+    PL1_PCSL_AM_ENCODING,
+    PL1_PCSL_INJECT_ERR,
+    PL1_PCSL_INJECT_ERR_CNT,
 )
 
 
 class PcsLaneAdv:
-    """PCS Lane Advanced Statistics"""
+    """Physical PCS Lane Advanced"""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, lane_idx: int) -> None:
 
@@ -33,6 +38,63 @@ class PcsLaneAdv:
         """Returns the PCSL and current Rx relative skew of the PCS lane measured in bits.
 
         :type: PP_RXLANESTATUS
+        """
+
+class PcslAdv:
+    """Virtual PCS Lane Advanced"""
+
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, pcsl_idx: int) -> None:
+
+        self.loa_status = PL1_PCSL_LOA_STATUS(conn, module_id, port_id, pcsl_idx)
+        """Per-PCS Lane LOA Status
+
+        :type: PL1_PCSL_LOA_STATUS
+        """
+
+        self.am = PcslAM(conn, module_id, port_id, pcsl_idx)
+        """Alignment Marker (AM) management for the PCS lane.
+
+        :type: PcslAM
+        """
+
+        self.err_inject = PcslErrorInject(conn, module_id, port_id, pcsl_idx)
+        """Per-PCSL Error Injection management.
+
+        :type: PcslErrorInject
+        """
+
+class PcslAM:
+    """PCSL Alignment Marker (AM)"""
+
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, pcsl_idx: int) -> None:
+
+        self.corrupt_config = PL1_PCSL_AM_CORR(conn, module_id, port_id, pcsl_idx)
+        """Configures the corruption of Alignment Markers (AM) on the specified PCS lane.
+
+        :type: PL1_PCSL_AM_CORR
+        """
+
+        self.encoding = PL1_PCSL_AM_ENCODING(conn, module_id, port_id, pcsl_idx)
+        """AM encoding of the specified PCS lane.
+
+        :type: PL1_PCSL_AM_ENCODING
+        """
+
+
+class PcslErrorInject:
+    """Per-PCSL Error Injection"""
+
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, pcsl_idx: int) -> None:
+        self.inject = PL1_PCSL_INJECT_ERR(conn, module_id, port_id, pcsl_idx)
+        """Error Injection management
+
+        :type: PL1_PCSL_INJECT_ERR
+        """
+
+        self.tx_cnt = PL1_PCSL_INJECT_ERR_CNT(conn, module_id, port_id, pcsl_idx)
+        """Returns the count of injected errors.
+
+        :type: PL1_PCSL_INJECT_ERR_CNT
         """
 
 
@@ -103,7 +165,7 @@ class LinkDown:
 
 
 class ErrorInjection:
-    """Error Injection Management"""
+    """Per-Port Error Injection Management"""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         self.inject = PL1_INJECT_ERR(conn, module_id, port_id)
@@ -136,16 +198,20 @@ class PcsLayerAdv:
             PcsLaneAdv(self._conn, module_id, port_id, lane_idx=idx)
             for idx in range(self.__port.info.capabilities.lane_count)
         )  # TODO: need to fix, currently port.info.capabilities must be none because lanes are created before awaiting the port
-        """PCS Lane
+        """Physical PCS Lane
         
         :type: Tuple[PcsLaneAdv, ...]
         """
 
-        # self.rx_stats = PL1_RX_CNT(conn, module_id, port_id)
-        # """Returns the Rx statistics counters of the port.
+        self.pcsl: Tuple["PcslAdv", ...] = tuple(
+            PcslAdv(self._conn, module_id, port_id, pcsl_idx=idx)
+            for idx in range(self.__port.info.capabilities.lane_count)
+        )
+        """Virtual PCS Lane
+        
+        :type: Tuple[PcslAdv, ...]
+        """
 
-        # :type: PL1_RX_CNT
-        # """
 
         self.deg_ser = DegradedSer(conn, module_id, port_id)
         """Degraded Symbol Error Rate (SER) Management
@@ -165,20 +231,20 @@ class PcsLayerAdv:
         :type: HighSer
         """
 
-        # self.tx_err_inject = PL1_INJECT_ERR(conn, module_id, port_id)
-        # """Error Injection management
-
-        # :type: PL1_INJECT_ERR
-        # """ 
-
         self.link_down = LinkDown(conn, module_id, port_id)
         """Link Down Status
 
         :type: LinkDown
         """
 
+        self.loa = LossOfAlignment(conn, module_id, port_id)
+        """Per-port LOA Status
+        
+        :type: LossOfAlignment
+        """
+
         self.err_inject = ErrorInjection(conn, module_id, port_id)
-        """Error Injection management
+        """Per-Port Error Injection Management
 
         :type: ErrorInjection
         """
