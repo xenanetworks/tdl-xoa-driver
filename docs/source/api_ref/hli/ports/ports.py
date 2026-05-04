@@ -1008,6 +1008,12 @@ async def my_awesome_func(stop_event: asyncio.Event):
     # [Z10r Odin Specific APIs]
     if isinstance(port, ports.POdin10G5S6PCU) or isinstance(port, ports.POdin10G5S6PCU_b):
 
+        # [Auto Negotiation]
+        """Auto Negotiation Configuration"""
+        await port.autoneg_selection.set_on()
+        await port.autoneg_selection.set_off()
+        resp_obj = await port.autoneg_selection.get()
+
         # [Energy Efficient Ethernet (EEE)]
         """ENERGY EFFICIENT ETHERNET (EEE) CONFIGURATION"""
         """EEE- Capabilities"""
