@@ -23,7 +23,6 @@ from xoa_driver.internals.commands import (
     PL1_INJECT_ERR_CNT,
     PL1_PCSL_LOA_STATUS,
     PL1_PCSL_AM_CORR,
-    PL1_PCSL_AM_ENCODING,
     PL1_PCSL_INJECT_ERR,
     PL1_PCSL_INJECT_ERR_CNT,
 )
@@ -72,12 +71,6 @@ class PcslAM:
         """Configures the corruption of Alignment Markers (AM) on the specified PCS lane.
 
         :type: PL1_PCSL_AM_CORR
-        """
-
-        self.encoding = PL1_PCSL_AM_ENCODING(conn, module_id, port_id, pcsl_idx)
-        """AM encoding of the specified PCS lane.
-
-        :type: PL1_PCSL_AM_ENCODING
         """
 
 

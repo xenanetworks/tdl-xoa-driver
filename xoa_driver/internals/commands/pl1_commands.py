@@ -2714,53 +2714,6 @@ class PL1_PCSL_AM_CORR:
 
 
 
-
-@register_command
-@dataclass
-class PL1_PCSL_AM_ENCODING:
-    """
-    Get the alignment marker (AM) encoding of the specified PCSL. 
-    """
-
-    code: typing.ClassVar[int] = 573
-    pushed: typing.ClassVar[bool] = False
-
-    _connection: 'interfaces.IConnection'
-    _module: int
-    _port: int
-    _pcsl_xindex: int
-
-    class GetDataAttr(ResponseBodyStruct):
-        cm0: Hex = field(XmpHex(size=8))
-        """Common Marker 0"""
-
-        cm1: Hex = field(XmpHex(size=8))
-        """Common Marker 1"""
-
-        cm2: Hex = field(XmpHex(size=8))
-        """Common Marker 2"""
-
-        cm3: Hex = field(XmpHex(size=8))
-        """Common Marker 3"""
-
-        cm4: Hex = field(XmpHex(size=8))
-        """Common Marker 4"""
-
-        cm5: Hex = field(XmpHex(size=8))
-        """Common Marker 5"""
-
-
-    def get(self) -> Token[GetDataAttr]:
-        """Get Alignment Marker (AM) 2encoding of the specified PCSL.
-
-        :return: Current AM encoding of the specified PCSL
-        :rtype: PL1_PCSL_AM_ENCODING.GetDataAttr
-        """
-
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._pcsl_xindex]))
-
-
-
 @register_command
 @dataclass
 class PL1_PCSL_INJECT_ERR:
@@ -2881,7 +2834,6 @@ __all__ = [
     "PL1_INJECT_ERR_CNT",
     "PL1_PCSL_LOA_STATUS",
     "PL1_PCSL_AM_CORR",
-    "PL1_PCSL_AM_ENCODING",
     "PL1_PCSL_INJECT_ERR",
     "PL1_PCSL_INJECT_ERR_CNT",
 ]
