@@ -3335,16 +3335,13 @@ class PcsErrorInjectionType(IntEnum):
     UNKNOWN = 0
     """Unknown"""
 
-    LOA = 1
-    """Loss of Alignment (LOA) error injection"""
-
-    HISER = 2
+    HISER = 1
     """HI-SER error injection"""
 
-    ITB = 3
+    ITB = 2
     """Invalid Transmission Block (ITB) error injection"""
 
-    ERRCWD = 4
+    ERRCWD = 3
     """64b/66b Error Codeword (ERRCWD) error injection"""
 
 
@@ -3392,3 +3389,13 @@ class LLDPOpMode(IntEnum):
 
     RX_ONLY = 3
     """Enable LLDP with reception mode only on the port."""
+
+
+class PcsLaneErrorInjectionType(IntEnum):
+    """PCS Lane Error Injection Type"""
+
+    UNKNOWN = 0
+    """Unknown"""
+
+    AM = 1
+    """Alignment Marker (AM) error injection"""

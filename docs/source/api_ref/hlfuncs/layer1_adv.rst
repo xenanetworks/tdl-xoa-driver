@@ -13,58 +13,56 @@ The ``layer1_adv`` module offers high-level functions for advanced Layer 1 confi
     get_rx_pcsl_skew
 
 
-.. rubric:: CDR LOL
-
-.. autosummary::
-
-    get_cdr_lol_status
-
-
-.. rubric:: PCS Alarms
+.. rubric:: Rx PCS Status and Flags
 
 .. autosummary::
     
+    get_cdr_lol_status
+    get_port_loa_status
+    get_pcsl_loa_status
     get_hi_ber_status
     set_hi_ser_alarm
     get_hi_ser_status
     get_deg_ser_status
     set_deg_ser_thresholds
     get_deg_ser_thresholds
-
-
-.. rubric:: Reconc. Sublayer Alarms
-
-.. autosummary::
-
     get_lf_status
     get_rf_status
     get_lf_rf_status
     get_link_down_status
+    
 
-
-.. rubric:: Tx/Rx Error Statistics
+.. rubric:: Rx PCS Error Events
 
 .. autosummary::
 
     get_rx_errors_since_clear
-    get_tx_errors_since_clear
 
     clear_rx_err_cnt
-    clear_tx_err_cnt
 
 
-.. rubric:: PCS Error Injection
-
+.. rubric:: Tx PCS Error Injection
 
 .. autosummary::
 
     inject_errcwd_once
     inject_itb_once
-    inject_loa_once
     inject_hi_ser_once
+    inject_am_error_once
+    inject_loa_once
+
+
+.. rubric:: Tx PCS Error Events
+
+.. autosummary::
+
+    get_tx_errors_since_clear
+    get_tx_pcsl_errors_since_clear
+
+    clear_tx_err_cnt
     
 
-.. rubric:: Port Tx/Rx Frequency and PPM (current, min, max)
+.. rubric:: PMA Tx/Rx Frequency and PPM
 
 .. autosummary::
 
@@ -72,7 +70,7 @@ The ``layer1_adv`` module offers high-level functions for advanced Layer 1 confi
     get_rx_freq
 
 
-.. rubric:: Port Tx/Rx Frequency (Hz)
+.. rubric:: PMA Tx/Rx Frequency (Hz)
 
 If you only want to get frequency parameters, you can use the following functions.
 
@@ -88,7 +86,7 @@ If you only want to get frequency parameters, you can use the following function
     get_rx_freq_max
 
 
-.. rubric:: Port Tx/Rx Frequency Offset (PPM)
+.. rubric:: PMA Tx/Rx Frequency Offset (PPM)
 
 If you only want to get frequency offset parameters, you can use the following functions.
 
@@ -104,7 +102,7 @@ If you only want to get frequency offset parameters, you can use the following f
     get_rx_ppm_max
 
     
-.. rubric:: Port Tx/Rx Data Rate (bps)
+.. rubric:: PMA Tx/Rx Data Rate (bps)
 
 .. autosummary::
 

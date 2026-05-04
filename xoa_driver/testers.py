@@ -10,18 +10,18 @@ from .internals.hli.testers.l47ve_tester import L47VeTester
 import typing
 
 GenericAnyTester = typing.Union[
-    "L23Tester",
-    "L23VeTester",
-    "L47Tester",
-    "L47VeTester",
+    L23Tester,
+    L23VeTester,
+    L47Tester,
+    L47VeTester,
 ]
 GenericAnyGenuineTester = typing.Union[
-    "L23Tester",
-    "L47Tester",
+    L23Tester,
+    L47Tester,
 ]
 GenericAnyVirtualTester = typing.Union[
-    "L23VeTester",
-    "L47VeTester",
+    L23VeTester,
+    L47VeTester,
 ]
 
 __all__ = (
