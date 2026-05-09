@@ -25,12 +25,7 @@ from ..enums import (
 )
 import warnings
 from random import sample
-
-
-class TxFreq(NamedTuple):
-    current: int
-    minimum: int
-    maximum: int
+from .resp_models.layer1_adv_resp_models import *
 
 
 async def get_tx_freq_curr(port: "FreyaEdunPort") -> int:
@@ -73,8 +68,6 @@ async def get_tx_freq_max(port: "FreyaEdunPort") -> int:
 
     resp = await port.layer1_adv.tx_freq.get()
     return resp.maximum
-
-
 
 
 async def get_tx_freq_all(port: "FreyaEdunPort") -> TxFreq:
@@ -133,10 +126,7 @@ async def get_tx_ppm_max(port: "FreyaEdunPort") -> int:
     resp = await port.layer1_adv.tx_ppm.get()
     return resp.maximum
 
-class TxPpm(NamedTuple):
-    current: int
-    minimum: int
-    maximum: int
+
 
 async def get_tx_ppm_all(port: "FreyaEdunPort") -> TxPpm:
     """
@@ -151,10 +141,6 @@ async def get_tx_ppm_all(port: "FreyaEdunPort") -> TxPpm:
     resp = await port.layer1_adv.tx_ppm.get()
     return TxPpm(current=resp.current, minimum=resp.minimum, maximum=resp.maximum)
 
-
-class TxFreqPpm(NamedTuple):
-    freq: TxFreq
-    ppm: TxPpm
 
 
 async def get_tx_freq(port: "FreyaEdunPort") -> TxFreqPpm:
@@ -241,10 +227,6 @@ async def get_rx_freq_max(port: "FreyaEdunPort", serdes_indices: List[int] = [0]
     return results
 
 
-class RxFreq(NamedTuple):
-    current: int
-    minimum: int
-    maximum: int
 
 async def get_rx_freq_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[RxFreq]:
     """
@@ -333,10 +315,7 @@ async def get_rx_ppm_max(port: "FreyaEdunPort", serdes_indices: List[int] = [0])
         results.append(resp.maximum)
     return results
 
-class RxPpm(NamedTuple):
-    current: int
-    minimum: int
-    maximum: int
+
 
 async def get_rx_ppm_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[RxPpm]:
     """
@@ -362,9 +341,6 @@ async def get_rx_ppm_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0])
     return results
 
 
-class RxFreqPpm(NamedTuple):
-    freq: RxFreq
-    ppm: RxPpm
 
 async def get_rx_freq(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[RxFreqPpm]:
     """
@@ -432,10 +408,6 @@ async def get_tx_datarate_max(port: "FreyaEdunPort") -> int:
     resp = await port.layer1_adv.tx_datarate.get()
     return resp.maximum
 
-class TxDatarate(NamedTuple):
-    current: int
-    minimum: int
-    maximum: int
 
 
 async def get_tx_datarate_all(port: "FreyaEdunPort") -> TxDatarate:
@@ -522,11 +494,6 @@ async def get_rx_datarate_max(port: "FreyaEdunPort", serdes_indices: List[int] =
     return results
 
 
-class RxDatarate(NamedTuple):
-    current: int
-    minimum: int
-    maximum: int
-
 
 async def get_rx_datarate_all(port: "FreyaEdunPort", serdes_indices: List[int] = [0]) -> List[RxDatarate]:
     """
@@ -551,9 +518,6 @@ async def get_rx_datarate_all(port: "FreyaEdunPort", serdes_indices: List[int] =
         results.append(RxDatarate(current=resp.current, minimum=resp.minimum, maximum=resp.maximum))
     return results
 
-class CdrLolStatus(NamedTuple):
-    current: bool
-    latched: bool
 
 async def get_cdr_lol_status(port: "FreyaEdunPort", serdes_indices: List[int]) -> List[CdrLolStatus]:
     """
@@ -580,9 +544,6 @@ async def get_cdr_lol_status(port: "FreyaEdunPort", serdes_indices: List[int]) -
     return results
 
 
-class PcslSkew(NamedTuple):
-    pcsl: int
-    skew: int
 
 async def get_rx_pcsl_skew(port: "FreyaEdunPort", lane_indices: List[int]) -> List[PcslSkew]:
     """Get per-physical lane Rx relative skew measured in bits and the corresponding PCSL of the specified physical PCS lanes.
@@ -604,9 +565,6 @@ async def get_rx_pcsl_skew(port: "FreyaEdunPort", lane_indices: List[int]) -> Li
     return results
 
 
-class HiBerStatus(NamedTuple):
-    current: bool
-    latched: bool
 
 async def get_hi_ber_status(port: "FreyaEdunPort") -> HiBerStatus:
     """
@@ -625,10 +583,6 @@ async def get_hi_ber_status(port: "FreyaEdunPort") -> HiBerStatus:
     return HiBerStatus(current=curr, latched=latched)
 
 
-class HiSerStatus(NamedTuple):
-    alarm_state: bool
-    current: bool
-    latched: bool
 
 async def get_hi_ser_status(port: "FreyaEdunPort") -> HiSerStatus:
     """
@@ -650,9 +604,7 @@ async def get_hi_ser_status(port: "FreyaEdunPort") -> HiSerStatus:
     return HiSerStatus(alarm_state=alarm_state, current=curr, latched=latched)
 
 
-class DegSerStatus(NamedTuple):
-    current: bool
-    latched: bool
+
 
 async def get_deg_ser_status(port: "FreyaEdunPort") -> DegSerStatus:
     """
@@ -710,10 +662,6 @@ async def set_deg_ser_thresholds(port: "FreyaEdunPort", activate_threshold: int,
     )
 
 
-class DegSerThresholds(NamedTuple):
-    activate_threshold: int
-    deactivate_threshold: int
-    interval: int
 
 async def get_deg_ser_thresholds(
     port: "FreyaEdunPort",
@@ -731,9 +679,7 @@ async def get_deg_ser_thresholds(
     return DegSerThresholds(activate_threshold=resp.act_thresh, deactivate_threshold=resp.deact_thresh, interval=resp.degrade_interval)
 
 
-class LocalFaultStatus(NamedTuple):
-    current: bool
-    latched: bool
+
 
 async def get_lf_status(port: "FreyaEdunPort") -> LocalFaultStatus:
     """
@@ -752,9 +698,6 @@ async def get_lf_status(port: "FreyaEdunPort") -> LocalFaultStatus:
     return LocalFaultStatus(current=curr, latched=latched)
 
 
-class RemoteFaultStatus(NamedTuple):
-    current: bool
-    latched: bool
 
 async def get_rf_status(port: "FreyaEdunPort") -> RemoteFaultStatus:
     """
@@ -792,9 +735,7 @@ async def get_lf_rf_status(port: "FreyaEdunPort") -> Tuple[LocalFaultStatus, Rem
     return (LocalFaultStatus(current=lf_curr, latched=lf_latched), RemoteFaultStatus(current=rf_curr, latched=rf_latched))
 
 
-class LinkDownStatus(NamedTuple):
-    current: bool
-    latched: bool
+
 
 async def get_link_down_status(port: "FreyaEdunPort") -> LinkDownStatus:
     """
@@ -813,13 +754,7 @@ async def get_link_down_status(port: "FreyaEdunPort") -> LinkDownStatus:
     return LinkDownStatus(current=curr, latched=latched)
 
 
-class RxPcsErrors(NamedTuple):
-    loa: int
-    itb: int
-    err_cw: int
-    link_down: int
-    remote_fault: int
-    local_fault: int
+
 
 async def get_rx_errors_since_clear(port: "FreyaEdunPort") -> RxPcsErrors:
     """
@@ -838,10 +773,7 @@ async def get_rx_errors_since_clear(port: "FreyaEdunPort") -> RxPcsErrors:
     return RxPcsErrors(loa=resp1.loa_count, itb=resp1.itb_count, err_cw=resp1.err_cw_count, link_down=resp1.link_down_count, local_fault=resp2.lf_count, remote_fault=resp2.rf_count)
 
 
-class TxPcsErrors(NamedTuple):
-    hi_ser: int
-    itb: int
-    err_cw: int
+
 
 async def get_tx_errors_since_clear(port: "FreyaEdunPort") -> TxPcsErrors:
     """
@@ -920,10 +852,6 @@ async def clear_tx_err_cnt(port: "FreyaEdunPort") -> None:
 
 async def inject_am_error_once(port: "FreyaEdunPort", pcsl: int, cm_nibbles: List[int], bad_count: int) -> None:
     """
-    .. versionadded:: 1.9.0
-
-        Requires Xena Release 106.1 or later.
-
     Inject an Alignment Marker (AM) error with the AM corruption parameters on the specified PCS lane immediately when called.
 
     This function first sets the AM corruption parameters on the specified PCS lane. It selects which CM nibbles in the AM to be corrupted and how many successive corrupted AMs should be sent on a specified PCSL.
@@ -948,6 +876,11 @@ async def inject_am_error_once(port: "FreyaEdunPort", pcsl: int, cm_nibbles: Lis
     :type cm_nibbles: List[int]
     :param bad_count: The number of successive corrupted AMs to be sent.
     :type bad_count: int
+
+    .. versionadded:: 1.9.0
+
+        Requires Xena Release 106.1 or later.
+
     """
     await port.layer1_adv.pcs.pcsl[pcsl].am.corrupt_config.set(cm_nibble_indices=cm_nibbles, am_bad_count=bad_count)
     await port.layer1_adv.pcs.pcsl[pcsl].err_inject.inject.inject_am()
@@ -955,10 +888,6 @@ async def inject_am_error_once(port: "FreyaEdunPort", pcsl: int, cm_nibbles: Lis
 
 async def inject_loa_once(port: "FreyaEdunPort", pcsl: int) -> None:
     """
-    .. versionadded:: 1.9.0
-
-        Requires Xena Release 106.1 or later.
-
     Inject a Loss of Alignment (LOA) error on the specified PCS lane immediately when called.
 
     This function uses the :py:func:`inject_am_error_once` function to inject an AM error with predefined AM corruption parameters that can trigger an LOA on the specified PCSL.
@@ -971,22 +900,19 @@ async def inject_loa_once(port: "FreyaEdunPort", pcsl: int) -> None:
     :param pcsl: The index of the PCS lane.
     :type pcsl: int
 
+    .. versionadded:: 1.9.0
+
+        Requires Xena Release 106.1 or later.
+
     """
     # generate a list of 4 integers ranging from 0 to 5 randomly
     cm_nibbles: list[int] = sample(range(6), k=4)
     await inject_am_error_once(port=port, pcsl=pcsl, cm_nibbles=cm_nibbles, bad_count=5)
 
 
-class LoaStatus(NamedTuple):
-    current: bool
-    latched: bool
 
 async def get_port_loa_status(port: "FreyaEdunPort") -> LoaStatus:
     """
-    .. versionadded:: 1.9.0
-
-        Requires Xena Release 106.1 or later.
-
     Get the per-port current and latched Loss of Alignment (LOA) status.
 
     True means error condition is present, while False means error condition is not present.
@@ -995,6 +921,11 @@ async def get_port_loa_status(port: "FreyaEdunPort") -> LoaStatus:
     :type port: Union[Z800FreyaPort, Z1600EdunPort]
     :return: A tuple containing the current and latched LOA status of the port.
     :rtype: LoaStatus
+
+    .. versionadded:: 1.9.0
+
+        Requires Xena Release 106.1 or later.
+
     """
     resp = await port.layer1_adv.pcs.loa.status.get()
     curr = True if resp.current.value == 1 else False
@@ -1004,10 +935,6 @@ async def get_port_loa_status(port: "FreyaEdunPort") -> LoaStatus:
 
 async def get_pcsl_loa_status(port: "FreyaEdunPort", pcsl_indices: List[int]) -> List[LoaStatus]:
     """
-    .. versionadded:: 1.9.0
-
-        Requires Xena Release 106.1 or later.
-
     Get the per-PCSL current and latched Loss of Alignment (LOA) status.
 
     True means error condition is present, while False means error condition is not present.
@@ -1018,6 +945,11 @@ async def get_pcsl_loa_status(port: "FreyaEdunPort", pcsl_indices: List[int]) ->
     :type pcsl_indices: List[int]
     :return: A list of tuples containing the current and latched LOA status of the specified PCSLs.
     :rtype: List[LoaStatus]
+
+    .. versionadded:: 1.9.0
+
+        Requires Xena Release 106.1 or later.
+
     """
     results = []
     cmds = []
@@ -1031,15 +963,9 @@ async def get_pcsl_loa_status(port: "FreyaEdunPort", pcsl_indices: List[int]) ->
     return results
 
 
-class TxPcslErrors(NamedTuple):
-    am_err: int
 
 async def get_tx_pcsl_errors_since_clear(port: "FreyaEdunPort", pcsl_indices: List[int]) -> List[TxPcslErrors]:
     """
-    .. versionadded:: 1.9.0
-
-        Requires Xena Release 106.1 or later.
-        
     Get the per-PCSL number of injected (Tx) AM errors since the last counter clear.
 
     :param port: The port instance.
@@ -1048,6 +974,11 @@ async def get_tx_pcsl_errors_since_clear(port: "FreyaEdunPort", pcsl_indices: Li
     :type pcsl_indices: List[int]
     :return: A list of TxPcslErrors namedtuples containing the injected number of AM errors since the last counter clear per PCSL.
     :rtype: List[TxPcslErrors]
+
+    .. versionadded:: 1.9.0
+
+        Requires Xena Release 106.1 or later.
+        
     """
     results = []
     cmds = []
@@ -1366,12 +1297,10 @@ __all__ = (
     "get_rx_datarate_min",
     "get_rx_datarate_max",
     "get_rx_datarate_all",
-
     "set_hi_ser_alarm",
     "set_deg_ser_thresholds",
     "get_deg_ser_thresholds",
     "get_am_encoding",
-
     "get_cdr_lol_status",
     "get_rx_pcsl_skew",
     "get_hi_ber_status",
@@ -1383,20 +1312,16 @@ __all__ = (
     "get_link_down_status",
     "get_port_loa_status",
     "get_pcsl_loa_status",
-
     "get_rx_errors_since_clear",
     "get_tx_errors_since_clear",
     "get_tx_pcsl_errors_since_clear",
-
     "inject_errcwd_once",
     "inject_itb_once",
     "inject_am_error_once",
     "inject_loa_once",
     "inject_hi_ser_once",
-
     "clear_rx_err_cnt",
     "clear_tx_err_cnt",
-    
     # Deprecated functions
     "get_cw_err_since_last",
     "get_itb_since_last",

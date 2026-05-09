@@ -206,6 +206,8 @@ from .internals.commands.enums import (
     LLDPOpMode,
     PcsLaneErrorInjectionType,
     UecCtlosClearDirection,
+    UecFrameDesireLlr,
+    UecLinkOptionLlr,
 )
 
 __all__ = (

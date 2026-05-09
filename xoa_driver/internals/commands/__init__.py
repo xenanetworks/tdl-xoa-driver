@@ -29,11 +29,3 @@ from .ps_commands import *  # noqa: F403,F401
 from .pt_commands import *  # noqa: F403,F401
 from .px_commands import *  # noqa: F403,F401
 from .pl1_commands import *  # noqa: F403,F401
-from .p_lldp_commands import * # noqa: F403,F401
-from .p_macsec_commands import * # noqa: F403,F401
-from .p_edun_commands import * # noqa: F403,F401
-from .p_ue_ctlos_commands import * # noqa: F403,F401
-from .p_ue_linkneg_commands import * # noqa: F403,F401
-from .p_ue_llr_commands import * # noqa: F403,F401
-from .ps_ue_commands import * # noqa: F403,F401
-

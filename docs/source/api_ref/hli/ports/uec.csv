@@ -1,0 +1,47 @@
+1,LLR Mode Set On,await port.uec.llr.mode.set_on(),Manually set the port's LLR mode to on
+2,LLR Mode Set Off,await port.uec.llr.mode.set_off(),Manually set the port's LLR mode to off
+3,LLR Link Negotiation Config Set,"await port.uec.linkneg.link_options.config.set(lldp_agent_index=0, llr_wanted_local=enums.UecLinkOptionLlr.BI_WANTED)",Set the port's LLR mode based on the link negotiation result
+4,Stream Create,stream = await port.streams.create(),Create a stream on the port
+5,Stream LLR Desire Set Eligible,await stream.uec.llr.desire.set_llr_eligible(),Set the stream's LLR desire to LLR-eligible
+6,CtlOS Tx Stats Get,resp = await port.uec.ctlos.stats.tx.get(),Get LLR CtlOS Tx statistics
+7,CtlOS Tx LLR Init Count,resp.llr_init_cnt,Number of LLR Init frames sent (Tx)
+8,CtlOS Tx LLR Init Echo Count,resp.llr_init_echo_cnt,Number of LLR Init Echo frames sent (Tx)
+9,CtlOS Tx LLR Ack Count,resp.llr_ack_cnt,Number of LLR ACK frames sent (Tx)
+10,CtlOS Tx LLR Nack Count,resp.llr_nack_cnt,Number of LLR NACK frames sent (Tx)
+11,CtlOS Tx LLR Init Seq,resp.llr_init_seq,LLR Init sequence number (Tx)
+12,CtlOS Tx LLR Init Data,resp.llr_init_data,LLR Init data payload (Tx)
+13,CtlOS Tx LLR Init Echo Seq,resp.llr_init_echo_seq,LLR Init Echo sequence number (Tx)
+14,CtlOS Tx LLR Init Echo Data,resp.llr_init_echo_data,LLR Init Echo data payload (Tx)
+15,CtlOS Rx Stats Get,resp = await port.uec.ctlos.stats.rx.get(),Get LLR CtlOS Rx statistics
+16,CtlOS Rx LLR Init Count,resp.llr_init_cnt,Number of LLR Init frames received (Rx)
+17,CtlOS Rx LLR Init Echo Count,resp.llr_init_echo_cnt,Number of LLR Init Echo frames received (Rx)
+18,CtlOS Rx LLR Ack Count,resp.llr_ack_cnt,Number of LLR ACK frames received (Rx)
+19,CtlOS Rx LLR Nack Count,resp.llr_nack_cnt,Number of LLR NACK frames received (Rx)
+20,CtlOS Rx LLR Init Seq,resp.llr_init_seq,LLR Init sequence number (Rx)
+21,CtlOS Rx LLR Init Data,resp.llr_init_data,LLR Init data payload (Rx)
+22,CtlOS Rx LLR Init Echo Seq,resp.llr_init_echo_seq,LLR Init Echo sequence number (Rx)
+23,CtlOS Rx LLR Init Echo Data,resp.llr_init_echo_data,LLR Init Echo data payload (Rx)
+24,CtlOS Rx LLR Init Echo Mismatch,resp.llr_init_echo_mismatch,Number of LLR Init Echo mismatches detected (Rx)
+25,LLR Tx Layer-2 Stats Get,resp = await port.uec.llr.stats.tx.get(),Get LLR Tx layer-2 statistics
+26,LLR Tx Eligible Good FCS,resp.tx_llr_eligible_good_fcs,Tx LLR-eligible frames with good FCS
+27,LLR Tx Eligible Poisoned FCS,resp.tx_llr_eligible_poisoned_fcs,Tx LLR-eligible frames with poisoned FCS
+28,LLR Tx Eligible Bad FCS,resp.tx_llr_eligible_bad_fcs,Tx LLR-eligible frames with bad FCS
+29,LLR Tx Eligible Discard,resp.tx_llr_eligible_discard,Tx LLR-eligible frames discarded
+30,LLR Tx Ineligible Good FCS,resp.tx_llr_ineligible_good_fcs,Tx LLR-ineligible frames with good FCS
+31,LLR Tx Ineligible Bad FCS,resp.tx_llr_ineligible_bad_fcs,Tx LLR-ineligible frames with bad FCS
+32,LLR Tx Ineligible Total,resp.tx_llr_ineligible_total,Total Tx LLR-ineligible frames
+33,LLR Tx Replayed,resp.tx_replayed,Number of Tx replayed frames
+34,LLR Rx Layer-2 Stats Get,resp = await port.uec.llr.stats.rx.get(),Get LLR Rx layer-2 statistics
+35,LLR Rx Eligible Good FCS,resp.rx_llr_eligible_good_fcs,Rx LLR-eligible frames with good FCS
+36,LLR Rx Eligible Poisoned FCS,resp.rx_llr_eligible_poisoned_fcs,Rx LLR-eligible frames with poisoned FCS
+37,LLR Rx Eligible Bad FCS,resp.rx_llr_eligible_bad_fcs,Rx LLR-eligible frames with bad FCS
+38,LLR Rx Eligible Total,resp.rx_llr_eligible_total,Total Rx LLR-eligible frames
+39,LLR Rx Eligible Good FCS Exp Seq,resp.rx_llr_eligible_good_fcs_exp_seq,Rx LLR-eligible frames with good FCS and expected sequence number
+40,LLR Rx Eligible Poisoned FCS Exp Seq,resp.rx_llr_eligible_poisoned_fcs_exp_seq,Rx LLR-eligible frames with poisoned FCS and expected sequence number
+41,LLR Rx Eligible Bad FCS Exp Seq,resp.rx_llr_eligible_bad_fcs_exp_seq,Rx LLR-eligible frames with bad FCS and expected sequence number
+42,LLR Rx Eligible Total Exp Seq,resp.rx_llr_eligible_total_exp_seq,Total Rx LLR-eligible frames with expected sequence number
+43,LLR Rx Eligible Missing Seq,resp.rx_llr_eligible_missing_seq,Rx LLR-eligible frames with missing sequence number
+44,LLR Rx Eligible Duplicate Seq,resp.rx_llr_eligible_duplicate_seq,Rx LLR-eligible frames with duplicate sequence number
+45,LLR Rx Ineligible Good FCS,resp.rx_llr_ineligible_good_fcs,Rx LLR-ineligible frames with good FCS
+46,LLR Rx Ineligible Bad FCS,resp.rx_llr_ineligible_bad_fcs,Rx LLR-ineligible frames with bad FCS
+47,LLR Rx Ineligible Total,resp.rx_llr_ineligible_total,Total Rx LLR-ineligible frames
