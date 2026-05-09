@@ -3399,3 +3399,46 @@ class PcsLaneErrorInjectionType(IntEnum):
 
     AM = 1
     """Alignment Marker (AM) error injection"""
+
+class UecCtlosClearDirection(IntEnum):
+    """Direction for clearing UE CtlOS counters"""
+
+    NONE = 0
+    """No counter will be cleared"""
+
+    RX = 1
+    """Clear RX UE CtlOS counters"""
+
+    TX = 2
+    """Clear TX UE CtlOS counters"""
+
+    ALL = 3
+    """Clear all UE CtlOS counters (RX and TX)"""
+
+
+class UecFrameDesireLlr(IntEnum):
+    """UEC Frame Desire LLR"""
+
+    UNKNOWN = 0
+    """The type is unknown"""
+
+    LLR_INELIGIBLE = 1
+    """LLR ineligible. Default transmission"""
+
+    LLR_ELIGIBLE = 2
+    """LLR eligible"""
+
+class UecLinkOptionLlr(IntEnum):
+    """UE Link Option LLR"""
+
+    NOT_WANTED = 0
+    """This port does not want to use LLR"""
+
+    RSVD1 = 1
+    """Reserved for future specification."""
+
+    RSVD2 = 2
+    """Reserved for future specification."""
+
+    BI_WANTED = 3
+    """This port wants bi-directional LLR (it both sends and receives)"""

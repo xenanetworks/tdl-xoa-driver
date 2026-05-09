@@ -1,46 +1,58 @@
 ``ports`` module
 =========================
 
-Port APIs Overview
---------------------
+Traffic Generation APIs
+------------------------
+
+Port APIs Summary Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. csv-table:: TG Port APIs Overview
     :header: "Id", "Action", "API", "Description"
     :widths: auto
-    :file: ports.csv
+    :file: ports_tg.csv
+
+Port API Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ports.py
+    :caption: Examples - Traffic Generation APIs (port)
+    :start-at: [ports]
+    :end-before: [Layer-1 Advanced Features]
 
 
-.. csv-table:: Impairment Port APIs Overview
-    :header: "Id", "Action", "API", "Description"
-    :file: ports_chimera.csv
-
+Stream APIs Summary Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. csv-table:: Stream APIs Overview
     :header: "Id", "Action", "API", "Description"
     :file: streams.csv
 
 
-.. csv-table:: MACsec APIs Overview
+Stream API Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: streams.py
+    :caption: Examples - Stream APIs
+    :start-at: [streams]    
+    :end-before: [end]
+
+
+
+Layer-1 APIs
+------------------------
+
+Layer-1 APIs Summary Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. csv-table:: Layer-1 Testing APIs Overview
     :header: "Id", "Action", "API", "Description"
-    :file: ports_macsec.csv
+    :widths: auto
+    :file: ports_l1.csv
 
 
-.. csv-table:: LLDP APIs Overview
-    :header: "Id", "Action", "API", "Description"
-    :file: ports_lldp.csv
-
-
-Examples - Traffic Generation APIs
----------------------------------------------
-
-.. literalinclude:: ports.py
-    :caption: Examples - Traffic Generation APIs
-    :start-at: [ports]
-    :end-before: [Layer-1 Advanced Features]
-
-
-Examples - Layer-1 APIs
------------------------------
+Layer-1 API Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: ports.py
     :caption: Examples - Layer-1 APIs
@@ -48,8 +60,8 @@ Examples - Layer-1 APIs
     :end-before: [Transceiver Management]
 
 
-Examples - Transceiver APIs
------------------------------
+Transceiver API Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: ports.py
     :caption: Examples - Transceiver APIs
@@ -57,26 +69,41 @@ Examples - Transceiver APIs
     :end-before: [end]
 
 
-Examples - E100 Chimera Specific Port APIs
----------------------------------------------
+Ultra Ethernet APIs
+-----------------------------
 
-.. literalinclude:: ports_chimera.py
-    :caption: Examples - E100 Chimera Specific Port APIs
-    :start-at: [chimera ports]
+Ultra Ethernet APIs Summary Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. csv-table:: Ultra Ethernet APIs Overview
+    :header: "Id", "Action", "API", "Description"
+    :widths: auto
+    :file: uec.csv
+
+
+Ultra Ethernet API Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: uec.py
+    :caption: Examples - Ultra Ethernet APIs
+    :start-at: [ports]
     :end-before: [end]
 
 
-Examples - Traffic Generation Stream APIs
----------------------------------------------
-
-.. literalinclude:: streams.py
-    :caption: Examples - Traffic Generation Stream APIs
-    :start-at: [streams]    
-    :end-before: [end]
 
 
-Examples - MACsec APIs
----------------------------------------------
+MACsec APIs
+------------------------
+
+MACsec APIs Summary Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. csv-table:: MACsec APIs Overview
+    :header: "Id", "Action", "API", "Description"
+    :file: ports_macsec.csv
+
+MACsec API Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: ports_macsec.py
     :caption: Examples - MACsec APIs
@@ -84,10 +111,59 @@ Examples - MACsec APIs
     :end-before: [end]
 
 
-Examples - LLDP APIs
----------------------------------------------
+
+LLDP APIs
+------------------------
+
+LLDP APIs Summary Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. csv-table:: LLDP APIs Overview
+    :header: "Id", "Action", "API", "Description"
+    :file: ports_lldp.csv
+
+
+LLDP API Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: ports_lldp.py
     :caption: Examples - LLDP APIs
     :start-at: [LLDP]
     :end-before: [end]
+
+
+
+
+Network Impairment APIs
+------------------------
+
+Network Impairment APIs Summary Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. csv-table:: Impairment Port APIs Overview
+    :header: "Id", "Action", "API", "Description"
+    :file: ports_chimera.csv
+
+
+Network Impairment API Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ports_chimera.py
+    :caption: Examples - Network Impairment APIs
+    :start-at: [chimera ports]
+    :end-before: [end]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
