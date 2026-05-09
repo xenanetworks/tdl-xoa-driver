@@ -413,4 +413,5 @@ __all__ = (
     "PcsLaneErrorInjectionType",
     "UecCtlosClearDirection",
     "UecFrameDesireLlr",
+    "UecLinkOptionLlr",
 )

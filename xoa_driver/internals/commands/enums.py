@@ -3427,3 +3427,18 @@ class UecFrameDesireLlr(IntEnum):
 
     LLR_ELIGIBLE = 2
     """LLR eligible"""
+
+class UecLinkOptionLlr(IntEnum):
+    """UE Link Option LLR"""
+
+    NOT_WANTED = 0
+    """This port does not want to use LLR"""
+
+    RSVD1 = 1
+    """Reserved for future specification."""
+
+    RSVD2 = 2
+    """Reserved for future specification."""
+
+    BI_WANTED = 3
+    """This port wants bi-directional LLR (it both sends and receives)"""

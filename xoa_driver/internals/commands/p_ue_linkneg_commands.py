@@ -27,7 +27,7 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
 )
 
 from .enums import (
-    UecCtlosClearDirection,
+    UecLinkOptionLlr,
 )
 
 @register_command
@@ -63,30 +63,24 @@ class P_UE_LINKNEG_OPTIONS:
 
     class GetDataAttr(ResponseBodyStruct):
         lldp_agent_index: int = field(XmpByte())
-        """integer, The LLDP agent index to use for advertising the advanced UE link capabilities. An LLDP agent must be created and configured separately using the LLDP commands before it can be used with this command. Values: 0 to 7."""
+        """integer, The LLDP agent index to use for advertising the advanced UE link capabilities. An LLDP agent must be created and configured separately using the LLDP commands before it can be used with this command. 
+        
+        Values: 0 to 7.
+        """
 
-        llr_wanted_local: int = field(XmpByte())
-        """integer, Indicates whether the local port wants LLR.
-
-        - ``NO = 0``: The port does not want to use LLR.
-        - ``RSVD1 = 1``: Reserved value.
-        - ``RSVD2 = 2``: Reserved value.
-        - ``BI = 3``: port wants bi-directional LLR (it both sends and receives).
-
+        llr_wanted_local: UecLinkOptionLlr = field(XmpByte())
+        """coded integer, Indicates whether the local port wants LLR.
         """
 
     class SetDataAttr(RequestBodyStruct):
         lldp_agent_index: int = field(XmpByte())
-        """integer, The LLDP agent index to use for advertising the advanced UE link capabilities. An LLDP agent must be created and configured separately using the LLDP commands before it can be used with this command. Values: 0 to 7."""
+        """integer, The LLDP agent index to use for advertising the advanced UE link capabilities. An LLDP agent must be created and configured separately using the LLDP commands before it can be used with this command. 
+        
+        Values: 0 to 7.
+        """
 
-        llr_wanted_local: int = field(XmpByte())
-        """integer, Indicates whether the local port wants LLR.
-
-        - ``NO = 0``: The port does not want to use LLR.
-        - ``RSVD1 = 1``: Reserved value.
-        - ``RSVD2 = 2``: Reserved value.
-        - ``BI = 3``: port wants bi-directional LLR (it both sends and receives).
-
+        llr_wanted_local: UecLinkOptionLlr = field(XmpByte())
+        """coded integer, Indicates whether the local port wants LLR.
         """
 
     def get(self) -> Token[GetDataAttr]:
@@ -98,13 +92,13 @@ class P_UE_LINKNEG_OPTIONS:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, lldp_agent_index: int, llr_wanted_local: int) -> Token[None]:
+    def set(self, lldp_agent_index: int, llr_wanted_local: UecLinkOptionLlr) -> Token[None]:
         """Set the UE Link Negotiation Options.
 
         :param lldp_agent_index: The LLDP agent index to use for advertising the advanced UE link capabilities. Values: 0 to 7.
         :type lldp_agent_index: int
-        :param llr_wanted_local: Indicates whether the local port wants LLR. Values: 0 (NO), 1 (RSVD1), 2 (RSVD2), 3 (BI)
-        :type llr_wanted_local: int
+        :param llr_wanted_local: Indicates whether the local port wants LLR. 
+        :type llr_wanted_local: UecLinkOptionLlr
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, lldp_agent_index=lldp_agent_index, llr_wanted_local=llr_wanted_local))
@@ -125,24 +119,12 @@ class P_UE_LINKNEG_OPTIONS_STATUS:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        llr_wanted_local: int = field(XmpByte())
-        """integer, Indicates whether the local port wants LLR.
-
-        - ``NO = 0``: The port does not want to use LLR.
-        - ``RSVD1 = 1``: Reserved value.
-        - ``RSVD2 = 2``: Reserved value.
-        - ``BI = 3``: port wants bi-directional LLR (it both sends and receives).
-
+        llr_wanted_local: UecLinkOptionLlr = field(XmpByte())
+        """coded integer, Indicates whether the local port wants LLR.
         """
 
-        llr_wanted_remote: int = field(XmpByte())
-        """integer, Indicates whether the remote port wants LLR.
-
-        - ``NO = 0``: The port does not want to use LLR.
-        - ``RSVD1 = 1``: Reserved value.
-        - ``RSVD2 = 2``: Reserved value.
-        - ``BI = 3``: port wants bi-directional LLR (it both sends and receives).
-
+        llr_wanted_remote: UecLinkOptionLlr = field(XmpByte())
+        """coded integer, Indicates whether the remote port wants LLR.
         """
 
     def get(self) -> Token[GetDataAttr]:
