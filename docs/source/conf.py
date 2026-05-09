@@ -12,7 +12,6 @@
 #
 import os
 import sys
-from pathlib import Path
 
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../../'))
@@ -110,9 +109,9 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.extlinks',
-    "sphinx_inline_tabs",
+    'sphinx_inline_tabs',
     'sphinx_copybutton',
-    "sphinx_remove_toctrees",
+    'sphinx_remove_toctrees',
     'sphinx_rtd_theme',
     'sphinxcontrib.googleanalytics',
 ]
