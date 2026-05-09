@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from xoa_driver.internals.utils import kind
     from xoa_driver.internals.utils.indices import observer as idx_obs
 
+from .uec_stream import SUec
 
 class GSInjectError(SInjectError):
     """Error Injection configuration"""
@@ -61,4 +62,10 @@ class GenuineStreamIdx(BaseStreamIdx):
         """MACSec configuration
 
         :type: SMacSec
+        """
+
+        self.uec = SUec(conn, *kind)
+        """UEC configuration
+
+        :type: SUec
         """
