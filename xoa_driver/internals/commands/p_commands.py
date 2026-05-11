@@ -673,6 +673,13 @@ class P_CAPABILITIES:
         txeq_min_seq: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()], length=10), min_version=470)
         """min-value of individual TXEQ taps, SEQuential: <pre-n> <pre-(n-q)> ... <prr1> <main> <post1> <post2> ...."""
 
+        adv_anlt_mask: int = field(XmpInt(), min_version=480)
+        """bitmask, advanced ANLT capability bitmask."""
+
+        adv_layer1_mask: int = field(XmpInt(), min_version=480)
+        """bitmask, advanced Layer 1 capability bitmask."""
+
+
 
     def get(self) -> Token[P_CAPABILITIES.GetDataAttr]:
         """Get the internal limits, aka. capabilities, of the port.
