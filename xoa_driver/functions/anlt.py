@@ -10,6 +10,7 @@ from typing import (
 )
 if TYPE_CHECKING:
     from xoa_driver.ports import Z800FreyaPort
+    
 from xoa_driver import enums
 from xoa_driver.utils import apply
 from xoa_driver.lli import commands

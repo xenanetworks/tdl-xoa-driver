@@ -45,7 +45,8 @@ class SerDesEdun:
         """
 
         self.lt_status = PP_LINKTRAINSTATUS(conn, module_id, port_id, serdes_xindex)
-        """LT status for Edun
+        """Basic ANLT - Link Training status on serdes level
+
         :type: PP_LINKTRAINSTATUS
         """
 
@@ -78,26 +79,47 @@ class Layer1:
                 )
         
         self.impairment = Impair(conn, module_id, port_id)
-        """Impairment functions"""
+        """Impairment functions
+        
+        :type: Impair
+        """
 
         self.rs_fault = RsFault(conn, module_id, port_id)
         """RS Fault configuration and status
+
+        :type: RsFault
         """
 
         self.pcs = EdunPcsLayer(conn, port)
         """Edun PCS and FEC configuration and status
+
+        :type: EdunPcsLayer
         """
 
         self.prbs_config = PP_PRBSTYPE(conn, module_id, port_id)
         """PRBS configuration, including PRBS polynomial, invert mode, and statistic collection mode (for RX).
+
+        :type: PP_PRBSTYPE
         """
 
         self.anlt = AnltBasic(conn, module_id, port_id)
-        """Edun ANLT settings
+        """Basic ANLT. For per-serdes configuration and status, use serdes[x].
+
+        Same as anlt_basic. For backward compatibility.
+
+        :type: AnltBasic
         """
 
         self.transceiver = Transceiver(conn, module_id, port_id)
         """Edun Transceiver configuration and status
+
+        :type: Transceiver
+        """
+
+        self.anlt_basic = AnltBasic(conn, module_id, port_id)
+        """Basic ANLT. For per-serdes configuration and status, use serdes[x].
+
+        :type: AnltBasic
         """
         
         

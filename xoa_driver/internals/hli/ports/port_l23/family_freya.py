@@ -14,8 +14,9 @@ if TYPE_CHECKING:
 
 from .bases.port_l23_genuine import BasePortL23Genuine
 from .layer1_freya import Layer1
-from .layer1adv import Layer1Adv
+from .layer1_adv.layer1 import Layer1Adv
 from .protocol.lldp import LLDP
+from .uec.ue import UltraEthernet
 
 
 class FamilyFreya(BasePortL23Genuine):
@@ -31,6 +32,12 @@ class FamilyFreya(BasePortL23Genuine):
         """LLDP protocol support for the port.
         
         :type: LLDP
+        """
+
+        self.uec = UltraEthernet(conn, module_id, port_id)
+        """Ultra Ethernet of the port.
+
+        :type: UltraEthernet
         """
 
     async def _setup(self) -> Self:

@@ -1,0 +1,298 @@
+1,Get Port Object,module.ports.obtain(),Obtain a port object representing a specific port on a module
+2,Release Port,port.reservation.set_release(),Reserve or release the port.
+3,Relinquish Port,port.reservation.set_relinquish(),Reserve or release the port.
+4,Reserve Port,port.reservation.set_reserve(),Reserve or release the port.
+5,Get Port Reservation Status,port.reservation.get(),Reserve or release the port.
+6,Get Port Reserved By,port.reserved_by.get(),Get the current reservation status of the port.
+7,Set Port Description,port.comment.set(),A text description of the port.
+8,Get Port Description,port.comment.get(),A text description of the port.
+9,Get Interface Name,port.interface.get(),The interface name of the port.
+10,Reset Port,port.reset.set(),Reset the port.
+11,Flash Port LEDs On,port.flash.set_on(),Make the port LED flash on and off with a 1-second interval.
+12,Flash Port LEDs Off,port.flash.set_off(),Make the port LED flash on and off with a 1-second interval.
+13,Get Flash Status,port.flash.get(),Make the port LED flash on and off with a 1-second interval.
+14,Get Sync Status,port.sync_status.get(),Get the port synchronization status.
+15,Enable TX Output,port.tx_config.enable.set_on(),Enable or disable the port transmitter.
+16,Disable TX Output,port.tx_config.enable.set_off(),Enable or disable the port transmitter.
+17,Get TX Output Status,port.tx_config.enable.get(),Enable or disable the port transmitter.
+18,Set TX Time Limit,port.tx_config.time_limit.set(),Set or get the transmit time limit.
+19,Get TX Time Limit,port.tx_config.time_limit.get(),Set or get the transmit time limit.
+20,Set TX Packet Limit,port.tx_config.packet_limit.set(),Set or get the transmit packet limit.
+21,Get TX Packet Limit,port.tx_config.packet_limit.get(),Set or get the transmit packet limit.
+22,Get TX Time Elapsed,port.tx_config.time.get(),Get the elapsed transmit time.
+23,Get TX Delay,port.tx_config.delay.get(),Set or get the transmit delay.
+24,Set TX Prepare,port.tx_config.prepare.set(),Prepare the port for transmission.
+25,Start Traffic,port.traffic.state.set_start(),Start or stop traffic on the port.
+26,Stop Traffic,port.traffic.state.set_stop(),Start or stop traffic on the port.
+27,Get Traffic State,port.traffic.state.get(),Start or stop traffic on the port.
+28,Get Traffic Error,port.traffic.error.get(),Get the traffic error status.
+29,Send Manual Packet,port.tx_single_pkt.send.set(),Transmit a single manually specified packet.
+30,Get Manual Packet Time,port.tx_single_pkt.time.get(),Get the time taken to transmit a single manually specified packet.
+31,Disable Dynamic Traffic,port.dynamic.set_off(),Enable or disable dynamic traffic on the port.
+32,Enable Dynamic Traffic,port.dynamic.set_on(),Enable or disable dynamic traffic on the port.
+33,Get Dynamic Traffic Status,port.dynamic.get(),Enable or disable dynamic traffic on the port.
+34,Set Rate Fraction,port.rate.fraction.set(),Set or get the transmit rate as a fraction of line rate in parts per million (ppm).
+35,Get Rate Fraction,port.rate.fraction.get(),Set or get the transmit rate as a fraction of line rate in parts per million (ppm).
+36,Set Rate L2 Bits Per Second,port.rate.l2_bps.set(),Set or get the transmit rate in bits per second at Layer 2.
+37,Get Rate L2 Bits Per Second,port.rate.l2_bps.get(),Set or get the transmit rate in bits per second at Layer 2.
+38,Set Rate Frames Per Second,port.rate.pps.set(),Set or get the transmit rate in frames per second.
+39,Get Rate Frames Per Second,port.rate.pps.get(),Set or get the transmit rate in frames per second.
+40,Set TX Mode Normal,port.tx_config.mode.set_normal(),Set or get the transmit mode.
+41,Set TX Mode Burst,port.tx_config.mode.set_burst(),Set or get the transmit mode.
+42,Set TX Mode Sequential,port.tx_config.mode.set_sequential(),Set or get the transmit mode.
+43,Set TX Mode Strict Uniform,port.tx_config.mode.set_strictuniform(),Set or get the transmit mode.
+44,Get TX Mode,port.tx_config.mode.get(),Set or get the transmit mode.
+45,Set Burst Period,port.tx_config.burst_period.set(),Set or get the burst period in milliseconds.
+46,Get Burst Period,port.tx_config.burst_period.get(),Set or get the burst period in milliseconds.
+47,Set Inter-frame Gap,port.interframe_gap.set(),Set or get the inter-frame gap minimum byte count.
+48,Get Inter-frame Gap,port.interframe_gap.get(),Set or get the inter-frame gap minimum byte count.
+49,Set Autoneg On for RJ45 Port,port.autoneg_selection.set_on(),Set Autoneg On for RJ45 Odin port.
+50,Set Autoneg Off for RJ45 Port,port.autoneg_selection.set_off(),Set Autoneg Off for RJ45 Odin port.
+51,Get Autoneg Status on RJ45 Port,port.autoneg_selection.get(),Get Autoneg status on RJ45 Odin port.
+52,Set Speed Mode Auto,port.speed.selection.set_auto(),Set or get the speed mode selection.
+53,Set Speed Mode 10M,port.speed.selection.set_f10m(),Set or get the speed mode selection.
+54,Set Speed Mode 10M/100M,port.speed.selection.set_f10m100m(),Set or get the speed mode selection.
+55,Set Speed Mode 10M HDX,port.speed.selection.set_f10mhdx(),Set or get the speed mode selection.
+56,Set Speed Mode 100M,port.speed.selection.set_f100m(),Set or get the speed mode selection.
+57,Set Speed Mode 100M/1G,port.speed.selection.set_f100m1g(),Set or get the speed mode selection.
+58,Set Speed Mode 100M/1G/10G,port.speed.selection.set_f100m1g10g(),Set or get the speed mode selection.
+59,Set Speed Mode 100M/1G/2.5G,port.speed.selection.set_f100m1g2500m(),Set or get the speed mode selection.
+60,Set Speed Mode 100M HDX,port.speed.selection.set_f100mhdx(),Set or get the speed mode selection.
+61,Set Speed Mode 1G,port.speed.selection.set_f1g(),Set or get the speed mode selection.
+62,Set Speed Mode 2.5G,port.speed.selection.set_f2500m(),Set or get the speed mode selection.
+63,Set Speed Mode 5G,port.speed.selection.set_f5g(),Set or get the speed mode selection.
+64,Set Speed Mode 10G,port.speed.selection.set_f10g(),Set or get the speed mode selection.
+65,Set Speed Mode 40G,port.speed.selection.set_f40g(),Set or get the speed mode selection.
+66,Set Speed Mode 100G,port.speed.selection.set_f100g(),Set or get the speed mode selection.
+67,Get Speed Mode Selection,port.speed.selection.get(),Set or get the speed mode selection.
+68,Get Supported Speed Modes,port.speed. supported.get(),
+69,Get Current Speed,port.speed.current.get(),
+70,Set Speed Reduction,port.speed.reduction.set(),
+71,Get Speed Reduction,port.speed.reduction.get(),
+72,Get Optical RX Power,port.status.get(),
+73,Set MAC Address,port.net_config.mac.address.set(),
+74,Get MAC Address,port.net_config.mac.address.get(),
+75,Set Auto MAC Training,port.net_config.mac.autotrain.set(),
+76,Get Auto MAC Training,port.net_config.mac.autotrain.get(),
+77,Enable PAUSE,port.pause.set_on(),
+78,Disable PAUSE,port.pause.set_off(),
+79,Get PAUSE Status,port.pause.get(),
+80,Set PFC Enable,port.pfc_enable.set(),
+81,Get PFC Enable,port.pfc_enable.get(),
+82,Set Gap Monitor,port.gap_monitor.set(),
+83,Get Gap Monitor,port.gap_monitor.get(),
+84,Set Checksum Offset,port.checksum.set(),
+85,Get Checksum Offset,port.checksum.get(),
+86,Set Random Seed,port.random_seed.set(),
+87,Get Random Seed,port.random_seed.get(),
+88,Set Maximum Header Length,port.max_header_length.set(),
+89,Get Maximum Header Length,port.max_header_length.get(),
+90,Set IMIX Weights,port.mix.weights.set(),
+91,Get IMIX Weights,port.mix.weights.get(),
+92,Set IMIX Lengths,port.mix.lengths[0].set(),
+93,Set IMIX Lengths,port.mix.lengths[1].set(),
+94,Set IMIX Lengths,port.mix.lengths[14].set(),
+95,Set IMIX Lengths,port.mix.lengths[15].set(),
+96,Get IMIX Lengths,port.mix.lengths[0].get(),
+97,Get IMIX Lengths,port.mix.lengths[1].get(),
+98,Get IMIX Lengths,port.mix.lengths[14].get(),
+99,Get IMIX Lengths,port.mix.lengths[15].get(),
+100,Set Payload Mode Normal,port.payload_mode.set_normal(),
+101,Set Payload Mode EXTPL,port.payload_mode.set_extpl(),
+102,Set Payload Mode CDF,port.payload_mode.set_cdf(),
+103,Get Payload Mode,port.payload_mode.get(),
+104,Set TPLD Mode Normal,port.tpld_mode.set_normal(),
+105,Set TPLD Mode Micro,port.tpld_mode.set_micro(),
+106,Get TPLD Mode,port.tpld_mode.get(),
+107,Set Loopback None,port.loopback.set_none(),
+108,Set Loopback L1RX to TX,port.loopback.set_l1rx2tx(),
+109,Set Loopback L2RX to TX,port.loopback.set_l2rx2tx(),
+110,Set Loopback L3RX to TX,port.loopback.set_l3rx2tx(),
+111,Set Loopback Port to Port,port.loopback.set_port2port(),
+112,Set Loopback TXOFF to RX,port.loopback.set_txoff2rx(),
+113,Set Loopback TXON to RX,port.loopback.set_txon2rx(),
+114,Get Loopback Mode,port.loopback.get(),
+115,Set Latency Mode First to First,port.latency_config.mode.set_first2first(),
+116,Set Latency Mode First to Last,port.latency_config.mode.set_first2last(),
+117,Set Latency Mode Last to First,port.latency_config.mode.set_last2first(),
+118,Set Latency Mode Last to Last,port.latency_config.mode.set_last2last(),
+119,Get Latency Mode,port.latency_config.mode.get(),
+120,Set Latency Offset,port.latency_config.offset.set(),
+121,Get Latency Offset,port.latency_config.offset.get(),
+122,Set IPv4 Address,port.net_config.ipv4.address.set(),
+123,Get IPv4 Address,port.net_config.ipv4.address.get(),
+124,Enable IPv4 ARP Reply,port.net_config.ipv4.arp_reply.set_on(),
+125,Disable IPv4 ARP Reply,port.net_config.ipv4.arp_reply.set_off(),
+126,Get IPv4 ARP Reply,port.net_config.ipv4.arp_reply.get(),
+127,Enable IPv4 Ping Reply,port.net_config.ipv4.ping_reply.set_on(),
+128,Disable IPv4 Ping Reply,port.net_config.ipv4.ping_reply.set_off(),
+129,Get IPv4 Ping Reply,port.net_config.ipv4.ping_reply.get(),
+130,Set IPv6 Address,port.net_config.ipv6.address.set(),
+131,Get IPv6 Address,port.net_config.ipv6.address.get(),
+132,Enable IPv6 NDP Reply,port.net_config.ipv6.arp_reply.set_on(),
+133,Disable IPv6 NDP Reply,port.net_config.ipv6.arp_reply.set_off(),
+134,Get IPv6 NDP Reply,port.net_config.ipv6.arp_reply.get(),
+135,Enable IPv6 Ping Reply,port.net_config.ipv6.ping_reply.set_on(),
+136,Disable IPv6 Ping Reply,port.net_config.ipv6.ping_reply.set_off(),
+137,Get IPv6 Ping Reply,port.net_config.ipv6.ping_reply.get(),
+138,Set IPv4 ARP Table,port.arp_rx_table.set(),
+139,Get IPv4 ARP Table,port.arp_rx_table.get(),
+140,Set IPv6 NDP Table,port.ndp_rx_table.set(),
+141,Get IPv6 NDP Table,port.ndp_rx_table.get(),
+142,Set IPv4 Multicast,port.multicast.mode.set(),
+143,Get IPv4 Multicast Mode,port.multicast.mode.get(),
+144,Set IPv4 Multicast Advanced IGMPv3,port.multicast.mode_extended.set(),
+145,Set IPv4 Multicast Advanced IGMPv3,port.multicast.mode_extended.set(),
+146,Set IPv4 Multicast Advanced IGMPv2,port.multicast.mode_extended.set(),
+147,Set IPv4 Multicast Advanced IGMPv2,port.multicast.mode_extended.set(),
+148,Set IPv4 Multicast Advanced IGMPv2,port.multicast.mode_extended.set(),
+149,Set IPv4 Multicast Advanced IGMPv2,port.multicast.mode_extended.set(),
+150,Set IPv4 Multicast Advanced IGMPv2,port.multicast.mode_extended.set(),
+151,Set IPv4 Multicast Advanced IGMPv2,port.multicast.mode_extended.set(),
+152,Set IPv4 Multicast Advanced IGMPv2,port.multicast.mode_extended.set(),
+153,Set IPv4 Multicast Advanced IGMPv2,port.multicast.mode_extended.set(),
+154,Get IPv4 Multicast Advanced,port.multicast.mode_extended.get(),
+155,Set IPv4 Multicast Source List,port.multicast.source_list.set(),
+156,Get IPv4 Multicast Source List,port.multicast.source_list.get(),
+157,Set IPv4 Multicast Header,port.multicast.header.set(),
+158,Set IPv4 Multicast Header,port.multicast.header.set(),
+159,Get IPv4 Multicast Header,port.multicast.header.get(),
+160,Enable UAT Mode,port.uat.mode.set(),Only applicable in Xena1564 test suite.
+161,Disable UAT Mode,port.uat.mode.set(),Only applicable in Xena1564 test suite.
+162,Get UAT Mode,port.uat.mode.get(),Only applicable in Xena1564 test suite.
+163,Get UAT Frame Loss Ratio,port.uat.flr.get(),Only applicable in Xena1564 test suite.
+164,Get UAT Status,port.statistics.rx.uat.status.get(),Only applicable in Xena1564 test suite.
+165,Get UAT Time,port.statistics.rx.uat.time.get(),Only applicable in Xena1564 test suite.
+166,Set Capture Trigger Criteria,port.capturer.trigger.set(),
+167,Set Capture Trigger Criteria,port.capturer.trigger.set(),
+168,Set Capture Trigger Criteria,port.capturer.trigger.set(),
+169,Set Capture Trigger Criteria,port.capturer.trigger.set(),
+170,Set Capture Trigger Criteria,port.capturer.trigger.set(),
+171,Get Capture Trigger Criteria,port.capturer.trigger.get(),
+172,Set Frame to Keep ALL,port.capturer.keep.set(),
+173,Set Frame to Keep FCSERR,port.capturer.keep.set(),
+174,Set Frame to Keep NOTPLD,port.capturer.keep.set(),
+175,Set Frame to Keep PLDERR,port.capturer.keep.set(),
+176,Set Frame to Keep TPLD,port.capturer.keep.set(),TPLD == 5
+177,Set Frame to Keep FILTER,port.capturer.keep.set(),Filter index == 2
+178,Get Frame to Keep,port.capturer.keep.get(),
+179,Start Packet Capture,port.capturer.state.set_start(),
+180,Stop Packet Capture,port.capturer.state.set_stop(),
+181,Get Packet Capture State,port.capturer.state.get(),
+182,Get Capture Stats,port.capturer.stats.get(),
+183,Read Captured Packets,port.capturer.obtain_captured(),
+184,Create Filter,port.filters.create(),
+185,Obtain Filter,port.filters.obtain(key=0),
+186,Obtain Multiple Filters,"port.filters.obtain_multiple(*[0,1,2])",
+187,Sync Filters,port.filters.server_sync(),
+188,Remove Filter,port.filters.remove(position_idx=0),
+189,Delete Filter,filter.delete(),
+190,Get Filter Index,filter.idx,
+191,Get Filter Module Index,filter.kind.module_id,
+192,Get Filter Port Index,filter.kind.port_id,
+193,Enable Filter,filter.enable.set_on(),
+194,Disable Filter,filter.enable.set_off(),
+195,Get Filter Enable,filter.enable.get(),
+196,Set Filter Comment,filter.comment.set(),
+197,Get Filter Comment,filter.comment.get(),
+198,Set Filter Condition,filter.condition.set(),
+199,Get Filter Condition,filter.condition.get(),
+200,Set Filter String,filter.string.set(),
+201,Get Filter String,filter.string.get(),
+202,Create Length Term,port.length_terms.create(),
+203,Obtain Length Term,port.length_terms.obtain(key=0),
+204,Obtain Multiple Length Terms,"port.length_terms.obtain_multiple(*[0,1,2])",
+205,Remove Length Term,port.length_terms.remove(position_idx=0),
+206,Delete Length Term,length_term.delete(),
+207,Get Length Term Index,length_term.idx,
+208,Get Length Term Module Index,length_term.kind.module_id,
+209,Get Length Term Port Index,length_term.kind.port_id,
+210,Sync Length Terms,port.length_terms.server_sync(),
+211,Configure Length Term,length_term.length.set(),
+212,Configure Length Term,length_term.length.set(),
+213,Get Length Term Config,length_term.length.get(),
+214,Create Match Term,port.match_terms.create(),
+215,Obtain Match Term,port.match_terms.obtain(key=0),
+216,Obtain Multiple Match Terms,"port.match_terms.obtain_multiple(*[0,1,2])",
+217,Remove Match Term,port.match_terms.remove(position_idx=0),
+218,Delete Match Term,match_term.delete(),
+219,Get Match Term Index,match_term.idx,
+220,Get Match Term Module Index,match_term.kind.module_id,
+221,Get Match Term Port Index,match_term.kind.port_id,
+222,Sync Match Terms,port.match_terms.server_sync(),
+223,Set Match Term Value,match_term.match.set(),
+224,Get Match Term Value,match_term.match.get(),
+225,Set Match Term Position,match_term.position.set(),
+226,Get Match Term Position,match_term.position.get(),
+227,Set Match Term Protocol,match_term.protocol.set(),
+228,Get Match Term Protocol,match_term.protocol.get(),
+229,Create Histogram,port.datasets.create(),
+230,Obtain Histogram,port.datasets.obtain(key=0),
+231,Obtain Multiple Histograms,"port.datasets.obtain_multiple(*[0,1,2])",
+232,Get Histogram Index,histogram.idx,
+233,Get Histogram Module Index,histogram.kind.module_id,
+234,Get Histogram Port Index,histogram.kind.port_id,
+235,Sync Histograms,port.datasets.server_sync(),
+236,Remove Histogram,port.datasets.remove(position_idx=0),
+237,Delete Histogram,histogram.delete(),
+238,Enable Histogram,histogram.enable.set_on(),
+239,Disable Histogram,histogram.enable.set_off(),
+240,Get Histogram Enable,histogram.enable.get(),
+241,Configure Histogram Source TX_IFG,histogram.source.set(),
+242,Configure Histogram Source TX_LEN,histogram.source.set(),
+243,Configure Histogram Source RX_IFG,histogram.source.set(),
+244,Configure Histogram Source RX_LEN,histogram.source.set(),
+245,Configure Histogram Source RX_LATENCY,histogram.source.set(),
+246,Configure Histogram Source RX_JITTER,histogram.source.set(),
+247,Get Histogram Source,histogram.source.get(),first value going into the second bucket
+248,Configure Histogram Range,histogram.range.set(),
+249,Get Histogram Range,histogram.range.get(),
+250,Get Histogram Samples,histogram.samples.get(),
+251,Get Port Error Counter,port.errors_count.get(),
+252,Clear TX Statistics,port.statistics.tx.clear.set(),Clear all the transmit statistics for a port.
+253,Get Total TX Traffic,port.statistics.tx.total.get(),Obtains statistics concerning all the packets transmitted on the port.
+254,Get TX Non-TPLD Traffic,port.statistics.tx.no_tpld.get(),Obtains statistics concerning the packets without a test payload transmitted on the port.
+255,Get Extra TX Counters,port.statistics.tx.extra.get(),Obtains additional statistics for packets transmitted on the port.
+256,Get TX Stream Counters,port.statistics.tx.obtain_from_stream(stream=0).get(),Obtains statistics concerning the packets of a specific stream transmitted on the port.
+257,Clear RX Statistics,port.statistics.rx.clear.set(),Clear all the receive statistics for a port.
+258,Calibrate RX Latency,port.statistics.rx.calibrate.set(),Calibrate the latency calculation for packets received on the port.
+259,Get Total RX Traffic,port.statistics.rx.total.get(),Obtains statistics concerning all the packets received on the port.
+260,Get RX Non-TPLD Traffic,port.statistics.rx.no_tpld.get(),Obtains statistics concerning the packets without a test payload received on the port.
+261,Get RX PFC Counters,port.statistics.rx.pfc_stats.get(),Obtains statistics of received Priority Flow Control (PFC) packets on the port.
+262,Get Extra RX Counters,port.statistics.rx.extra.get(),Obtains statistics concerning special errors received on the port since received statistics were cleared.
+263,Get Received TPLDs,port.statistics.rx.obtain_available_tplds(),Obtain the set of test payload IDs observed among the received packets since receive statistics were cleared.
+264,Get RX Error Counters Per TPLD,port.statistics.rx.access_tpld(...).errors.get(),Obtains statistics concerning errors in the packets with a particular test payload id received on the port.
+265,Get RX Latency Per TPLD,port.statistics.rx.access_tpld(...).latency.get(),Obtains statistics concerning the latency experienced by the packets with a particular test payload id received on the port.
+266,Get RX Jitter Per TPLD,port.statistics.rx.access_tpld(...).jitter.get(),Obtains statistics concerning the jitter experienced by the packets with a particular test payload id received on the port.
+267,Get RX Traffic Per TPLD,port.statistics.rx.access_tpld(...).traffic.get(),Obtains traffic statistics concerning the packets with a particular test payload identifier received on the port.
+268,Get RX Filtered Traffic,port.statistics.rx.obtain_filter_statistics(filter=0).get(),Obtains statistics concerning the packets satisfying the condition of a particular filter for the port.
+269,Set MDI/MDIX Mode Auto,port.mdix_mode.set_auto(),
+270,Set MDI/MDIX Mode MDI,port.mdix_mode.set_mdi(),
+271,Set MDI/MDIX Mode MDIX,port.mdix_mode.set_mdix(),
+272,Get MDI/MDIX Mode,port.mdix_mode.get(),
+273,Set BroadR Reach Master,port.brr.mode.set_master(),
+274,Set BroadR Reach Slave,port.brr.mode.set_slave(),
+275,Get BroadR Reach Mode,port.brr.mode.get(),
+276,Get BroadR Reach Status,port.brr.status.get(),
+277,Get EEE Capabilities,port.eee.capabilities.get(),
+278,Get EEE Partner Capabilities,port.eee.partner_capabilities.get(),
+279,Disable EEE,port.eee.enable.set_off(),
+280,Enable EEE,port.eee.enable.set_on(),
+281,Get EEE Enable,port.eee.enable.get(),
+282,Set EEE Low Power TX Off,port.eee.mode.set_off(),
+283,Set EEE Low Power TX On,port.eee.mode.set_on(),
+284,Get EEE Mode,port.eee.mode.get(),
+285,Get EEE RX Power,port.eee.rx_power.get(),
+286,Get EEE SNR Margin,port.eee.snr_margin.get(),
+287,Get EEE Status,port.eee.status.get(),
+288,Set Runt RX Length,port.runt.rx_length.set(),Runt - RX Length
+289,Get Runt RX Length,port.runt.rx_length.get(),Runt - RX Length
+290,Set Runt TX Length,port.runt.tx_length.set(),Runt - TX Length
+291,Get Runt TX Length,port.runt.tx_length.get(),Runt - TX Length
+292,Get Runt Length Errors,port.runt.has_length_errors.get(),Runt - Length Error
+293,Enable RX Preamble Insert,port.preamble.rx_insert.set(),RX Preamble Insert
+294,Disable RX Preamble Insert,port.preamble.rx_insert.set(),RX Preamble Insert
+295,Get RX Preamble Insert,port.preamble.rx_insert.get(),RX Preamble Insert
+296,Enable TX Preamble Remove,port.preamble.tx_remove.set(),TX Preamble Removal
+297,Disable TX Preamble Remove,port.preamble.tx_remove.set(),TX Preamble Removal
+298,Get TX Preamble Remove,port.preamble.tx_remove.get(),TX Preamble Removal

@@ -33,6 +33,7 @@ PortDatasetIndices = idx_mgr.IndexManager[PortDatasetIdx]
 
 
 class GenuineSpeed(Speed):
+    
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
         

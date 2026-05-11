@@ -27,6 +27,7 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     XmpSequence,
     XmpStr,
     Hex,
+    XmpJson,
 )
 from .subtypes import (
     ArpEntry,
@@ -62,13 +63,17 @@ from .enums import (
     TrafficError,
     TrafficEngine,
     ReconciliationSublayerSupport,
+    OnOff,
     MACSecSCIMode,
     MACSecCipherSuite,
     # MACSecVLANMode,
     MACSecRekeyMode,
     MACSecEncryptionMode,
     MACSecPNMode,
-    TrueFalse,
+    LLDPClearTarget,
+    LLDPOpMode,
+    UecCtlosClearDirection,
+    UecLinkOptionLlr,
 )
 
 
@@ -667,6 +672,13 @@ class P_CAPABILITIES:
         """max value of individual TXEQ taps, SEQuential: <pre-n> <pre-(n-q)> ... <prr1> <main> <post1> <post2> ...."""
         txeq_min_seq: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()], length=10), min_version=470)
         """min-value of individual TXEQ taps, SEQuential: <pre-n> <pre-(n-q)> ... <prr1> <main> <post1> <post2> ...."""
+
+        adv_anlt_mask: int = field(XmpInt(), min_version=480)
+        """bitmask, advanced ANLT capability bitmask."""
+
+        adv_layer1_mask: int = field(XmpInt(), min_version=480)
+        """bitmask, advanced Layer 1 capability bitmask."""
+
 
 
     def get(self) -> Token[P_CAPABILITIES.GetDataAttr]:
@@ -4676,6 +4688,67 @@ class P_EMULATE:
     """Enable the Chimera port's emulation functionality.
     """
 
+@register_command
+@dataclass
+class P_USED_TPLDID:
+    """
+    Get the used TPLD IDs from the port. If the port doesn't support TPLD ID traffic, the port will return <NOTSUPPORTED>
+    """
+
+    code: typing.ClassVar[int] = 319
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        used_tpld_ids: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """integer list, the used TPLD IDs from the port."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the used TPLD IDs from the port.
+
+        :return: the used TPLD IDs from the port.
+        :rtype: P_USED_TPLDID.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_FAULTCNT:
+    """
+    Returns the number of LF and RF conditions since last clearance. Use PP_RXCLEAR or PL1_CLEAR to reset the counters.
+    """
+
+    code: typing.ClassVar[int] = 338
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        lf_count: int = field(XmpLong(signed=False))
+        """Number of Local Fault conditions since last clearance."""
+
+        rf_count: int = field(XmpLong(signed=False))
+        """Number of Remote Fault conditions since the last clearance."""
+
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the number of LF and RF conditions since last clearance.
+
+        :return: Number of LF and RF conditions since last clearance
+        :rtype: P_FAULTCNT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
 
 @register_command
 @dataclass
@@ -6253,14 +6326,309 @@ class P_MACSEC_TXSC_NEXT_AN:
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], next_an=next_an))
     
 
+
 @register_command
 @dataclass
-class P_USED_TPLDID:
+class P_LLDP_CLEAR:
     """
-    Get the used TPLD IDs from the port. If the port doesn't support TPLD ID traffic, the port will return <NOTSUPPORTED>
+    Clear LLDP information for the specified target.
     """
 
-    code: typing.ClassVar[int] = 319
+    code: typing.ClassVar[int] = 1009
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+
+    class SetDataAttr(RequestBodyStruct):
+        target: LLDPClearTarget = field(XmpByte())
+        """LLDP clear target."""
+
+
+    def set(self, target: LLDPClearTarget) -> Token[None]:
+        """Set the LLDP clear target.
+
+        :param target: the LLDP clear target
+        :type target: LLDPClearTarget
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target=target))
+    
+    clear_none = functools.partialmethod(set, LLDPClearTarget.NONE)
+    """Not clear LLDP stats or neighbors
+    """
+
+    clear_neighbor = functools.partialmethod(set, LLDPClearTarget.NEIGHBOR)
+    """Clear LLDP neighbor information, but not LLDP statistics.
+    """
+
+    clear_stats = functools.partialmethod(set, LLDPClearTarget.STATS)
+    """Clear LLDP statistics, but not LLDP neighbor information.
+    """
+
+    clear_all = functools.partialmethod(set, LLDPClearTarget.ALL)
+    """Clear both LLDP statistics and neighbor information.
+    """
+    
+
+@register_command
+@dataclass
+class P_LLDP_CONFIG:
+    """
+    LLDP agent configuration for the port, including reinit delay, transmission interval, and transmission hold multiplier.
+    """
+
+    code: typing.ClassVar[int] = 1006
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _lldp_agent_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        
+        reinit_delay: int = field(XmpInt())
+        """Reinitialization delay in seconds. When a port is disabled, LLDP is disabled or the switch is rebooted, a LLDP shutdown frame is transmitted to the neighboring units, signaling that the LLDP information is not valid anymore. Tx Reinit controls the amount of seconds between the shutdown frame and a new LLDP initialization. 
+        
+        Default is 2, range is 1 to 10.
+        """
+
+        tx_interval: int = field(XmpInt())
+        """Transmission interval in seconds. This variable defines the time interval in seconds between transmissions during normal transmission periods. 
+        
+        Default is 30, range is 1 to 3600.
+        """
+
+        tx_hold_multiplier: int = field(XmpInt())
+        """Transmission hold multiplier. The number of times the transmission interval is multiplied to determine the hold time for the LLDP packet. It is also used to determine the value of TTL that is carried in LLDP frames transmitted the port.
+        
+        Default is 4, range is 1 to 100.
+        """
+
+        tx_delay: int = field(XmpInt())
+        """Minimum time between LLDP frames in seconds. If some configuration is changed (for example, the IP address) a new LLDP frame is transmitted, but the time between the LLDP frames will always be at least the value of ``tx_delay`` seconds. ``tx_delay`` cannot be larger than 1/4 of the ``tx_interval`` value. 
+        
+        Valid values are restricted to 1 - 8192 seconds.
+        """
+
+    class SetDataAttr(RequestBodyStruct):
+        reinit_delay: int = field(XmpInt())
+        """Reinitialization delay in seconds. When a port is disabled, LLDP is disabled or the switch is rebooted, a LLDP shutdown frame is transmitted to the neighboring units, signaling that the LLDP information is not valid anymore. Tx Reinit controls the amount of seconds between the shutdown frame and a new LLDP initialization. 
+        
+        Default is 2, range is 1 to 10.
+        """
+
+        tx_interval: int = field(XmpInt())
+        """Transmission interval in seconds. This variable defines the time interval in seconds between transmissions during normal transmission periods. 
+        
+        Default is 30, range is 1 to 3600.
+        """
+
+        tx_hold_multiplier: int = field(XmpInt())
+        """Transmission hold multiplier. The number of times the transmission interval is multiplied to determine the hold time for the LLDP packet. It is also used to determine the value of TTL that is carried in LLDP frames transmitted the port.
+        
+        Default is 4, range is 1 to 100.
+        """
+
+        tx_delay: int = field(XmpInt())
+        """Minimum time between LLDP frames in seconds. If some configuration is changed (for example, the IP address) a new LLDP frame is transmitted, but the time between the LLDP frames will always be at least the value of ``tx_delay`` seconds. ``tx_delay`` cannot be larger than 1/4 of the ``tx_interval`` value. 
+        
+        Valid values are restricted to 1 - 8192 seconds.
+        """
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLDP configuration for the port.
+
+        :return: the LLDP configuration for the port
+        :rtype: P_LLDP_CONFIG.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
+
+    def set(self, reinit_delay: int, tx_interval: int, tx_hold_multiplier: int, tx_delay: int) -> Token[None]:
+        """Set the LLDP configuration for the port.
+
+        :param reinit_delay: Reinitialization delay in seconds
+        :type reinit_delay: int
+        :param tx_interval: Transmission interval in seconds
+        :type tx_interval: int
+        :param tx_hold_multiplier: Transmission hold multiplier
+        :type tx_hold_multiplier: int
+        :param tx_delay: Minimum time between LLDP frames in seconds
+        :type tx_delay: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex], reinit_delay=reinit_delay, tx_interval=tx_interval, tx_hold_multiplier=tx_hold_multiplier, tx_delay=tx_delay))
+
+
+@register_command
+@dataclass
+class P_LLDP_CREATE:
+    """
+    Create a LLDP agent on the port.
+    """
+
+    code: typing.ClassVar[int] = 1000
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _lldp_agent_xindex: int
+
+    class SetDataAttr(RequestBodyStruct):
+        pass
+
+    def set(self) -> Token[None]:
+        """Create a LLDP agent on the port.
+
+        LLDP agent index, ranges from 0 to 7. (maximum 8 LLDP agents)
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
+    
+
+
+@register_command
+@dataclass
+class P_LLDP_DATA:
+    """
+    Configures the LLDPDU (LLDP Data Unit) for a specified LLDP agent on the port.
+    """
+
+    code: typing.ClassVar[int] = 1004
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _lldp_agent_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        
+        data_unit: Hex = field(XmpHex())
+        """LLDPDU in hexadecimal string format."""
+
+    class SetDataAttr(RequestBodyStruct):
+        
+        data_unit: Hex = field(XmpHex())
+        """LLDPDU in hexadecimal string format."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLDPDU for the specified LLDP agent on the port.
+
+        :return: the LLDPDU for the specified LLDP agent on the port
+        :rtype: P_LLDP_DATA.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
+
+    def set(self, data_unit: Hex) -> Token[None]:
+        """Set the LLDPDU for the specified LLDP agent on the port.
+
+        :param data_unit: the LLDPDU in hexadecimal string format
+        :type data_unit: Hex
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex], data_unit=data_unit))
+    
+
+@register_command
+@dataclass
+class P_LLDP_DELETE:
+    """
+    Delete a LLDP agent on the port.
+    """
+
+    code: typing.ClassVar[int] = 1002
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _lldp_agent_xindex: int
+
+    class SetDataAttr(RequestBodyStruct):
+        pass
+
+    def set(self) -> Token[None]:
+        """Delete a LLDP agent on the port.
+
+        LLDP agent index, ranges from 0 to 7. (maximum 8 LLDP agents)
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
+    
+
+
+@register_command
+@dataclass
+class P_LLDP_HEADER:
+    """
+    Configures the LLDP header (DMAC, SMAC, EtherType) for a specified LLDP agent on the port.
+    """
+
+    code: typing.ClassVar[int] = 1005
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _lldp_agent_xindex: int
+
+
+    class GetDataAttr(ResponseBodyStruct):
+        
+        header: Hex = field(XmpHex())
+        """LLDP frame header in hexadecimal string format. The header includes DMAC, SMAC, and Ethertype.
+        
+        * The default DMAC is the MAC address of the test port. If the port MAC address is changed, the default DMAC will also be updated to match the new port MAC address.
+        * The default SMAC is Nearest Bridge MAC address, ``0x0180C200000E``, as specified in IEEE 802.3-2018.
+        * The default Ethertype is ``0x88CC`` for LLDP frames, as specified in IEEE 802.3-2018.
+        
+        """
+
+    class SetDataAttr(RequestBodyStruct):
+        
+        header: Hex = field(XmpHex())
+        """LLDP frame header in hexadecimal string format. The header includes DMAC, SMAC, and Ethertype.
+        
+        * The default DMAC is the MAC address of the test port. If the port MAC address is changed, the default DMAC will also be updated to match the new port MAC address.
+        * The default SMAC is Nearest Bridge MAC address, ``0x0180C200000E``, as specified in IEEE 802.3-2018.
+        * The default Ethertype is ``0x88CC`` for LLDP frames, as specified in IEEE 802.3-2018.
+        
+        """
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLDP header.
+
+        :return: the LLDP header 
+        :rtype: P_LLDP_HEADER.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
+
+    def set(self, header: Hex) -> Token[None]:
+        """Set the description of the port.
+
+        :param header: the LLDP header in hexadecimal string format
+        :type header: Hex
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex], header=header))
+    
+
+@register_command
+@dataclass
+class P_LLDP_INDICES:
+    """
+    Create multiple LLDP agents or query the existing LLDP agents on the port.
+    """
+
+    code: typing.ClassVar[int] = 1001
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -6268,23 +6636,165 @@ class P_USED_TPLDID:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        used_tpld_ids: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
-        """integer list, the used TPLD IDs from the port."""
+        
+        lldp_agent_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """List of LLDP agent indices on the port. Each index ranges from 0 to 7, and a maximum of 8 LLDP agents can be created on the port. The integers do not have to be consecutive. If the list is empty, it indicates that there are no LLDP agents on the port."""
+
+    class SetDataAttr(RequestBodyStruct):
+        
+        lldp_agent_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """List of LLDP agent indices on the port. Each index ranges from 0 to 7, and a maximum of 8 LLDP agents can be created on the port. The integers do not have to be consecutive. If the list is empty, it indicates that there are no LLDP agents on the port."""
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the used TPLD IDs from the port.
+        """Get the indices of the LLDP agents on the port.
 
-        :return: the used TPLD IDs from the port.
-        :rtype: P_USED_TPLDID.GetDataAttr
+        :return: the indices of the LLDP agents on the port
+        :rtype: P_LLDP_INDICES.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-#################################################################
-#                                                               #
-#                   EDUN Temporary Commands                     #
-#                                                               #
-#################################################################
+    def set(self, lldp_agent_indices: typing.List[int]) -> Token[None]:
+        """Set the indices of the LLDP agents on the port.
+
+        :param lldp_agent_indices: the list of LLDP agent indices
+        :type lldp_agent_indices: typing.List[int]
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, lldp_agent_indices=lldp_agent_indices))
+
+
+@register_command
+@dataclass
+class P_LLDP_NEIGHBORS:
+    """
+    Displays LLDP neighbors discovered by the port.
+    """
+
+    code: typing.ClassVar[int] = 1007
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        
+        neighbors: dict = field(XmpJson(min_len=16))
+        """Information of LLDP neighbors."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLDP neighbors discovered by the port.
+
+        :return: the LLDP neighbors discovered by the port
+        :rtype: P_LLDP_NEIGHBORS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+
+@register_command
+@dataclass
+class P_LLDP_OPMODE:
+    """
+    This configures the LLDP operational mode for the port.
+    """
+
+    code: typing.ClassVar[int] = 1003
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _lldp_agent_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        
+        op_mode: LLDPOpMode = field(XmpByte())
+        """LLDP operational mode for the port."""
+
+    class SetDataAttr(RequestBodyStruct):
+        
+        op_mode: LLDPOpMode = field(XmpByte())
+        """LLDP operational mode for the port."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLDP operational mode of the port.
+
+        :return: the LLDP operational mode of the port
+        :rtype: P_LLDP_OPMODE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex]))
+
+    def set(self, op_mode: LLDPOpMode) -> Token[None]:
+        """Set the LLDP operational mode of the port.
+
+        :param op_mode: the LLDP operational mode of the port
+        :type op_mode: LLDPOpMode
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._lldp_agent_xindex], op_mode=op_mode))
+
+    set_disable = functools.partialmethod(set, LLDPOpMode.DISABLE)
+    """Disable LLDP on the port. The port will not transmit LLDP frames, and any received LLDP frames will be discarded."""
+
+    set_tx_only = functools.partialmethod(set, LLDPOpMode.TX_ONLY)
+    """Enable LLDP transmission only. The port will transmit LLDP frames, but any received LLDP frames will be discarded."""
+
+    set_rx_only = functools.partialmethod(set, LLDPOpMode.RX_ONLY)
+    """Enable LLDP reception only. The port will not transmit LLDP frames, but it will process any received LLDP frames and learn neighbors."""
+
+    set_tx_rx = functools.partialmethod(set, LLDPOpMode.TX_RX)
+    """Enable both LLDP transmission and reception on the port. The port will transmit LLDP frames, and it will also process any received LLDP frames and learn neighbors."""
+
+
+@register_command
+@dataclass
+class P_LLDP_STATS:
+    """
+    Displays LLDP interface statistics for the port (all agents on the port combined).
+    """
+
+    code: typing.ClassVar[int] = 1008
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        
+        tx_frame_count: int = field(XmpLong())
+        """Number of LLDP frames transmitted."""
+
+        rx_frame_count: int = field(XmpLong())
+        """Number of LLDP frames received."""
+
+        rx_frame_discard_count: int = field(XmpLong())
+        """Number of LLDP frames discarded. LLDP frames that contain detectable errors in the first three mandatory TLVs are discarded."""
+
+        rx_tlv_discarded: int = field(XmpLong())
+        """Number of TLVs discarded. Optional TLVs that contain detectable errors are discarded."""
+
+        rx_tlv_unrecognized: int = field(XmpLong())
+        """Number of unrecognized TLVs received. An unrecognized TLV is referred to as the TLV whose type value is in the range of reserved TLV types. An unrecognized TLV may be a basic management TLV from a later LLDP version."""
+
+        rx_aged_out_count: int = field(XmpLong())
+        """Number of aged out. This counter provides a count of the times that a neighbor’s information has been deleted due to TTL expiration."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the description of the port.
+
+        :return: the description of the port
+        :rtype: P_COMMENT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
 
 @register_command
 @dataclass
@@ -6355,18 +6865,63 @@ class P_EDUN_RX_STATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
-    
 
 
 
 @register_command
 @dataclass
-class P_FAULTCNT:
+class P_UE_CTLOS_CLEAR:
     """
-    Returns the number of LF and RF conditions since last clearance. Use PP_RXCLEAR or PL1_CLEAR to reset the counters.
+    Clear UE CtlOS counters in the specified direction(s).
     """
 
-    code: typing.ClassVar[int] = 338
+    code: typing.ClassVar[int] = 1020
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+
+    class SetDataAttr(RequestBodyStruct):
+        direction: UecCtlosClearDirection = field(XmpByte())
+        """UE CtlOS clear direction."""
+
+
+    def set(self, direction: UecCtlosClearDirection) -> Token[None]:
+        """Set the UE CtlOS clear direction.
+
+        :param direction: the UE CtlOS clear direction
+        :type direction: UecCtlosClearDirection
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, direction=direction))
+    
+    clear_none = functools.partialmethod(set, UecCtlosClearDirection.NONE)
+    """Not clear UE CtlOS counters
+    """
+
+    clear_rx = functools.partialmethod(set, UecCtlosClearDirection.RX)
+    """Clear RX UE CtlOS counters
+    """
+
+    clear_tx = functools.partialmethod(set, UecCtlosClearDirection.TX)
+    """Clear TX UE CtlOS counters
+    """
+
+    clear_all = functools.partialmethod(set, UecCtlosClearDirection.ALL)
+    """Clear all UE CtlOS counters (RX and TX).
+    """
+    
+
+@register_command
+@dataclass
+class P_UE_CTLOS_RX_STATS:
+    """
+    CtlOS Rx statistics, including counters of all UE CtlOS message type values.
+    """
+
+    code: typing.ClassVar[int] = 1012
     pushed: typing.ClassVar[bool] = False
 
     _connection: 'interfaces.IConnection'
@@ -6374,22 +6929,387 @@ class P_FAULTCNT:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        lf_count: int = field(XmpLong(signed=False))
-        """Number of Local Fault conditions since last clearance."""
+        
+        llr_init_cnt: int = field(XmpLong())
+        """The number of LLR_INIT CtlOS received."""
 
-        rf_count: int = field(XmpLong(signed=False))
-        """Number of Remote Fault conditions since the last clearance."""
+        llr_init_echo_cnt: int = field(XmpLong())
+        """The number of LLR_INIT_ECHO CtlOS received."""
 
+        llr_ack_cnt: int = field(XmpLong())
+        """The number of LLR_ACK CtlOS received."""
+
+        llr_nack_cnt: int = field(XmpLong())
+        """The number of LLR_NACK CtlOS received."""
+
+        llr_init_seq: Hex = field(XmpHex(size=3))
+        """The LLR_INIT sequence number. 3 bytes in hex format."""
+
+        llr_init_data: Hex = field(XmpHex(size=2))
+        """The LLR_INIT data. 2 bytes in hex format."""
+
+        llr_init_echo_seq: Hex = field(XmpHex(size=3))
+        """The LLR_INIT_ECHO sequence number. 3 bytes in hex format."""
+
+        llr_init_echo_data: Hex = field(XmpHex(size=2))
+        """The LLR_INIT_ECHO data. 2 bytes in hex format."""
+
+        llr_init_echo_mismatch: int = field(XmpLong())
+        """The number of Rx LLR_INIT_ECHO CtlOS with a sequence number or data that does not match the most recently transmitted LLR_INIT CtlOS."""
 
 
     def get(self) -> Token[GetDataAttr]:
-        """Returns the number of LF and RF conditions since last clearance.
+        """Get UE CtlOS Rx statistics.
 
-        :return: Number of LF and RF conditions since last clearance
-        :rtype: P_FAULTCNT.GetDataAttr
+        :return: the UE CtlOS Rx statistics
+        :rtype: P_UE_CTLOS_RX_STATS.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_UE_CTLOS_TX_STATS:
+    """
+    CtlOS Tx statistics, including counters of all UE CtlOS message type values.
+    """
+
+    code: typing.ClassVar[int] = 1011
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        
+        llr_init_cnt: int = field(XmpLong())
+        """The number of LLR_INIT CtlOS transmitted."""
+
+        llr_init_echo_cnt: int = field(XmpLong())
+        """The number of LLR_INIT_ECHO CtlOS transmitted."""
+
+        llr_ack_cnt: int = field(XmpLong())
+        """The number of LLR_ACK CtlOS transmitted."""
+
+        llr_nack_cnt: int = field(XmpLong())
+        """The number of LLR_NACK CtlOS transmitted."""
+
+        llr_init_seq: Hex = field(XmpHex(size=3))
+        """The LLR_INIT sequence number. 3 bytes in hex format."""
+
+        llr_init_data: Hex = field(XmpHex(size=2))
+        """The LLR_INIT data. 2 bytes in hex format."""
+
+        llr_init_echo_seq: Hex = field(XmpHex(size=3))
+        """The LLR_INIT_ECHO sequence number. 3 bytes in hex format."""
+
+        llr_init_echo_data: Hex = field(XmpHex(size=2))
+        """The LLR_INIT_ECHO data. 2 bytes in hex format."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get UE CtlOS Tx statistics.
+
+        :return: the UE CtlOS Tx statistics
+        :rtype: P_UE_CTLOS_TX_STATS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+
+@register_command
+@dataclass
+class P_UE_LINKNEG_OPTIONS:
+    """
+    This command selects which LLDP agent to use for UE Link Negotiation Options, and configures the desired LLR-W (local) setting. After the set operation, the UE Link Negotiation Options TLV will be added to the LLDPDU (if it is not already present in the LLDPDU) or replace the existing one (if Options TLV was previously added in LLDP configurataion).
+
+    The UE Link Negotiation Options TLV is used to discover and configure advanced UE link capabilities. Currently, the Options TLV is used to advertise the following UEC Link features:
+
+      * Link Layer Retry (LLR): Provides link level re-transmissions for packets with errors.
+
+    .. note::
+
+        In Link Negotiation for LLR, the R/W access of the four flags are:
+
+        * LLR-W (local): RW
+        * LLR-W (remote): RO
+        * LLR-E (local): RO
+        * LLR-E (remote): RO
+
+        When Link Negotiation is enabled on a LLDP agent, the only configurable parameter is ``LLR-W (local)``. To read ``LLR-W (remote)``, use ``P_UE_LINKNEG_OPTIONS_STATUS``. To read ``LLR-E (local)`` and ``LLR-E (remote)``, use ``P_UE_LLR_MODE``
+
+    To disable Link Negotation for UE Link Options, send the command with no parameters. This will remove the Options TLV from the LLDPDU and disable Link Negotiation for UE Link Options.
+    """
+
+    code: typing.ClassVar[int] = 1016
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        lldp_agent_index: int = field(XmpByte())
+        """integer, The LLDP agent index to use for advertising the advanced UE link capabilities. An LLDP agent must be created and configured separately using the LLDP commands before it can be used with this command. 
+        
+        Values: 0 to 7.
+        """
+
+        llr_wanted_local: UecLinkOptionLlr = field(XmpByte())
+        """coded integer, Indicates whether the local port wants LLR.
+        """
+
+    class SetDataAttr(RequestBodyStruct):
+        lldp_agent_index: int = field(XmpByte())
+        """integer, The LLDP agent index to use for advertising the advanced UE link capabilities. An LLDP agent must be created and configured separately using the LLDP commands before it can be used with this command. 
+        
+        Values: 0 to 7.
+        """
+
+        llr_wanted_local: UecLinkOptionLlr = field(XmpByte())
+        """coded integer, Indicates whether the local port wants LLR.
+        """
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the description of the port.
+
+        :return: the description of the port
+        :rtype: P_UE_LINKNEG_OPTIONS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, lldp_agent_index: int, llr_wanted_local: UecLinkOptionLlr) -> Token[None]:
+        """Set the UE Link Negotiation Options.
+
+        :param lldp_agent_index: The LLDP agent index to use for advertising the advanced UE link capabilities. Values: 0 to 7.
+        :type lldp_agent_index: int
+        :param llr_wanted_local: Indicates whether the local port wants LLR. 
+        :type llr_wanted_local: UecLinkOptionLlr
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, lldp_agent_index=lldp_agent_index, llr_wanted_local=llr_wanted_local))
+
+
+@register_command
+@dataclass
+class P_UE_LINKNEG_OPTIONS_STATUS:
+    """
+    Read ``LLR-W (local)`` and ``LLR-W (remote)`` of the port, which indicates whether the local and remote ports want to use LLR. This command is for read-only purposes and does not change any configuration or behavior of the LLR.
+    """
+
+    code: typing.ClassVar[int] = 1029
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        llr_wanted_local: UecLinkOptionLlr = field(XmpByte())
+        """coded integer, Indicates whether the local port wants LLR.
+        """
+
+        llr_wanted_remote: UecLinkOptionLlr = field(XmpByte())
+        """coded integer, Indicates whether the remote port wants LLR.
+        """
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the current UE link negotiation options status.
+
+        :return: the current UE link negotiation options status
+        :rtype: P_UE_LINKNEG_OPTIONS_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+
+@register_command
+@dataclass
+class P_UE_LLR_MODE:
+    """
+    Configures the mode of operation of the LLR. Only when both local and remote ports have LLR ``ON``, the LLR will be active. If either port has LLR disabled, the LLR will be inactive.
+
+    """
+
+    code: typing.ClassVar[int] = 1013
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        llr_mode_local: OnOff = field(XmpByte())
+        """coded integer, LLR mode of the local port."""
+
+        llr_mode_remote: OnOff = field(XmpByte())
+        """coded integer, LLR mode of the remote port."""
+
+
+    class SetDataAttr(RequestBodyStruct):
+        llr_mode_local: OnOff = field(XmpByte())
+        """coded integer, LLR mode of the local port."""
+
+        llr_mode_remote: OnOff = field(XmpByte())
+        """coded integer, LLR mode of the remote port."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR mode of the local port.
+
+        :return: the LLR mode of the local port
+        :rtype: P_UE_LLR_MODE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, llr_mode_local: OnOff, llr_mode_remote: OnOff) -> Token[None]:
+        """Set the LLR mode of the local port.
+
+        :param llr_mode_local: the LLR mode of the local port
+        :type llr_mode_local: OnOff
+        :param llr_mode_remote: the LLR mode of the remote port
+        :type llr_mode_remote: OnOff
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, llr_mode_local=llr_mode_local, llr_mode_remote=llr_mode_remote))
+
+
+    set_on = functools.partialmethod(set, llr_mode_local=OnOff.ON, llr_mode_remote=OnOff.ON)
+    """Set LLR local to ON, LLR remote to ON."""
+
+    set_off = functools.partialmethod(set, llr_mode_local=OnOff.OFF, llr_mode_remote=OnOff.OFF)
+    """Set LLR local to OFF, LLR remote to OFF."""
+
+
+
+
+@register_command
+@dataclass
+class P_UE_LLR_RX_STATS:
+    """
+    Get the LLR Rx link-layer traffic statistics of the port. 
+    """
+
+    code: typing.ClassVar[int] = 1024
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        
+        rx_llr_eligible_good_fcs: int = field(XmpLong())
+        """The number of LLR-eligible frames received with a good FCS."""
+
+        rx_llr_eligible_poisoned_fcs: int = field(XmpLong())
+        """The number of LLR-eligible frames received with a poisoned FCS."""
+
+        rx_llr_eligible_bad_fcs: int = field(XmpLong())
+        """The number of LLR-eligible frames received with a bad FCS."""
+
+        rx_llr_eligible_total: int = field(XmpLong())
+        """The total number of LLR-eligible frames received."""
+
+        rx_llr_eligible_good_fcs_exp_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames received with a good FCS that had the expected sequence number."""
+
+        rx_llr_eligible_poisoned_fcs_exp_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames received with a poisoned FCS that had the expected sequence number."""
+
+        rx_llr_eligible_bad_fcs_exp_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames received with a bad FCS that had the expected sequence number."""
+
+        rx_llr_eligible_total_exp_seq: int = field(XmpLong())
+        """The total number of LLR-eligible frames received with the expected sequence number (irrespective of FCS status)."""
+
+        rx_llr_eligible_missing_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames received that had a sequence number that indicated a missing LLR-eligible frame in the sequence (irrespective of FCS status)."""
+
+        rx_llr_eligible_duplicate_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames received that had a duplicate sequence number (irrespective of FCS status)."""
+
+        rx_llr_ineligible_good_fcs: int = field(XmpLong())
+        """The number of LLR-ineligible frames received with a good FCS."""
+
+        rx_llr_ineligible_bad_fcs: int = field(XmpLong())
+        """The number of LLR-ineligible frames received with a bad FCS."""
+
+        rx_llr_ineligible_total: int = field(XmpLong())
+        """The total number of LLR-ineligible frames received."""
+
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR Rx link-layer traffic statistics of the port. 
+
+        :return: the LLR Rx link-layer traffic statistics
+        :rtype: P_UE_LLR_RX_STATS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+
+@register_command
+@dataclass
+class P_UE_LLR_TX_STATS:
+    """
+    Get the LLR Tx link-layer traffic statistics of the port. 
+    """
+
+    code: typing.ClassVar[int] = 1023
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        
+        tx_llr_eligible_good_fcs: int = field(XmpLong())
+        """The number of LLR-eligible frames transmitted with a good FCS."""
+
+        tx_llr_eligible_poisoned_fcs: int = field(XmpLong())
+        """The number of LLR-eligible frames transmitted with a poisoned FCS."""
+
+        tx_llr_eligible_bad_fcs: int = field(XmpLong())
+        """The number of LLR-eligible frames transmitted with a bad FCS."""
+
+        tx_llr_eligible_discard: int = field(XmpLong())
+        """The number of LLR-eligible frames discarded by the LLR TX when the TX state machine is in the INIT state and the llr_init_behavior is set to DISCARD, or when the TX state machine is in the FLUSH state and the llr_flush_behavior is set to DISCARD."""
+
+        tx_llr_eligible_total: int = field(XmpLong())
+        """The total number of LLR-eligible frames transmitted."""
+
+        tx_llr_ineligible_good_fcs: int = field(XmpLong())
+        """The number of LLR-ineligible frames transmitted with a good FCS."""
+
+        tx_llr_ineligible_bad_fcs: int = field(XmpLong())
+        """The number of LLR-ineligible frames transmitted with a bad FCS."""
+
+        tx_llr_ineligible_total: int = field(XmpLong())
+        """The total number of LLR-ineligible frames transmitted."""
+
+        tx_replayed: int = field(XmpLong())
+        """The number of frames transmitted by the LLR TX that were replayed from the LLR replay buffer."""
+
+
+    
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR Tx link-layer traffic statistics of the port. 
+
+        :return: the LLR Tx link-layer traffic statistics
+        :rtype: P_UE_LLR_TX_STATS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
 
 
 __all__ = [
@@ -6429,39 +7349,6 @@ __all__ = [
     "P_LPSUPPORT",
     "P_LPTXMODE",
     "P_MACADDRESS",
-    "P_MACSEC_RXSC_CIPHERSUITE",
-    "P_MACSEC_RXSC_CONF_OFFSET",
-    "P_MACSEC_RXSC_CREATE",
-    "P_MACSEC_RXSC_DELETE",
-    "P_MACSEC_RXSC_DESCR",
-    "P_MACSEC_RXSC_INDICES",
-    "P_MACSEC_RXSC_SAK_VALUE",
-    "P_MACSEC_RXSC_SCI",
-    "P_MACSEC_RXSC_LOWEST_PN",
-    "P_MACSEC_RXSC_STATS",
-    "P_MACSEC_RXSC_TPLDID",
-    "P_MACSEC_RXSC_XPN_SALT",
-    "P_MACSEC_RXSC_XPN_SSCI",
-    "P_MACSEC_RX_CLEAR",
-    "P_MACSEC_RX_ENABLE",
-    "P_MACSEC_RX_STATS",
-    "P_MACSEC_TXSC_CIPHERSUITE",
-    "P_MACSEC_TXSC_CONF_OFFSET",
-    "P_MACSEC_TXSC_CREATE",
-    "P_MACSEC_TXSC_DELETE",
-    "P_MACSEC_TXSC_DESCR",
-    "P_MACSEC_TXSC_ENCRYPT",
-    "P_MACSEC_TXSC_INDICES",
-    "P_MACSEC_TXSC_REKEY_MODE",
-    "P_MACSEC_TXSC_SAK_VALUE",
-    "P_MACSEC_TXSC_SCI",
-    "P_MACSEC_TXSC_SCI_MODE",
-    "P_MACSEC_TXSC_STARTING_PN",
-    "P_MACSEC_TXSC_STATS",
-    "P_MACSEC_TXSC_XPN_SALT",
-    "P_MACSEC_TXSC_XPN_SSCI",
-    "P_MACSEC_TX_CLEAR",
-    "P_MACSEC_TX_STATS",
     "P_MAXHEADERLENGTH",
     "P_MCSRCLIST",
     "P_MDIXMODE",
@@ -6511,12 +7398,62 @@ __all__ = [
     "P_USED_TPLDID",
     "P_XMITONE",
     "P_XMITONETIME",
-    "P_EDUN_RX_STATUS",
+    "P_FAULTCNT",
+    "P_MACSEC_TXSC_CREATE",
+    "P_MACSEC_TXSC_INDICES",
+    "P_MACSEC_TXSC_DELETE",
+    "P_MACSEC_TXSC_CONF_OFFSET",
+    "P_MACSEC_TXSC_DESCR",
+    "P_MACSEC_TXSC_SCI_MODE",
+    "P_MACSEC_TXSC_SCI",
+    "P_MACSEC_TXSC_CIPHERSUITE",
+    "P_MACSEC_TXSC_STARTING_PN",
+    "P_MACSEC_TXSC_REKEY_MODE",
+    "P_MACSEC_TXSC_ENCRYPT",
+    "P_MACSEC_TXSC_SAK_VALUE",
+    "P_MACSEC_TXSC_XPN_SSCI",
+    "P_MACSEC_TXSC_XPN_SALT",
+    "P_MACSEC_RXSC_CREATE",
+    "P_MACSEC_RXSC_INDICES",
+    "P_MACSEC_RXSC_DELETE",
+    "P_MACSEC_RXSC_DESCR",
+    "P_MACSEC_RXSC_SCI",
+    "P_MACSEC_RXSC_CONF_OFFSET",
+    "P_MACSEC_RXSC_CIPHERSUITE",
+    "P_MACSEC_RXSC_LOWEST_PN",
+    "P_MACSEC_RXSC_TPLDID",
+    "P_MACSEC_RXSC_SAK_VALUE",
+    "P_MACSEC_RXSC_XPN_SSCI",
+    "P_MACSEC_RXSC_XPN_SALT",
+    "P_MACSEC_TX_STATS",
+    "P_MACSEC_TXSC_STATS",
+    "P_MACSEC_TX_CLEAR",
+    "P_MACSEC_RX_STATS",
+    "P_MACSEC_RXSC_STATS",
+    "P_MACSEC_RX_CLEAR",
+    "P_MACSEC_RX_ENABLE",
     "P_MACSEC_RXSC_AN",
     "P_MACSEC_RXSC_NEXT_PN",
     "P_MACSEC_TXSC_NEXT_PN",
     "P_MACSEC_RXSC_PN",
     "P_MACSEC_TXSC_NEXT_AN",
+    "P_LLDP_CLEAR",
+    "P_LLDP_CONFIG",
+    "P_LLDP_CREATE",
+    "P_LLDP_DATA",
+    "P_LLDP_DELETE",
+    "P_LLDP_HEADER",
+    "P_LLDP_INDICES",
+    "P_LLDP_NEIGHBORS",
+    "P_LLDP_OPMODE",
+    "P_LLDP_STATS",
     "P_EDUN_RX_STATUS",
-    "P_FAULTCNT",
+    "P_UE_CTLOS_CLEAR",
+    "P_UE_CTLOS_RX_STATS",
+    "P_UE_CTLOS_TX_STATS",
+    "P_UE_LINKNEG_OPTIONS",
+    "P_UE_LINKNEG_OPTIONS_STATUS",
+    "P_UE_LLR_MODE",
+    "P_UE_LLR_RX_STATS",
+    "P_UE_LLR_TX_STATS",
 ]

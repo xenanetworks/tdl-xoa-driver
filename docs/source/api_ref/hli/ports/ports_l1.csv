@@ -1,0 +1,150 @@
+1,Set Link Flap Config,port.layer1.impairment.link_flap.params.set(),
+2,Get Link Flap Config,port.layer1.impairment.link_flap.params.get(),
+3,Enable Link Flap,port.layer1.impairment.link_flap.enable.set_on(),
+4,Disable Link Flap,port.layer1.impairment.link_flap.enable.set_off(),
+5,Get Link Flap Enable,port.layer1.impairment.link_flap.enable.get(),
+6,Set PMA Error Inject Config,port.layer1.impairment.pma_error_inject.params.set(),
+7,Get PMA Error Inject Config,port.layer1.impairment.pma_error_inject.params.get(),
+8,Enable PMA Error Injection,port.layer1.impairment.pma_error_inject.enable.set_on(),
+9,Disable PMA Error Injection,port.layer1.impairment.pma_error_inject.enable.set_off(),
+10,Get PMA Error Injection Enable,port.layer1.impairment.pma_error_inject.enable.get(),
+11,Set RS Fault Signaling Disabled,port.layer1.rs_fault.signaling.set_disabled(),
+12,Set RS Fault Signaling Force Local,port.layer1.rs_fault.signaling.set_force_local(),
+13,Set RS Fault Signaling Force Remote,port.layer1.rs_fault.signaling.set_force_remote(),
+14,Set RS Fault Signaling Normal,port.layer1.rs_fault.signaling.set_normal(),
+15,Get RS Fault Signaling,port.layer1.rs_fault.signaling.get(),
+16,Get RS Fault Status,port.layer1.rs_fault.status.get(),
+17,Set FEC Mode RS_FEC,port.layer1.pcs.fec_mode.set(),
+18,Set FEC Mode RS_FEC_KP,port.layer1.pcs.fec_mode.set(),
+19,Set FEC Mode RS_FEC_KR,port.layer1.pcs.fec_mode.set(),
+20,Set FEC Mode FC_FEC,port.layer1.pcs.fec_mode.set(),
+21,Set FEC Mode OFF,port.layer1.pcs.fec_mode.set(),
+22,Set FEC Mode ON,port.layer1.pcs.fec_mode.set(),
+23,Get FEC Mode,port.layer1.pcs.fec_mode.get(),
+24,Set PCS TX Config Skew,port.layer1.pcs.lane[0].tx_config.set(),
+25,Get PCS RX Status Skew,port.layer1.pcs.lane[0].rx_status.status.get(),
+26,Get Lane RX Errors,port.layer1.pcs.lane[0].rx_status.errors.get(),
+27,Get Lane RX Lock,port.layer1.pcs.lane[0].rx_status.lock.get(),
+28,Clear PCS/FEC Counters,port.layer1.pcs.clear.set(),
+29,Get FEC Symbol Error Distribution,port.layer1.pcs.fec_symbol_status.fec_status.get(),
+30,Get FEC Symbol Total Status,port.layer1.pcs.fec_symbol_status.total_status.get(),
+31,Get PCS/FEC Alarms,port.layer1.pcs.alarms.errors.get(),
+32,Set PRBS Configuration,port.layer1.prbs_config.set(),
+33,Get PRBS Configuration,port.layer1.prbs_config.get(),
+34,Enable PRBS,port.layer1.serdes[0].prbs.control.set_on(),
+35,Disable PRBS,port.layer1.serdes[0].prbs.control.set_off(),
+36,Get PRBS Status,port.layer1.serdes[0].prbs.status.get(),
+37,Set Gray Coding Configuration,port.layer1.serdes[0].pma.graycoding.set(),
+38,Get Gray Coding Configuration,port.layer1.serdes[0].pma.graycoding.get(),
+39,Set Precoding Configuration,port.layer1.serdes[0].pma.precoding.set(),
+40,Get Precoding Configuration,port.layer1.serdes[0].pma.precoding.get(),
+41,Enable P/N Swap TX,port.layer1.serdes[0].pma.pn_swap_tx.set_on(),
+42,Disable P/N Swap TX,port.layer1.serdes[0].pma.pn_swap_tx.set_off(),
+43,Get P/N Swap TX,port.layer1.serdes[0].pma.pn_swap_tx.get(),
+44,Enable P/N Swap RX,port.layer1.serdes[0].pma.pn_swap_rx.set_on(),
+45,Disable P/N Swap RX,port.layer1.serdes[0].pma.pn_swap_rx.set_off(),
+46,Get P/N Swap RX,port.layer1.serdes[0].pma.pn_swap_rx.get(),
+47,Set PCS Variant ETC,port.layer1.pcs.variant.set(),
+48,Set PCS Variant IEEE,port.layer1.pcs.variant.set(),
+49,Get PCS Variant,port.layer1.pcs.variant.get(),
+50,Start FEC Error Injection,port.layer1.pcs.fec_error_inject.control.set_start(),
+51,Stop FEC Error Injection,port.layer1.pcs.fec_error_inject.control.set_stop(),
+52,Get FEC Error Injection Status,port.layer1.pcs.fec_error_inject.control.get(),
+53,Set FEC Error Codeword Pattern,port.layer1.pcs.fec_error_inject.cycle.set(),
+54,Get FEC Error Codeword Pattern,port.layer1.pcs.fec_error_inject.cycle.get(),
+55,Set FEC Error Symbol Pattern,port.layer1.pcs.fec_error_inject.err_symbols.set(),
+56,Get FEC Error Symbol Pattern,port.layer1.pcs.fec_error_inject.err_symbols.get(),
+57,Set FEC Error Bit Mask,port.layer1.pcs.fec_error_inject.bit_err_mask.set(),
+58,Set FEC Error Bit Mask,port.layer1.pcs.fec_error_inject.bit_err_mask.set(),
+59,Set FEC Error Bit Mask,port.layer1.pcs.fec_error_inject.bit_err_mask.set(),
+60,Set FEC Error Bit Mask All,port.layer1.pcs.fec_error_inject.bit_err_mask.set_all_bits(),
+61,Set FEC Error Bit Mask None,port.layer1.pcs.fec_error_inject.bit_err_mask.set_no_bits(),
+62,Get FEC Error Bit Mask,port.layer1.pcs.fec_error_inject.bit_err_mask.get(),
+63,Set FEC Error Engine,port.layer1.pcs.fec_error_inject.engine.set_all_engines(),
+64,Get FEC Error Engine,port.layer1.pcs.fec_error_inject.engine.get(),
+65,Get FEC Error Statistics,port.layer1.pcs.fec_error_inject.statistics.get(),
+66,Clear FEC Error Statistics,port.layer1.pcs.fec_error_inject.clear_stats.set(),
+67,Set Auto-Negotiation Settings,port.layer1.anlt.an.settings.set(),
+68,Get Auto-Negotiation Settings,port.layer1.anlt.an.settings.get(),
+69,Get Auto-Negotiation Status,port.layer1.anlt.an.status.get(),
+70,Set Link Training Settings,port.layer1.anlt.lt.settings.set(),
+71,Get Link Training Settings,port.layer1.anlt.lt.settings.get(),
+72,Get Link Training Status,port.layer1.serdes[0].lt_status.get(),
+73,Set ANLT Auto-Restart,port.layer1.anlt.set_autorestart(...),
+74,Get ANLT Auto-Restart,port.layer1.anlt.get_autorestart(),
+75,Set ANLT Strict Mode,port.layer1.anlt.set_strict_mode(enable=False),
+76,Get ANLT Strict Mode,port.layer1.anlt.get_strict_mode(),
+77,Set Auto-Negotiation Allow Loopback,port.layer1.anlt.an.set_allow_loopback(allow=True),
+78,Get Auto-Negotiation Allow Loopback,port.layer1.anlt.an.get_allow_loopback(),
+79,Set Auto-Negotiation Empty NP,port.layer1.anlt.an.set_empty_np(enable=True),
+80,Get Auto-Negotiation Empty NP,port.layer1.anlt.an.get_empty_np(),
+81,Get Auto-Negotiation Supported Abilities,port.layer1.anlt.an.abilities.get(),
+82,Set Auto-Negotiation Advertise,port.layer1.anlt.an.advertise.set(),
+83,Get Auto-Negotiation Advertise,port.layer1.anlt.an.advertise.get(),
+84,Set Link Training Algorithm,port.layer1.serdes[0].lt.set_algorithm_default(),
+85,Get Link Training Algorithm,port.layer1.serdes[0].lt.get_algorithm(),
+86,Set Link Training Modulation NRZ,port.layer1.serdes[0].lt.set_initial_modulation_nrz(),
+87,Set Link Training Modulation PAM4,port.layer1.serdes[0].lt.set_initial_modulation_pam4(),
+88,Set Link Training Modulation PAM4Precoding,port.layer1.serdes[0].lt.set_initial_modulation_pam4precoding(),
+89,Get Link Training Modulation,port.layer1.serdes[0].lt.get_initial_modulation(),
+90,Set Preset Native,port.layer1.serdes[0].lt.preset1.native.set(),Using the native values for Preset 1
+91,Get Preset Native,port.layer1.serdes[0].lt.preset1.native.get(),Using the native values for Preset 1
+92,Set Preset IEEE,port.layer1.serdes[0].lt.preset1.ieee.set(),Using the IEEE values for Preset 1
+93,Get Preset IEEE,port.layer1.serdes[0].lt.preset1.ieee.get(),Using the IEEE values for Preset 1
+94,Set Preset Level,port.layer1.serdes[0].lt.preset1.level.set(),Using the level values for Preset 1
+95,Get Preset Level,port.layer1.serdes[0].lt.preset1.level.get(),Using the level values for Preset 1
+96,Reset Preset to Default,port.layer1.serdes[0].lt.preset1.reset.set(),
+97,Set EQ Range Native,port.layer1.serdes[0].lt.range.main.native.set(),"Using native values, set the response when reaches the min or max"
+98,Get EQ Range Native,port.layer1.serdes[0].lt.range.main.native.get(),"Using native values, set the response when reaches the min or max"
+99,Set EQ Range IEEE,port.layer1.serdes[0].lt.range.main.ieee.set(),"Using ieee values, set the response when reaches the min or max"
+100,Get EQ Range IEEE,port.layer1.serdes[0].lt.range.main.ieee.get(),"Using ieee values, set the response when reaches the min or max"
+101,Set EQ Range Auto Native,port.layer1.serdes[0].lt.range.main.native.set(),"When in Auto mode, the min and max values use the default values ignored"
+102,Set EQ Range Auto IEEE,port.layer1.serdes[0].lt.range.main.ieee.set(),"When in Auto mode, the min and max values use the default values ignored"
+103,Set Link Training Config,port.layer1.anlt.lt_config.set(),Using IEEE standard OOS preset
+104,Set Link Training Config,port.layer1.anlt.lt_config.set(),Using IEEE standard OOS preset
+105,Control ANLT AN Only,port.layer1.anlt.ctrl.enable_an_only(),Only enable Auto-Negotiation
+106,Control ANLT AN & LT Auto,port.layer1.anlt.ctrl.enable_an_lt_auto(),Enable Auto-Negotiation and Link Training (auto mode)
+107,Control ANLT AN & LT Interactive,port.layer1.anlt.ctrl.enable_an_lt_interactive(),Enable Auto-Negotiation and Link Training (manual mode)
+108,Control ANLT LT Auto Only,port.layer1.anlt.ctrl.enable_lt_auto_only(),"Only enable Link Training (auto mode), skipping Auto-Negotiation"
+109,Control ANLT LT Interactive Only,port.layer1.anlt.ctrl.enable_lt_interactive_only(),"Only enable Link Training (manual mode), skipping Auto-Negotiation"
+110,Control ANLT Disable,port.layer1.anlt.ctrl.disable_anlt(),Disable both Auto-Negotiation and Link Training
+111,Send Link Training Modulation,port.layer1.serdes[0].lt.send_cmd_modulation(),Send PAM4 Request
+112,Send Link Training Modulation,port.layer1.serdes[0].lt.send_cmd_modulation(),Send PAM4Precoding Request
+113,Send Link Training Preset,port.layer1.serdes[0].lt.send_cmd_preset(),Send Preset Request
+114,Send Link Training Inc,port.layer1.serdes[0].lt.send_cmd_inc(),Send EQ Coefficient Inc Request
+115,Send Link Training Dec,port.layer1.serdes[0].lt.send_cmd_dec(),Send EQ Coefficient Dec Request
+116,Send Link Training No Equalization,port.layer1.serdes[0].lt.send_cmd_no_equalization(),Send No EQ
+117,Send Link Training Trained,port.layer1.serdes[0].lt.send_cmd_trained(),Send Trained Notification
+118,Get Link Training Command Result,port.layer1.serdes[0].lt.get_cmd_result_flag(),Check response status after sending any command
+119,Get Auto-Negotiation Results,port.layer1.anlt.an.results.get(),Get Auto-Negotiation results
+120,Get Auto-Negotiation Statistics,port.layer1.anlt.an.statistics.get(),Get Auto-Negotiation statistics
+121,Get Link Training Results,port.layer1.serdes[0].lt.results.get(),"Get Link Training results, per-serdes"
+122,Get Link Training Statistics,port.layer1.serdes[0].lt.statistics.get(),"Get Link Training statistics, per-serdes"
+123,Set Signal Integrity Sample Control,port.layer1.serdes[0].siv.control.set(),
+124,Get Signal Integrity Sample Data,port.layer1.serdes[0].siv.data.get(),
+125,Set TX Equalizer,port.layer1.serdes[0].medium.tx_equalizer.set(),Tx Equalizer Settings
+126,Set RX Equalizer,port.layer1.serdes[0].medium.rx_equalizer.set(),Rx Equalizer Settings
+127,Set TX Equalizer,port.layer1.serdes[0].medium.tx_equalizer.set(),Tx Equalizer Settings
+128,Set RX Equalizer,port.layer1.serdes[0].medium.rx_equalizer.set(),Rx Equalizer Settings
+129,Set TX Native,port.layer1.serdes[0].medium.tx.native.set(),Tx Equalizer Settings
+130,Set RX AGC,port.layer1.serdes[0].medium.rx.config.agc.set(),"Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+131,Set RX CDR,port.layer1.serdes[0].medium.rx.config.cdr.set(),"Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+132,Set RX CTLE High,port.layer1.serdes[0].medium.rx.config.ctle_high.set(),"Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+133,Set RX CTLE Low,port.layer1.serdes[0].medium.rx.config.ctle_low.set(),"Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+134,Set RX DFE,port.layer1.serdes[0].medium.rx.config.dfe.set(),"Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+135,Set RX OC,port.layer1.serdes[0].medium.rx.config.oc.set(),"Rx Equalizer Settings, either in Auto, Manual, or Freeze"
+136,Set RX Post-FFE 1,port.layer1.serdes[0].medium.rx.config.post_ffe_1.set(),Post-FFE 1-23
+137,Set RX Pre-FFE 1,port.layer1.serdes[0].medium.rx.config.pre_ffe_1.set(),Pre-FFE 1-8
+138,Set TX IEEE,port.layer1.serdes[0].medium.tx.ieee.set(),Tx Equalizer Settings
+139,Transceiver Read/Write,port.transceiver.access_rw(...).set(),Provides read and write access to the
+140,Transceiver Read/Write,port.transceiver.access_rw(...).get(),Provides read and write access to the
+141,Transceiver Sequential Read/Write,port.transceiver.access_rw_seq(...).set(),I2C sequential access to a transceiver's register.
+142,Transceiver Sequential Read/Write,port.transceiver.access_rw_seq(...).get(),I2C sequential access to a transceiver's register.
+143,Transceiver Sequential Read/Write Banked,port.transceiver.access_rw_seq_bank(...).set(),I2C sequential access with bank selection.
+144,Transceiver Sequential Read/Write Banked,port.transceiver.access_rw_seq_bank(...).get(),I2C sequential access with bank selection.
+145,Transceiver MII Access,port.transceiver.access_mii(...).set(),Provides access to the register interface supported.
+146,Transceiver MII Access,port.transceiver.access_mii(...).get(),Provides access to the register interface supported.
+147,Configure I2C,port.transceiver.i2c_config.set(),Configures the I2C interface parameters
+148,Get TX Laser Power,port.transceiver.laser_power.tx_laser_power.get(),Reading of the optical power level of the Tx/Rx signal
+149,Get RX Laser Power,port.transceiver.laser_power.rx_laser_power.get(),Reading of the optical power level of the Tx/Rx signal
+150,Get CDB Instances Supported,port.transceiver.cmis.cdb_instances_supported.get(),Return the supported CDB instances from the CMIS transceiver

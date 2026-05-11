@@ -204,6 +204,10 @@ from .internals.commands.enums import (
     ClearStatsDirection,
     LLDPClearTarget,
     LLDPOpMode,
+    PcsLaneErrorInjectionType,
+    UecCtlosClearDirection,
+    UecFrameDesireLlr,
+    UecLinkOptionLlr,
 )
 
 __all__ = (
@@ -408,4 +412,8 @@ __all__ = (
     "ClearStatsDirection",
     "LLDPClearTarget",
     "LLDPOpMode",
+    "PcsLaneErrorInjectionType",
+    "UecCtlosClearDirection",
+    "UecFrameDesireLlr",
+    "UecLinkOptionLlr",
 )
