@@ -1,0 +1,64 @@
+from typing import (
+    TYPE_CHECKING,
+    Tuple,
+)
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+from xoa_driver.internals.commands import (
+    PL1_TX_FREQ,
+    PL1_TX_PPM,
+    PL1_TX_DATARATE,
+    PL1_CDRLOL_STATUS,
+    PL1_RX_FREQ,
+    PL1_RX_PPM,
+    PL1_RX_DATARATE,
+)
+
+from xoa_driver import enums
+
+class PmaLayerAdv:
+    """Adv. Layer-1 - PMA Layer"""
+
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_xindex: int) -> None:
+        self.tx_freq = PL1_TX_FREQ(conn, module_id, port_id)
+        """Return the current, minimum and maximum port Tx frequency in Hz.
+
+        :type: PL1_TX_FREQ
+        """
+
+        self.tx_ppm = PL1_TX_PPM(conn, module_id, port_id)
+        """Return the current, minimum and maximum port Tx frequency offset in parts per million (ppm).
+
+        :type: PL1_TX_PPM
+        """
+
+        self.tx_datarate = PL1_TX_DATARATE(conn, module_id, port_id)
+        """Return the current, minimum and maximum port Tx datarate in bits per second (bps).
+
+        :type: PL1_TX_DATARATE
+        """
+
+
+        self.rx_cdr_lol = PL1_CDRLOL_STATUS(conn, module_id, port_id, serdes_xindex)
+        """Returns the current and the latched CDR Loss of Lock (LOL) status of the specified Serdes.
+
+        :type: PL1_CDRLOL_STATUS
+        """
+        
+        self.rx_freq = PL1_RX_FREQ(conn, module_id, port_id, serdes_xindex)
+        """Return the current, minimum and maximum port Rx frequency in Hz of the specified SerDes.
+        
+        :type: PL1_RX_FREQ
+        """
+
+        self.rx_ppm = PL1_RX_PPM(conn, module_id, port_id, serdes_xindex)
+        """Return the current, minimum and maximum port Rx frequency offset in parts per million (ppm) of the specified SerDes.
+
+        :type: PL1_RX_PPM
+        """
+
+        self.rx_datarate = PL1_RX_DATARATE(conn, module_id, port_id, serdes_xindex)
+        """Return the current, minimum and maximum port Rx datarate in bits per second (bps) of the specified SerDes.
+
+        :type: PL1_RX_DATARATE
+        """
