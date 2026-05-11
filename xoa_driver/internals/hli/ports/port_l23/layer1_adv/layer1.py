@@ -18,7 +18,7 @@ from xoa_driver.internals.commands import (
     PL1_TX_PPM,
 )
 
-from .layer1_adv.pcs import PcsLayerAdv
+from .pcs import PcsLayerAdv
 
 class SerdesAdv:
     """Serdes Advanced Statistics"""

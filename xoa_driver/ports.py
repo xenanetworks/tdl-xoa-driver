@@ -60,7 +60,7 @@ from .internals.hli.ports.port_l23.family_thor import (
     PThor400G7S1P_c,
     PThor400G7S1P_d,
 )
-from .internals.hli.ports.port_l23.family_thor_ng import (
+from .internals.hli.ports.port_l23.family_thor2 import (
     PThor400G7S2P_a,
 )
 from .internals.hli.ports.port_l23.family_freya import (
@@ -136,7 +136,7 @@ Z400ThorPort = typing.Union[
     PThor400G7S1P_d,
 ]
 
-Z400ThorNGPort = typing.Union[
+Z400Thor2Port = typing.Union[
     PThor400G7S2P_a,
 ]
 
@@ -304,7 +304,7 @@ __all__ = (
     "PThor400G7S1P_c",
     "PThor400G7S1P_d",
 
-    "Z400ThorNGPort",
+    "Z400Thor2Port",
     "PThor400G7S2P_a",
 
     "Z800FreyaPort",
