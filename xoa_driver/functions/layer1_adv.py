@@ -1300,7 +1300,6 @@ __all__ = (
     "set_hi_ser_alarm",
     "set_deg_ser_thresholds",
     "get_deg_ser_thresholds",
-    "get_am_encoding",
     "get_cdr_lol_status",
     "get_rx_pcsl_skew",
     "get_hi_ber_status",
