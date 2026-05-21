@@ -48,6 +48,8 @@ from .enums import (
     PPMSweepMode,
     ModuleModelName,
     ModuleConfigStatus,
+    SolutionTrack,
+    FeatureID
 )
 
 
@@ -1088,7 +1090,7 @@ class M_REVISION:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module))
-    
+
 
 @register_command
 @dataclass
@@ -1845,7 +1847,7 @@ class M_HEALTH:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, indices=self._sub_indices))
-    
+
 @register_command
 @dataclass
 class M_MODEL_NAME:
@@ -1877,7 +1879,7 @@ class M_MODEL_NAME:
 @dataclass
 class M_RECONFIG_STATUS:
     """
-    Show the test module configuration status when the user has configured the test module to a different configuration than the one it is currently running. 
+    Show the test module configuration status when the user has configured the test module to a different configuration than the one it is currently running.
     """
 
     code: typing.ClassVar[int] = 399
@@ -1902,7 +1904,125 @@ class M_RECONFIG_STATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module))
-    
+
+
+@register_command
+@dataclass
+class M_SOLUTION_TRACK_INDICES:
+    """
+    Returns a list of integers representing the enabled Solution Tracks on the specified module.
+    """
+
+    code: typing.ClassVar[int] = 490
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        solution_tracks: typing.List[SolutionTrack] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """Enabled Solution Tracks."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the currently enabled Solution Tracks for the module.
+
+        :return: A list of enabled Solution Track
+        :rtype: M_SOLUTION_TRACK_INDICES.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module))
+
+
+@register_command
+@dataclass
+class M_SOLUTION_TRACK:
+    """
+    Given a Solution Track index, returns a list of integers representing the enabled Feature IDs on the specified module.
+    """
+
+    code: typing.ClassVar[int] = 491
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _solution_track_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        feature_ids: typing.List[FeatureID] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """Enabled Feature IDs for the given Solution Track."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the currently enabled Feature IDs for the given Solution Track.
+
+        :return: A list of enabled Feature IDs
+        :rtype: M_SOLUTION_TRACK.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, indices=[self._solution_track_xindex]))
+
+
+@register_command
+@dataclass
+class M_SOLUTION_TRACK_DEMO_EXP:
+    """
+    Returns remaining Solution Track Demo Key duration, and a list of integers representing the additional Solution Tracks enabled by the Demo Key.
+    """
+
+    code: typing.ClassVar[int] = 493
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        remaining_days: int = field(XmpInt())
+        """Remaining number of days until Demo Key expires.
+        """
+
+        remaining_hours: int = field(XmpInt())
+        """Remaining number of hours until Demo Key expires, rounded up to nearest hour.
+        """
+
+        solution_tracks: typing.List[SolutionTrack] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """Solution Tracks enabled by this Demo Key. Use M_SOLUTION_TRACK_INDICES for the full list of currently enabled Solution Tracks."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the remaining duration of Demo Key, if enabled
+
+        :return: Duration (days, hours) and a list of Solution Track enabled by the active Demo Key. Duration = 0 days and 0 hours means the Demo Key has expired.
+        :rtype: M_SOLUTION_TRACK_INDICES.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module))
+
+
+@register_command
+@dataclass
+class M_SOLUTION_TRACK_ENABLE:
+    """
+    Enables one or more Solution Tracks as specified in key.
+    """
+
+    code: typing.ClassVar[int] = 492
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class SetDataAttr(RequestBodyStruct):
+        key: str = field(XmpStr())
+        """string, Solution Track key."""
+
+    def set(self, st_key: str) -> Token[None]:
+        """
+        Enable one or more Solution Tracks as specified in key.
+        :param comment: Key string
+        :type comment: str
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, key=st_key))
+
+
 __all__ = [
     "M_CAPABILITIES",
     "M_CFPCONFIG",
@@ -1950,4 +2070,8 @@ __all__ = [
     "M_UPGRADEPROGRESS",
     "M_VERSIONNO",
     "M_VERSIONSTR",
+    "M_SOLUTION_TRACK_INDICES",
+    "M_SOLUTION_TRACK",
+    "M_SOLUTION_TRACK_ENABLE",
+    "M_SOLUTION_TRACK_DEMO_EXP",
 ]
