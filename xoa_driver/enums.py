@@ -208,6 +208,8 @@ from .internals.commands.enums import (
     UecCtlosClearDirection,
     UecFrameDesireLlr,
     UecLinkOptionLlr,
+    SolutionTrack,
+    FeatureID,
 )
 
 __all__ = (
@@ -416,4 +418,6 @@ __all__ = (
     "UecCtlosClearDirection",
     "UecFrameDesireLlr",
     "UecLinkOptionLlr",
+    "SolutionTrack",
+    "FeatureID",
 )

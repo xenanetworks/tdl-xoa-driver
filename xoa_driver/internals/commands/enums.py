@@ -997,7 +997,7 @@ class MediaConfigurationType(IntEnum):
     ####################################################
     OSFP1600_TG = OSFP_1600 = OSFP1600 = 126
     """OSFP 1.6T, Traffic Generation"""
-    
+
     OSFP1600_L1 = OSFP_1600_ANLT = OSFP1600_ANLT = 127
     """OSFP 1.6T, Layer 1"""
 
@@ -1025,7 +1025,7 @@ class MediaConfigurationType(IntEnum):
     ####################################################
     QSFP112_TG = QSFP112 = 111
     """QSFP112, 112G serdes, Traffic Generation"""
-    
+
     QSFP112_L1 = QSFP112_ANLT = 114
     """QSFP112, 112G serdes, Layer 1"""
 
@@ -2713,30 +2713,30 @@ class RxEqExtCapMode(IntEnum):
 
 class PreCodingMode(IntEnum):
     """Rx/Tx Pre-Coding Mode."""
-    
+
     OFF = 0
     """Off"""
-    
+
     ON = 1
     """On"""
 
 
 class GrayCodingMode(IntEnum):
     """Rx/Tx Gray-Coding Mode."""
-    
+
     OFF = 0
     """Off"""
-    
+
     ON = 1
     """On"""
 
 
 class Endianness(IntEnum):
     """Endianness (Big/Little Endian)."""
-    
+
     NORMAL = 0
     """Big Endian"""
-    
+
     REVERTED = 1
     """Little Endian"""
 
@@ -2765,7 +2765,7 @@ class AutoNegTecAbility(IntFlag):
 
     ETC_800G_CR8_KR8 = 1<<29
     """ETC_800G_CR8_KR8"""
-    
+
     ETC_400G_CR8_KR8 = 1<<28
     """ETC_400G_CR8_KR8"""
 
@@ -2934,7 +2934,7 @@ class AutoNegTecAbilityHCD(IntEnum):
 
     ETC_800G_CR8_KR8 = 29
     """ETC_800G_CR8_KR8"""
-    
+
     ETC_400G_CR8_KR8 = 28
     """ETC_400G_CR8_KR8"""
 
@@ -3112,7 +3112,7 @@ class DhcpState(IntEnum):
     DHCP_STATE_RUNNING = 1
     DHCP_STATE_COMPLETED = 2
     DHCP_STATE_FAILED = 3
-    
+
 class DhcpVlanState(IntEnum):
     DHCP_VLAN_OFF = 0
     DHCP_VLAN_ON  = 1
@@ -3120,7 +3120,7 @@ class DhcpVlanState(IntEnum):
 class VlanType(IntEnum):
     TYPE_C = 0
     TYPE_S  = 1
-    
+
 class ChassisModelNumber(IntEnum):
     NA      = 0
     XB1     = 1
@@ -3174,7 +3174,7 @@ class ChassisModelNumber(IntEnum):
     XC24    = 49
     XC25    = 50
     XC26    = 51
-    
+
 class ChassisModelName(IntEnum):
     NA                  = 0
     B720                = 1
@@ -3201,7 +3201,7 @@ class ChassisModelName(IntEnum):
     Z_1604_S_C_EDUN = 22
     Z_1608_O_C_EDUN = 23
     B_6400 = 24
-    
+
 class ModuleModelName(IntEnum):
     NA              = 0
     Z_01_T_ODIN     = 1
@@ -3228,7 +3228,7 @@ class ModuleConfigStatus(IntEnum):
     SUCCESS = 1
     PROGRESSING = 2
     FAILED = 3
-    
+
 # endregion
 
 # region FEC CW enums
@@ -3324,7 +3324,7 @@ class TrueFalse(IntEnum):
 
     FALSE = 0
     """False"""
-    
+
     TRUE = 1
     """True"""
 
@@ -3442,3 +3442,42 @@ class UecLinkOptionLlr(IntEnum):
 
     BI_WANTED = 3
     """This port wants bi-directional LLR (it both sends and receives)"""
+
+
+class SolutionTrack(IntEnum):
+    """Solution Tracks"""
+
+    CORE = 0
+    """Always-enabled core functionality"""
+
+    SEC = 1
+    """Security."""
+
+    L1 = 2
+    """Advanced Layer 1."""
+
+    ANLT = 3
+    """Advanced AN/LT"""
+
+    AI = 4
+    """AI"""
+
+
+class FeatureID(IntEnum):
+    """Solution Track Feature ID"""
+###  init_param ("M491<t   M_SOLUTION_TRACK           I*(0=CORE,1=MACsec,2=AdvL1,3=AdvANLT,4=AI_UEC)");
+
+    CORE = 0
+    """Always-enabled core functionality"""
+
+    MACsec = 1
+    """MACsec."""
+
+    AdvL1 = 2
+    """Advanced Layer 1."""
+
+    AdvANLT = 3
+    """Advanced AN/LT"""
+
+    AI_UEC = 4
+    """AI/Ultra Ethernet"""
