@@ -1968,25 +1968,25 @@ class PP_AUTONEG:
     class GetDataAttr(ResponseBodyStruct):
         mode: AutoNegMode = field(XmpInt())
         """coded integer, mode"""
-        tec_ability: Hex = field(XmpHex(size=8))
+        tec_ability: Hex = field(XmpHex(size=4))
         """hex string, technical ability."""
-        fec_capable: Hex = field(XmpHex(size=1))
+        fec_capable: Hex = field(XmpHex(size=4))
         """coded integer, FEC capable."""
-        fec_requested: Hex = field(XmpHex(size=1))
+        fec_requested: Hex = field(XmpHex(size=4))
         """coded integer, FEC requested."""
-        pause_mode: Hex = field(XmpHex(size=1))
+        pause_mode: Hex = field(XmpHex(size=4))
         """coded integer, pause mode."""
 
     class SetDataAttr(RequestBodyStruct):
         mode: AutoNegMode = field(XmpInt())
         """coded integer, mode"""
-        tec_ability: Hex = field(XmpHex(size=8))
+        tec_ability: Hex = field(XmpHex(size=4))
         """hex string, technical ability."""
-        fec_capable: Hex = field(XmpHex(size=1))
+        fec_capable: Hex = field(XmpHex(size=4))
         """coded integer, FEC capable."""
-        fec_requested: Hex = field(XmpHex(size=1))
+        fec_requested: Hex = field(XmpHex(size=4))
         """coded integer, FEC requested."""
-        pause_mode: Hex = field(XmpHex(size=1))
+        pause_mode: Hex = field(XmpHex(size=4))
         """coded integer, pause mode."""
 
     def get(self) -> Token[GetDataAttr]:
