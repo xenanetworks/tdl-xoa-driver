@@ -38,6 +38,8 @@ from .enums import (
     PRBSStatisticsMode,
     AutoNegMode,
     AutoNegTecAbility,
+    AutoNegFECAbility,
+    AutoNegPauseAbility,
     AutoNegFECOption,
     PauseMode,
     AutoNegFECType,
@@ -1968,25 +1970,25 @@ class PP_AUTONEG:
     class GetDataAttr(ResponseBodyStruct):
         mode: AutoNegMode = field(XmpInt())
         """coded integer, mode"""
-        tec_ability: Hex = field(XmpHex(size=4))
-        """hex string, technical ability."""
-        fec_capable: Hex = field(XmpHex(size=4))
+        tec_ability: AutoNegTecAbility = field(XmpInt())
+        """coded integer, technical ability."""
+        fec_capable: AutoNegFECAbility = field(XmpInt())
         """coded integer, FEC capable."""
-        fec_requested: Hex = field(XmpHex(size=4))
+        fec_requested: AutoNegFECAbility = field(XmpInt())
         """coded integer, FEC requested."""
-        pause_mode: Hex = field(XmpHex(size=4))
+        pause_mode: AutoNegPauseAbility = field(XmpInt())
         """coded integer, pause mode."""
 
     class SetDataAttr(RequestBodyStruct):
         mode: AutoNegMode = field(XmpInt())
         """coded integer, mode"""
-        tec_ability: Hex = field(XmpHex(size=4))
-        """hex string, technical ability."""
-        fec_capable: Hex = field(XmpHex(size=4))
+        tec_ability: AutoNegTecAbility = field(XmpInt())
+        """coded integer, technical ability."""
+        fec_capable: AutoNegFECAbility = field(XmpInt())
         """coded integer, FEC capable."""
-        fec_requested: Hex = field(XmpHex(size=4))
+        fec_requested: AutoNegFECAbility = field(XmpInt())
         """coded integer, FEC requested."""
-        pause_mode: Hex = field(XmpHex(size=4))
+        pause_mode: AutoNegPauseAbility = field(XmpInt())
         """coded integer, pause mode."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -1998,19 +2000,19 @@ class PP_AUTONEG:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, mode: AutoNegMode, tec_ability: Hex, fec_capable: Hex, fec_requested: Hex, pause_mode: Hex) -> Token[None]:
+    def set(self, mode: AutoNegMode, tec_ability: AutoNegTecAbility, fec_capable: AutoNegFECAbility, fec_requested: AutoNegFECAbility, pause_mode: AutoNegPauseAbility) -> Token[None]:
         """Set the auto-negotiation settings of the PHY.
 
         :param mode: auto neg mode
         :type mode: AutoNegMode
         :param tec_ability: technical ability (hex string with 0x prefix or AutoNegTecAbility enum)
-        :type tec_ability: Hex
+        :type tec_ability: AutoNegTecAbility
         :param fec_capable: FEC capable
-        :type fec_capable: Hex
+        :type fec_capable: AutoNegFECAbility
         :param fec_requested: FEC requested
-        :type fec_requested: Hex
+        :type fec_requested: AutoNegFECAbility
         :param pause_mode: pause mode (hex string with 0x prefix or PauseMode enum)
-        :type pause_mode: Hex
+        :type pause_mode: AutoNegPauseAbility
         """
 
         return Token(
@@ -2026,7 +2028,6 @@ class PP_AUTONEG:
                 pause_mode=pause_mode
             )
         )
-
 
 @register_command
 @dataclass
@@ -2049,13 +2050,13 @@ class PP_AUTONEGSTATUS:
         """codec integer, FEC."""
         auto_state: AutoNegStatus = field(XmpInt())
         """coded integer, auto-negotiation state."""
-        tec_ability: Hex = field(XmpHex(size=8))
+        tec_ability: AutoNegTecAbility = field(XmpInt())
         """coded integer, technical ability."""
-        fec_capable: Hex = field(XmpHex(size=1))
+        fec_capable: AutoNegFECAbility = field(XmpInt())
         """coded integer, FEC capable partner."""
-        fec_requested: Hex = field(XmpHex(size=1))
+        fec_requested: AutoNegFECAbility = field(XmpInt())
         """coded integer, FEC requested partner."""
-        pause_mode: Hex = field(XmpHex(size=1))
+        pause_mode: AutoNegPauseAbility = field(XmpInt())
         """coded integer, pause mode."""
 
     def get(self) -> Token[GetDataAttr]:
