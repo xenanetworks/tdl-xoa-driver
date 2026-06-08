@@ -62,7 +62,7 @@ from .internals.hli.ports.port_l23.family_thor import (
 )
 from .internals.hli.ports.port_l23.family_thor2 import (
     PThor400G7S2P_a,
-    PThor400G7S2P_a_g2,
+    PThor400G7S2P_c,
 )
 from .internals.hli.ports.port_l23.family_freya import (
     PFreya800G1S1P_a,
@@ -139,7 +139,7 @@ Z400ThorPort = typing.Union[
 
 Z400Thor2Port = typing.Union[
     PThor400G7S2P_a,
-    PThor400G7S2P_a_g2,
+    PThor400G7S2P_c,
 ]
 
 Z800FreyaPort = typing.Union[
@@ -221,7 +221,7 @@ GenericL23Port = typing.Union[
     PThor400G7S1P_c,
     PThor400G7S1P_d,
     PThor400G7S2P_a,
-    PThor400G7S2P_a_g2,
+    PThor400G7S2P_c,
     PFreya800G1S1P_a,
     PFreya800G1S1P_b,
     PFreya800G1S1POSFP_a,
@@ -309,7 +309,7 @@ __all__ = (
 
     "Z400Thor2Port",
     "PThor400G7S2P_a",
-    "PThor400G7S2P_a_g2",
+    "PThor400G7S2P_c",
     
     "Z800FreyaPort",
     "PFreya800G1S1P_a",
