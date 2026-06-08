@@ -40,3 +40,8 @@ class PThor400G7S2P_a(FamilyThor2):
     """L23 port on Thor-400G-7S-2P[a] module.
     """
     ...
+
+class PThor400G7S2P_c(FamilyThor2):
+    """L23 port on Thor-400G-7S-2P[c] module.
+    """
+    ...

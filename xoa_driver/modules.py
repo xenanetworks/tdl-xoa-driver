@@ -57,6 +57,8 @@ from .internals.hli.modules.modules_l23.family_thor import (
 )
 from .internals.hli.modules.modules_l23.family_thor_ng import (
     MThor400G7S2P_a,
+    MThor400G7S2P_a_g2,
+    MThor400G7S2P_c_g2,
 )
 from .internals.hli.modules.modules_l23.family_freya import (
     MFreya800G1S1P_a,
@@ -161,6 +163,8 @@ Z400ThorModule = Union[
 
 Z400ThorModuleNG = Union[
     MThor400G7S2P_a,
+    MThor400G7S2P_a_g2,
+    MThor400G7S2P_c_g2,
 ]
 
 Z800FreyaModule = Union[
@@ -272,6 +276,8 @@ GenericL23Module = Union[
     MThor400G7S1P_c,
     MThor400G7S1P_d,
     MThor400G7S2P_a,
+    MThor400G7S2P_a_g2,
+    MThor400G7S2P_c_g2,
     MFreya800G1S1P_a,
     MFreya800G1S1P_b,
     MFreya800G1S1POSFP_a,
@@ -390,7 +396,8 @@ __all__ = (
 
     "Z400ThorModuleNG",
     "MThor400G7S2P_a",
-
+    "MThor400G7S2P_a_g2",
+    "MThor400G7S2P_c_g2",
     "Z800FreyaModule",
     "MFreya800G1S1P_a",
     "MFreya800G1S1P_b",
