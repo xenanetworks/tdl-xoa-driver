@@ -277,6 +277,34 @@ class C_RESERVEDBY:
 
 @register_command
 @dataclass
+class C_LOG:
+    """
+    Send a text string to be included in the chassis' system log.
+    Please use sparingly.
+    """
+
+    code: typing.ClassVar[int] = 63
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+
+    class SetDataAttr(RequestBodyStruct):
+        text: str = field(XmpStr())
+        """string, containing text value."""
+        pass
+
+    def set(self, text: str) -> Token[None]:
+        """Add the text string to the chassis' system log.
+
+        :param text: text string for the chassis' system log.
+        :type text: str
+        """
+
+        return Token(self._connection, build_set_request(self, text=text))
+
+
+@register_command
+@dataclass
 class C_LOGOFF:
     """
     Terminates the current scripting session. Courtesy only, the chassis will also
@@ -2080,6 +2108,7 @@ __all__ = [
     "C_INDICES",
     "C_IPADDRESS",
     "C_KEEPALIVE",
+    "C_LOG",
     "C_LOGOFF",
     "C_LOGON",
     "C_MACADDRESS",
