@@ -11,7 +11,6 @@ from .internals.commands.enums import (
     AutoNegFECType,
     AutoNegMode,
     AutoNegStatus,
-    AutoNegTecAbility,
     AutoOrManual,
     BRRMode,
     CaptureSize,
@@ -208,6 +207,8 @@ from .internals.commands.enums import (
     UecCtlosClearDirection,
     UecFrameDesireLlr,
     UecLinkOptionLlr,
+    SolutionTrack,
+    FeatureID,
 )
 
 __all__ = (
@@ -219,7 +220,6 @@ __all__ = (
     "AutoNegFECType",
     "AutoNegMode",
     "AutoNegStatus",
-    "AutoNegTecAbility",
     "AutoOrManual",
     "BRRMode",
     "CaptureSize",
@@ -416,4 +416,6 @@ __all__ = (
     "UecCtlosClearDirection",
     "UecFrameDesireLlr",
     "UecLinkOptionLlr",
+    "SolutionTrack",
+    "FeatureID",
 )
