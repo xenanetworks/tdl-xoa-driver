@@ -12,7 +12,7 @@ from .module_l23_base import ModuleL23
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-400G-7S-2P[a] G2")
-class MThor400G7S2P_a(ModuleL23):
+class MThor400G7S2P_a_g2(ModuleL23):
     """Test module Thor-400G-7S-2P[a] G2"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
