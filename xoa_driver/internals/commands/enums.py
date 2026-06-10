@@ -3447,23 +3447,29 @@ class UecLinkOptionLlr(IntEnum):
 class UecLlrBehavior(IntEnum):
     """UE LLR behavior for LLR-eligible frames."""
 
-    DISCARD = 0
+    NONE = 0
+    """The behavior is N/A."""
+
+    DISCARD = 1
     """Discard the frame."""
 
-    BLOCK = 1
+    BLOCK = 2
     """Block the frame."""
 
-    BEST_EFFORT = 2
+    BEST_EFFORT = 3
     """Transmit the frame on a best-effort basis."""
 
 
 class UecLlrInitEchoMode(IntEnum):
     """UE LLR INIT_ECHO source mode."""
 
-    USE_LLR_INIT_DATA = 0
+    NONE = 0
+    """The mode is N/A."""
+
+    USE_LLR_INIT_DATA = 1
     """Use the values from the received LLR_INIT."""
 
-    USE_MANUAL = 1
+    USE_MANUAL = 2
     """Use the manually configured values."""
 
 
@@ -3479,6 +3485,9 @@ class UecLlrEchoCheck(IntEnum):
 
 class UecLlrTxErrType(IntEnum):
     """UE LLR TX error injection type."""
+
+    NONE = 0
+    """The type is N/A."""
 
     SEQ_DROP = 1
     """Drop a sequence number."""
@@ -3501,6 +3510,9 @@ class UecLlrTxErrType(IntEnum):
 
 class UecLlrTxErrPattern(IntEnum):
     """UE LLR TX error injection pattern."""
+
+    NONE = 0
+    """The pattern is N/A."""
 
     ONCE = 1
     """Inject the error once."""
@@ -3571,19 +3583,18 @@ class SolutionTrack(IntEnum):
 
 class FeatureID(IntEnum):
     """Solution Track Feature ID"""
-###  init_param ("M491<t   M_SOLUTION_TRACK           I*(0=CORE,1=MACsec,2=AdvL1,3=AdvANLT,4=AI_UEC)");
 
     CORE = 0
     """Always-enabled core functionality"""
 
-    MACsec = 1
-    """MACsec."""
+    MACSEC = 1
+    """MACsec features"""
 
-    AdvL1 = 2
-    """Advanced Layer 1."""
+    ADV_L1 = 2
+    """Advanced Layer 1 features"""
 
-    AdvANLT = 3
-    """Advanced AN/LT"""
+    ADV_ANLT = 3
+    """Advanced AN/LT protocol analysis features"""
 
-    AI_UEC = 4
-    """AI/Ultra Ethernet"""
+    UE_LL = 4
+    """Ultra Ethernet Link Layer features"""
