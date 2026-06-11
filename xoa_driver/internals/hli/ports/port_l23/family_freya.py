@@ -55,6 +55,7 @@ class FamilyFreya(BasePortL23Genuine):
     """Register a callback to the event that the port's dynamic traffic setting changes."""
 
 
+#region Freya 1P QSFPDD
 class PFreya800G1S1P_a(FamilyFreya):
     """L23 port on Freya-800G-1S-1P[a] module.
     """
@@ -113,12 +114,9 @@ class PFreya800G4S1P_f(FamilyFreya):
     """
     ...
 
+#endregion
 
-class PFreya800G4S2P_a(FamilyFreya):
-    """L23 port on Freya-800G-4S-2P[a] module.
-    """
-    ...
-
+#region Freya 1P OSFP
 
 class PFreya800G4S1POSFP_a(FamilyFreya):
     """L23 port on Freya-800G-4S-1P-OSFP[a] module.
@@ -154,3 +152,39 @@ class PFreya800G4S1POSFP_f(FamilyFreya):
     """L23 port on Freya-800G-4S-1P-OSFP[f] module.
     """
     ...
+
+#endregion
+
+#region Freya 2P QSFPDD
+
+class PFreya800G4S2P_a(FamilyFreya):
+    """L23 port on Freya-800G-4S-2P[a] module.
+    """
+    ...
+
+class PFreya800G4S2P_b(FamilyFreya):
+    """L23 port on Freya-800G-4S-2P[b] module.
+    """
+    ...
+
+class PFreya800G4S2P_c(FamilyFreya):
+    """L23 port on Freya-800G-4S-2P[c] module.
+    """
+    ...
+
+class PFreya800G4S2P_d(FamilyFreya):
+    """L23 port on Freya-800G-4S-2P[d] module.
+    """
+    ...
+
+class PFreya800G4S2P_e(FamilyFreya):
+    """L23 port on Freya-800G-4S-2P[e] module.
+    """
+    ...
+
+class PFreya800G4S2P_f(FamilyFreya):
+    """L23 port on Freya-800G-4S-2P[f] module.
+    """
+    ...
+
+#endregion
