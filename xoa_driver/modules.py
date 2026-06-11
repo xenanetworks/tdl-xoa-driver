@@ -109,6 +109,12 @@ from .internals.hli.modules.modules_l23.family_freya import (
     MFreya800G4S1POSFP_d_g2,
     MFreya800G4S1POSFP_e_g2,
     MFreya800G4S1POSFP_f_g2,
+    MFreya800G4S2P_a,
+    MFreya800G4S2P_b,
+    MFreya800G4S2P_c,
+    MFreya800G4S2P_d,
+    MFreya800G4S2P_e,
+    MFreya800G4S2P_f,
 )
 from .internals.hli.modules.modules_l23.family_edun import (
     MEdun800G3S1PSMPX_a,
@@ -216,6 +222,12 @@ Z800FreyaModule = Union[
     MFreya800G4S1POSFP_d_g2,
     MFreya800G4S1POSFP_e_g2,
     MFreya800G4S1POSFP_f_g2,
+    MFreya800G4S2P_a,
+    MFreya800G4S2P_b,
+    MFreya800G4S2P_c,
+    MFreya800G4S2P_d,
+    MFreya800G4S2P_e,
+    MFreya800G4S2P_f,
 ]
 
 Z1600EdunModule = Union[
@@ -328,6 +340,12 @@ GenericL23Module = Union[
     MFreya800G4S1POSFP_f_g2,
     MEdun800G3S1PSMPX_a,
     MEdun1600G4S1POSFP_a,
+    MFreya800G4S2P_a,
+    MFreya800G4S2P_b,
+    MFreya800G4S2P_c,
+    MFreya800G4S2P_d,
+    MFreya800G4S2P_e,
+    MFreya800G4S2P_f,
 ]
 
 GenericAnyModule = Union[
@@ -398,6 +416,7 @@ __all__ = (
 #    "MThor400G7S2P_a",
     "MThor400G7S2P_a_g2",
     "MThor400G7S2P_c_g2",
+    
     "Z800FreyaModule",
     "MFreya800G1S1P_a",
     "MFreya800G1S1P_b",
@@ -447,6 +466,12 @@ __all__ = (
     "MFreya800G4S1POSFP_d_g2",
     "MFreya800G4S1POSFP_e_g2",
     "MFreya800G4S1POSFP_f_g2",
+    "MFreya800G4S2P_a",
+    "MFreya800G4S2P_b",
+    "MFreya800G4S2P_c",
+    "MFreya800G4S2P_d",
+    "MFreya800G4S2P_e",
+    "MFreya800G4S2P_f",
 
     "Z1600EdunModule",
     "MEdun800G3S1PSMPX_a",
