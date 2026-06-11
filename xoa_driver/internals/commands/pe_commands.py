@@ -1,4 +1,4 @@
-"""Port (Impairment) Commands """
+"""Port Commands - Impairment"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing

@@ -1,4 +1,4 @@
-"""Port Histogram Commands"""
+"""Port Commands - Histogram"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing

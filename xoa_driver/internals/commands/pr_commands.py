@@ -1,4 +1,4 @@
-"""Port Rx Statistics Commands"""
+"""Port Commands - Rx Statistics"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
