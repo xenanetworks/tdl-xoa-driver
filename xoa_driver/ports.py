@@ -59,6 +59,7 @@ from .internals.hli.ports.port_l23.family_thor import (
     PThor400G7S1P_b,
     PThor400G7S1P_c,
     PThor400G7S1P_d,
+    
 )
 from .internals.hli.ports.port_l23.family_thor2 import (
     PThor400G7S2P_a,
@@ -75,13 +76,18 @@ from .internals.hli.ports.port_l23.family_freya import (
     PFreya800G4S1P_d,
     PFreya800G4S1P_e,
     PFreya800G4S1P_f,
-    PFreya800G4S2P_a,
     PFreya800G4S1POSFP_a,
     PFreya800G4S1POSFP_b,
     PFreya800G4S1POSFP_c,
     PFreya800G4S1POSFP_d,
     PFreya800G4S1POSFP_e,
     PFreya800G4S1POSFP_f,
+    PFreya800G4S2P_a,
+    PFreya800G4S2P_b,
+    PFreya800G4S2P_c,
+    PFreya800G4S2P_d,
+    PFreya800G4S2P_e,
+    PFreya800G4S2P_f,
 )
 from .internals.hli.ports.port_l23.family_edun import (
     PEdun800G3S1PSMPX_a,
@@ -153,13 +159,18 @@ Z800FreyaPort = typing.Union[
     PFreya800G4S1P_d,
     PFreya800G4S1P_e,
     PFreya800G4S1P_f,
-    PFreya800G4S2P_a,
     PFreya800G4S1POSFP_a,
     PFreya800G4S1POSFP_b,
     PFreya800G4S1POSFP_c,
     PFreya800G4S1POSFP_d,
     PFreya800G4S1POSFP_e,
     PFreya800G4S1POSFP_f,
+    PFreya800G4S2P_a,
+    PFreya800G4S2P_b,
+    PFreya800G4S2P_c,
+    PFreya800G4S2P_d,
+    PFreya800G4S2P_e,
+    PFreya800G4S2P_f,
 ]
 
 Z1600EdunPort = typing.Union[
@@ -232,7 +243,6 @@ GenericL23Port = typing.Union[
     PFreya800G4S1P_d,
     PFreya800G4S1P_e,
     PFreya800G4S1P_f,
-    PFreya800G4S2P_a,
     PFreya800G4S1POSFP_a,
     PFreya800G4S1POSFP_b,
     PFreya800G4S1POSFP_c,
@@ -241,6 +251,12 @@ GenericL23Port = typing.Union[
     PFreya800G4S1POSFP_f,
     PEdun800G3S1PSMPX_a,
     PEdun1600G4S1POSFP_a,
+    PFreya800G4S2P_a,
+    PFreya800G4S2P_b,
+    PFreya800G4S2P_c,
+    PFreya800G4S2P_d,
+    PFreya800G4S2P_e,
+    PFreya800G4S2P_f,
 ]
 
 GenericAnyPort = typing.Union[
@@ -322,13 +338,18 @@ __all__ = (
     "PFreya800G4S1P_d",
     "PFreya800G4S1P_e",
     "PFreya800G4S1P_f",
-    "PFreya800G4S2P_a",
     "PFreya800G4S1POSFP_a",
     "PFreya800G4S1POSFP_b",
     "PFreya800G4S1POSFP_c",
     "PFreya800G4S1POSFP_d",
     "PFreya800G4S1POSFP_e",
     "PFreya800G4S1POSFP_f",
+    "PFreya800G4S2P_a",
+    "PFreya800G4S2P_b",
+    "PFreya800G4S2P_c",
+    "PFreya800G4S2P_d",
+    "PFreya800G4S2P_e",
+    "PFreya800G4S2P_f",
 
     "Z1600EdunPort",
     "PEdun800G3S1PSMPX_a",

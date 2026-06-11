@@ -3444,6 +3444,124 @@ class UecLinkOptionLlr(IntEnum):
     """This port wants bi-directional LLR (it both sends and receives)"""
 
 
+class UecLlrBehavior(IntEnum):
+    """UE LLR behavior for LLR-eligible frames."""
+
+    NONE = 0
+    """The behavior is N/A."""
+
+    DISCARD = 1
+    """Discard the frame."""
+
+    BLOCK = 2
+    """Block the frame."""
+
+    BEST_EFFORT = 3
+    """Transmit the frame on a best-effort basis."""
+
+
+class UecLlrInitEchoMode(IntEnum):
+    """UE LLR INIT_ECHO source mode."""
+
+    NONE = 0
+    """The mode is N/A."""
+
+    USE_LLR_INIT_DATA = 1
+    """Use the values from the received LLR_INIT."""
+
+    USE_MANUAL = 2
+    """Use the manually configured values."""
+
+
+class UecLlrEchoCheck(IntEnum):
+    """UE LLR INIT_ECHO validation."""
+
+    DISABLE = 0
+    """Disable validation."""
+
+    ENABLE = 1
+    """Enable validation."""
+
+
+class UecLlrTxErrType(IntEnum):
+    """UE LLR TX error injection type."""
+
+    NONE = 0
+    """The type is N/A."""
+
+    SEQ_DROP = 1
+    """Drop a sequence number."""
+
+    SEQ_DUP = 2
+    """Duplicate a sequence number."""
+
+    SEQ_MISORDER = 3
+    """Misorder a sequence number."""
+
+    FCS_BAD = 4
+    """Inject a bad FCS."""
+
+    FCS_POISONED = 5
+    """Inject a poisoned FCS."""
+
+    PREAMBLE_ERR = 6
+    """Inject a preamble error."""
+
+
+class UecLlrTxErrPattern(IntEnum):
+    """UE LLR TX error injection pattern."""
+
+    NONE = 0
+    """The pattern is N/A."""
+
+    ONCE = 1
+    """Inject the error once."""
+
+    CONTINUOUS = 2
+    """Inject the error continuously."""
+
+    BURST_ONCE = 3
+    """Inject a single burst of errors."""
+
+    BURST_CONTINUOUS = 4
+    """Inject bursts of errors continuously."""
+
+
+class UecLlrTxFsmState(IntEnum):
+    """UE LLR TX FSM state."""
+
+    LLR_OFF = 0
+    """The TX FSM is in the LLR_OFF state."""
+
+    INIT = 1
+    """The TX FSM is in the INIT state."""
+
+    ADVANCE = 2
+    """The TX FSM is in the ADVANCE state."""
+
+    REPLAY = 3
+    """The TX FSM is in the REPLAY state."""
+
+    FLUSH = 4
+    """The TX FSM is in the FLUSH state."""
+
+
+class UecLlrRxFsmState(IntEnum):
+    """UE LLR RX FSM state."""
+
+    OFF = 0
+    """The RX FSM is in the OFF state."""
+
+    SEND_ACKS = 1
+    """The RX FSM is in the SEND_ACKS state."""
+
+    SEND_NACK = 2
+    """The RX FSM is in the SEND_NACK state."""
+
+    NACK_SENT = 3
+    """The RX FSM is in the NACK_SENT state."""
+
+
 class SolutionTrack(IntEnum):
     """Solution Tracks"""
 
@@ -3465,19 +3583,18 @@ class SolutionTrack(IntEnum):
 
 class FeatureID(IntEnum):
     """Solution Track Feature ID"""
-###  init_param ("M491<t   M_SOLUTION_TRACK           I*(0=CORE,1=MACsec,2=AdvL1,3=AdvANLT,4=AI_UEC)");
 
     CORE = 0
     """Always-enabled core functionality"""
 
-    MACsec = 1
-    """MACsec."""
+    MACSEC = 1
+    """MACsec features"""
 
-    AdvL1 = 2
-    """Advanced Layer 1."""
+    ADV_L1 = 2
+    """Advanced Layer 1 features"""
 
-    AdvANLT = 3
-    """Advanced AN/LT"""
+    ADV_ANLT = 3
+    """Advanced AN/LT protocol analysis features"""
 
-    AI_UEC = 4
-    """AI/Ultra Ethernet"""
+    UE_LL = 4
+    """Ultra Ethernet Link Layer features"""

@@ -74,6 +74,13 @@ from .enums import (
     LLDPOpMode,
     UecCtlosClearDirection,
     UecLinkOptionLlr,
+    UecLlrBehavior,
+    UecLlrInitEchoMode,
+    UecLlrEchoCheck,
+    UecLlrTxErrType,
+    UecLlrTxErrPattern,
+    UecLlrTxFsmState,
+    UecLlrRxFsmState,
 )
 
 
@@ -7244,6 +7251,9 @@ class P_UE_LLR_RX_STATS:
         rx_llr_ineligible_total: int = field(XmpLong())
         """The total number of LLR-ineligible frames received."""
 
+        rx_replay_operations: int = field(XmpLong())
+        """The number of replay operations detected."""
+
 
     def get(self) -> Token[GetDataAttr]:
         """Get the LLR Rx link-layer traffic statistics of the port. 
@@ -7299,6 +7309,24 @@ class P_UE_LLR_TX_STATS:
         tx_replayed: int = field(XmpLong())
         """The number of frames transmitted by the LLR TX that were replayed from the LLR replay buffer."""
 
+        tx_llr_eligible_good_fcs_good_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames transmitted with a good FCS and a good sequence number."""
+
+        tx_llr_eligible_poisoned_fcs_good_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames transmitted with a poisoned FCS and a good sequence number."""
+
+        tx_llr_eligible_bad_fcs_good_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames transmitted with a bad FCS and a good sequence number."""
+
+        tx_llr_eligible_missing_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames that with missing sequence number (irrespective of the FCS)."""
+
+        tx_llr_eligible_duplicate_seq: int = field(XmpLong())
+        """The number of LLR-eligible frames that with duplicate sequence number (irrespective of the FCS)."""
+
+        tx_replay_operations: int = field(XmpLong())
+        """The number of times the LLR TX state machine has exited the REPLAY state (replay operations)."""
+
 
     
     def get(self) -> Token[GetDataAttr]:
@@ -7306,6 +7334,844 @@ class P_UE_LLR_TX_STATS:
 
         :return: the LLR Tx link-layer traffic statistics
         :rtype: P_UE_LLR_TX_STATS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+
+@register_command
+@dataclass
+class P_UE_CTLOS_SPACING:
+    """
+    Configures the CtlOS spacing parameters of the port.
+    """
+
+    code: typing.ClassVar[int] = 1010
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        target_spacing: int = field(XmpInt())
+        """integer, the target CtlOS spacing."""
+
+        min_spacing: int = field(XmpInt())
+        """integer, the minimum CtlOS spacing."""
+
+        reserved1: int = field(XmpInt())
+        """integer, reserved."""
+
+        reserved2: int = field(XmpInt())
+        """integer, reserved."""
+
+    class SetDataAttr(RequestBodyStruct):
+        target_spacing: int = field(XmpInt())
+        """integer, the target CtlOS spacing."""
+
+        min_spacing: int = field(XmpInt())
+        """integer, the minimum CtlOS spacing."""
+
+        reserved1: int = field(XmpInt())
+        """integer, reserved."""
+
+        reserved2: int = field(XmpInt())
+        """integer, reserved."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CtlOS spacing parameters of the port.
+
+        :return: the CtlOS spacing parameters of the port
+        :rtype: P_UE_CTLOS_SPACING.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, target_spacing: int, min_spacing: int, reserved1: int, reserved2: int) -> Token[None]:
+        """Set the CtlOS spacing parameters of the port.
+
+        :param target_spacing: the target CtlOS spacing
+        :type target_spacing: int
+        :param min_spacing: the minimum CtlOS spacing
+        :type min_spacing: int
+        :param reserved1: reserved
+        :type reserved1: int
+        :param reserved2: reserved
+        :type reserved2: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target_spacing=target_spacing, min_spacing=min_spacing, reserved1=reserved1, reserved2=reserved2))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_REPLAY:
+    """
+    Configures the LLR replay parameters of the port.
+    """
+
+    code: typing.ClassVar[int] = 1014
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        outstanding_seq_max: int = field(XmpInt())
+        """integer, the maximum number of outstanding sequence numbers."""
+
+        outstanding_data_max: int = field(XmpInt())
+        """integer, the maximum amount of outstanding data."""
+
+        replay_timer_max: int = field(XmpInt())
+        """integer, the maximum value of the replay timer."""
+
+        replay_ct_max: int = field(XmpInt())
+        """integer, the maximum replay count."""
+
+        pcs_lost_status_timer_max: int = field(XmpLong())
+        """long integer, the maximum value of the PCS lost status timer."""
+
+        data_age_timer_max: int = field(XmpLong())
+        """long integer, the maximum value of the data age timer."""
+
+    class SetDataAttr(RequestBodyStruct):
+        outstanding_seq_max: int = field(XmpInt())
+        """integer, the maximum number of outstanding sequence numbers."""
+
+        outstanding_data_max: int = field(XmpInt())
+        """integer, the maximum amount of outstanding data."""
+
+        replay_timer_max: int = field(XmpInt())
+        """integer, the maximum value of the replay timer."""
+
+        replay_ct_max: int = field(XmpInt())
+        """integer, the maximum replay count."""
+
+        pcs_lost_status_timer_max: int = field(XmpLong())
+        """long integer, the maximum value of the PCS lost status timer."""
+
+        data_age_timer_max: int = field(XmpLong())
+        """long integer, the maximum value of the data age timer."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR replay parameters of the port.
+
+        :return: the LLR replay parameters of the port
+        :rtype: P_UE_LLR_REPLAY.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, outstanding_seq_max: int, outstanding_data_max: int, replay_timer_max: int, replay_ct_max: int, pcs_lost_status_timer_max: int, data_age_timer_max: int) -> Token[None]:
+        """Set the LLR replay parameters of the port.
+
+        :param outstanding_seq_max: the maximum number of outstanding sequence numbers
+        :type outstanding_seq_max: int
+        :param outstanding_data_max: the maximum amount of outstanding data
+        :type outstanding_data_max: int
+        :param replay_timer_max: the maximum value of the replay timer
+        :type replay_timer_max: int
+        :param replay_ct_max: the maximum replay count
+        :type replay_ct_max: int
+        :param pcs_lost_status_timer_max: the maximum value of the PCS lost status timer
+        :type pcs_lost_status_timer_max: int
+        :param data_age_timer_max: the maximum value of the data age timer
+        :type data_age_timer_max: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, outstanding_seq_max=outstanding_seq_max, outstanding_data_max=outstanding_data_max, replay_timer_max=replay_timer_max, replay_ct_max=replay_ct_max, pcs_lost_status_timer_max=pcs_lost_status_timer_max, data_age_timer_max=data_age_timer_max))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_BEHAVIOR:
+    """
+    Configures the LLR behavior of the port for the INIT and FLUSH states.
+    """
+
+    code: typing.ClassVar[int] = 1015
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        llr_init_behavior: UecLlrBehavior = field(XmpByte())
+        """coded byte, the LLR behavior for LLR-eligible frames when the TX state machine is in the INIT state."""
+
+        llr_flush_behavior: UecLlrBehavior = field(XmpByte())
+        """coded byte, the LLR behavior for LLR-eligible frames when the TX state machine is in the FLUSH state."""
+
+        re_init_on_discard: YesNo = field(XmpByte())
+        """coded byte, whether to re-initialize the LLR on discard."""
+
+    class SetDataAttr(RequestBodyStruct):
+        llr_init_behavior: UecLlrBehavior = field(XmpByte())
+        """coded byte, the LLR behavior for LLR-eligible frames when the TX state machine is in the INIT state."""
+
+        llr_flush_behavior: UecLlrBehavior = field(XmpByte())
+        """coded byte, the LLR behavior for LLR-eligible frames when the TX state machine is in the FLUSH state."""
+
+        re_init_on_discard: YesNo = field(XmpByte())
+        """coded byte, whether to re-initialize the LLR on discard."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR behavior of the port.
+
+        :return: the LLR behavior of the port
+        :rtype: P_UE_LLR_BEHAVIOR.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, llr_init_behavior: UecLlrBehavior, llr_flush_behavior: UecLlrBehavior, re_init_on_discard: YesNo) -> Token[None]:
+        """Set the LLR behavior of the port.
+
+        :param llr_init_behavior: the LLR behavior for LLR-eligible frames when the TX state machine is in the INIT state
+        :type llr_init_behavior: UecLlrBehavior
+        :param llr_flush_behavior: the LLR behavior for LLR-eligible frames when the TX state machine is in the FLUSH state
+        :type llr_flush_behavior: UecLlrBehavior
+        :param re_init_on_discard: whether to re-initialize the LLR on discard
+        :type re_init_on_discard: YesNo
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, llr_init_behavior=llr_init_behavior, llr_flush_behavior=llr_flush_behavior, re_init_on_discard=re_init_on_discard))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_INIT:
+    """
+    Configures the LLR INIT parameters of the port.
+    """
+
+    code: typing.ClassVar[int] = 1017
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        init_seq: Hex = field(XmpHex(size=3))
+        """3 bytes in hex format, the 24-bit LLR_INIT sequence number."""
+
+        init_data: Hex = field(XmpHex(size=2))
+        """2 bytes in hex format, the 16-bit LLR_INIT data."""
+
+        min_spacing_multiplier: int = field(XmpInt())
+        """integer, the minimum spacing multiplier."""
+
+    class SetDataAttr(RequestBodyStruct):
+        init_seq: Hex = field(XmpHex(size=3))
+        """3 bytes in hex format, the 24-bit LLR_INIT sequence number."""
+
+        init_data: Hex = field(XmpHex(size=2))
+        """2 bytes in hex format, the 16-bit LLR_INIT data."""
+
+        min_spacing_multiplier: int = field(XmpInt())
+        """integer, the minimum spacing multiplier."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR INIT parameters of the port.
+
+        :return: the LLR INIT parameters of the port
+        :rtype: P_UE_LLR_INIT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, init_seq: Hex, init_data: Hex, min_spacing_multiplier: int) -> Token[None]:
+        """Set the LLR INIT parameters of the port.
+
+        :param init_seq: the 24-bit LLR_INIT sequence number (3 bytes)
+        :type init_seq: Hex
+        :param init_data: the 16-bit LLR_INIT data (2 bytes)
+        :type init_data: Hex
+        :param min_spacing_multiplier: the minimum spacing multiplier
+        :type min_spacing_multiplier: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, init_seq=init_seq, init_data=init_data, min_spacing_multiplier=min_spacing_multiplier))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_INIT_ECHO:
+    """
+    Configures the LLR INIT_ECHO parameters of the port.
+    """
+
+    code: typing.ClassVar[int] = 1018
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        init_seq_mode: UecLlrInitEchoMode = field(XmpByte())
+        """coded byte, the source mode of the INIT_ECHO sequence number."""
+
+        init_seq: Hex = field(XmpHex(size=3))
+        """3 bytes in hex format, the 24-bit INIT_ECHO sequence number when manual mode is used."""
+
+        init_data_mode: UecLlrInitEchoMode = field(XmpByte())
+        """coded byte, the source mode of the INIT_ECHO data."""
+
+        init_data: Hex = field(XmpHex(size=2))
+        """2 bytes in hex format, the 16-bit INIT_ECHO data when manual mode is used."""
+
+    class SetDataAttr(RequestBodyStruct):
+        init_seq_mode: UecLlrInitEchoMode = field(XmpByte())
+        """coded byte, the source mode of the INIT_ECHO sequence number."""
+
+        init_seq: Hex = field(XmpHex(size=3))
+        """3 bytes in hex format, the 24-bit INIT_ECHO sequence number when manual mode is used."""
+
+        init_data_mode: UecLlrInitEchoMode = field(XmpByte())
+        """coded byte, the source mode of the INIT_ECHO data."""
+
+        init_data: Hex = field(XmpHex(size=2))
+        """2 bytes in hex format, the 16-bit INIT_ECHO data when manual mode is used."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR INIT_ECHO parameters of the port.
+
+        :return: the LLR INIT_ECHO parameters of the port
+        :rtype: P_UE_LLR_INIT_ECHO.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, init_seq_mode: UecLlrInitEchoMode, init_seq: Hex, init_data_mode: UecLlrInitEchoMode, init_data: Hex) -> Token[None]:
+        """Set the LLR INIT_ECHO parameters of the port.
+
+        :param init_seq_mode: the source mode of the INIT_ECHO sequence number
+        :type init_seq_mode: UecLlrInitEchoMode
+        :param init_seq: the 24-bit INIT_ECHO sequence number when manual mode is used (3 bytes)
+        :type init_seq: Hex
+        :param init_data_mode: the source mode of the INIT_ECHO data
+        :type init_data_mode: UecLlrInitEchoMode
+        :param init_data: the 16-bit INIT_ECHO data when manual mode is used (2 bytes)
+        :type init_data: Hex
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, init_seq_mode=init_seq_mode, init_seq=init_seq, init_data_mode=init_data_mode, init_data=init_data))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_ACKNACK:
+    """
+    Configures the LLR ACK/NACK spacing parameters of the port.
+    """
+
+    code: typing.ClassVar[int] = 1019
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        target_spacing: int = field(XmpInt())
+        """integer, the target ACK/NACK spacing."""
+
+        min_spacing: int = field(XmpInt())
+        """integer, the minimum ACK/NACK spacing."""
+
+        max_spacing: int = field(XmpInt())
+        """integer, the maximum ACK/NACK spacing."""
+
+    class SetDataAttr(RequestBodyStruct):
+        target_spacing: int = field(XmpInt())
+        """integer, the target ACK/NACK spacing."""
+
+        min_spacing: int = field(XmpInt())
+        """integer, the minimum ACK/NACK spacing."""
+
+        max_spacing: int = field(XmpInt())
+        """integer, the maximum ACK/NACK spacing."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR ACK/NACK spacing parameters of the port.
+
+        :return: the LLR ACK/NACK spacing parameters of the port
+        :rtype: P_UE_LLR_ACKNACK.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, target_spacing: int, min_spacing: int, max_spacing: int) -> Token[None]:
+        """Set the LLR ACK/NACK spacing parameters of the port.
+
+        :param target_spacing: the target ACK/NACK spacing
+        :type target_spacing: int
+        :param min_spacing: the minimum ACK/NACK spacing
+        :type min_spacing: int
+        :param max_spacing: the maximum ACK/NACK spacing
+        :type max_spacing: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target_spacing=target_spacing, min_spacing=min_spacing, max_spacing=max_spacing))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_TXERR:
+    """
+    Configures the LLR TX error injection of the port.
+    """
+
+    code: typing.ClassVar[int] = 1025
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        error_type: UecLlrTxErrType = field(XmpByte())
+        """coded byte, the type of error to inject."""
+
+        pattern: UecLlrTxErrPattern = field(XmpByte())
+        """coded byte, the pattern of error injection."""
+
+        burst_size: int = field(XmpInt())
+        """integer, the number of errors in a burst."""
+
+        burst_interval: int = field(XmpInt())
+        """integer, the interval between bursts."""
+
+    class SetDataAttr(RequestBodyStruct):
+        error_type: UecLlrTxErrType = field(XmpByte())
+        """coded byte, the type of error to inject."""
+
+        pattern: UecLlrTxErrPattern = field(XmpByte())
+        """coded byte, the pattern of error injection."""
+
+        burst_size: int = field(XmpInt())
+        """integer, the number of errors in a burst."""
+
+        burst_interval: int = field(XmpInt())
+        """integer, the interval between bursts."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR TX error injection configuration of the port.
+
+        :return: the LLR TX error injection configuration of the port
+        :rtype: P_UE_LLR_TXERR.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, error_type: UecLlrTxErrType, pattern: UecLlrTxErrPattern, burst_size: int, burst_interval: int) -> Token[None]:
+        """Set the LLR TX error injection configuration of the port.
+
+        :param error_type: the type of error to inject
+        :type error_type: UecLlrTxErrType
+        :param pattern: the pattern of error injection
+        :type pattern: UecLlrTxErrPattern
+        :param burst_size: the number of errors in a burst
+        :type burst_size: int
+        :param burst_interval: the interval between bursts
+        :type burst_interval: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, error_type=error_type, pattern=pattern, burst_size=burst_size, burst_interval=burst_interval))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_TXERR_POISONFCS:
+    """
+    Configures the poison FCS pattern used by the LLR TX error injection of the port.
+    """
+
+    code: typing.ClassVar[int] = 1028
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        pattern: Hex = field(XmpHex(size=4))
+        """4 bytes in hex format, the 32-bit poison FCS pattern."""
+
+    class SetDataAttr(RequestBodyStruct):
+        pattern: Hex = field(XmpHex(size=4))
+        """4 bytes in hex format, the 32-bit poison FCS pattern."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the poison FCS pattern of the port.
+
+        :return: the poison FCS pattern of the port
+        :rtype: P_UE_LLR_TXERR_POISONFCS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, pattern: Hex) -> Token[None]:
+        """Set the poison FCS pattern of the port.
+
+        :param pattern: the 32-bit poison FCS pattern (4 bytes)
+        :type pattern: Hex
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, pattern=pattern))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_INIT_ECHO_CHK:
+    """
+    Configures the validation of the LLR INIT_ECHO sequence number and data of the port.
+    """
+
+    code: typing.ClassVar[int] = 1031
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        validate_init_seq: UecLlrEchoCheck = field(XmpByte())
+        """coded byte, whether to validate the INIT_ECHO sequence number."""
+
+        validate_init_data: UecLlrEchoCheck = field(XmpByte())
+        """coded byte, whether to validate the INIT_ECHO data."""
+
+    class SetDataAttr(RequestBodyStruct):
+        validate_init_seq: UecLlrEchoCheck = field(XmpByte())
+        """coded byte, whether to validate the INIT_ECHO sequence number."""
+
+        validate_init_data: UecLlrEchoCheck = field(XmpByte())
+        """coded byte, whether to validate the INIT_ECHO data."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the LLR INIT_ECHO validation configuration of the port.
+
+        :return: the LLR INIT_ECHO validation configuration of the port
+        :rtype: P_UE_LLR_INIT_ECHO_CHK.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, validate_init_seq: UecLlrEchoCheck, validate_init_data: UecLlrEchoCheck) -> Token[None]:
+        """Set the LLR INIT_ECHO validation configuration of the port.
+
+        :param validate_init_seq: whether to validate the INIT_ECHO sequence number
+        :type validate_init_seq: UecLlrEchoCheck
+        :param validate_init_data: whether to validate the INIT_ECHO data
+        :type validate_init_data: UecLlrEchoCheck
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, validate_init_seq=validate_init_seq, validate_init_data=validate_init_data))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_TXFSM_STATE:
+    """
+    Return the current state of the LLR Tx FSM that the port is in, along with the current values of the relevant timers and counters for that state. The possible states are: LLR_OFF, INIT, ADVANCE, REPLAY, and FLUSH. The specific timers and counters returned depend on the current state of the FSM.
+    """
+
+    code: typing.ClassVar[int] = 1021
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        txfsm_state: UecLlrTxFsmState = field(XmpByte())
+        """coded byte, the current state of the LLR Tx FSM that the port is in."""
+
+        ns_in_llr_off: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the LLR_OFF state since the last time it was cleared."""
+
+        ns_in_init: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the INIT state since the last time it was cleared."""
+
+        ns_in_advance: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the ADVANCE state since the last time it was cleared."""
+
+        ns_in_replay: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the REPLAY state since the last time it was cleared."""
+
+        ns_in_flush: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the FLUSH state since the last time it was cleared."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the state of the LLR TX finite state machine of the port.
+
+        :return: the state of the LLR TX finite state machine of the port
+        :rtype: P_UE_LLR_TXFSM_STATE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_RXFSM_STATE:
+    """
+    Return the current state of the LLR Rx FSM that the port is in, along with the current values of the relevant timers and counters for that state. The possible states are: OFF, SEND_ACKS, SEND_NACK, and NACK_SENT. The specific timers and counters returned depend on the current state of the FSM.
+    """
+
+    code: typing.ClassVar[int] = 1022
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        rxfsm_state: UecLlrRxFsmState = field(XmpByte())
+        """coded byte, the current state of the LLR Rx FSM that the port is in."""
+
+        ns_in_off: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the OFF state since the last time it was cleared."""
+
+        ns_in_send_acks: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the SEND_ACKS state since the last time it was cleared."""
+
+        ns_in_send_nack: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the SEND_NACK state since the last time it was cleared."""
+
+        ns_in_nack_sent: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the NACK_SENT state since the last time it was cleared."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the state of the LLR RX finite state machine of the port.
+
+        :return: the state of the LLR RX finite state machine of the port
+        :rtype: P_UE_LLR_RXFSM_STATE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_UE_LLR_STATUS:
+    """
+    Get the active status of the LLR of the port.
+    """
+
+    code: typing.ClassVar[int] = 1030
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        status: YesNo = field(XmpByte())
+        """coded byte, whether the LLR is active."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the active status of the LLR of the port.
+
+        :return: the active status of the LLR of the port
+        :rtype: P_UE_LLR_STATUS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_UE_CTLOS_TX_INTERVAL:
+    """
+    Get the CtlOS Tx interval statistics of the port. For each CtlOS message type, the minimum, maximum, and average intervals are reported.
+    """
+
+    code: typing.ClassVar[int] = 1032
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        ctlos_min: int = field(XmpLong())
+        """long integer, the minimum CtlOS Tx interval."""
+
+        ctlos_max: int = field(XmpLong())
+        """long integer, the maximum CtlOS Tx interval."""
+
+        ctlos_avg: int = field(XmpLong())
+        """long integer, the average CtlOS Tx interval."""
+
+        llr_init_min: int = field(XmpLong())
+        """long integer, the minimum LLR_INIT Tx interval."""
+
+        llr_init_max: int = field(XmpLong())
+        """long integer, the maximum LLR_INIT Tx interval."""
+
+        llr_init_avg: int = field(XmpLong())
+        """long integer, the average LLR_INIT Tx interval."""
+
+        llr_init_echo_min: int = field(XmpLong())
+        """long integer, the minimum LLR_INIT_ECHO Tx interval."""
+
+        llr_init_echo_max: int = field(XmpLong())
+        """long integer, the maximum LLR_INIT_ECHO Tx interval."""
+
+        llr_init_echo_avg: int = field(XmpLong())
+        """long integer, the average LLR_INIT_ECHO Tx interval."""
+
+        llr_ack_min: int = field(XmpLong())
+        """long integer, the minimum LLR_ACK Tx interval."""
+
+        llr_ack_max: int = field(XmpLong())
+        """long integer, the maximum LLR_ACK Tx interval."""
+
+        llr_ack_avg: int = field(XmpLong())
+        """long integer, the average LLR_ACK Tx interval."""
+
+        llr_nack_min: int = field(XmpLong())
+        """long integer, the minimum LLR_NACK Tx interval."""
+
+        llr_nack_max: int = field(XmpLong())
+        """long integer, the maximum LLR_NACK Tx interval."""
+
+        llr_nack_avg: int = field(XmpLong())
+        """long integer, the average LLR_NACK Tx interval."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CtlOS Tx interval statistics of the port.
+
+        :return: the CtlOS Tx interval statistics of the port
+        :rtype: P_UE_CTLOS_TX_INTERVAL.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_UE_CTLOS_RX_INTERVAL:
+    """
+    Get the CtlOS Rx interval statistics of the port. For each CtlOS message type, the minimum, maximum, and average intervals are reported.
+    """
+
+    code: typing.ClassVar[int] = 1033
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        ctlos_min: int = field(XmpLong())
+        """long integer, the minimum CtlOS Rx interval."""
+
+        ctlos_max: int = field(XmpLong())
+        """long integer, the maximum CtlOS Rx interval."""
+
+        ctlos_avg: int = field(XmpLong())
+        """long integer, the average CtlOS Rx interval."""
+
+        llr_init_min: int = field(XmpLong())
+        """long integer, the minimum LLR_INIT Rx interval."""
+
+        llr_init_max: int = field(XmpLong())
+        """long integer, the maximum LLR_INIT Rx interval."""
+
+        llr_init_avg: int = field(XmpLong())
+        """long integer, the average LLR_INIT Rx interval."""
+
+        llr_init_echo_min: int = field(XmpLong())
+        """long integer, the minimum LLR_INIT_ECHO Rx interval."""
+
+        llr_init_echo_max: int = field(XmpLong())
+        """long integer, the maximum LLR_INIT_ECHO Rx interval."""
+
+        llr_init_echo_avg: int = field(XmpLong())
+        """long integer, the average LLR_INIT_ECHO Rx interval."""
+
+        llr_ack_min: int = field(XmpLong())
+        """long integer, the minimum LLR_ACK Rx interval."""
+
+        llr_ack_max: int = field(XmpLong())
+        """long integer, the maximum LLR_ACK Rx interval."""
+
+        llr_ack_avg: int = field(XmpLong())
+        """long integer, the average LLR_ACK Rx interval."""
+
+        llr_nack_min: int = field(XmpLong())
+        """long integer, the minimum LLR_NACK Rx interval."""
+
+        llr_nack_max: int = field(XmpLong())
+        """long integer, the maximum LLR_NACK Rx interval."""
+
+        llr_nack_avg: int = field(XmpLong())
+        """long integer, the average LLR_NACK Rx interval."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CtlOS Rx interval statistics of the port.
+
+        :return: the CtlOS Rx interval statistics of the port
+        :rtype: P_UE_CTLOS_RX_INTERVAL.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_UE_CTLOS_RX_ERRORS:
+    """
+    Get the CtlOS Rx error counters of the port.
+    """
+
+    code: typing.ClassVar[int] = 1034
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        ctlos_msg_type_errors: int = field(XmpLong())
+        """long integer, the number of CtlOS message type errors."""
+
+        ctlos_padding_errors: int = field(XmpLong())
+        """long integer, the number of CtlOS padding errors."""
+
+        llr_init_echo_invalid_init_seq: int = field(XmpLong())
+        """long integer, the number of LLR_INIT_ECHO with an invalid INIT sequence number."""
+
+        llr_init_echo_invalid_init_data: int = field(XmpLong())
+        """long integer, the number of LLR_INIT_ECHO with invalid INIT data."""
+
+        llr_init_interval_low: int = field(XmpLong())
+        """long integer, the number of LLR_INIT received with an interval that is too low."""
+
+        llr_ack_nack_interval_high: int = field(XmpLong())
+        """long integer, the number of LLR_ACK/NACK received with an interval that is too high."""
+
+        llr_ack_nack_interval_low: int = field(XmpLong())
+        """long integer, the number of LLR_ACK/NACK received with an interval that is too low."""
+
+        llr_ctlos_padding_error: int = field(XmpLong())
+        """long integer, the number of LLR CtlOS padding errors."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CtlOS Rx error counters of the port.
+
+        :return: the CtlOS Rx error counters of the port
+        :rtype: P_UE_CTLOS_RX_ERRORS.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
@@ -7456,4 +8322,19 @@ __all__ = [
     "P_UE_LLR_MODE",
     "P_UE_LLR_RX_STATS",
     "P_UE_LLR_TX_STATS",
+    "P_UE_CTLOS_SPACING",
+    "P_UE_LLR_REPLAY",
+    "P_UE_LLR_BEHAVIOR",
+    "P_UE_LLR_INIT",
+    "P_UE_LLR_INIT_ECHO",
+    "P_UE_LLR_ACKNACK",
+    "P_UE_LLR_TXERR",
+    "P_UE_LLR_TXERR_POISONFCS",
+    "P_UE_LLR_INIT_ECHO_CHK",
+    "P_UE_LLR_TXFSM_STATE",
+    "P_UE_LLR_RXFSM_STATE",
+    "P_UE_LLR_STATUS",
+    "P_UE_CTLOS_TX_INTERVAL",
+    "P_UE_CTLOS_RX_INTERVAL",
+    "P_UE_CTLOS_RX_ERRORS",
 ]
