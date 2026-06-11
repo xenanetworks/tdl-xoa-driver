@@ -3400,6 +3400,43 @@ class PcsLaneErrorInjectionType(IntEnum):
     AM = 1
     """Alignment Marker (AM) error injection"""
 
+class SolutionTrack(IntEnum):
+    """Solution Tracks"""
+
+    CORE = 0
+    """Always-enabled core functionality"""
+
+    SEC = 1
+    """Security."""
+
+    L1 = 2
+    """Advanced Layer 1."""
+
+    ANLT = 3
+    """Advanced AN/LT"""
+
+    AI = 4
+    """AI"""
+
+
+class FeatureID(IntEnum):
+    """Solution Track Feature ID"""
+
+    CORE = 0
+    """Always-enabled core functionality"""
+
+    MACSEC = 1
+    """MACsec features"""
+
+    ADV_L1 = 2
+    """Advanced Layer 1 features"""
+
+    ADV_ANLT = 3
+    """Advanced AN/LT protocol analysis features"""
+
+    UE_LL = 4
+    """Ultra Ethernet Link Layer features"""
+
 class UecCtlosClearDirection(IntEnum):
     """Direction for clearing UE CtlOS counters"""
 
@@ -3560,41 +3597,3 @@ class UecLlrRxFsmState(IntEnum):
 
     NACK_SENT = 3
     """The RX FSM is in the NACK_SENT state."""
-
-
-class SolutionTrack(IntEnum):
-    """Solution Tracks"""
-
-    CORE = 0
-    """Always-enabled core functionality"""
-
-    SEC = 1
-    """Security."""
-
-    L1 = 2
-    """Advanced Layer 1."""
-
-    ANLT = 3
-    """Advanced AN/LT"""
-
-    AI = 4
-    """AI"""
-
-
-class FeatureID(IntEnum):
-    """Solution Track Feature ID"""
-
-    CORE = 0
-    """Always-enabled core functionality"""
-
-    MACSEC = 1
-    """MACsec features"""
-
-    ADV_L1 = 2
-    """Advanced Layer 1 features"""
-
-    ADV_ANLT = 3
-    """Advanced AN/LT protocol analysis features"""
-
-    UE_LL = 4
-    """Ultra Ethernet Link Layer features"""
