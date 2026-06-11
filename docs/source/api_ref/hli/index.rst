@@ -1,6 +1,4 @@
 
-
-
 .. toctree::
     :maxdepth: 1
 
@@ -9,8 +7,3 @@
     ports/ports
     enums
     exceptions
-
-.. toctree::
-    :maxdepth: 1
-
-    uec/uec

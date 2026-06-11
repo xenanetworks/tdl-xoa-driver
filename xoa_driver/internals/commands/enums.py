@@ -4,7 +4,7 @@ from enum import IntEnum, IntFlag
 from typing import Union
 
 
-# region L23 enums
+#region L23 enums
 class ReservedStatus(IntEnum):
     """Test resource reservation status"""
 
@@ -1548,9 +1548,9 @@ class ModifierEndianness(IntEnum):
     LITTLE = 1
     """Modifier inc/dec starts from the MSB"""
 
-# endregion
+#endregion
 
-# region L47 enums
+#region L47 enums
 class Role(IntEnum):
     """L47 port role"""
 
@@ -1849,9 +1849,9 @@ class ReplaySyncBasedOn(IntEnum):
     PER_USER = 1
 
 
-# endregion
+#endregion
 
-# region Impairment enums
+#region Impairment enums
 class CorruptionType(IntEnum):
     """Impairment corruption type"""
 
@@ -1993,9 +1993,9 @@ class ImpairmentTypeIndex(IntEnum):
     """Shaper"""
 
 
-# endregion
+#endregion
 
-# region TSN enums
+#region TSN enums
 class TSNConfigProfile(IntEnum):
     """TSN PTP Configuration profile"""
 
@@ -2067,9 +2067,9 @@ class TSNStatisticsTypes(IntEnum):
     """Sync rate."""
 
 
-# endregion
+#endregion
 
-# region ANLT enums
+#region ANLT enums
 
 
 class AutoNegMode(IntEnum):
@@ -3104,9 +3104,9 @@ class FreyaAutorestartMode(IntEnum):
 
     WHEN_LINK_DOWN_LT_FAILED = 3
 
-# endregion
+#endregion
 
-# region misc enums
+#region misc enums
 class DhcpState(IntEnum):
     DHCP_STATE_UNKNOWN = 0
     DHCP_STATE_RUNNING = 1
@@ -3229,9 +3229,9 @@ class ModuleConfigStatus(IntEnum):
     PROGRESSING = 2
     FAILED = 3
 
-# endregion
+#endregion
 
-# region FEC CW enums
+#region FEC CW enums
 
 class FecCodewordBitErrorMaskMode(IntEnum):
     """FEC Codeword Bit Error Mask Mode"""
@@ -3245,9 +3245,9 @@ class FecCodewordBitErrorMaskMode(IntEnum):
     INC = 3
     """When mode is set to INC, bitmask will be ignored. Instead, the bit error pattern initiates from 000000001, 000000010, 000000011, continuing up to 111111111, and repeating the sequence as 000000001..."""
 
-# endregion
+#endregion
 
-# region MACSec enums
+#region MACSec enums
 
 class MACSecSCIMode(IntEnum):
     """MACSec SCI Mode"""
@@ -3316,7 +3316,7 @@ class MACSecPNMode(IntEnum):
     RESET = 1
     """Reset the PN value"""
 
-# endregion
+#endregion
 
 
 class TrueFalse(IntEnum):
@@ -3400,6 +3400,45 @@ class PcsLaneErrorInjectionType(IntEnum):
     AM = 1
     """Alignment Marker (AM) error injection"""
 
+class SolutionTrack(IntEnum):
+    """Solution Tracks"""
+
+    CORE = 0
+    """Always-enabled core functionality"""
+
+    SEC = 1
+    """Security."""
+
+    L1 = 2
+    """Advanced Layer 1."""
+
+    ANLT = 3
+    """Advanced AN/LT"""
+
+    AI = 4
+    """AI"""
+
+
+class FeatureID(IntEnum):
+    """Solution Track Feature ID"""
+
+    CORE = 0
+    """Always-enabled core functionality"""
+
+    MACSEC = 1
+    """MACsec features"""
+
+    ADV_L1 = 2
+    """Advanced Layer 1 features"""
+
+    ADV_ANLT = 3
+    """Advanced AN/LT protocol analysis features"""
+
+    UE_LL = 4
+    """Ultra Ethernet Link Layer features"""
+
+
+#region UEC enums
 class UecCtlosClearDirection(IntEnum):
     """Direction for clearing UE CtlOS counters"""
 
@@ -3561,40 +3600,4 @@ class UecLlrRxFsmState(IntEnum):
     NACK_SENT = 3
     """The RX FSM is in the NACK_SENT state."""
 
-
-class SolutionTrack(IntEnum):
-    """Solution Tracks"""
-
-    CORE = 0
-    """Always-enabled core functionality"""
-
-    SEC = 1
-    """Security."""
-
-    L1 = 2
-    """Advanced Layer 1."""
-
-    ANLT = 3
-    """Advanced AN/LT"""
-
-    AI = 4
-    """AI"""
-
-
-class FeatureID(IntEnum):
-    """Solution Track Feature ID"""
-
-    CORE = 0
-    """Always-enabled core functionality"""
-
-    MACSEC = 1
-    """MACsec features"""
-
-    ADV_L1 = 2
-    """Advanced Layer 1 features"""
-
-    ADV_ANLT = 3
-    """Advanced AN/LT protocol analysis features"""
-
-    UE_LL = 4
-    """Ultra Ethernet Link Layer features"""
+#endregion
