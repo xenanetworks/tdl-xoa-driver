@@ -7895,35 +7895,20 @@ class P_UE_LLR_TXFSM_STATE:
         txfsm_state: UecLlrTxFsmState = field(XmpByte())
         """coded byte, the current state of the LLR Tx FSM that the port is in."""
 
-        times_in_llr_off: int = field(XmpInt())
-        """integer, the number of times the FSM has entered the LLR_OFF state since the last time it was cleared."""
+        ns_in_llr_off: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the LLR_OFF state since the last time it was cleared."""
 
-        clocks_in_llr_off: int = field(XmpInt())
-        """integer, the number of clock cycles the FSM has been in the LLR_OFF state since the last time it was cleared."""
+        ns_in_init: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the INIT state since the last time it was cleared."""
 
-        times_in_init: int = field(XmpInt())
-        """integer, the number of times the FSM has entered the INIT state since the last time it was cleared."""
+        ns_in_advance: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the ADVANCE state since the last time it was cleared."""
 
-        clocks_in_init: int = field(XmpInt())
-        """integer, the number of clock cycles the FSM has been in the INIT state since the last time it was cleared."""
+        ns_in_replay: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the REPLAY state since the last time it was cleared."""
 
-        times_in_advance: int = field(XmpInt())
-        """integer, the number of times the FSM has entered the ADVANCE state since the last time it was cleared."""
-
-        clocks_in_advance: int = field(XmpInt())
-        """integer, the number of clock cycles the FSM has been in the ADVANCE state since the last time it was cleared."""
-
-        times_in_replay: int = field(XmpInt())
-        """integer, the number of times the FSM has entered the REPLAY state since the last time it was cleared."""
-
-        clocks_in_replay: int = field(XmpInt())
-        """integer, the number of clock cycles the FSM has been in the REPLAY state since the last time it was cleared."""
-
-        times_in_flush: int = field(XmpInt())
-        """integer, the number of times the FSM has entered the FLUSH state since the last time it was cleared."""
-
-        clocks_in_flush: int = field(XmpInt())
-        """integer, the number of clock cycles the FSM has been in the FLUSH state since the last time it was cleared."""
+        ns_in_flush: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the FLUSH state since the last time it was cleared."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the state of the LLR TX finite state machine of the port.
@@ -7953,29 +7938,17 @@ class P_UE_LLR_RXFSM_STATE:
         rxfsm_state: UecLlrRxFsmState = field(XmpByte())
         """coded byte, the current state of the LLR Rx FSM that the port is in."""
 
-        times_in_off: int = field(XmpInt())
-        """integer, the number of times the FSM has entered the OFF state since the last time it was cleared."""
+        ns_in_off: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the OFF state since the last time it was cleared."""
 
-        clocks_in_off: int = field(XmpInt())
-        """integer, the number of clock cycles the FSM has been in the OFF state since the last time it was cleared."""
+        ns_in_send_acks: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the SEND_ACKS state since the last time it was cleared."""
 
-        times_in_send_acks: int = field(XmpInt())
-        """integer, the number of times the FSM has entered the SEND_ACKS state since the last time it was cleared."""
+        ns_in_send_nack: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the SEND_NACK state since the last time it was cleared."""
 
-        clocks_in_send_acks: int = field(XmpInt())
-        """integer, the number of clock cycles the FSM has been in the SEND_ACKS state since the last time it was cleared."""
-
-        times_in_send_nack: int = field(XmpInt())
-        """integer, the number of times the FSM has entered the SEND_NACK state since the last time it was cleared."""
-
-        clocks_in_send_nack: int = field(XmpInt())
-        """integer, the number of clock cycles the FSM has been in the SEND_NACK state since the last time it was cleared."""
-
-        times_in_nack_sent: int = field(XmpInt())
-        """integer, the number of times the FSM has entered the NACK_SENT state since the last time it was cleared."""
-
-        clocks_in_nack_sent: int = field(XmpInt())
-        """integer, the number of clock cycles the FSM has been in the NACK_SENT state since the last time it was cleared."""
+        ns_in_nack_sent: int = field(XmpLong())
+        """long integer, the number of nanoseconds the FSM has been in the NACK_SENT state since the last time it was cleared."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the state of the LLR RX finite state machine of the port.
