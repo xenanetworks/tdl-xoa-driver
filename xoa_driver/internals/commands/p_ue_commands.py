@@ -120,16 +120,16 @@ class P_UE_CTLOS_RX_STATS:
         """The number of LLR_NACK CtlOS received."""
 
         llr_init_seq: Hex = field(XmpHex(size=3))
-        """The LLR_INIT sequence number. 3 bytes in hex format."""
+        """The init_seq (20 bits) of the most recently received LLR_INIT CtlOS."""
 
         llr_init_data: Hex = field(XmpHex(size=2))
-        """The LLR_INIT data. 2 bytes in hex format."""
+        """The init_data (16 bits) of the most recently received LLR_INIT CtlOS."""
 
         llr_init_echo_seq: Hex = field(XmpHex(size=3))
-        """The LLR_INIT_ECHO sequence number. 3 bytes in hex format."""
+        """The init_seq (20 bits) of the most recently received LLR_INIT_ECHO CtlOS."""
 
         llr_init_echo_data: Hex = field(XmpHex(size=2))
-        """The LLR_INIT_ECHO data. 2 bytes in hex format."""
+        """The init_data (16 bits) of the most recently received LLR_INIT_ECHO CtlOS."""
 
         llr_init_echo_mismatch: int = field(XmpLong())
         """The number of Rx LLR_INIT_ECHO CtlOS with a sequence number or data that does not match the most recently transmitted LLR_INIT CtlOS."""
@@ -894,7 +894,7 @@ class P_UE_LLR_ACKNACK:
 
 @register_command
 @dataclass
-class P_UE_LLR_TXERR:
+class P_UE_LLR_INJECT_ERR:
     """
     Configures the LLR TX error injection of the port.
     """
@@ -955,13 +955,37 @@ class P_UE_LLR_TXERR:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, error_type=error_type, pattern=pattern, burst_size=burst_size, burst_interval=burst_interval))
+    
+    inject_seq_drop = functools.partialmethod(set, UecLlrTxErrType.SEQ_DROP, UecLlrTxErrPattern.ONCE)
+    """Inject a single sequence drop error.
+    """
+    
+    inject_seq_duplicate = functools.partialmethod(set, UecLlrTxErrType.SEQ_DUP, UecLlrTxErrPattern.ONCE)
+    """Inject a single sequence duplicate error.
+    """
+    
+    inject_fcs_bad = functools.partialmethod(set, UecLlrTxErrType.FCS_BAD, UecLlrTxErrPattern.ONCE)
+    """Inject a single FCS bad error.
+    """
+    
+    inject_fcs_poison = functools.partialmethod(set, UecLlrTxErrType.FCS_POISONED, UecLlrTxErrPattern.ONCE)
+    """Inject a single FCS poison error.
+    """
+    
+    inject_llr_ack_drop = functools.partialmethod(set, UecLlrTxErrType.LLR_ACK_DROP, UecLlrTxErrPattern.ONCE)
+    """Inject a single LLR ACK drop error.
+    """
+    
+    inject_llr_nack_drop = functools.partialmethod(set, UecLlrTxErrType.LLR_NACK_DROP, UecLlrTxErrPattern.ONCE)
+    """Inject a single LLR NACK drop error.
+    """
 
 
 @register_command
 @dataclass
-class P_UE_LLR_TXERR_POISONFCS:
+class P_UE_LLR_POISONFCS:
     """
-    Configures the poison FCS pattern used by the LLR TX error injection of the port.
+    Configures the poisoned FCS pattern used by the LLR TX error injection of the port.
     """
 
     code: typing.ClassVar[int] = 1028
@@ -1352,24 +1376,24 @@ __all__ = [
     "P_UE_CTLOS_CLEAR",
     "P_UE_CTLOS_RX_STATS",
     "P_UE_CTLOS_TX_STATS",
+    "P_UE_CTLOS_SPACING",
+    "P_UE_CTLOS_TX_INTERVAL",
+    "P_UE_CTLOS_RX_INTERVAL",
+    "P_UE_CTLOS_RX_ERRORS",
     "P_UE_LINKNEG_OPTIONS",
     "P_UE_LINKNEG_OPTIONS_STATUS",
     "P_UE_LLR_MODE",
     "P_UE_LLR_RX_STATS",
     "P_UE_LLR_TX_STATS",
-    "P_UE_CTLOS_SPACING",
     "P_UE_LLR_REPLAY",
     "P_UE_LLR_BEHAVIOR",
     "P_UE_LLR_INIT",
     "P_UE_LLR_INIT_ECHO",
     "P_UE_LLR_ACKNACK",
-    "P_UE_LLR_TXERR",
-    "P_UE_LLR_TXERR_POISONFCS",
+    "P_UE_LLR_INJECT_ERR",
+    "P_UE_LLR_POISONFCS",
     "P_UE_LLR_INIT_ECHO_CHK",
     "P_UE_LLR_TXFSM_STATE",
     "P_UE_LLR_RXFSM_STATE",
     "P_UE_LLR_STATUS",
-    "P_UE_CTLOS_TX_INTERVAL",
-    "P_UE_CTLOS_RX_INTERVAL",
-    "P_UE_CTLOS_RX_ERRORS",
 ]

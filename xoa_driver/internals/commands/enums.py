@@ -3534,17 +3534,17 @@ class UecLlrTxErrType(IntEnum):
     SEQ_DUP = 2
     """Duplicate a sequence number."""
 
-    SEQ_MISORDER = 3
-    """Misorder a sequence number."""
-
-    FCS_BAD = 4
+    FCS_BAD = 3
     """Inject a bad FCS."""
 
-    FCS_POISONED = 5
+    FCS_POISONED = 4
     """Inject a poisoned FCS."""
 
-    PREAMBLE_ERR = 6
-    """Inject a preamble error."""
+    LLR_ACK_DROP = 5
+    """LLR_ACK drop"""
+    
+    LLR_NACK_DROP = 6
+    """LLR_NACK drop"""
 
 
 class UecLlrTxErrPattern(IntEnum):
