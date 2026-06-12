@@ -896,7 +896,7 @@ class P_UE_LLR_ACKNACK:
 @dataclass
 class P_UE_LLR_INJECT_ERR:
     """
-    Configures the LLR TX error injection of the port.
+    LLR TX error injection of the port.
     """
 
     code: typing.ClassVar[int] = 1025
@@ -905,19 +905,6 @@ class P_UE_LLR_INJECT_ERR:
     _connection: 'interfaces.IConnection'
     _module: int
     _port: int
-
-    class GetDataAttr(ResponseBodyStruct):
-        error_type: UecLlrTxErrType = field(XmpByte())
-        """coded byte, the type of error to inject."""
-
-        pattern: UecLlrTxErrPattern = field(XmpByte())
-        """coded byte, the pattern of error injection."""
-
-        burst_size: int = field(XmpInt())
-        """integer, the number of errors in a burst."""
-
-        burst_interval: int = field(XmpInt())
-        """integer, the interval between bursts."""
 
     class SetDataAttr(RequestBodyStruct):
         error_type: UecLlrTxErrType = field(XmpByte())
@@ -932,14 +919,6 @@ class P_UE_LLR_INJECT_ERR:
         burst_interval: int = field(XmpInt())
         """integer, the interval between bursts."""
 
-    def get(self) -> Token[GetDataAttr]:
-        """Get the LLR TX error injection configuration of the port.
-
-        :return: the LLR TX error injection configuration of the port
-        :rtype: P_UE_LLR_TXERR.GetDataAttr
-        """
-
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, error_type: UecLlrTxErrType, pattern: UecLlrTxErrPattern, burst_size: int, burst_interval: int) -> Token[None]:
         """Set the LLR TX error injection configuration of the port.
@@ -955,6 +934,7 @@ class P_UE_LLR_INJECT_ERR:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, error_type=error_type, pattern=pattern, burst_size=burst_size, burst_interval=burst_interval))
+    
     
     inject_seq_drop = functools.partialmethod(set, UecLlrTxErrType.SEQ_DROP, UecLlrTxErrPattern.ONCE)
     """Inject a single sequence drop error.
