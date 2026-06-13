@@ -1000,6 +1000,14 @@ class P_UE_LLR_POISONFCS:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, pattern=pattern))
+    
+    set_aaaaaaaa = functools.partialmethod(set, Hex("AAAAAAAA"))
+    """Set the poisoned FCS pattern of the port to 0xAAAAAAAA.
+    """
+    
+    set_55555555 = functools.partialmethod(set, Hex("55555555"))
+    """Set the poisoned FCS pattern of the port to 0x55555555.
+    """
 
 
 @register_command
@@ -1050,6 +1058,22 @@ class P_UE_LLR_INIT_ECHO_CHK:
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, validate_init_seq=validate_init_seq, validate_init_data=validate_init_data))
 
+    validate_init_seq = functools.partialmethod(set, UecLlrEchoCheck.ENABLE, UecLlrEchoCheck.DISABLE)
+    """Only validate the init_seq of the INIT_ECHO.
+    """
+    
+    validate_init_data = functools.partialmethod(set, UecLlrEchoCheck.DISABLE, UecLlrEchoCheck.ENABLE)
+    """Only validate the init_data of the INIT_ECHO.
+    """
+    
+    validate_both = functools.partialmethod(set, UecLlrEchoCheck.ENABLE, UecLlrEchoCheck.ENABLE)
+    """Validate both the init_seq and init_data of the INIT_ECHO.
+    """
+    
+    validate_none = functools.partialmethod(set, UecLlrEchoCheck.DISABLE, UecLlrEchoCheck.DISABLE)
+    """Do not validate the init_seq nor the init_data of the INIT_ECHO.
+    """
+    
 
 @register_command
 @dataclass
