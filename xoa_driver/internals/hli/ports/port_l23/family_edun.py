@@ -64,3 +64,28 @@ class PEdun1600G4S1POSFP_a(FamilyEdun):
     """L23 port on Edun-1600G-4S-1P-OSFP[a] module.
     """
     ...
+    
+class PEdun1600G4S1POSFP_c(FamilyEdun):
+    """L23 port on Edun-1600G-4S-1P-OSFP[c] module.
+    """
+    ...
+    
+class PEdun1600G4S1POSFP_IHS_a(FamilyEdun):
+    """L23 port on Edun-1600G-4S-1P-OSFP-IHS[a] module.
+    """
+    ...
+    
+class PEdun1600G4S1POSFP_RHS_a(FamilyEdun):
+    """L23 port on Edun-1600G-4S-1P-OSFP-RHS[a] module.
+    """
+    ...
+    
+class PEdun1600G4S1POSFP_IHS_c(FamilyEdun):
+    """L23 port on Edun-1600G-4S-1P-OSFP-IHS[c] module.
+    """
+    ...
+    
+class PEdun1600G4S1POSFP_RHS_c(FamilyEdun):
+    """L23 port on Edun-1600G-4S-1P-OSFP-RHS[c] module.
+    """
+    ...

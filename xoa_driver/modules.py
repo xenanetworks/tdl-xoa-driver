@@ -118,7 +118,12 @@ from .internals.hli.modules.modules_l23.family_freya import (
 )
 from .internals.hli.modules.modules_l23.family_edun import (
     MEdun800G3S1PSMPX_a,
-    MEdun1600G4S1POSFP_a
+    MEdun1600G4S1POSFP_a,
+    MEdun1600G4S1POSFP_IHS_a,
+    MEdun1600G4S1POSFP_RHS_a,
+    MEdun1600G4S1POSFP_c,
+    MEdun1600G4S1POSFP_IHS_c,
+    MEdun1600G4S1POSFP_RHS_c,
 )
 Z10OdinModule = Union[
     MOdin1G3S2PT,
@@ -232,7 +237,12 @@ Z800FreyaModule = Union[
 
 Z1600EdunModule = Union[
     MEdun800G3S1PSMPX_a,
-    MEdun1600G4S1POSFP_a
+    MEdun1600G4S1POSFP_a,
+    MEdun1600G4S1POSFP_IHS_a,
+    MEdun1600G4S1POSFP_RHS_a,
+    MEdun1600G4S1POSFP_c,
+    MEdun1600G4S1POSFP_IHS_c,
+    MEdun1600G4S1POSFP_RHS_c,
 ]
 
 E100ChimeraModule = Union[
@@ -273,6 +283,7 @@ GenericL23Module = Union[
     MOdin40G2S2P,
     MOdin40G2S2PB,
     MOdin100G3S1P,
+    
     MLoki100G3S1P,
     MLoki100G3S1P_b,
     MLoki100G3S1PSE,
@@ -281,6 +292,7 @@ GenericL23Module = Union[
     MLoki100G5S1P,
     MLoki100G5S2P,
     MLoki100G5S4P_a,
+    
     MThor100G5S4P,
     MThor400G7S1P,
     MThor400G7S1PLE,
@@ -290,6 +302,7 @@ GenericL23Module = Union[
     #MThor400G7S2P_a,
     MThor400G7S2P_a_g2,
     MThor400G7S2P_c_g2,
+    
     MFreya800G1S1P_a,
     MFreya800G1S1P_b,
     MFreya800G1S1POSFP_a,
@@ -338,14 +351,21 @@ GenericL23Module = Union[
     MFreya800G4S1POSFP_d_g2,
     MFreya800G4S1POSFP_e_g2,
     MFreya800G4S1POSFP_f_g2,
-    MEdun800G3S1PSMPX_a,
-    MEdun1600G4S1POSFP_a,
+    
     MFreya800G4S2P_a,
     MFreya800G4S2P_b,
     MFreya800G4S2P_c,
     MFreya800G4S2P_d,
     MFreya800G4S2P_e,
     MFreya800G4S2P_f,
+    
+    MEdun800G3S1PSMPX_a,
+    MEdun1600G4S1POSFP_a,
+    MEdun1600G4S1POSFP_IHS_a,
+    MEdun1600G4S1POSFP_RHS_a,
+    MEdun1600G4S1POSFP_c,
+    MEdun1600G4S1POSFP_IHS_c,
+    MEdun1600G4S1POSFP_RHS_c,
 ]
 
 GenericAnyModule = Union[
@@ -476,6 +496,11 @@ __all__ = (
     "Z1600EdunModule",
     "MEdun800G3S1PSMPX_a",
     "MEdun1600G4S1POSFP_a",
+    "MEdun1600G4S1POSFP_IHS_a",
+    "MEdun1600G4S1POSFP_RHS_a",
+    "MEdun1600G4S1POSFP_c",
+    "MEdun1600G4S1POSFP_IHS_c",
+    "MEdun1600G4S1POSFP_RHS_c",
 
     "E100ChimeraModule",
     "ModuleChimera",

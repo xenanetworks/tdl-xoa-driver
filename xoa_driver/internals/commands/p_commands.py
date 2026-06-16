@@ -4793,9 +4793,9 @@ class P_EDUN_RX_STATUS:
         """ISI correction tap 1"""
         dfe2: int = field(XmpInt())
         """ISI correction tap 2"""
-        flt_m: int = field(XmpInt())
+        flt_max: int = field(XmpInt())
         """Max. floating tap value"""
-        flt_s: int = field(XmpInt())
+        flt_sum: int = field(XmpInt())
         """Sum of floating taps"""
 
     def get(self) -> Token[GetDataAttr]:
