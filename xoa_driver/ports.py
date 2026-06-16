@@ -92,6 +92,11 @@ from .internals.hli.ports.port_l23.family_freya import (
 from .internals.hli.ports.port_l23.family_edun import (
     PEdun800G3S1PSMPX_a,
     PEdun1600G4S1POSFP_a,
+    PEdun1600G4S1POSFP_IHS_a,
+    PEdun1600G4S1POSFP_RHS_a,
+    PEdun1600G4S1POSFP_c,
+    PEdun1600G4S1POSFP_IHS_c,
+    PEdun1600G4S1POSFP_RHS_c,
 )
 
 Z10OdinPort = typing.Union[
@@ -175,7 +180,12 @@ Z800FreyaPort = typing.Union[
 
 Z1600EdunPort = typing.Union[
     PEdun800G3S1PSMPX_a,
-    PEdun1600G4S1POSFP_a
+    PEdun1600G4S1POSFP_a,
+    PEdun1600G4S1POSFP_IHS_a,
+    PEdun1600G4S1POSFP_RHS_a,
+    PEdun1600G4S1POSFP_c,
+    PEdun1600G4S1POSFP_IHS_c,
+    PEdun1600G4S1POSFP_RHS_c,
 ]
 
 E100ChimeraPort = typing.Union[
@@ -217,6 +227,7 @@ GenericL23Port = typing.Union[
     POdin40G2S2P,
     POdin40G2S2PB,
     POdin100G3S1P,
+    
     PLoki100G3S1P,
     PLoki100G3S1P_b,
     PLoki100G3S1PSE,
@@ -225,6 +236,7 @@ GenericL23Port = typing.Union[
     PLoki100G5S1P,
     PLoki100G5S2P,
     PLoki100G5S4P_a,
+    
     PThor100G5S4P,
     PThor400G7S1P,
     PThor400G7S1PLE,
@@ -233,6 +245,7 @@ GenericL23Port = typing.Union[
     PThor400G7S1P_d,
     PThor400G7S2P_a,
     PThor400G7S2P_c,
+    
     PFreya800G1S1P_a,
     PFreya800G1S1P_b,
     PFreya800G1S1POSFP_a,
@@ -249,14 +262,21 @@ GenericL23Port = typing.Union[
     PFreya800G4S1POSFP_d,
     PFreya800G4S1POSFP_e,
     PFreya800G4S1POSFP_f,
-    PEdun800G3S1PSMPX_a,
-    PEdun1600G4S1POSFP_a,
+    
     PFreya800G4S2P_a,
     PFreya800G4S2P_b,
     PFreya800G4S2P_c,
     PFreya800G4S2P_d,
     PFreya800G4S2P_e,
     PFreya800G4S2P_f,
+    
+    PEdun800G3S1PSMPX_a,
+    PEdun1600G4S1POSFP_a,
+    PEdun1600G4S1POSFP_IHS_a,
+    PEdun1600G4S1POSFP_RHS_a,
+    PEdun1600G4S1POSFP_c,
+    PEdun1600G4S1POSFP_IHS_c,
+    PEdun1600G4S1POSFP_RHS_c,
 ]
 
 GenericAnyPort = typing.Union[
@@ -354,6 +374,11 @@ __all__ = (
     "Z1600EdunPort",
     "PEdun800G3S1PSMPX_a",
     "PEdun1600G4S1POSFP_a",
+    "PEdun1600G4S1POSFP_IHS_a",
+    "PEdun1600G4S1POSFP_RHS_a",
+    "PEdun1600G4S1POSFP_c",
+    "PEdun1600G4S1POSFP_IHS_c",
+    "PEdun1600G4S1POSFP_RHS_c",
 
     "E100ChimeraPort",
     "PortChimera",
