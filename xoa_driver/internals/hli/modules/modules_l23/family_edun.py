@@ -78,3 +78,78 @@ class MEdun1600G4S1POSFP_a(ModuleFamilyEdun):
             ports_count=self.ports_count
         )
         """Port Index Manager of Edun-1600G-4S-1P-OSFP[a]"""
+        
+
+@typing.final
+@revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP-IHS[a]")
+class MEdun1600G4S1POSFP_IHS_a(ModuleFamilyEdun):
+    """Test module Edun-1600G-4S-1P-OSFP-IHS[a]"""
+    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
+        super().__init__(conn, init_data)
+        self.ports: pm.PortsManager[ports.PEdun1600G4S1POSFP_IHS_a] = pm.PortsManager(
+            conn=conn,
+            ports_type=ports.PEdun1600G4S1POSFP_IHS_a,
+            module_id=self.module_id,
+            ports_count=self.ports_count
+        )
+        """Port Index Manager of Edun-1600G-4S-1P-OSFP-IHS[a]"""
+        
+        
+@typing.final
+@revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP-RHS[a]")
+class MEdun1600G4S1POSFP_RHS_a(ModuleFamilyEdun):
+    """Test module Edun-1600G-4S-1P-OSFP-RHS[a]"""
+    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
+        super().__init__(conn, init_data)
+        self.ports: pm.PortsManager[ports.PEdun1600G4S1POSFP_RHS_a] = pm.PortsManager(
+            conn=conn,
+            ports_type=ports.PEdun1600G4S1POSFP_RHS_a,
+            module_id=self.module_id,
+            ports_count=self.ports_count
+        )
+        """Port Index Manager of Edun-1600G-4S-1P-OSFP-RHS[a]"""
+        
+
+@typing.final
+@revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP[c]")
+class MEdun1600G4S1POSFP_c(ModuleFamilyEdun):
+    """Test module Edun-1600G-4S-1P-OSFP[c]"""
+    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
+        super().__init__(conn, init_data)
+        self.ports: pm.PortsManager[ports.PEdun1600G4S1POSFP_c] = pm.PortsManager(
+            conn=conn,
+            ports_type=ports.PEdun1600G4S1POSFP_c,
+            module_id=self.module_id,
+            ports_count=self.ports_count
+        )
+        """Port Index Manager of Edun-1600G-4S-1P-OSFP[c]"""
+        
+
+@typing.final
+@revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP-IHS[c]")
+class MEdun1600G4S1POSFP_IHS_c(ModuleFamilyEdun):
+    """Test module Edun-1600G-4S-1P-OSFP-IHS[c]"""
+    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
+        super().__init__(conn, init_data)
+        self.ports: pm.PortsManager[ports.PEdun1600G4S1POSFP_IHS_c] = pm.PortsManager(
+            conn=conn,
+            ports_type=ports.PEdun1600G4S1POSFP_IHS_c,
+            module_id=self.module_id,
+            ports_count=self.ports_count
+        )
+        """Port Index Manager of Edun-1600G-4S-1P-OSFP-IHS[c]"""
+        
+        
+@typing.final
+@revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP-RHS[c]")
+class MEdun1600G4S1POSFP_RHS_c(ModuleFamilyEdun):
+    """Test module Edun-1600G-4S-1P-OSFP-RHS[c]"""
+    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
+        super().__init__(conn, init_data)
+        self.ports: pm.PortsManager[ports.PEdun1600G4S1POSFP_RHS_c] = pm.PortsManager(
+            conn=conn,
+            ports_type=ports.PEdun1600G4S1POSFP_RHS_c,
+            module_id=self.module_id,
+            ports_count=self.ports_count
+        )
+        """Port Index Manager of Edun-1600G-4S-1P-OSFP-RHS[c]"""
