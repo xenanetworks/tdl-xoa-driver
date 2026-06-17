@@ -7,6 +7,7 @@ from typing import (
 )
 from xoa_driver.internals.commands import (
     P_DYNAMIC,
+    P_TPLDOFFSET,
 )
 from xoa_driver.internals.utils import attributes as utils
 if TYPE_CHECKING:
@@ -38,6 +39,12 @@ class FamilyFreya(BasePortL23Genuine):
         """Ultra Ethernet of the port.
 
         :type: UltraEthernet
+        """
+
+        self.tpld_offset = P_TPLDOFFSET(conn, module_id, port_id)
+        """L23 port test payload offset configuration.
+
+        :type: P_TPLDOFFSET
         """
 
     async def _setup(self) -> Self:

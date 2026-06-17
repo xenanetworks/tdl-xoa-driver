@@ -4806,6 +4806,74 @@ class P_EDUN_RX_STATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+    
+    
+    
+@register_command
+@dataclass
+class P_TPLDOFFSET:
+    """
+    Sets the offset of the Xena Test Payload (TPLD) in the transmitted and received packets. The offset is defined as the number of bytes from the start of FCS to the end of the TPLD.
+    
+    By default, the TPLD offset for both Tx and Rx is 0, which means the TPLD is located at the end of the packet, right before FCS. The maximum allowed offset is advertised in `port.capabilities:max_tpld_offset_bytes`, with 1 byte granularity.
+    
+    * When the TPLD offset for Tx is changed, it will affect ALL streams on the port.
+    * When the TPLD offset for Rx is changed, it will change where the port looks for the TPLD in the received packets.
+    
+    .. important::
+
+        If the TPLD offset is set to > 0, the port will automatically disable payload integrity checking, since the TPLD will no longer be located at the end of the packet. This means that the port will not be able to detect payload integrity errors (if the payload area has been modified or corrupted during transmission).
+
+        It is recommended to set TPLD offset > 0 only when necessary, and to ensure that the network is reliable enough to avoid payload corruption.
+        
+    TPLD offset supports both normal and micro TPLD modes in `port.tpld_mode`
+    
+    """
+
+    code: typing.ClassVar[int] = 339
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        tx_offset: int = field(XmpInt())
+        """integer, the Test Payload offset for transmitted packets. Default is 0. The maximum allowed offset is advertised in `port.capabilities:max_tpld_offset_bytes`, with 1 byte granularity."""
+        
+        rx_offset: int = field(XmpInt())
+        """integer, the Test Payload offset for received packets. Default is 0. The maximum allowed offset is advertised in `port.capabilities:max_tpld_offset_bytes`, with 1 byte granularity."""
+        
+    class SetDataAttr(RequestBodyStruct):
+        tx_offset: int = field(XmpInt())
+        """integer, the Test Payload offset for transmitted packets. Default is 0. The maximum allowed offset is advertised in `port.capabilities:max_tpld_offset_bytes`, with 1 byte granularity."""
+        
+        rx_offset: int = field(XmpInt())
+        """integer, the Test Payload offset for received packets. Default is 0. The maximum allowed offset is advertised in `port.capabilities:max_tpld_offset_bytes`, with 1 byte granularity."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the Test Payload offset of the port.
+
+        :return: the Test Payload offset of the port
+        :rtype: P_TPLDOFFSET.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, tx_offset: int, rx_offset: int) -> Token[None]:
+        """Set the Test Payload offset of the port.
+
+        :param tx_offset: the Test Payload offset for transmitted packets.
+        :type tx_offset: int
+        :param rx_offset: the Test Payload offset for received packets.
+        :type rx_offset: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, tx_offset=tx_offset, rx_offset=rx_offset))
+
+    set_default = functools.partialmethod(set, tx_offset=0, rx_offset=0)
+    """Set the Test Payload offset of the port to default values (0 for both Tx and Rx).
+    """
 
 
 
@@ -4897,4 +4965,5 @@ __all__ = [
     "P_XMITONETIME",
     "P_FAULTCNT",
     "P_EDUN_RX_STATUS",
+    "P_TPLDOFFSET",
 ]

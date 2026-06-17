@@ -13,10 +13,11 @@ if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 
 from .bases.port_l23_genuine import BasePortL23Genuine
-from .layer1_freya import Layer1
+from .layer1_loki import Layer1
+from .sec.macsec import MacSec
 
 
-class FamilyThor2(BasePortL23Genuine):
+class FamilyLoki2(BasePortL23Genuine):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
         self.dynamic = P_DYNAMIC(conn, module_id, port_id)
@@ -25,33 +26,33 @@ class FamilyThor2(BasePortL23Genuine):
         :type: P_DYNAMIC
         """
         
+        self.macsec = MacSec(conn, module_id, port_id)
+        """MACSec configuration and status.
+        
+        :type: MacSec
+        """
+        
         self.tpld_offset = P_TPLDOFFSET(conn, module_id, port_id)
         """L23 port test payload offset configuration.
 
         :type: P_TPLDOFFSET
         """
+        
 
     async def _setup(self) -> Self:
         await super()._setup()
-
         self.layer1 = Layer1(self._conn, self)
-        """Layer 1
-        
-        :type: Layer1
-        """
-        
+        """Layer 1"""
         return self
 
     on_dynamic_change = functools.partialmethod(utils.on_event, P_DYNAMIC)
     """Register a callback to the event that the port's dynamic traffic setting changes."""
 
 
-class PThor400G7S2P_a(FamilyThor2):
-    """L23 port on Thor-400G-7S-2P[a] module.
+class PLoki100G5S4P_a(FamilyLoki2):
+    """L23 port on Loki-100G-5S-4P[a] module.
     """
-    ...
+    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
+        super().__init__(conn, module_id, port_id)
 
-class PThor400G7S2P_c(FamilyThor2):
-    """L23 port on Thor-400G-7S-2P[c] module.
-    """
-    ...
+        

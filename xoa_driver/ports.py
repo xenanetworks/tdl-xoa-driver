@@ -48,9 +48,11 @@ from .internals.hli.ports.port_l23.family_loki import (
     PLoki100G3S1PSE,
     PLoki100G3S1PB,
     PLoki100G3S1PB_b,
-    PLoki100G5S4P_a,
     PLoki100G5S1P,
     PLoki100G5S2P,
+)
+from .internals.hli.ports.port_l23.family_loki2 import (
+    PLoki100G5S4P_a,
 )
 from .internals.hli.ports.port_l23.family_thor import (
     PThor100G5S4P,
