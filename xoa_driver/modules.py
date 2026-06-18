@@ -43,9 +43,11 @@ from .internals.hli.modules.modules_l23.family_loki import (
     MLoki100G3S1PSE,
     MLoki100G3S1PB,
     MLoki100G3S1PB_b,
-    MLoki100G5S4P_a,
     MLoki100G5S1P,
     MLoki100G5S2P,
+)
+from .internals.hli.modules.modules_l23.family_loki2 import (
+    MLoki100G5S4P_a,
 )
 from .internals.hli.modules.modules_l23.family_thor import (
     MThor100G5S4P,
@@ -55,7 +57,7 @@ from .internals.hli.modules.modules_l23.family_thor import (
     MThor400G7S1P_c,
     MThor400G7S1P_d,
 )
-from .internals.hli.modules.modules_l23.family_thor_ng import (
+from .internals.hli.modules.modules_l23.family_thor2 import (
 #    MThor400G7S2P_a,
     MThor400G7S2P_a_g2,
     MThor400G7S2P_c_g2,

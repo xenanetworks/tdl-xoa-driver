@@ -71,13 +71,3 @@ class PLoki100G5S2P(FamilyLoki):
     """L23 port on Loki-100G-5S-2P module.
     """
     ...
-
-
-class PLoki100G5S4P_a(FamilyLoki):
-    """L23 port on Loki-100G-5S-4P[a] module.
-    """
-    def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
-        super().__init__(conn, module_id, port_id)
-
-        self.macsec = MacSec(conn, module_id, port_id)
-        """MACSec configuration and status."""
