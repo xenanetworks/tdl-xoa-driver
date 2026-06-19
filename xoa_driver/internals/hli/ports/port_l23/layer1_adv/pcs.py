@@ -4,10 +4,6 @@ from typing import (
     Union,
     Self,
 )
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
-    from xoa_driver.internals.hli.ports.port_l23.family_edun import FamilyEdun
 
 from xoa_driver.internals.commands import (
     PP_RXLANESTATUS,
@@ -27,6 +23,10 @@ from xoa_driver.internals.commands import (
     PL1_PCSL_INJECT_ERR_CNT,
 )
 
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+    from ..family_freya import FamilyFreya
+    from ..family_edun import FamilyEdun
 
 class PcsLaneAdv:
     """Physical PCS Lane Advanced"""

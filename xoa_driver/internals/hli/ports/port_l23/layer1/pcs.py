@@ -4,12 +4,7 @@ from typing import (
     Union,
     Self,
 )
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli.ports.port_l23.family_edun import FamilyEdun
-    from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
-    from xoa_driver.internals.hli.ports.port_l23.family_loki import FamilyLoki
-    from xoa_driver.internals.hli.ports.port_l23.family_thor import FamilyThor
+
 from xoa_driver.internals.commands import (
     PP_ALARMS_ERRORS,
     PP_TXLANECONFIG,
@@ -31,8 +26,15 @@ from xoa_driver.internals.commands import (
     PL1_CWE_CONTROL,
     PL1_CWE_FEC_STATS_CLEAR,
 )
-from xoa_driver import enums
 
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+    from ...port_l23.family_edun import FamilyEdun
+    from ...port_l23.family_freya import FamilyFreya
+    from ...port_l23.family_loki import FamilyLoki
+    from ...port_l23.family_thor import FamilyThor
+    from ...port_l23.family_loki2 import FamilyLoki2
+    from ...port_l23.family_thor2 import FamilyThor2
 
 class PcsAlarms:
     """L23 high-speed port PCS/PMA alarms"""
@@ -145,7 +147,7 @@ class PcsLane:
         :type: PP_TXLANECONFIG
         """
 
-class FreyaFecCodewordErrorInject:
+class FecCodewordErrorInject:
     """Freya FEC Codeword Error Injection
     """
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
@@ -174,7 +176,7 @@ class FreyaFecCodewordErrorInject:
 class PcsLayer:
     """PCS/FEC layer configuration and status."""
 
-    def __init__(self, conn: "itf.IConnection", port: "Union[FamilyLoki, FamilyThor, FamilyFreya, FamilyEdun]") -> None:
+    def __init__(self, conn: "itf.IConnection", port: "Union[FamilyLoki, FamilyThor, FamilyFreya, FamilyEdun, FamilyLoki2, FamilyThor2]") -> None:
         self._conn = conn
         self.__port = port
         module_id, port_id = port.kind

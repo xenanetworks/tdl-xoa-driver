@@ -3,40 +3,78 @@ from xoa_driver import ports
 from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
 
-if typing.TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
-    from .. import __interfaces as m_itf
-
-from .module_l23_base import ModuleL23
+from .bases.module_l23 import ModuleL23
 from xoa_driver.internals.commands import (
     M_CLOCKPPBSWEEP,
     M_CLOCKSWEEPSTATUS,
     M_HEALTH,
+    M_SOLUTION_TRACK,
+    M_SOLUTION_TRACK_INDICES,
+    M_SOLUTION_TRACK_DEMO_EXP,
+    M_SOLUTION_TRACK_ENABLE,
 )
 
+if typing.TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+    from .. import __interfaces as m_itf
 
 class MClockSweep:
     """Test module local clock sweep"""
     def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
         self.config = M_CLOCKPPBSWEEP(conn, module_id)
         """Configure and control the module local clock sweep.
-        Representation of M_CLOCKPPBSWEEP
+        
+        :type: M_CLOCKPPBSWEEP
         """
 
         self.status = M_CLOCKSWEEPSTATUS(conn, module_id)
         """Status of the module local clock sweep.
-        Representation of M_CLOCKSWEEPSTATUS
+        
+        :type: M_CLOCKSWEEPSTATUS
         """
 
 class MHealth:
     """Test module health"""
     def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
         self.all = M_HEALTH(conn, module_id, [])
-        """All module health information"""
+        """All module health information
+        
+        :type: M_HEALTH
+        """
+        
         self.info = M_HEALTH(conn, module_id, [0])
-        """Module identification information"""
+        """Module identification information
+        
+        :type: M_HEALTH
+        """
+        
         self.cage_insertion = M_HEALTH(conn, module_id, [1])
-        """Module cage insertion counter"""
+        """Module cage insertion counter
+        
+        :type: M_HEALTH
+        """
+        
+        
+class MSolutionTrack:
+    """Test module solution track"""
+    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
+        self.enable = M_SOLUTION_TRACK_ENABLE(conn, module_id)
+        """Enable or disable the solution track.
+        
+        :type: M_SOLUTION_TRACK_ENABLE
+        """
+
+        self.indices = M_SOLUTION_TRACK_INDICES(conn, module_id)
+        """Get the indices of the enabled solution tracks.
+        
+        :type: M_SOLUTION_TRACK_INDICES
+        """
+
+        self.demo_exp = M_SOLUTION_TRACK_DEMO_EXP(conn, module_id)
+        """Get the demonstration expire information of the solution track.
+        
+        :type: M_SOLUTION_TRACK_DEMO_EXP
+        """
 
 
 class ModuleFamilyEdun(ModuleL23):

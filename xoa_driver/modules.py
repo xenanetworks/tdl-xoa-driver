@@ -1,7 +1,7 @@
 #: All available test module types.
 """Xena test module types."""
 from typing import Union
-from .internals.hli.modules.modules_l23.module_l23_base import ModuleL23
+from .internals.hli.modules.modules_l23.bases.module_l23 import ModuleL23
 from .internals.hli.modules.module_l23ve import ModuleL23VE
 from .internals.hli.modules.module_chimera import (
     ModuleChimera,
@@ -11,6 +11,10 @@ from .internals.hli.modules.module_chimera import (
 )
 from .internals.hli.modules.module_l47 import ModuleL47
 from .internals.hli.modules.module_l47ve import ModuleL47VE
+from .internals.hli.modules.modules_l23.family_combi import (
+    MOdin10G4S2PCombi,
+    MOdin10G4S2PCombi_b,
+)
 from .internals.hli.modules.modules_l23.family_odin import (
     MOdin1G3S2PT,
     MOdin1G3S6P,
@@ -32,8 +36,6 @@ from .internals.hli.modules.modules_l23.family_odin import (
     MOdin10G6S6P_a,
     MOdin100G3S1P,
     MOdin1G3S6PT1RJ45,
-    MOdin10G4S2PCombi,
-    MOdin10G4S2PCombi_b,
     MOdin40G2S2P,
     MOdin40G2S2PB,
 )

@@ -3,12 +3,11 @@ from xoa_driver import ports
 from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
 
+from .bases.module_l23 import ModuleL23
+
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
-
-from .module_l23_base import ModuleL23
-
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-3S-1P")

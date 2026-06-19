@@ -10,15 +10,15 @@ from xoa_driver.internals.commands import (
     P_TPLDOFFSET,
 )
 from xoa_driver.internals.utils import attributes as utils
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
 
 from .bases.port_l23_genuine import BasePortL23Genuine
-from .layer1_freya import Layer1
+from .layer1.layer1_freya import Layer1
 from .layer1_adv.layer1 import Layer1Adv
 from .protocol.lldp import LLDP
 from .uec.ue import UltraEthernet
 
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
 
 class FamilyFreya(BasePortL23Genuine):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:

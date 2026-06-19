@@ -3,22 +3,23 @@ from typing import (
     Tuple,
     Self,
 )
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli.ports.port_l23.family_thor import FamilyThor
+
 from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
-    PP_LINKTRAINSTATUS,
 )
-from .layer1.prbs import Prbs
-from .layer1.pcs import PcsLayer
-from .layer1.impair import Impair
-from .layer1.medium import BasicMedium
-from .layer1.rs_fault import RsFault
-from .layer1.anlt import AnltBasic
-from .tcvr.transceiver import Transceiver
+from .prbs import Prbs
+from .pcs import PcsLayer
+from .impair import Impair
+from .medium import BasicMedium
+from .eye_diagram import EyeDiagram
+from .rs_fault import RsFault
+from ..tcvr.transceiver import Transceiver
 
-class SerDesThor:
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+    from ..family_loki import FamilyLoki
+    
+class SerDesLoki:
     """L23 high-speed port SerDes configuration and status."""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_xindex: int) -> None:
@@ -35,17 +36,25 @@ class SerDesThor:
         :type: BasicMedium
         """
 
-        self.lt_status = PP_LINKTRAINSTATUS(conn, module_id, port_id, serdes_xindex)
-        """Link Training status on serdes level (Basic ANLT)
+        self.eye_diagram = EyeDiagram(conn, module_id, port_id, serdes_xindex)
+        """Eye diagram
 
-        :type: PP_LINKTRAINSTATUS
+        :type: EyeDiagram
         """
+    
+    def __await__(self):
+        return self._setup().__await__()
+
+    async def _setup(self) -> Self:
+        await self.eye_diagram
+        return self
+
 
 class Layer1:
-    def __init__(self, conn: "itf.IConnection", port: "FamilyThor") -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyLoki") -> None:
         module_id, port_id = port.kind
-        self.serdes: Tuple[SerDesThor, ...] = tuple(
-                SerDesThor(conn, module_id, port_id, serdes_xindex=idx)
+        self.serdes: Tuple[SerDesLoki, ...] = tuple(
+                SerDesLoki(conn, module_id, port_id, serdes_xindex=idx)
                 for idx in range(port.info.capabilities.serdes_count)
                 )
         
@@ -69,26 +78,12 @@ class Layer1:
 
         self.prbs_config = PP_PRBSTYPE(conn, module_id, port_id)
         """PRBS configuration, including PRBS polynomial, invert mode, and statistic collection mode (for RX).
-
+        
         :type: PP_PRBSTYPE
         """
         
-        self.anlt = AnltBasic(conn, module_id, port_id)
-        """Basic ANLT. For per-serdes configuration and status, use serdes[x].
-
-        Same as anlt_basic. For backward compatibility.
-
-        :type: AnltBasic
-        """
-        
         self.transceiver = Transceiver(conn, module_id, port_id)
-        """Thor Transceiver configuration and status
+        """Loki Transceiver configuration and status
 
         :type: Transceiver
-        """
-
-        self.anlt_basic = AnltBasic(conn, module_id, port_id)
-        """Basic ANLT. For per-serdes configuration and status, use serdes[x].
-
-        :type: AnltBasic
         """
