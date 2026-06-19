@@ -46,7 +46,6 @@ from ..timing_clock.timing import (
     MTiming,
     AdvancedTiming,
 )
-from ..solution_track.solution_track import MSolutionTrack
 from ..module_config.module_type import (
     ExtendedToken,
     CFP,

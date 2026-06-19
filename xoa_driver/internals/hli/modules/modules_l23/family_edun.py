@@ -13,68 +13,13 @@ from xoa_driver.internals.commands import (
     M_SOLUTION_TRACK_DEMO_EXP,
     M_SOLUTION_TRACK_ENABLE,
 )
+from .solution_track.solution_track import MSolutionTrack
+from .health.health import MHealth
+from .timing_clock.ppm_sweep import MClockSweep
 
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
-
-class MClockSweep:
-    """Test module local clock sweep"""
-    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
-        self.config = M_CLOCKPPBSWEEP(conn, module_id)
-        """Configure and control the module local clock sweep.
-        
-        :type: M_CLOCKPPBSWEEP
-        """
-
-        self.status = M_CLOCKSWEEPSTATUS(conn, module_id)
-        """Status of the module local clock sweep.
-        
-        :type: M_CLOCKSWEEPSTATUS
-        """
-
-class MHealth:
-    """Test module health"""
-    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
-        self.all = M_HEALTH(conn, module_id, [])
-        """All module health information
-        
-        :type: M_HEALTH
-        """
-        
-        self.info = M_HEALTH(conn, module_id, [0])
-        """Module identification information
-        
-        :type: M_HEALTH
-        """
-        
-        self.cage_insertion = M_HEALTH(conn, module_id, [1])
-        """Module cage insertion counter
-        
-        :type: M_HEALTH
-        """
-        
-        
-class MSolutionTrack:
-    """Test module solution track"""
-    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
-        self.enable = M_SOLUTION_TRACK_ENABLE(conn, module_id)
-        """Enable or disable the solution track.
-        
-        :type: M_SOLUTION_TRACK_ENABLE
-        """
-
-        self.indices = M_SOLUTION_TRACK_INDICES(conn, module_id)
-        """Get the indices of the enabled solution tracks.
-        
-        :type: M_SOLUTION_TRACK_INDICES
-        """
-
-        self.demo_exp = M_SOLUTION_TRACK_DEMO_EXP(conn, module_id)
-        """Get the demonstration expire information of the solution track.
-        
-        :type: M_SOLUTION_TRACK_DEMO_EXP
-        """
 
 
 class ModuleFamilyEdun(ModuleL23):
@@ -87,6 +32,9 @@ class ModuleFamilyEdun(ModuleL23):
 
         self.health = MHealth(conn, self.module_id)
         """Module health information"""
+        
+        self.solution_track = MSolutionTrack(conn, self.module_id)
+        """Module solution track control"""
         
 @typing.final
 @revisions.register_valkyrie_module(rev="Edun-800G-3S-1P-SMPX[a]")
