@@ -10,6 +10,8 @@ if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
 
+
+#region - Module Family Thor-II
 class ModuleFamilyThor2(ModuleL23):
     """Test module Thor2 family"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
@@ -18,6 +20,9 @@ class ModuleFamilyThor2(ModuleL23):
         self.solution_track = MSolutionTrack(conn, self.module_id)
         """Module solution track control"""
 
+#endregion
+
+#region - Thor-400G-7S-2P Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-400G-7S-2P[a] G2")
 class MThor400G7S2P_a_g2(ModuleFamilyThor2):
@@ -45,3 +50,5 @@ class MThor400G7S2P_c_g2(ModuleFamilyThor2):
             ports_count=self.ports_count
         )
         """Port Index Manager of Thor-400G-7S-2P[c] G2"""
+        
+#endregion

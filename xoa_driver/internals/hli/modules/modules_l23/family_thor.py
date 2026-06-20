@@ -10,6 +10,7 @@ if typing.TYPE_CHECKING:
     from .. import __interfaces as m_itf
     
     
+#region - Thor-100G
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-100G-5S-4P")
 class MThor100G5S4P(ModuleL23):
@@ -24,6 +25,10 @@ class MThor100G5S4P(ModuleL23):
         )
         """Port Index Manager of Thor-100G-5S-4P"""
 
+#endregion
+
+
+#region - Thor-400G-7S-1P Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-400G-7S-1P")
 class MThor400G7S1P(ModuleL23):
@@ -97,3 +102,5 @@ class MThor400G7S1P_d(ModuleL23):
             ports_count=self.ports_count
         )
         """Port Index Manager of Thor-400G-7S-1P[d]"""
+        
+#endregion

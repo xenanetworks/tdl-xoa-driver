@@ -18,6 +18,7 @@ if typing.TYPE_CHECKING:
     from .. import __interfaces as m_itf
 
 
+#region - Module Family Freya
 class ModuleFamilyFreya(ModuleL23):
     """Test module Freya family"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
@@ -32,10 +33,10 @@ class ModuleFamilyFreya(ModuleL23):
         self.solution_track = MSolutionTrack(conn, self.module_id)
         """Module solution track control"""
 
-        
+#endregion
 
 
-#region Freya 1S 1P
+#region - Freya-800G-1S-1P QSFPDD Category
         
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P[a]")
@@ -66,6 +67,9 @@ class MFreya800G1S1P_b(ModuleFamilyFreya):
         )
         """Port Index Manager of Freya-800G-1S-1P[b]"""
 
+#endregion
+
+#region - Freya-800G-1S-1P  Category
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P-OSFP[a]")
@@ -99,7 +103,7 @@ class MFreya800G1S1POSFP_b(ModuleFamilyFreya):
 
 #endregion
 
-#region Freya 1S 1P G1
+#region - Freya-800G-1S-1P G1 QSFPDD Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P[a] G1")
 class MFreya800G1S1P_a_g1(ModuleFamilyFreya):
@@ -129,6 +133,9 @@ class MFreya800G1S1P_b_g1(ModuleFamilyFreya):
         )
         """Port Index Manager of Freya-800G-1S-1P[b] G1"""
 
+#endregion
+
+#region - Freya-800G-1S-1P G1 OSFP Category
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P-OSFP[a] G1")
@@ -162,7 +169,7 @@ class MFreya800G1S1POSFP_b_g1(ModuleFamilyFreya):
 
 #endregion
 
-#region Freya 1S 1P G2
+#region - Freya-800G-1S-1P G2 QSFPDD Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P[a] G2")
 class MFreya800G1S1P_a_g2(ModuleFamilyFreya):
@@ -192,7 +199,9 @@ class MFreya800G1S1P_b_g2(ModuleFamilyFreya):
         )
         """Port Index Manager of Freya-800G-1S-1P[b] G2"""
 
+#endregion
 
+#region - Freya-800G-1S-1P G2 OSFP Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-1S-1P-OSFP[a] G2")
 class MFreya800G1S1POSFP_a_g2(ModuleFamilyFreya):
@@ -225,7 +234,7 @@ class MFreya800G1S1POSFP_b_g2(ModuleFamilyFreya):
 
 #endregion
 
-#region Freya 1S 4P
+#region - Freya-800G-4S-1P QSFPDD Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[a]")
 class MFreya800G4S1P_a(ModuleFamilyFreya):
@@ -315,7 +324,9 @@ class MFreya800G4S1P_f(ModuleFamilyFreya):
         )
         """Port Index Manager of Freya-800G-4S-1P[f]"""
 
+#endregion
 
+#region - Freya-800G-4S-1P OSFP Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[a]")
 class MFreya800G4S1POSFP_a(ModuleFamilyFreya):
@@ -413,7 +424,7 @@ class MFreya800G4S1POSFP_f(ModuleFamilyFreya):
 
 #endregion
 
-#region Freya 1S 4P G1
+#region - Freya-800G-4S-1P G1 QSFPDD Category
 
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[a] G1")
 class MFreya800G4S1P_a_g1(ModuleFamilyFreya):
@@ -503,7 +514,9 @@ class MFreya800G4S1P_f_g1(ModuleFamilyFreya):
         )
         """Port Index Manager of Freya-800G-4S-1P[f] G1"""
 
+#endregion
 
+#region - Freya-800G-4S-1P G1 OSFP Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[a] G1")
 class MFreya800G4S1POSFP_a_g1(ModuleFamilyFreya):
@@ -596,7 +609,7 @@ class MFreya800G4S1POSFP_f_g1(ModuleFamilyFreya):
 
 #endregion
 
-#region Freya 1S 4P G2        
+#region - Freya-800G-4S-1P G2 QSFPDD Category   
 
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[a] G2")
 class MFreya800G4S1P_a_g2(ModuleFamilyFreya):
@@ -686,7 +699,9 @@ class MFreya800G4S1P_f_g2(ModuleFamilyFreya):
         )
         """Port Index Manager of Freya-800G-4S-1P[f] G2"""
 
+#endregion
 
+#region - Freya-800G-4S-1P G2 OSFP Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P-OSFP[a] G2")
 class MFreya800G4S1POSFP_a_g2(ModuleFamilyFreya):
@@ -778,7 +793,7 @@ class MFreya800G4S1POSFP_f_g2(ModuleFamilyFreya):
 
 #endregion
 
-#region Freya 2P
+#region - Freya-800G-4S-2P Category
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-2P[a]")

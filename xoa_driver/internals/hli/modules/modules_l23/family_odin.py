@@ -12,6 +12,7 @@ if typing.TYPE_CHECKING:
     from .. import __interfaces as m_itf
 
 
+#region - Odin-1G-3S-6P
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-1G-3S-6P")
 class MOdin1G3S6P(ModuleL23):
@@ -43,7 +44,9 @@ class MOdin1G3S6P_b(ModuleL23):
         )
         """Port Index Manager of Odin-1G-3S-6P[b]"""
 
+#endregion
 
+#region - Odin-1G-3S-6P-E
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-1G-3S-6P-E")
 class MOdin1G3S6PE(ModuleL23):
@@ -59,7 +62,9 @@ class MOdin1G3S6PE(ModuleL23):
         )
         """Port Index Manager of Odin-1G-3S-6P-E"""
 
+#endregion
 
+#region - Odin-1G-3S-2P-T
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-1G-3S-2P-T")
 class MOdin1G3S2PT(ModuleL23):
@@ -75,7 +80,26 @@ class MOdin1G3S2PT(ModuleL23):
         )
         """Port Index Manager of Odin-1G-3S-2P-T"""
 
+#endregion
 
+#region - Odin-1G-3S-6P-T1-RJ45
+@typing.final
+@revisions.register_valkyrie_module(rev="Odin-1G-3S-6P-T1-RJ45")
+class MOdin1G3S6PT1RJ45(ModuleL23):
+    """Test module Odin-1G-3S-6P-T1-RJ45"""
+    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
+        super().__init__(conn, init_data)
+        self.ports: pm.PortsManager[ports.POdin1G3S6PT1RJ45] = pm.PortsManager(
+            conn=conn,
+            ports_type=ports.POdin1G3S6PT1RJ45,
+            module_id=self.module_id,
+            ports_count=self.ports_count
+        )
+        """Port Index Manager of Odin-1G-3S-6P-T1-RJ45"""
+        
+#endregion
+
+#region - Odin-5G-4S-6P-CU
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-5G-4S-6P-CU")
 class MOdin5G4S6PCU(ModuleL23):
@@ -90,6 +114,9 @@ class MOdin5G4S6PCU(ModuleL23):
         )
         """Port Index Manager of Odin-5G-4S-6P-CU"""
 
+#endregion
+
+#region - Odin-10G-CU Category
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-10G-5S-6P-CU")
@@ -150,6 +177,9 @@ class MOdin10G3S2PCU(ModuleL23):
         )
         """Port Index Manager of Odin-10G-3S-2P-CU"""
 
+#endregion
+
+#region - Odin-10G-1S Category
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-10G-1S-2P")
@@ -271,20 +301,9 @@ class MOdin10G1S12P(ModuleL23):
         """Port Index Manager Odin-10G-1S-12P"""
 
 
-@typing.final
-@revisions.register_valkyrie_module(rev="Odin-10G-6S-6P[a]")
-class MOdin10G6S6P_a(ModuleL23):
-    """Test module Odin-10G-6S-6P[a]"""
-    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
-        super().__init__(conn, init_data)
-        self.ports: pm.PortsManager[ports.POdin10G6S6P_a] = pm.PortsManager(
-            conn=conn,
-            ports_type=ports.POdin10G6S6P_a,
-            module_id=self.module_id,
-            ports_count=self.ports_count
-        )
-        """Port Index Manager Odin-10G-6S-6P[a]"""
+#endregion
 
+#region - Odin-100G
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-100G-3S-1P")
 class MOdin100G3S1P(ModuleL23):
@@ -299,22 +318,9 @@ class MOdin100G3S1P(ModuleL23):
         )
         """Port Index Manager of Odin-100G-3S-1P"""
 
+#endregion
 
-@typing.final
-@revisions.register_valkyrie_module(rev="Odin-1G-3S-6P-T1-RJ45")
-class MOdin1G3S6PT1RJ45(ModuleL23):
-    """Test module Odin-1G-3S-6P-T1-RJ45"""
-    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
-        super().__init__(conn, init_data)
-        self.ports: pm.PortsManager[ports.POdin1G3S6PT1RJ45] = pm.PortsManager(
-            conn=conn,
-            ports_type=ports.POdin1G3S6PT1RJ45,
-            module_id=self.module_id,
-            ports_count=self.ports_count
-        )
-        """Port Index Manager of Odin-1G-3S-6P-T1-RJ45"""
-
-
+#region - Odin-40G Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-40G-2S-2P")
 class MOdin40G2S2P(ModuleL23):
@@ -343,3 +349,23 @@ class MOdin40G2S2PB(ModuleL23):
             ports_count=self.ports_count
         )
         """Port Index Manager of Odin-40G-2S-2P-B"""
+        
+#endregion
+
+
+#region - Odin-10G-6S-6P
+@typing.final
+@revisions.register_valkyrie_module(rev="Odin-10G-6S-6P[a]")
+class MOdin10G6S6P_a(ModuleL23):
+    """Test module Odin-10G-6S-6P[a]"""
+    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
+        super().__init__(conn, init_data)
+        self.ports: pm.PortsManager[ports.POdin10G6S6P_a] = pm.PortsManager(
+            conn=conn,
+            ports_type=ports.POdin10G6S6P_a,
+            module_id=self.module_id,
+            ports_count=self.ports_count
+        )
+        """Port Index Manager Odin-10G-6S-6P[a]"""
+        
+#endregion

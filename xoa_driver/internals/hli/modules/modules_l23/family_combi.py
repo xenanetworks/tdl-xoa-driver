@@ -38,6 +38,7 @@ async def _port_resolver_b(conn: "itf.IConnection", module_id: int, port_id: int
     port_type = port_map[current_port_id.to_int()]
     return await port_type(conn, module_id, port_id)
 
+#region - Odin-10G-4S-2P Combi Category
 @typing.final
 @revisions.register_valkyrie_module(rev="Odin-10G-4S-2P-Combi")
 class MOdin10G4S2PCombi(ModuleL23):
@@ -84,3 +85,5 @@ class MOdin10G4S2PCombi_b(ModuleL23):
 
         :type: PortsCombiManager
         """
+        
+#endregion

@@ -9,7 +9,10 @@ from .solution_track.solution_track import MSolutionTrack
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
-    
+
+
+
+#region - Module Family Loki-II
 class ModuleFamilyLoki2(ModuleL23):
     """Test module Loki2 family"""
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
@@ -17,7 +20,11 @@ class ModuleFamilyLoki2(ModuleL23):
         
         self.solution_track = MSolutionTrack(conn, self.module_id)
         """Module solution track control"""
-    
+        
+#endregion
+
+
+#region - Loki-100G-5S-4P
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-5S-4P[a]")
 class MLoki100G5S4P_a(ModuleFamilyLoki2):
@@ -31,3 +38,5 @@ class MLoki100G5S4P_a(ModuleFamilyLoki2):
             ports_count=self.ports_count
         )
         """Port index manager of Loki-100G-5S-4P[a]"""
+
+#endregion
