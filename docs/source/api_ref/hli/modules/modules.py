@@ -203,7 +203,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
 
 
     # [Z800 Freya and Z1600 Edun Specific APIs]
-    if isinstance(module, modules.Z800FreyaModule) or isinstance(module, modules.Z1600EdunModule):
+    if isinstance(module, modules.Z800FreyaModule | modules.Z1600EdunModule):
 
         """Clock PPM Sweep Configuration"""
         # Set or get the clock PPM sweep configuration.

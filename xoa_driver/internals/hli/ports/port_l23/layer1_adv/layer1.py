@@ -2,11 +2,7 @@ from typing import (
     TYPE_CHECKING,
     Tuple,
 )
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
-    from xoa_driver.internals.hli.ports.port_l23.family_edun import FamilyEdun
-    
+
 from xoa_driver.internals.commands import (
     PL1_CLEAR,
     PL1_CDRLOL_STATUS,
@@ -19,6 +15,11 @@ from xoa_driver.internals.commands import (
 )
 
 from .pcs import PcsLayerAdv
+
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+    from ..family_freya import FamilyFreya
+    from ..family_edun import FamilyEdun
 
 class SerdesAdv:
     """Serdes Advanced Statistics"""

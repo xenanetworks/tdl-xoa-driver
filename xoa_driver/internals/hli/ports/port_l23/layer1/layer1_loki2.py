@@ -3,20 +3,23 @@ from typing import (
     Tuple,
     Self,
 )
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli.ports.port_l23.family_loki import FamilyLoki
+
 from xoa_driver.internals.commands import (
     PP_PRBSTYPE,
+    PL1_PCS_VARIANT,
 )
-from .layer1.prbs import Prbs
-from .layer1.pcs import PcsLayer
-from .layer1.impair import Impair
-from .layer1.medium import BasicMedium
-from .layer1.eye_diagram import EyeDiagram
-from .layer1.rs_fault import RsFault
-from .tcvr.transceiver import Transceiver
+from .prbs import Prbs
+from .pcs import PcsLayer, FecCodewordErrorInject
+from .impair import Impair
+from .medium import BasicMedium
+from .eye_diagram import EyeDiagram
+from .rs_fault import RsFault
+from ..tcvr.transceiver import Transceiver
 
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+    from ..family_loki2 import FamilyLoki2
+    
 class SerDesLoki:
     """L23 high-speed port SerDes configuration and status."""
 
@@ -47,9 +50,25 @@ class SerDesLoki:
         await self.eye_diagram
         return self
 
+class Loki2PcsLayer(PcsLayer):
+    """Loki2 PCS and FEC configuration and status
+    """
+
+    def __init__(self, conn: "itf.IConnection", port: "FamilyLoki2") -> None:
+        module_id, port_id = port.kind
+        PcsLayer.__init__(self, conn, port)
+    
+        self.variant = PL1_PCS_VARIANT(conn, module_id, port_id)
+        """PCS variant configuration
+        """
+
+        self.fec_error_inject = FecCodewordErrorInject(conn, module_id, port_id)
+        """FEC codeword error injection
+        """
+
 
 class Layer1:
-    def __init__(self, conn: "itf.IConnection", port: "FamilyLoki") -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyLoki2") -> None:
         module_id, port_id = port.kind
         self.serdes: Tuple[SerDesLoki, ...] = tuple(
                 SerDesLoki(conn, module_id, port_id, serdes_xindex=idx)
@@ -68,10 +87,10 @@ class Layer1:
         :type: RsFault
         """
 
-        self.pcs = PcsLayer(conn, port)
+        self.pcs = Loki2PcsLayer(conn, port)
         """PCS/FEC layer
         
-        :type: PcsLayer
+        :type: Loki2PcsLayer
         """
 
         self.prbs_config = PP_PRBSTYPE(conn, module_id, port_id)

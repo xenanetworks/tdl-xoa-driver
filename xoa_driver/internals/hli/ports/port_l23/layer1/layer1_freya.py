@@ -2,25 +2,25 @@ from typing import (
     TYPE_CHECKING,
     Tuple,
 )
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli.ports.port_l23.family_freya import FamilyFreya
-    from xoa_driver.internals.hli.ports.port_l23.family_thor2 import FamilyThor2
+
 from xoa_driver.internals.commands import (
     PL1_PCS_VARIANT,
     PP_PRBSTYPE,
     PP_LINKTRAINSTATUS,
 )
-from .layer1.prbs import Prbs
-from .layer1.impair import Impair
-from .layer1.pcs import PcsLayer, FreyaFecCodewordErrorInject
-from .tcvr.transceiver import Transceiver
-from .layer1.rs_fault import RsFault
-from .layer1.medium import FreyaMedium
-from .layer1.siv import FreyaSIV
-from .layer1.pma import FreyaPMA
-from .layer1.anlt import AnltAdvanced, LinkTrainingAdvanced, AnltBasic
+from .prbs import Prbs
+from .impair import Impair
+from .pcs import PcsLayer, FecCodewordErrorInject
+from ..tcvr.transceiver import Transceiver
+from .rs_fault import RsFault
+from .medium import FreyaMedium
+from .siv import FreyaSIV
+from .pma import FreyaPMA
+from .anlt import AnltAdvanced, LinkTrainingAdvanced, AnltBasic
 
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+    from ..family_freya import FamilyFreya
 
 class SerDesFreya:
     """L23 high-speed port SerDes configuration and status."""
@@ -75,7 +75,7 @@ class FreyaPcsLayer(PcsLayer):
     """Freya PCS and FEC configuration and status
     """
 
-    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya | FamilyThor2") -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya") -> None:
         module_id, port_id = port.kind
         PcsLayer.__init__(self, conn, port)
     
@@ -85,14 +85,14 @@ class FreyaPcsLayer(PcsLayer):
         :type: PL1_PCS_VARIANT
         """
 
-        self.fec_error_inject = FreyaFecCodewordErrorInject(conn, module_id, port_id)
+        self.fec_error_inject = FecCodewordErrorInject(conn, module_id, port_id)
         """FEC codeword error injection
 
         :type: FreyaFecCodewordErrorInject
         """
     
 class Layer1:
-    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya | FamilyThor2") -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyFreya") -> None:
         module_id, port_id = port.kind
 
         self.serdes: Tuple[SerDesFreya, ...] = tuple(

@@ -1,64 +1,54 @@
 from typing import (
     TYPE_CHECKING,
     Tuple,
+    Self,
 )
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli.ports.port_l23.family_edun import FamilyEdun
+
 from xoa_driver.internals.commands import (
-    PL1_PCS_VARIANT,
     PP_PRBSTYPE,
     PP_LINKTRAINSTATUS,
+    PL1_PCS_VARIANT,
 )
-from .layer1.pcs import PcsLayer, FreyaFecCodewordErrorInject
-from .layer1.impair import Impair
-from .layer1.prbs import Prbs
-from .layer1.pma import FreyaPMA
-from .layer1.medium import EdunMedium
-from .layer1.rs_fault import RsFault
-from .tcvr.transceiver import Transceiver
-from .layer1.anlt import AnltBasic
-from .layer1.siv import FreyaSIV
+from .prbs import Prbs
+from .pcs import PcsLayer, FecCodewordErrorInject
+from .impair import Impair
+from .medium import BasicMedium
+from .rs_fault import RsFault
+from .anlt import AnltBasic
+from ..tcvr.transceiver import Transceiver
 
-
-
-class SerDesEdun:
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+    from ..family_thor2 import FamilyThor2
+    
+class SerDesThor:
     """L23 high-speed port SerDes configuration and status."""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int, serdes_xindex: int) -> None:
 
         self.prbs = Prbs(conn, module_id, port_id, serdes_xindex)
-        """PRBS
+        """PRBS on SerDes level
+
         :type: Prbs
         """
-        
-        self.pma = FreyaPMA(conn, module_id, port_id, serdes_xindex)
-        """Edun PMA
 
-        :type: FreyaPMA
-        """
+        self.medium = BasicMedium(conn, module_id, port_id, serdes_xindex)
+        """Basic medium
 
-        self.medium = EdunMedium(conn, module_id, port_id, serdes_xindex)
-        """Edun medium
-
-        :type: EdunMedium
+        :type: BasicMedium
         """
 
         self.lt_status = PP_LINKTRAINSTATUS(conn, module_id, port_id, serdes_xindex)
-        """Basic ANLT - Link Training status on serdes level
+        """Link Training status on serdes level (Basic ANLT)
 
         :type: PP_LINKTRAINSTATUS
         """
 
-        self.siv = FreyaSIV(conn, module_id, port_id, serdes_xindex)
-        """Signal Integrity
-        """
-
-class EdunPcsLayer(PcsLayer):
-    """Edun PCS and FEC configuration and status
+class Thor2PcsLayer(PcsLayer):
+    """Thor2 PCS and FEC configuration and status
     """
 
-    def __init__(self, conn: "itf.IConnection", port: "FamilyEdun") -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyThor2") -> None:
         module_id, port_id = port.kind
         PcsLayer.__init__(self, conn, port)
     
@@ -66,15 +56,16 @@ class EdunPcsLayer(PcsLayer):
         """PCS variant configuration
         """
 
-        self.fec_error_inject = FreyaFecCodewordErrorInject(conn, module_id, port_id)
+        self.fec_error_inject = FecCodewordErrorInject(conn, module_id, port_id)
         """FEC codeword error injection
         """
+        
 
 class Layer1:
-    def __init__(self, conn: "itf.IConnection", port: "FamilyEdun") -> None:
+    def __init__(self, conn: "itf.IConnection", port: "FamilyThor2") -> None:
         module_id, port_id = port.kind
-        self.serdes: Tuple[SerDesEdun, ...] = tuple(
-                SerDesEdun(conn, module_id, port_id, serdes_xindex=idx)
+        self.serdes: Tuple[SerDesThor, ...] = tuple(
+                SerDesThor(conn, module_id, port_id, serdes_xindex=idx)
                 for idx in range(port.info.capabilities.serdes_count)
                 )
         
@@ -85,15 +76,15 @@ class Layer1:
         """
 
         self.rs_fault = RsFault(conn, module_id, port_id)
-        """RS Fault configuration and status
-
+        """RS Fault Management
+        
         :type: RsFault
         """
 
-        self.pcs = EdunPcsLayer(conn, port)
-        """Edun PCS and FEC configuration and status
-
-        :type: EdunPcsLayer
+        self.pcs = Thor2PcsLayer(conn, port)
+        """PCS/FEC layer
+        
+        :type: Thor2PcsLayer
         """
 
         self.prbs_config = PP_PRBSTYPE(conn, module_id, port_id)
@@ -101,7 +92,7 @@ class Layer1:
 
         :type: PP_PRBSTYPE
         """
-
+        
         self.anlt = AnltBasic(conn, module_id, port_id)
         """Basic ANLT. For per-serdes configuration and status, use serdes[x].
 
@@ -109,9 +100,9 @@ class Layer1:
 
         :type: AnltBasic
         """
-
+        
         self.transceiver = Transceiver(conn, module_id, port_id)
-        """Edun Transceiver configuration and status
+        """Thor Transceiver configuration and status
 
         :type: Transceiver
         """
@@ -121,5 +112,3 @@ class Layer1:
 
         :type: AnltBasic
         """
-        
-        

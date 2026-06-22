@@ -1,23 +1,29 @@
 
 import functools
-from typing import (
-    TYPE_CHECKING,
-    Tuple,
-    Self,
-)
+import typing
 from xoa_driver.internals.commands import (
     P_DYNAMIC,
     P_TPLDOFFSET,
 )
 from xoa_driver.internals.utils import attributes as utils
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
-
 from .bases.port_l23_genuine import BasePortL23Genuine
-from .layer1_edun import Layer1
+from .layer1.layer1_edun import Layer1
 from .layer1_adv.layer1 import Layer1Adv
 from .protocol.lldp import LLDP
 from .uec.ue import UltraEthernet
+
+if typing.TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+
+__all__ = (
+    "PEdun800G3S1PSMPX_a",
+    "PEdun1600G4S1POSFP_a",
+    "PEdun1600G4S1POSFP_c",
+    "PEdun1600G4S1POSFP_IHS_a",
+    "PEdun1600G4S1POSFP_RHS_a",
+    "PEdun1600G4S1POSFP_IHS_c",
+    "PEdun1600G4S1POSFP_RHS_c",
+)
 
 
 class FamilyEdun(BasePortL23Genuine):
@@ -47,7 +53,7 @@ class FamilyEdun(BasePortL23Genuine):
         :type: P_TPLDOFFSET
         """
 
-    async def _setup(self) -> Self:
+    async def _setup(self) -> typing.Self:
         await super()._setup()
 
         self.layer1 = Layer1(self._conn, self)
@@ -62,36 +68,43 @@ class FamilyEdun(BasePortL23Genuine):
     """Register a callback to the event that the port's dynamic traffic setting changes."""
 
 
+@typing.final
 class PEdun800G3S1PSMPX_a(FamilyEdun):
     """L23 port on Edun-800G-3S-1P-SMPX[a] module.
     """
     ...
 
+@typing.final
 class PEdun1600G4S1POSFP_a(FamilyEdun):
     """L23 port on Edun-1600G-4S-1P-OSFP[a] module.
     """
     ...
     
+@typing.final
 class PEdun1600G4S1POSFP_c(FamilyEdun):
     """L23 port on Edun-1600G-4S-1P-OSFP[c] module.
     """
     ...
     
+@typing.final
 class PEdun1600G4S1POSFP_IHS_a(FamilyEdun):
     """L23 port on Edun-1600G-4S-1P-OSFP-IHS[a] module.
     """
     ...
     
+@typing.final
 class PEdun1600G4S1POSFP_RHS_a(FamilyEdun):
     """L23 port on Edun-1600G-4S-1P-OSFP-RHS[a] module.
     """
     ...
     
+@typing.final
 class PEdun1600G4S1POSFP_IHS_c(FamilyEdun):
     """L23 port on Edun-1600G-4S-1P-OSFP-IHS[c] module.
     """
     ...
     
+@typing.final
 class PEdun1600G4S1POSFP_RHS_c(FamilyEdun):
     """L23 port on Edun-1600G-4S-1P-OSFP-RHS[c] module.
     """

@@ -1,20 +1,21 @@
 import functools
-from typing import (
-    TYPE_CHECKING,
-    Tuple,
-    Self,
-)
+import typing
 from xoa_driver.internals.commands import (
     P_DYNAMIC,
     P_TPLDOFFSET,
 )
 from xoa_driver.internals.utils import attributes as utils
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
 
 from .bases.port_l23_genuine import BasePortL23Genuine
-from .layer1_loki import Layer1
+from .layer1.layer1_loki2 import Layer1
 from .sec.macsec import MacSec
+
+if typing.TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
+
+__all__ = (
+    "PLoki100G5S4P_a",
+)
 
 
 class FamilyLoki2(BasePortL23Genuine):
@@ -39,7 +40,7 @@ class FamilyLoki2(BasePortL23Genuine):
         """
         
 
-    async def _setup(self) -> Self:
+    async def _setup(self) -> typing.Self:
         await super()._setup()
         self.layer1 = Layer1(self._conn, self)
         """Layer 1"""
@@ -49,6 +50,7 @@ class FamilyLoki2(BasePortL23Genuine):
     """Register a callback to the event that the port's dynamic traffic setting changes."""
 
 
+@typing.final
 class PLoki100G5S4P_a(FamilyLoki2):
     """L23 port on Loki-100G-5S-4P[a] module.
     """

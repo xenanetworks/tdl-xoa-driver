@@ -37,196 +37,26 @@ from xoa_driver.internals.utils.managers import ports_manager as pm
 from xoa_driver.internals.state_storage import modules_state
 from xoa_driver.enums import MediaConfigurationType
 from xoa_driver.internals.core.token import Token
-from .. import base_module as bm
-from .. import __interfaces as m_itf
+from ... import base_module as bm
+from ... import __interfaces as m_itf
+
+from ..health.health import MHealth
+from ..timing_clock.ppm_sweep import MClockSweep
+from ..timing_clock.timing import (
+    MTiming,
+    AdvancedTiming,
+)
+from ..module_config.module_type import (
+    ExtendedToken,
+    CFP,
+    ModuleConfig,
+)
+from ..upgrade.upgrade import MUpgrade
+
 
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
-    from xoa_driver.internals.hli.modules.module_chimera import ModuleChimera
-
-
-class TXClock:
-    """Advanced timing clock"""
-
-    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
-        self.source = M_TXCLOCKSOURCE_NEW(conn, module_id)
-        """The source that drives the TX clock rate of the ports on the test module.
-
-        :type: M_TXCLOCKSOURCE_NEW
-        """
-
-        self.status = M_TXCLOCKSTATUS_NEW(conn, module_id)
-        """TX clock status of the test module.
-
-        :type: M_TXCLOCKSTATUS_NEW
-        """
-
-        self.filter = M_TXCLOCKFILTER_NEW(conn, module_id)
-        """Loop bandwidth on the TX clock filter of the test module.
-
-        :type: M_TXCLOCKFILTER_NEW
-        """
-
-
-class SMA:
-    """SMA connector"""
-
-    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
-        self.input = M_SMAINPUT(conn, module_id)
-        """SMA input of the test module.
-
-        :type: M_SMAINPUT
-        """
-
-        self.output = M_SMAOUTPUT(conn, module_id)
-        """SMA output of the test module.
-
-        :type: M_SMAOUTPUT
-        """
-
-        self.status = M_SMASTATUS(conn, module_id)
-        """SMA input status of the test module.
-
-        :type: M_SMASTATUS
-        """
-
-
-class AdvancedTiming:
-    """Advanced Timing config and control"""
-
-    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
-        self.clock_tx = TXClock(conn, module_id)
-        """Advanced timing clock config and status
-
-        :type: TXClock
-        """
-
-        self.sma = SMA(conn, module_id)
-        """SMA connector
-
-        :type: SMA
-        """
-
-
-class ExtendedToken:
-    def __init__(
-        self, token: Token, module: typing.Union["ModuleL23", "ModuleChimera"]
-    ) -> None:
-        self.__token = token
-        self.__module = module
-
-    def __await__(self):
-        return self.__ask_then().__await__()
-
-    async def __ask_then(self):
-        r = await self.__token
-        p_counts = (await self.__module.port_count.get()).port_count
-        if self.__module.ports is not None:
-            changed = self.__module.ports.reinit(p_counts)
-            if changed:
-                await self.__module.ports.fill()
-        return r
-
-
-class MediaModule:
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
-        self.__media = M_MEDIA(conn, module.module_id)
-        self.__module = module
-
-    def get(self) -> Token:
-        return self.__media.get()
-
-    def set(self, media_config: MediaConfigurationType) -> ExtendedToken:
-        return ExtendedToken(self.__media.set(media_config), self.__module)
-    
-
-class CfpModule:
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
-        self.__cfpconfigext = M_CFPCONFIGEXT(conn, module.module_id)
-        self.__module = module
-    
-    def get(self) -> Token:
-        return self.__cfpconfigext.get()
-
-    def set(self, portspeed_list: typing.List[int]) -> ExtendedToken:
-        return ExtendedToken(self.__cfpconfigext.set(portspeed_list), self.__module)
-
-
-class CFP:
-    """Test module CFP"""
-
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
-        self.type = M_CFPTYPE(conn, module.module_id)
-        """The transceiver's CFP type currently inserted.
-
-        :type: M_CFPTYPE
-        """
-
-
-
-class ModuleConfig:
-    """Test module CFP"""
-
-    def __init__(self, conn: "itf.IConnection", module: typing.Union["ModuleL23", "ModuleChimera"]) -> None:
-        self.media = MediaModule(conn, module)
-        """Test module's media type configuration."""
-
-        self.port_speed = CfpModule(conn, module)
-        """Test module's port speed configuration."""
-
-        self.status = M_RECONFIG_STATUS(conn, module.module_id)
-        """Test module's configuration status."""
-
-class MTiming:
-    """Test module timing and clock configuration"""
-
-    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
-        self.source = M_TIMESYNC(conn, module_id)
-        """Timing source of the test module.
-
-        :type: M_TIMESYNC
-        """
-
-        self.clock_local_adjust = M_CLOCKPPB(conn, module_id)
-        """Time adjustment controlling of the local clock of the test module, which drives the TX rate of the test ports.
-
-        :type: M_CLOCKPPB
-        """
-
-        self.clock_sync_status = M_CLOCKSYNCSTATUS(conn, module_id)
-        """Test module's clock sync status.
-
-        :type: M_CLOCKSYNCSTATUS
-        """
-
-
-class MUpgrade:
-    """Test module upgrade"""
-
-    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
-        self.start = M_UPGRADE(conn, module_id)
-        """Start the upgrade progress of the test module.
-
-        :type: M_UPGRADE
-        """
-
-        self.progress = M_UPGRADEPROGRESS(conn, module_id)
-        """Upgrade progress status of the test module.
-
-        :type: M_UPGRADEPROGRESS
-        """
-
-        self.reload_image = M_FPGAREIMAGE(conn, module_id)
-        """Reload the FPGA image of the test module.
-
-        :type: M_FPGAREIMAGE
-        """
-        self.start_parallel = M_UPGRADEPAR(conn, module_id)
-        """
-        Start the parallel upgrade progress of the test module.
-
-        :type: M_UPGRADEPAR
-        """
+    from ...module_chimera import ModuleChimera
 
 
 class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
