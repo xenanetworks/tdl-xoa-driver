@@ -11,6 +11,30 @@ if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
 
+__all__ = (
+    "MOdin1G3S6P",
+    "MOdin1G3S6P_b",
+    "MOdin1G3S6PE",
+    "MOdin1G3S2PT",
+    "MOdin1G3S6PT1RJ45",
+    "MOdin5G4S6PCU",
+    "MOdin10G5S6PCU",
+    "MOdin10G5S6PCU_b",
+    "MOdin10G3S6PCU",
+    "MOdin10G3S2PCU",
+    "MOdin10G1S2P",
+    "MOdin10G1S2P_b",
+    "MOdin10G1S2P_c",
+    "MOdin10G1S6P",
+    "MOdin10G1S6P_b",
+    "MOdin10G1S2PT",
+    "MOdin10G1S2P_d",
+    "MOdin10G1S12P",
+    "MOdin100G3S1P",
+    "MOdin40G2S2P",
+    "MOdin40G2S2PB",
+    "MOdin10G6S6P_a",
+)
 
 #region - Odin-1G-3S-6P
 @typing.final

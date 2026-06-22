@@ -17,6 +17,63 @@ if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
 
+__all__ = (
+    "MFreya800G1S1P_a",
+    "MFreya800G1S1P_b",
+    "MFreya800G1S1POSFP_a",
+    "MFreya800G1S1POSFP_b",
+    "MFreya800G1S1P_a_g1",
+    "MFreya800G1S1P_b_g1",
+    "MFreya800G1S1POSFP_a_g1",
+    "MFreya800G1S1POSFP_b_g1",
+    "MFreya800G1S1P_a_g2",
+    "MFreya800G1S1P_b_g2",
+    "MFreya800G1S1POSFP_a_g2",
+    "MFreya800G1S1POSFP_b_g2",
+    "MFreya800G4S1P_a",
+    "MFreya800G4S1P_b",
+    "MFreya800G4S1P_c",
+    "MFreya800G4S1P_d",
+    "MFreya800G4S1P_e",
+    "MFreya800G4S1P_f",
+    "MFreya800G4S1POSFP_a",
+    "MFreya800G4S1POSFP_b",
+    "MFreya800G4S1POSFP_c",
+    "MFreya800G4S1POSFP_d",
+    "MFreya800G4S1POSFP_e",
+    "MFreya800G4S1POSFP_f",
+    "MFreya800G4S1P_a_g1",
+    "MFreya800G4S1P_b_g1",
+    "MFreya800G4S1P_c_g1",
+    "MFreya800G4S1P_d_g1",
+    "MFreya800G4S1P_e_g1",
+    "MFreya800G4S1P_f_g1",
+    "MFreya800G4S1POSFP_a_g1",
+    "MFreya800G4S1POSFP_b_g1",
+    "MFreya800G4S1POSFP_c_g1",
+    "MFreya800G4S1POSFP_d_g1",
+    "MFreya800G4S1POSFP_e_g1",
+    "MFreya800G4S1POSFP_f_g1",
+    "MFreya800G4S1P_a_g2",
+    "MFreya800G4S1P_b_g2",
+    "MFreya800G4S1P_c_g2",
+    "MFreya800G4S1P_d_g2",
+    "MFreya800G4S1P_e_g2",
+    "MFreya800G4S1P_f_g2",
+    "MFreya800G4S1POSFP_a_g2",
+    "MFreya800G4S1POSFP_b_g2",
+    "MFreya800G4S1POSFP_c_g2",
+    "MFreya800G4S1POSFP_d_g2",
+    "MFreya800G4S1POSFP_e_g2",
+    "MFreya800G4S1POSFP_f_g2",
+    "MFreya800G4S2P_a",
+    "MFreya800G4S2P_b",
+    "MFreya800G4S2P_c",
+    "MFreya800G4S2P_d",
+    "MFreya800G4S2P_e",
+    "MFreya800G4S2P_f",
+)
+
 
 #region - Module Family Freya
 class ModuleFamilyFreya(ModuleL23):
@@ -426,6 +483,7 @@ class MFreya800G4S1POSFP_f(ModuleFamilyFreya):
 
 #region - Freya-800G-4S-1P G1 QSFPDD Category
 
+@typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[a] G1")
 class MFreya800G4S1P_a_g1(ModuleFamilyFreya):
     """Test module Freya-800G-4S-1P[a] G1"""
@@ -611,6 +669,7 @@ class MFreya800G4S1POSFP_f_g1(ModuleFamilyFreya):
 
 #region - Freya-800G-4S-1P G2 QSFPDD Category   
 
+@typing.final
 @revisions.register_valkyrie_module(rev="Freya-800G-4S-1P[a] G2")
 class MFreya800G4S1P_a_g2(ModuleFamilyFreya):
     """Test module Freya-800G-4S-1P[a] G2"""

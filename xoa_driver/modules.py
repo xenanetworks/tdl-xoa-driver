@@ -3,132 +3,19 @@
 from typing import Union
 from .internals.hli.modules.modules_l23.bases.module_l23 import ModuleL23
 from .internals.hli.modules.module_l23ve import ModuleL23VE
-from .internals.hli.modules.module_chimera import (
-    ModuleChimera,
-    MChi100G5S2P,
-    MChi100G5S2P_b,
-    MChi40G2S2P,
-)
+from .internals.hli.modules.module_chimera import *
 from .internals.hli.modules.module_l47 import ModuleL47
 from .internals.hli.modules.module_l47ve import ModuleL47VE
-from .internals.hli.modules.modules_l23.family_combi import (
-    MOdin10G4S2PCombi,
-    MOdin10G4S2PCombi_b,
-)
-from .internals.hli.modules.modules_l23.family_odin import (
-    MOdin1G3S2PT,
-    MOdin1G3S6P,
-    MOdin1G3S6P_b,
-    MOdin1G3S6PE,
-    MOdin5G4S6PCU,
-    MOdin10G3S2PCU,
-    MOdin10G3S6PCU,
-    MOdin10G5S6PCU,
-    MOdin10G5S6PCU_b,
-    MOdin10G1S2P,
-    MOdin10G1S2P_b,
-    MOdin10G1S2P_c,
-    MOdin10G1S2P_d,
-    MOdin10G1S2PT,
-    MOdin10G1S6P,
-    MOdin10G1S6P_b,
-    MOdin10G1S12P,
-    MOdin10G6S6P_a,
-    MOdin100G3S1P,
-    MOdin1G3S6PT1RJ45,
-    MOdin40G2S2P,
-    MOdin40G2S2PB,
-)
-from .internals.hli.modules.modules_l23.family_loki import (
-    MLoki100G3S1P,
-    MLoki100G3S1P_b,
-    MLoki100G3S1PSE,
-    MLoki100G3S1PB,
-    MLoki100G3S1PB_b,
-    MLoki100G5S1P,
-    MLoki100G5S2P,
-)
-from .internals.hli.modules.modules_l23.family_loki2 import (
-    MLoki100G5S4P_a,
-)
-from .internals.hli.modules.modules_l23.family_thor import (
-    MThor100G5S4P,
-    MThor400G7S1P,
-    MThor400G7S1PLE,
-    MThor400G7S1P_b,
-    MThor400G7S1P_c,
-    MThor400G7S1P_d,
-)
-from .internals.hli.modules.modules_l23.family_thor2 import (
-#    MThor400G7S2P_a,
-    MThor400G7S2P_a_g2,
-    MThor400G7S2P_c_g2,
-)
-from .internals.hli.modules.modules_l23.family_freya import (
-    MFreya800G1S1P_a,
-    MFreya800G1S1P_b,
-    MFreya800G1S1POSFP_a,
-    MFreya800G1S1POSFP_b,
-    MFreya800G1S1P_a_g1,
-    MFreya800G1S1P_b_g1,
-    MFreya800G1S1POSFP_a_g1,
-    MFreya800G1S1POSFP_b_g1,
-    MFreya800G1S1P_a_g2,
-    MFreya800G1S1P_b_g2,
-    MFreya800G1S1POSFP_a_g2,
-    MFreya800G1S1POSFP_b_g2,
-    MFreya800G4S1P_a,
-    MFreya800G4S1P_b,
-    MFreya800G4S1P_c,
-    MFreya800G4S1P_d,
-    MFreya800G4S1P_e,
-    MFreya800G4S1P_f,
-    MFreya800G4S1POSFP_a,
-    MFreya800G4S1POSFP_b,
-    MFreya800G4S1POSFP_c,
-    MFreya800G4S1POSFP_d,
-    MFreya800G4S1POSFP_e,
-    MFreya800G4S1POSFP_f,
-    MFreya800G4S1P_a_g1,
-    MFreya800G4S1P_b_g1,
-    MFreya800G4S1P_c_g1,
-    MFreya800G4S1P_d_g1,
-    MFreya800G4S1P_e_g1,
-    MFreya800G4S1P_f_g1,
-    MFreya800G4S1POSFP_a_g1,
-    MFreya800G4S1POSFP_b_g1,
-    MFreya800G4S1POSFP_c_g1,
-    MFreya800G4S1POSFP_d_g1,
-    MFreya800G4S1POSFP_e_g1,
-    MFreya800G4S1POSFP_f_g1,
-    MFreya800G4S1P_a_g2,
-    MFreya800G4S1P_b_g2,
-    MFreya800G4S1P_c_g2,
-    MFreya800G4S1P_d_g2,
-    MFreya800G4S1P_e_g2,
-    MFreya800G4S1P_f_g2,
-    MFreya800G4S1POSFP_a_g2,
-    MFreya800G4S1POSFP_b_g2,
-    MFreya800G4S1POSFP_c_g2,
-    MFreya800G4S1POSFP_d_g2,
-    MFreya800G4S1POSFP_e_g2,
-    MFreya800G4S1POSFP_f_g2,
-    MFreya800G4S2P_a,
-    MFreya800G4S2P_b,
-    MFreya800G4S2P_c,
-    MFreya800G4S2P_d,
-    MFreya800G4S2P_e,
-    MFreya800G4S2P_f,
-)
-from .internals.hli.modules.modules_l23.family_edun import (
-    MEdun800G3S1PSMPX_a,
-    MEdun1600G4S1POSFP_a,
-    MEdun1600G4S1POSFP_IHS_a,
-    MEdun1600G4S1POSFP_RHS_a,
-    MEdun1600G4S1POSFP_c,
-    MEdun1600G4S1POSFP_IHS_c,
-    MEdun1600G4S1POSFP_RHS_c,
-)
+from .internals.hli.modules.modules_l23.family_combi import *
+from .internals.hli.modules.modules_l23.family_odin import *
+from .internals.hli.modules.modules_l23.family_loki import *
+from .internals.hli.modules.modules_l23.family_loki2 import *
+from .internals.hli.modules.modules_l23.family_thor import *
+from .internals.hli.modules.modules_l23.family_thor2 import *
+from .internals.hli.modules.modules_l23.family_freya import *
+from .internals.hli.modules.modules_l23.family_edun import *
+
+#region - Z10 Odin Module Type
 Z10OdinModule = Union[
     MOdin1G3S2PT,
     MOdin1G3S6P,
@@ -155,7 +42,9 @@ Z10OdinModule = Union[
     MOdin40G2S2PB,
     MOdin100G3S1P,
 ]
+#endregion
 
+#region - Z100 Loki Module Type
 Z100LokiModule = Union[
     MLoki100G3S1P,
     MLoki100G3S1P_b,
@@ -166,7 +55,10 @@ Z100LokiModule = Union[
     MLoki100G5S2P,
     MLoki100G5S4P_a,
 ]
+    
+#endregion
 
+#region - Z400 Thor Module Type
 Z400ThorModule = Union[
     MThor100G5S4P,
     MThor400G7S1P,
@@ -176,12 +68,17 @@ Z400ThorModule = Union[
     MThor400G7S1P_d,
 ]
 
+#endregion
+
+#region - Z400 Thor II Module Type
 Z400ThorModuleNG = Union[
-#    MThor400G7S2P_a,
     MThor400G7S2P_a_g2,
     MThor400G7S2P_c_g2,
 ]
 
+#endregion
+
+#region - Z800 Freya Module Type
 Z800FreyaModule = Union[
     MFreya800G1S1P_a,
     MFreya800G1S1P_b,
@@ -238,30 +135,35 @@ Z800FreyaModule = Union[
     MFreya800G4S2P_e,
     MFreya800G4S2P_f,
 ]
+#endregion
 
+#region - Z1600 Edun Module Type
 Z1600EdunModule = Union[
     MEdun800G3S1PSMPX_a,
     MEdun1600G4S1POSFP_a,
-    MEdun1600G4S1POSFP_IHS_a,
     MEdun1600G4S1POSFP_RHS_a,
     MEdun1600G4S1POSFP_c,
-    MEdun1600G4S1POSFP_IHS_c,
     MEdun1600G4S1POSFP_RHS_c,
 ]
+#endregion
 
+#region - E100 Chimera Module Type
 E100ChimeraModule = Union[
-    ModuleChimera,
     MChi100G5S2P,
     MChi100G5S2P_b,
     MChi40G2S2P,
 ]
+#endregion
 
+#region - Legacy Module Type
 LegacyModule = Union[
     ModuleL23VE,
     ModuleL47,
     ModuleL47VE,
 ]
+#endregion
 
+#region - Generic Xena Module Type
 GenericL23Module = Union[
     MOdin1G3S2PT,
     MOdin1G3S6P,
@@ -365,24 +267,22 @@ GenericL23Module = Union[
     
     MEdun800G3S1PSMPX_a,
     MEdun1600G4S1POSFP_a,
-    MEdun1600G4S1POSFP_IHS_a,
     MEdun1600G4S1POSFP_RHS_a,
     MEdun1600G4S1POSFP_c,
-    MEdun1600G4S1POSFP_IHS_c,
     MEdun1600G4S1POSFP_RHS_c,
 ]
+#endregion
 
+#region - Generic Any Xena Module Type
 GenericAnyModule = Union[
     GenericL23Module,
+    E100ChimeraModule,
     
     ModuleL23VE,
     ModuleL47,
     ModuleL47VE,
-    ModuleChimera,
-    MChi100G5S2P,
-    MChi100G5S2P_b,
-    MChi40G2S2P,
 ]
+#endregion
 
 __all__ = (
     "ModuleL23",
@@ -437,7 +337,6 @@ __all__ = (
     "MThor400G7S1P_d",
 
     "Z400ThorModuleNG",
-#    "MThor400G7S2P_a",
     "MThor400G7S2P_a_g2",
     "MThor400G7S2P_c_g2",
     
@@ -500,14 +399,11 @@ __all__ = (
     "Z1600EdunModule",
     "MEdun800G3S1PSMPX_a",
     "MEdun1600G4S1POSFP_a",
-    "MEdun1600G4S1POSFP_IHS_a",
     "MEdun1600G4S1POSFP_RHS_a",
     "MEdun1600G4S1POSFP_c",
-    "MEdun1600G4S1POSFP_IHS_c",
     "MEdun1600G4S1POSFP_RHS_c",
 
     "E100ChimeraModule",
-    "ModuleChimera",
     "MChi100G5S2P",
     "MChi100G5S2P_b",
     "MChi40G2S2P",

@@ -39,6 +39,12 @@ if typing.TYPE_CHECKING:
     from xoa_driver.internals.hli.modules.modules_l23.module_l23_base import ModuleL23
     from . import __interfaces as m_itf
 
+__all__ = (
+    "MChi100G5S2P",
+    "MChi100G5S2P_b",
+    "MChi40G2S2P",
+)
+
 
 class ChTXClock:
     """

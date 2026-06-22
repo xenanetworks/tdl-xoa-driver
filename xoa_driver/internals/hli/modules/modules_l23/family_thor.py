@@ -8,8 +8,17 @@ from .bases.module_l23 import ModuleL23
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
-    
-    
+
+__all__ = (
+    "MThor100G5S4P",
+    "MThor400G7S1P",
+    "MThor400G7S1PLE",
+    "MThor400G7S1P_b",
+    "MThor400G7S1P_c",
+    "MThor400G7S1P_d",
+)
+
+
 #region - Thor-100G
 @typing.final
 @revisions.register_valkyrie_module(rev="Thor-100G-5S-4P")

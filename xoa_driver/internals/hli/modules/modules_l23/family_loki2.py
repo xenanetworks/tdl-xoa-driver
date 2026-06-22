@@ -10,6 +10,9 @@ if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
 
+__all__ = (
+    "MLoki100G5S4P_a",
+)
 
 
 #region - Module Family Loki-II

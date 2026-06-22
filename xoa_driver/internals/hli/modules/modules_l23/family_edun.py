@@ -20,6 +20,14 @@ from .timing_clock.ppm_sweep import MClockSweep
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
+    
+__all__ = (
+    "MEdun800G3S1PSMPX_a",
+    "MEdun1600G4S1POSFP_a",
+    "MEdun1600G4S1POSFP_c",
+    "MEdun1600G4S1POSFP_RHS_a",
+    "MEdun1600G4S1POSFP_RHS_c",
+)
 
 #region - Module Family Edun
 class ModuleFamilyEdun(ModuleL23):

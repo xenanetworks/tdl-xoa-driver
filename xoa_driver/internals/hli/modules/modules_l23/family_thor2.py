@@ -10,6 +10,11 @@ if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
 
+__all__ = (
+    "MThor400G7S2P_a_g2",
+    "MThor400G7S2P_c_g2",
+)
+
 
 #region - Module Family Thor-II
 class ModuleFamilyThor2(ModuleL23):

@@ -1,24 +1,45 @@
 
 import functools
-from typing import (
-    TYPE_CHECKING,
-    Tuple,
-    Self,
-)
+import typing
 from xoa_driver.internals.commands import (
     P_DYNAMIC,
     P_TPLDOFFSET,
 )
 from xoa_driver.internals.utils import attributes as utils
-
 from .bases.port_l23_genuine import BasePortL23Genuine
 from .layer1.layer1_freya import Layer1
 from .layer1_adv.layer1 import Layer1Adv
 from .protocol.lldp import LLDP
 from .uec.ue import UltraEthernet
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
+
+__all__ = (
+    "PFreya800G1S1P_a",
+    "PFreya800G1S1P_b",
+    "PFreya800G1S1POSFP_a",
+    "PFreya800G1S1POSFP_b",
+    "PFreya800G4S1P_a",
+    "PFreya800G4S1P_b",
+    "PFreya800G4S1P_c",
+    "PFreya800G4S1P_d",
+    "PFreya800G4S1P_e",
+    "PFreya800G4S1P_f",
+    "PFreya800G4S1POSFP_a",
+    "PFreya800G4S1POSFP_b",
+    "PFreya800G4S1POSFP_c",
+    "PFreya800G4S1POSFP_d",
+    "PFreya800G4S1POSFP_e",
+    "PFreya800G4S1POSFP_f",
+    "PFreya800G4S2P_a",
+    "PFreya800G4S2P_b",
+    "PFreya800G4S2P_c",
+    "PFreya800G4S2P_d",
+    "PFreya800G4S2P_e",
+    "PFreya800G4S2P_f",
+)
+
 
 class FamilyFreya(BasePortL23Genuine):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
@@ -47,7 +68,7 @@ class FamilyFreya(BasePortL23Genuine):
         :type: P_TPLDOFFSET
         """
 
-    async def _setup(self) -> Self:
+    async def _setup(self) -> typing.Self:
         await super()._setup()
 
         self.layer1 = Layer1(self._conn, self)
@@ -63,59 +84,65 @@ class FamilyFreya(BasePortL23Genuine):
 
 
 #region Freya 1P QSFPDD
+@typing.final
 class PFreya800G1S1P_a(FamilyFreya):
     """L23 port on Freya-800G-1S-1P[a] module.
     """
     ...
 
 
+@typing.final
 class PFreya800G1S1P_b(FamilyFreya):
     """L23 port on Freya-800G-1S-1P[b] module.
     """
     ...
 
 
+@typing.final
 class PFreya800G1S1POSFP_a(FamilyFreya):
     """L23 port on Freya-800G-1S-1P-OSFP[a] module.
     """
     ...
 
+@typing.final
 class PFreya800G1S1POSFP_b(FamilyFreya):
     """L23 port on Freya-800G-1S-1P-OSFP[b] module.
     """
     ...
 
 
+@typing.final
 class PFreya800G4S1P_a(FamilyFreya):
     """L23 port on Freya-800G-4S-1P[a] module.
     """
     ...
 
 
+@typing.final
 class PFreya800G4S1P_b(FamilyFreya):
     """L23 port on Freya-800G-4S-1P[b] module.
     """
     ...
 
-
+@typing.final
 class PFreya800G4S1P_c(FamilyFreya):
     """L23 port on Freya-800G-4S-1P[c] module.
     """
     ...
 
-
+@typing.final
 class PFreya800G4S1P_d(FamilyFreya):
     """L23 port on Freya-800G-4S-1P[d] module.
     """
     ...
 
-
+@typing.final
 class PFreya800G4S1P_e(FamilyFreya):
     """L23 port on Freya-800G-4S-1P[e] module.
     """
     ...
 
-
+@typing.final
 class PFreya800G4S1P_f(FamilyFreya):
     """L23 port on Freya-800G-4S-1P[f] module.
     """
@@ -125,36 +152,42 @@ class PFreya800G4S1P_f(FamilyFreya):
 
 #region Freya 1P OSFP
 
+@typing.final
 class PFreya800G4S1POSFP_a(FamilyFreya):
     """L23 port on Freya-800G-4S-1P-OSFP[a] module.
     """
     ...
 
 
+@typing.final
 class PFreya800G4S1POSFP_b(FamilyFreya):
     """L23 port on Freya-800G-4S-1P-OSFP[b] module.
     """
     ...
 
 
+@typing.final
 class PFreya800G4S1POSFP_c(FamilyFreya):
     """L23 port on Freya-800G-4S-1P-OSFP[c] module.
     """
     ...
 
 
+@typing.final
 class PFreya800G4S1POSFP_d(FamilyFreya):
     """L23 port on Freya-800G-4S-1P-OSFP[d] module.
     """
     ...
 
 
+@typing.final
 class PFreya800G4S1POSFP_e(FamilyFreya):
     """L23 port on Freya-800G-4S-1P-OSFP[e] module.
     """
     ...
 
 
+@typing.final
 class PFreya800G4S1POSFP_f(FamilyFreya):
     """L23 port on Freya-800G-4S-1P-OSFP[f] module.
     """
@@ -164,31 +197,37 @@ class PFreya800G4S1POSFP_f(FamilyFreya):
 
 #region Freya 2P QSFPDD
 
+@typing.final
 class PFreya800G4S2P_a(FamilyFreya):
     """L23 port on Freya-800G-4S-2P[a] module.
     """
     ...
 
+@typing.final
 class PFreya800G4S2P_b(FamilyFreya):
     """L23 port on Freya-800G-4S-2P[b] module.
     """
     ...
 
+@typing.final
 class PFreya800G4S2P_c(FamilyFreya):
     """L23 port on Freya-800G-4S-2P[c] module.
     """
     ...
 
+@typing.final
 class PFreya800G4S2P_d(FamilyFreya):
     """L23 port on Freya-800G-4S-2P[d] module.
     """
     ...
 
+@typing.final
 class PFreya800G4S2P_e(FamilyFreya):
     """L23 port on Freya-800G-4S-2P[e] module.
     """
     ...
 
+@typing.final
 class PFreya800G4S2P_f(FamilyFreya):
     """L23 port on Freya-800G-4S-2P[f] module.
     """

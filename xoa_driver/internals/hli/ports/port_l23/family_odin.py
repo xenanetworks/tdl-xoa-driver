@@ -1,7 +1,5 @@
 import functools
-from typing import (
-    TYPE_CHECKING,
-)
+import typing
 from xoa_driver.internals.commands import (
     P_MDIXMODE,
     P_AUTONEGSELECTION,
@@ -15,8 +13,38 @@ from .trafficgen.runt import Runt
 from .layer1.preamble import Preamble
 from .layer1.brr import BroadrReach
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
+
+__all__ = (
+    "POdin1G3S6P",
+    "POdin1G3S6P_b",
+    "POdin1G3S6PE",
+    "POdin1G3S2PT",
+    "POdin1G4S4PCombi",
+    "POdin1G4S4PCombi_b",
+    "POdin10G4S2PCombi",
+    "POdin10G4S2PCombi_b",
+    "POdin10G1S2P",
+    "POdin10G1S2P_b",
+    "POdin10G1S2P_c",
+    "POdin10G1S6P",
+    "POdin10G1S6P_b",
+    "POdin5G4S6PCU",
+    "POdin10G5S6PCU",
+    "POdin10G5S6PCU_b",
+    "POdin10G3S6PCU",
+    "POdin10G3S2PCU",
+    "POdin10G6S6P_a",
+    "POdin10G1S2PT",
+    "POdin10G1S2P_d",
+    "POdin10G1S12P",
+    "POdin40G2S2P",
+    "POdin40G2S2PB",
+    "POdin1G3S6PT1RJ45",
+    "POdin100G3S1P",
+)
+
 
 class FamilyOdin(BasePortL23Genuine):
     """Base class for Odin-1G port"""
@@ -39,8 +67,6 @@ class FamilyOdin(BasePortL23Genuine):
     on_dynamic_change = functools.partialmethod(utils.on_event, P_DYNAMIC)
     """Register a callback to the event that the port's dynamic traffic setting changes."""
 
-        
-        
 
 class POdin1G3S6P(FamilyOdin):
     """L23 port on Odin-1G-3S-6P module.
@@ -54,30 +80,35 @@ class POdin1G3S6P(FamilyOdin):
         """
 
 
+@typing.final
 class POdin1G3S6P_b(POdin1G3S6P):
     """L23 port on Odin-1G-3S-6P[b] module.
     """
     ...
 
 
+@typing.final
 class POdin1G3S6PE(POdin1G3S6P):
     """L23 port on Odin-1G-3S-6P-E module.
     """
     ...
 
 
+@typing.final
 class POdin1G3S2PT(POdin1G3S6P):
     """L23 port on Odin-1G-3S-2P-T module.
     """
     ...
 
 
+@typing.final
 class POdin1G4S4PCombi(FamilyOdin):
     """L23 port on Odin-1G-4S-2P-Combi module.
     """
     ...
 
 
+@typing.final
 class POdin1G4S4PCombi_b(FamilyOdin):
     """L23 port on Odin-1G-4S-2P-Combi_b module.
     """
@@ -85,12 +116,14 @@ class POdin1G4S4PCombi_b(FamilyOdin):
 
 
 
+@typing.final
 class POdin10G4S2PCombi(FamilyOdin):
     """L23 port on Odin-10G-4S-2P-Combi module.
     """
     ...
 
 
+@typing.final
 class POdin10G4S2PCombi_b(FamilyOdin):
     """L23 port on Odin-10G-4S-2P-Combi_b module.
     """
@@ -102,12 +135,14 @@ class POdin10G1S2P(FamilyOdin):
     ...
 
 
+@typing.final
 class POdin10G1S2P_b(POdin10G1S2P):
     """L23 port on Odin-10G-1S-2P[b] module.
     """
     ...
 
 
+@typing.final
 class POdin10G1S2P_c(POdin10G1S2P):
     """L23 port on Odin-10G-1S-2P[c] module.
     """
@@ -119,12 +154,14 @@ class POdin10G1S6P(FamilyOdin):
     """
     ...
 
+@typing.final
 class POdin10G1S6P_b(POdin10G1S6P):
     """L23 port on Odin-10G-1S-6P[b] module.
     """
     ...
 
 
+@typing.final
 class POdin5G4S6PCU(FamilyOdin):
     """L23 port on Odin-5G-4S-6P-CU module.
     """
@@ -144,24 +181,28 @@ class POdin10G5S6PCU(FamilyOdin):
         """
 
 
+@typing.final
 class POdin10G5S6PCU_b(POdin10G5S6PCU):
     """L23 port on Odin-10G-5S-6P-CU[b] module.
     """
     ...
 
 
+@typing.final
 class POdin10G3S6PCU(FamilyOdin):
     """L23 port on Odin-10G-3S-6P-CU module.
     """
     ...
 
 
+@typing.final
 class POdin10G3S2PCU(FamilyOdin):
     """L23 port on Odin-10G-3S-2P-CU module.
     """
     ...
 
 
+@typing.final
 class POdin10G6S6P_a(FamilyOdin):
     """L23 port on Odin-10G-6S-6P[a] module.
     """
@@ -181,18 +222,21 @@ class POdin10G6S6P_a(FamilyOdin):
         """
 
 
+@typing.final
 class POdin10G1S2PT(FamilyOdin):
     """L23 port on Odin-10G-1S-2P-T module.
     """
     ...
 
 
+@typing.final
 class POdin10G1S2P_d(FamilyOdin):
     """L23 port on Odin-10G-1S-2P[d] module.
     """
     ...
 
 
+@typing.final
 class POdin10G1S12P(FamilyOdin):
     """L23 port on Odin-10G-1S-12P module.
     """
@@ -206,12 +250,14 @@ class POdin40G2S2P(FamilyOdin):
     
 
 
+@typing.final
 class POdin40G2S2PB(POdin40G2S2P):
     """L23 port on Odin-40G-2S-2P-B module.
     """
     ...
 
 
+@typing.final
 class POdin1G3S6PT1RJ45(FamilyOdin):
     """L23 port on Odin-1G-3S-6P-T1-RJ45 module.
     """
@@ -221,6 +267,7 @@ class POdin1G3S6PT1RJ45(FamilyOdin):
         """BroadR-Reach settings.
         """
 
+@typing.final
 class POdin100G3S1P(FamilyOdin):
     """L23 port on Odin-100G-3S-1P module.
     """

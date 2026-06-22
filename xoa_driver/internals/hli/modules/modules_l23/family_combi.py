@@ -5,12 +5,16 @@ from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
 from xoa_driver.internals.utils.cap_id import CapID
 from xoa_driver.internals.commands import P_CAPABILITIES
+from .bases.module_l23 import ModuleL23
 
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
 
-from .bases.module_l23 import ModuleL23
+__all__ = (
+    "MOdin10G4S2PCombi",
+    "MOdin10G4S2PCombi_b",
+)
 
 D_FAMELY_ID = CapID(1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 F_FAMELY_ID = CapID(0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
