@@ -572,7 +572,7 @@ class P_UE_CTLOS_SPACING:
         :type reserved3: int
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target_spacing=target_spacing, min_spacing=min_spacing, reserved1=reserved1, reserved2=reserved2))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, reserved1=reserved1, min_spacing=min_spacing, reserved2=reserved2, reserved3=reserved3))
 
 
 @register_command
