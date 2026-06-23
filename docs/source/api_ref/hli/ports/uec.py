@@ -70,7 +70,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.llr_init_echo_mismatch
 
     # Get LLR Tx layer-2 statistics
-    resp = await port.uec.llr.stats.tx.get()
+    resp = await port.uec.llr.statistics.tx.get()
     resp.tx_llr_eligible_good_fcs
     resp.tx_llr_eligible_poisoned_fcs
     resp.tx_llr_eligible_bad_fcs
@@ -81,7 +81,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
     resp.tx_replayed
 
     # Get LLR Rx layer-2 statistics
-    resp = await port.uec.llr.stats.rx.get()
+    resp = await port.uec.llr.statistics.rx.get()
     resp.rx_llr_eligible_good_fcs
     resp.rx_llr_eligible_poisoned_fcs
     resp.rx_llr_eligible_bad_fcs

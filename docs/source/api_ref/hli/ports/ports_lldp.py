@@ -76,7 +76,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         eth = hlfuncs.headers.Ethernet()
         eth.dst_mac = "0180.c200.000e"
         eth.src_mac = "00:11:22:33:44:55"
-        eth.ethertype = 0x88cc
+        eth.ethertype = hlfuncs.headers.EtherType.LLDP
         await lldp_agent.header.set(header=Hex(str(eth)))
         resp = await lldp_agent.header.get()
 

@@ -16,6 +16,7 @@ class EtherType(Enum):
     MPLS = 0x8847
     eCPRI = 0xAEFE
     MACControl = 0x8808
+    LLDP = 0x88CC
     NONE = 0xFFFF
 
 class IPProtocol(Enum):
