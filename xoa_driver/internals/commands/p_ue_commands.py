@@ -525,29 +525,29 @@ class P_UE_CTLOS_SPACING:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        target_spacing: int = field(XmpInt())
-        """integer, the target CtlOS spacing."""
+        reserved1: int = field(XmpInt())
+        """integer, reserved."""
 
         min_spacing: int = field(XmpInt())
         """integer, the minimum CtlOS spacing."""
 
-        reserved1: int = field(XmpInt())
+        reserved2: int = field(XmpInt())
         """integer, reserved."""
 
-        reserved2: int = field(XmpInt())
+        reserved3: int = field(XmpInt())
         """integer, reserved."""
 
     class SetDataAttr(RequestBodyStruct):
-        target_spacing: int = field(XmpInt())
-        """integer, the target CtlOS spacing."""
+        reserved1: int = field(XmpInt())
+        """integer, reserved."""
 
         min_spacing: int = field(XmpInt())
         """integer, the minimum CtlOS spacing."""
 
-        reserved1: int = field(XmpInt())
+        reserved2: int = field(XmpInt())
         """integer, reserved."""
 
-        reserved2: int = field(XmpInt())
+        reserved3: int = field(XmpInt())
         """integer, reserved."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -559,17 +559,17 @@ class P_UE_CTLOS_SPACING:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, target_spacing: int, min_spacing: int, reserved1: int, reserved2: int) -> Token[None]:
+    def set(self, reserved1: int, min_spacing: int, reserved2: int, reserved3: int) -> Token[None]:
         """Set the CtlOS spacing parameters of the port.
 
-        :param target_spacing: the target CtlOS spacing
-        :type target_spacing: int
+        :param reserved1: the target CtlOS spacing
+        :type reserved1: int
         :param min_spacing: the minimum CtlOS spacing
         :type min_spacing: int
-        :param reserved1: reserved
-        :type reserved1: int
         :param reserved2: reserved
         :type reserved2: int
+        :param reserved3: reserved
+        :type reserved3: int
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target_spacing=target_spacing, min_spacing=min_spacing, reserved1=reserved1, reserved2=reserved2))
@@ -591,41 +591,41 @@ class P_UE_LLR_REPLAY:
 
     class GetDataAttr(ResponseBodyStruct):
         outstanding_seq_max: int = field(XmpInt())
-        """integer, the maximum number of outstanding sequence numbers."""
+        """integer, a configuration for the maximum permitted value of outstanding_seq. Values: 0 to 524288. The absolute maximum permitted value for outstanding_seq_max is 524288, which is equivalent to consuming half of the total sequence number space."""
 
-        outstanding_data_max: int = field(XmpInt())
-        """integer, the maximum amount of outstanding data."""
+        reserved1: int = field(XmpInt())
+        """integer, reserved for future use. Value is ignored in the current implementation."""
 
         replay_timer_max: int = field(XmpInt())
-        """integer, the maximum value of the replay timer."""
+        """integer, configuration to set the value of replay_timer at which replay_timer_expired is set and a replay is initiated. Values: 0 to 65535 ns with a resolution better than 10 ns."""
 
         replay_ct_max: int = field(XmpInt())
-        """integer, the maximum replay count."""
+        """integer, a configuration to set the maximum number of times a replay is performed before the LLR mechanism gives up and enters the FLUSH state. A value of 255 (i.e., all-ones) is used to indicate that there is no maximum. Values: 0 to 255."""
 
-        pcs_lost_status_timer_max: int = field(XmpLong())
-        """long integer, the maximum value of the PCS lost status timer."""
+        reserved2: int = field(XmpLong())
+        """long integer, reserved for future use. Value is ignored in the current implementation."""
 
         data_age_timer_max: int = field(XmpLong())
-        """long integer, the maximum value of the data age timer."""
+        """long integer, the value at which the data_age_timer is considered to have expired. Values: 0 to 4,290,000,000 ns with a resolution better than 100 ns."""
 
     class SetDataAttr(RequestBodyStruct):
         outstanding_seq_max: int = field(XmpInt())
-        """integer, the maximum number of outstanding sequence numbers."""
+        """integer, a configuration for the maximum permitted value of outstanding_seq. Values: 0 to 524288. The absolute maximum permitted value for outstanding_seq_max is 524288, which is equivalent to consuming half of the total sequence number space."""
 
-        outstanding_data_max: int = field(XmpInt())
-        """integer, the maximum amount of outstanding data."""
+        reserved1: int = field(XmpInt())
+        """integer, reserved for future use. Value is ignored in the current implementation."""
 
         replay_timer_max: int = field(XmpInt())
-        """integer, the maximum value of the replay timer."""
+        """integer, configuration to set the value of replay_timer at which replay_timer_expired is set and a replay is initiated. Values: 0 to 65535 ns with a resolution better than 10 ns."""
 
         replay_ct_max: int = field(XmpInt())
-        """integer, the maximum replay count."""
+        """integer, a configuration to set the maximum number of times a replay is performed before the LLR mechanism gives up and enters the FLUSH state. A value of 255 (i.e., all-ones) is used to indicate that there is no maximum. Values: 0 to 255."""
 
-        pcs_lost_status_timer_max: int = field(XmpLong())
-        """long integer, the maximum value of the PCS lost status timer."""
+        reserved2: int = field(XmpLong())
+        """long integer, reserved for future use. Value is ignored in the current implementation."""
 
         data_age_timer_max: int = field(XmpLong())
-        """long integer, the maximum value of the data age timer."""
+        """long integer, the value at which the data_age_timer is considered to have expired. Values: 0 to 4,290,000,000 ns with a resolution better than 100 ns."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the LLR replay parameters of the port.
@@ -636,24 +636,24 @@ class P_UE_LLR_REPLAY:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, outstanding_seq_max: int, outstanding_data_max: int, replay_timer_max: int, replay_ct_max: int, pcs_lost_status_timer_max: int, data_age_timer_max: int) -> Token[None]:
+    def set(self, outstanding_seq_max: int, reserved1: int, replay_timer_max: int, replay_ct_max: int, reserved2: int, data_age_timer_max: int) -> Token[None]:
         """Set the LLR replay parameters of the port.
 
-        :param outstanding_seq_max: the maximum number of outstanding sequence numbers
+        :param outstanding_seq_max: a configuration for the maximum permitted value of outstanding_seq. Values: 0 to 524288.
         :type outstanding_seq_max: int
-        :param outstanding_data_max: the maximum amount of outstanding data
-        :type outstanding_data_max: int
-        :param replay_timer_max: the maximum value of the replay timer
+        :param reserved1: reserved for future use. Value is ignored in the current implementation.
+        :type reserved1: int
+        :param replay_timer_max: configuration to set the value of replay_timer at which replay_timer_expired is set and a replay is initiated. Values: 0 to 65535 ns with a resolution better than 10 ns.
         :type replay_timer_max: int
-        :param replay_ct_max: the maximum replay count
+        :param replay_ct_max: the maximum number of times a replay is performed before the LLR mechanism gives up and enters the FLUSH state. A value of 255 indicates no maximum. Values: 0 to 255.
         :type replay_ct_max: int
-        :param pcs_lost_status_timer_max: the maximum value of the PCS lost status timer
-        :type pcs_lost_status_timer_max: int
-        :param data_age_timer_max: the maximum value of the data age timer
+        :param reserved2: reserved for future use. Value is ignored in the current implementation.
+        :type reserved2: int
+        :param data_age_timer_max: the value at which the data_age_timer is considered to have expired. Values: 0 to 4,290,000,000 ns with a resolution better than 100 ns.
         :type data_age_timer_max: int
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, outstanding_seq_max=outstanding_seq_max, outstanding_data_max=outstanding_data_max, replay_timer_max=replay_timer_max, replay_ct_max=replay_ct_max, pcs_lost_status_timer_max=pcs_lost_status_timer_max, data_age_timer_max=data_age_timer_max))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, outstanding_seq_max=outstanding_seq_max, reserved1=reserved1, replay_timer_max=replay_timer_max, replay_ct_max=replay_ct_max, reserved2=reserved2, data_age_timer_max=data_age_timer_max))
 
 
 @register_command
@@ -959,9 +959,9 @@ class P_UE_LLR_TXERR:
 
 @register_command
 @dataclass
-class P_UE_LLR_TXERR_POISONFCS:
+class P_UE_LLR_POISONFCS:
     """
-    Configures the poison FCS pattern used by the LLR TX error injection of the port.
+    Configure the FCS poison pattern for LLR-eligible frames when injecting poisoned FCS errors using ``P_UE_LLR_INJECT_ERR`` with the ``type = FCS_POISONED``.
     """
 
     code: typing.ClassVar[int] = 1028
@@ -973,25 +973,25 @@ class P_UE_LLR_TXERR_POISONFCS:
 
     class GetDataAttr(ResponseBodyStruct):
         pattern: Hex = field(XmpHex(size=4))
-        """4 bytes in hex format, the 32-bit poison FCS pattern."""
+        """4 bytes in hex format, FCS poison pattern. Length is 32 bits (4 bytes). The default value is 0xAAAAAAAA."""
 
     class SetDataAttr(RequestBodyStruct):
         pattern: Hex = field(XmpHex(size=4))
-        """4 bytes in hex format, the 32-bit poison FCS pattern."""
+        """4 bytes in hex format, FCS poison pattern. Length is 32 bits (4 bytes). The default value is 0xAAAAAAAA."""
 
     def get(self) -> Token[GetDataAttr]:
-        """Get the poison FCS pattern of the port.
+        """Get the FCS poison pattern of the port.
 
-        :return: the poison FCS pattern of the port
-        :rtype: P_UE_LLR_TXERR_POISONFCS.GetDataAttr
+        :return: the FCS poison pattern of the port
+        :rtype: P_UE_LLR_POISONFCS.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, pattern: Hex) -> Token[None]:
-        """Set the poison FCS pattern of the port.
+        """Set the FCS poison pattern of the port.
 
-        :param pattern: the 32-bit poison FCS pattern (4 bytes)
+        :param pattern: FCS poison pattern. Length is 32 bits (4 bytes). The default value is 0xAAAAAAAA.
         :type pattern: Hex
         """
 
@@ -1364,7 +1364,7 @@ __all__ = [
     "P_UE_LLR_INIT_ECHO",
     "P_UE_LLR_ACKNACK",
     "P_UE_LLR_TXERR",
-    "P_UE_LLR_TXERR_POISONFCS",
+    "P_UE_LLR_POISONFCS",
     "P_UE_LLR_INIT_ECHO_CHK",
     "P_UE_LLR_TXFSM_STATE",
     "P_UE_LLR_RXFSM_STATE",
