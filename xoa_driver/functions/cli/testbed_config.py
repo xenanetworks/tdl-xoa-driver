@@ -28,7 +28,7 @@ async def save_testbed_config(tester: testers.L23Tester, ports: List[ports.Gener
         for port in ports:
             module = tester.modules.obtain(port.kind.module_id)
             if module not in modules_list:
-                if not isinstance(module, modules.ModuleChimera):
+                if not isinstance(module, modules.E100ChimeraModule):
                     modules_list.append(module)
     
     tester_ip = tester.info.host
