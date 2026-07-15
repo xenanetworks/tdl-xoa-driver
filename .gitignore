@@ -19,3 +19,4 @@
 .python-version
 dev*.py
 **/__test__/**
+**/skills/**
