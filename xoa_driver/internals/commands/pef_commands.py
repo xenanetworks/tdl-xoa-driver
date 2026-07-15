@@ -1,4 +1,4 @@
-"""Port (Impairment) Filter Commands"""
+"""Port Commands - Impairment Filter"""
 from __future__ import annotations
 from dataclasses import dataclass
 import ipaddress

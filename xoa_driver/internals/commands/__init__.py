@@ -11,6 +11,9 @@ from .m_commands import *  # noqa: F403,F401
 from .m4_commands import *  # noqa: F403,F401
 from .m4e_commands import *  # noqa: F403,F401
 from .p_commands import *  # noqa: F403,F401
+from .p_macsec_commands import *  # noqa: F403,F401
+from .p_lldp_commands import *  # noqa: F403,F401
+from .p_ue_commands import *  # noqa: F403,F401
 from .p4_commands import *  # noqa: F403,F401
 from .p4e_commands import *  # noqa: F403,F401
 from .p4g_commands import *  # noqa: F403,F401

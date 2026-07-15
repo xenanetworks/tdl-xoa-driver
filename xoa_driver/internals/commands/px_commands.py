@@ -1,4 +1,4 @@
-"""Port Transceiver Commands"""
+"""Port Commands - Transceiver"""
 from __future__ import annotations
 from dataclasses import dataclass
 import typing

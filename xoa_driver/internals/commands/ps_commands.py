@@ -1,4 +1,4 @@
-"""Port Stream Commands"""
+"""Stream Commands"""
 from __future__ import annotations
 from dataclasses import dataclass
 import ipaddress

@@ -49,6 +49,11 @@ async def my_awesome_func(stop_event: asyncio.Event):
     """Port Reserved By"""
     # Get the current reservation status of the port.
     resp_obj = await port.reserved_by.get()
+    
+    """CAPABILITIES"""
+    """Port Capabilities"""
+    # Get the capabilities of the port.
+    resp_obj = await port.capabilities.get()
 
 
     """IDENTIFICATION"""

@@ -52,6 +52,7 @@ from xoa_driver.internals.commands import (
     P_CAPABILITIES_EXT,
     P_IGMPV3_GROUP_RECORD_BUNDLE,
     P_USED_TPLDID,
+    P_TPLDOFFSET,
 )
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf

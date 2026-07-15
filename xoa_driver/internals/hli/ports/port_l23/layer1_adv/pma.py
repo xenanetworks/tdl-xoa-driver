@@ -2,8 +2,7 @@ from typing import (
     TYPE_CHECKING,
     Tuple,
 )
-if TYPE_CHECKING:
-    from xoa_driver.internals.core import interfaces as itf
+
 from xoa_driver.internals.commands import (
     PL1_TX_FREQ,
     PL1_TX_PPM,
@@ -14,7 +13,8 @@ from xoa_driver.internals.commands import (
     PL1_RX_DATARATE,
 )
 
-from xoa_driver import enums
+if TYPE_CHECKING:
+    from xoa_driver.internals.core import interfaces as itf
 
 class PmaLayerAdv:
     """Adv. Layer-1 - PMA Layer"""

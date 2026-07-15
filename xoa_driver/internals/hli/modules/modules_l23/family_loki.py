@@ -3,13 +3,24 @@ from xoa_driver import ports
 from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
 
+from .bases.module_l23 import ModuleL23
+
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
 
-from .module_l23_base import ModuleL23
+__all__ = (
+    "MLoki100G3S1P",
+    "MLoki100G3S1P_b",
+    "MLoki100G3S1PSE",
+    "MLoki100G3S1PB",
+    "MLoki100G3S1PB_b",
+    "MLoki100G5S1P",
+    "MLoki100G5S2P",
+)
 
 
+#region - Loki-100G-3S-1P
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-3S-1P")
 class MLoki100G3S1P(ModuleL23):
@@ -39,7 +50,9 @@ class MLoki100G3S1P_b(ModuleL23):
         )
         """Port Index Manager of Loki-100G-3S-1P[b]"""
 
+#endregion
 
+#region - Loki-100G-3S-1P-SE
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-3S-1P-SE")
 class MLoki100G3S1PSE(ModuleL23):
@@ -54,6 +67,9 @@ class MLoki100G3S1PSE(ModuleL23):
         )
         """Port Index Manager of Loki-100G-3S-1P-SE"""
 
+#endregion
+
+#region - Loki-100G-3S-1P-B
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-3S-1P-B")
@@ -83,21 +99,9 @@ class MLoki100G3S1PB_b(ModuleL23):
         )
         """Port index manager of Loki-100G-3S-1P-B[b]"""
 
+#endregion
 
-@typing.final
-@revisions.register_valkyrie_module(rev="Loki-100G-5S-4P[a]")
-class MLoki100G5S4P_a(ModuleL23):
-    """Test module Loki-100G-5S-4P[a]"""
-    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
-        super().__init__(conn, init_data)
-        self.ports: pm.PortsManager[ports.PLoki100G5S4P_a] = pm.PortsManager(
-            conn=conn,
-            ports_type=ports.PLoki100G5S4P_a,
-            module_id=self.module_id,
-            ports_count=self.ports_count
-        )
-        """Port index manager of Loki-100G-5S-4P[a]"""
-
+#region - Loki-100G-5S-1P
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-5S-1P")
 class MLoki100G5S1P(ModuleL23):
@@ -112,6 +116,9 @@ class MLoki100G5S1P(ModuleL23):
         )
         """Port Index Manager of Loki-100G-5S-1P"""
 
+#endregion
+
+#region - Loki-100G-5S-2P
 @typing.final
 @revisions.register_valkyrie_module(rev="Loki-100G-5S-2P")
 class MLoki100G5S2P(ModuleL23):
@@ -125,3 +132,5 @@ class MLoki100G5S2P(ModuleL23):
             ports_count=self.ports_count
         )
         """Port Index Manager of Loki-100G-5S-2P"""
+        
+#endregion

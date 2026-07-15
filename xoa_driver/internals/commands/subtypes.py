@@ -1,4 +1,4 @@
-"""Subtypes for various commands."""
+"""Subtypes"""
 import ipaddress
 from dataclasses import dataclass
 
