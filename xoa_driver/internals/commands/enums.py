@@ -3600,4 +3600,72 @@ class UecLlrRxFsmState(IntEnum):
     NACK_SENT = 3
     """The RX FSM is in the NACK_SENT state."""
 
+
+class UecCbfcCreditLimitMethod(IntEnum):
+    """UE CBFC method used to distribute the receive buffer across the VCs."""
+
+    NONE = 0
+    """No credit limit is assigned."""
+
+    TOTAL = 1
+    """A total credit limit is shared by all lossless VCs."""
+
+    PER_VC = 2
+    """Each lossless VC has its own credit limit."""
+
+
+class UecCbfcVcType(IntEnum):
+    """UE CBFC virtual channel type."""
+
+    NO = 0
+    """Best-effort VC, not flow controlled."""
+
+    YES = 1
+    """Lossless VC, flow controlled by CBFC."""
+
+
+class UecCbfcVcMapping(IntEnum):
+    """UE CBFC packet field used to map a packet to a virtual channel."""
+
+    DISABLE = 0
+    """No packet is mapped to the VC."""
+
+    VLAN = 1
+    """Map on the VLAN PCP/DEI field."""
+
+    DSCP = 2
+    """Map on the IP DSCP field."""
+
+    HANDLE = 3
+    """Map on the UE packet handle."""
+
+
+class UecCbfcInjectErrType(IntEnum):
+    """UE CBFC error injection type."""
+
+    NONE = 0
+    """The type is N/A."""
+
+    CC_UPDATE_INC = 1
+    """Increase the CC_Update credits consumed counter, creating a credit leak."""
+
+    CF_UPDATE_DROP = 2
+    """Drop the next CF_Update, simulating a packet loss."""
+
+    CC_UPDATE_BAD_FCS = 3
+    """Inject a bad FCS in the next CC_Update message."""
+
+    CC_UPDATE_POISONED_FCS = 4
+    """Inject a poisoned FCS in the next CC_Update message."""
+
+
+class UecCbfcInjectErrPattern(IntEnum):
+    """UE CBFC error injection pattern."""
+
+    NONE = 0
+    """The pattern is N/A."""
+
+    ONCE = 1
+    """Inject the error once."""
+
 #endregion

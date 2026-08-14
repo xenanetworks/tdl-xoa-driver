@@ -219,6 +219,11 @@ from .internals.commands.enums import (
     UecLlrTxErrPattern,
     UecLlrTxFsmState,
     UecLlrRxFsmState,
+    UecCbfcCreditLimitMethod,
+    UecCbfcVcType,
+    UecCbfcVcMapping,
+    UecCbfcInjectErrType,
+    UecCbfcInjectErrPattern,
 )
 
 __all__ = (
@@ -435,4 +440,9 @@ __all__ = (
     "UecLlrTxErrPattern",
     "UecLlrTxFsmState",
     "UecLlrRxFsmState",
+    "UecCbfcCreditLimitMethod",
+    "UecCbfcVcType",
+    "UecCbfcVcMapping",
+    "UecCbfcInjectErrType",
+    "UecCbfcInjectErrPattern",
 )
