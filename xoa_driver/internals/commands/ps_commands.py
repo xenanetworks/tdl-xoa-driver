@@ -2362,6 +2362,55 @@ class PS_UE_LLR_DESIRE:
     """Set the LLR desire mode to eligible.
     """
 
+
+@register_command
+@dataclass
+class PS_UE_CBFC_VC:
+    """
+    Maps the stream to a CBFC virtual channel. The sender resolves the virtual channel
+    of a packet from its stream index, not from the packet contents. The mapping is
+    N:1, i.e. several streams can share a virtual channel. Setting an empty value
+    removes the mapping of the stream.
+    """
+
+    code: typing.ClassVar[int] = 1048
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _stream_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        vc_index: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, the index of the virtual channel the stream is mapped to.
+        Empty if the stream is not mapped to any virtual channel.
+        """
+
+    class SetDataAttr(RequestBodyStruct):
+        vc_index: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, the index of the virtual channel to map the stream to.
+        Empty to remove the mapping of the stream.
+        """
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC virtual channel the stream is mapped to.
+
+        :return: the index of the virtual channel, empty if the stream is not mapped
+        :rtype: PS_UE_CBFC_VC.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._stream_xindex]))
+
+    def set(self, vc_index: typing.List[int]) -> Token[None]:
+        """Map the stream to a CBFC virtual channel.
+
+        :param vc_index: the index of the virtual channel to map the stream to, empty to remove the mapping
+        :type vc_index: typing.List[int]
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._stream_xindex], vc_index=vc_index))
+
 __all__ = [
     "PS_ARPREQUEST",
     "PS_AUTOADJUST",
@@ -2405,5 +2454,6 @@ __all__ = [
     "PS_RATEL2BPS",
     "PS_RATEPPS",
     "PS_TPLDID",
+    "PS_UE_CBFC_VC",
     "PS_UE_LLR_DESIRE",
 ]

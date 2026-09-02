@@ -41,7 +41,6 @@ from .enums import (
     UecLlrTxErrPattern,
     UecLlrTxFsmState,
     UecLlrRxFsmState,
-    UecFrameDesireLlr,
     UecCbfcCreditLimitMethod,
     UecCbfcVcType,
     UecCbfcVcMapping,
@@ -532,29 +531,29 @@ class P_UE_CTLOS_SPACING:
 
     class GetDataAttr(ResponseBodyStruct):
         target_spacing: int = field(XmpInt())
-        """integer, the target CtlOS spacing."""
+        """integer, the target number of bytes between two CtlOS. Must be a multiple of 8 in the range 400 to 16384."""
 
         min_spacing: int = field(XmpInt())
-        """integer, the minimum CtlOS spacing."""
+        """integer, the minimum number of bytes between two CtlOS. Either 400 or 0 (CtlOS may appear back-to-back)."""
 
-        reserved1: int = field(XmpInt())
-        """integer, reserved."""
+        min_sop_spacing: int = field(XmpInt())
+        """integer, the minimum number of bytes between the SOP and the first CtlOS in that frame. Either 256 or 0."""
 
-        reserved2: int = field(XmpInt())
-        """integer, reserved."""
+        min_inframe_spacing: int = field(XmpInt())
+        """integer, the minimum number of bytes between two CtlOS within the same frame. Either 2048 or 0."""
 
     class SetDataAttr(RequestBodyStruct):
         target_spacing: int = field(XmpInt())
-        """integer, the target CtlOS spacing."""
+        """integer, the target number of bytes between two CtlOS. Must be a multiple of 8 in the range 400 to 16384."""
 
         min_spacing: int = field(XmpInt())
-        """integer, the minimum CtlOS spacing."""
+        """integer, the minimum number of bytes between two CtlOS. Either 400 or 0 (CtlOS may appear back-to-back)."""
 
-        reserved1: int = field(XmpInt())
-        """integer, reserved."""
+        min_sop_spacing: int = field(XmpInt())
+        """integer, the minimum number of bytes between the SOP and the first CtlOS in that frame. Either 256 or 0."""
 
-        reserved2: int = field(XmpInt())
-        """integer, reserved."""
+        min_inframe_spacing: int = field(XmpInt())
+        """integer, the minimum number of bytes between two CtlOS within the same frame. Either 2048 or 0."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CtlOS spacing parameters of the port.
@@ -565,20 +564,20 @@ class P_UE_CTLOS_SPACING:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, target_spacing: int, min_spacing: int, reserved1: int, reserved2: int) -> Token[None]:
+    def set(self, target_spacing: int, min_spacing: int, min_sop_spacing: int, min_inframe_spacing: int) -> Token[None]:
         """Set the CtlOS spacing parameters of the port.
 
-        :param target_spacing: the target CtlOS spacing
+        :param target_spacing: the target number of bytes between two CtlOS
         :type target_spacing: int
-        :param min_spacing: the minimum CtlOS spacing
+        :param min_spacing: the minimum number of bytes between two CtlOS
         :type min_spacing: int
-        :param reserved1: reserved
-        :type reserved1: int
-        :param reserved2: reserved
-        :type reserved2: int
+        :param min_sop_spacing: the minimum number of bytes between the SOP and the first CtlOS in that frame
+        :type min_sop_spacing: int
+        :param min_inframe_spacing: the minimum number of bytes between two CtlOS within the same frame
+        :type min_inframe_spacing: int
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target_spacing=target_spacing, min_spacing=min_spacing, reserved1=reserved1, reserved2=reserved2))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target_spacing=target_spacing, min_spacing=min_spacing, min_sop_spacing=min_sop_spacing, min_inframe_spacing=min_inframe_spacing))
 
 
 @register_command
@@ -741,7 +740,7 @@ class P_UE_LLR_INIT:
         """2 bytes in hex format, the 16-bit LLR_INIT data."""
 
         min_spacing_multiplier: int = field(XmpInt())
-        """integer, the minimum spacing multiplier."""
+        """integer, the minimum multiplier of the number of bytes between transmission of successive LLR_INIT CtlOS. Range 4 to 256."""
 
     class SetDataAttr(RequestBodyStruct):
         init_seq: Hex = field(XmpHex(size=3))
@@ -751,7 +750,7 @@ class P_UE_LLR_INIT:
         """2 bytes in hex format, the 16-bit LLR_INIT data."""
 
         min_spacing_multiplier: int = field(XmpInt())
-        """integer, the minimum spacing multiplier."""
+        """integer, the minimum multiplier of the number of bytes between transmission of successive LLR_INIT CtlOS. Range 4 to 256."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the LLR INIT parameters of the port.
@@ -1194,146 +1193,6 @@ class P_UE_LLR_STATUS:
 
 @register_command
 @dataclass
-class P_UE_CTLOS_TX_INTERVAL:
-    """
-    Get the CtlOS Tx interval statistics of the port. For each CtlOS message type, the minimum, maximum, and average intervals are reported.
-    """
-
-    code: typing.ClassVar[int] = 1032
-    pushed: typing.ClassVar[bool] = False
-
-    _connection: 'interfaces.IConnection'
-    _module: int
-    _port: int
-
-    class GetDataAttr(ResponseBodyStruct):
-        ctlos_min: int = field(XmpLong())
-        """long integer, the minimum CtlOS Tx interval."""
-
-        ctlos_max: int = field(XmpLong())
-        """long integer, the maximum CtlOS Tx interval."""
-
-        ctlos_avg: int = field(XmpLong())
-        """long integer, the average CtlOS Tx interval."""
-
-        llr_init_min: int = field(XmpLong())
-        """long integer, the minimum LLR_INIT Tx interval."""
-
-        llr_init_max: int = field(XmpLong())
-        """long integer, the maximum LLR_INIT Tx interval."""
-
-        llr_init_avg: int = field(XmpLong())
-        """long integer, the average LLR_INIT Tx interval."""
-
-        llr_init_echo_min: int = field(XmpLong())
-        """long integer, the minimum LLR_INIT_ECHO Tx interval."""
-
-        llr_init_echo_max: int = field(XmpLong())
-        """long integer, the maximum LLR_INIT_ECHO Tx interval."""
-
-        llr_init_echo_avg: int = field(XmpLong())
-        """long integer, the average LLR_INIT_ECHO Tx interval."""
-
-        llr_ack_min: int = field(XmpLong())
-        """long integer, the minimum LLR_ACK Tx interval."""
-
-        llr_ack_max: int = field(XmpLong())
-        """long integer, the maximum LLR_ACK Tx interval."""
-
-        llr_ack_avg: int = field(XmpLong())
-        """long integer, the average LLR_ACK Tx interval."""
-
-        llr_nack_min: int = field(XmpLong())
-        """long integer, the minimum LLR_NACK Tx interval."""
-
-        llr_nack_max: int = field(XmpLong())
-        """long integer, the maximum LLR_NACK Tx interval."""
-
-        llr_nack_avg: int = field(XmpLong())
-        """long integer, the average LLR_NACK Tx interval."""
-
-    def get(self) -> Token[GetDataAttr]:
-        """Get the CtlOS Tx interval statistics of the port.
-
-        :return: the CtlOS Tx interval statistics of the port
-        :rtype: P_UE_CTLOS_TX_INTERVAL.GetDataAttr
-        """
-
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-
-
-@register_command
-@dataclass
-class P_UE_CTLOS_RX_INTERVAL:
-    """
-    Get the CtlOS Rx interval statistics of the port. For each CtlOS message type, the minimum, maximum, and average intervals are reported.
-    """
-
-    code: typing.ClassVar[int] = 1033
-    pushed: typing.ClassVar[bool] = False
-
-    _connection: 'interfaces.IConnection'
-    _module: int
-    _port: int
-
-    class GetDataAttr(ResponseBodyStruct):
-        ctlos_min: int = field(XmpLong())
-        """long integer, the minimum CtlOS Rx interval."""
-
-        ctlos_max: int = field(XmpLong())
-        """long integer, the maximum CtlOS Rx interval."""
-
-        ctlos_avg: int = field(XmpLong())
-        """long integer, the average CtlOS Rx interval."""
-
-        llr_init_min: int = field(XmpLong())
-        """long integer, the minimum LLR_INIT Rx interval."""
-
-        llr_init_max: int = field(XmpLong())
-        """long integer, the maximum LLR_INIT Rx interval."""
-
-        llr_init_avg: int = field(XmpLong())
-        """long integer, the average LLR_INIT Rx interval."""
-
-        llr_init_echo_min: int = field(XmpLong())
-        """long integer, the minimum LLR_INIT_ECHO Rx interval."""
-
-        llr_init_echo_max: int = field(XmpLong())
-        """long integer, the maximum LLR_INIT_ECHO Rx interval."""
-
-        llr_init_echo_avg: int = field(XmpLong())
-        """long integer, the average LLR_INIT_ECHO Rx interval."""
-
-        llr_ack_min: int = field(XmpLong())
-        """long integer, the minimum LLR_ACK Rx interval."""
-
-        llr_ack_max: int = field(XmpLong())
-        """long integer, the maximum LLR_ACK Rx interval."""
-
-        llr_ack_avg: int = field(XmpLong())
-        """long integer, the average LLR_ACK Rx interval."""
-
-        llr_nack_min: int = field(XmpLong())
-        """long integer, the minimum LLR_NACK Rx interval."""
-
-        llr_nack_max: int = field(XmpLong())
-        """long integer, the maximum LLR_NACK Rx interval."""
-
-        llr_nack_avg: int = field(XmpLong())
-        """long integer, the average LLR_NACK Rx interval."""
-
-    def get(self) -> Token[GetDataAttr]:
-        """Get the CtlOS Rx interval statistics of the port.
-
-        :return: the CtlOS Rx interval statistics of the port
-        :rtype: P_UE_CTLOS_RX_INTERVAL.GetDataAttr
-        """
-
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-
-
-@register_command
-@dataclass
 class P_UE_CTLOS_RX_ERRORS:
     """
     Get the CtlOS Rx error counters of the port.
@@ -1541,55 +1400,6 @@ class P_UE_CBFC_CFUPDATE_TIMER:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, cf_min_timer=cf_min_timer, cf_max_timer=cf_max_timer))
-
-
-@register_command
-@dataclass
-class P_UE_CBFC_CCUPDATE_LLR:
-    """
-    Whether the CBFC CC_Update messages generated by the port are LLR eligible.
-    """
-
-    code: typing.ClassVar[int] = 1048
-    pushed: typing.ClassVar[bool] = False
-
-    _connection: 'interfaces.IConnection'
-    _module: int
-    _port: int
-
-    class GetDataAttr(ResponseBodyStruct):
-        llr_desire: UecFrameDesireLlr = field(XmpByte())
-        """coded byte, the LLR desire of the CC_Update messages."""
-
-    class SetDataAttr(RequestBodyStruct):
-        llr_desire: UecFrameDesireLlr = field(XmpByte())
-        """coded byte, the LLR desire of the CC_Update messages."""
-
-    def get(self) -> Token[GetDataAttr]:
-        """Get the LLR desire of the CBFC CC_Update messages of the port.
-
-        :return: the LLR desire of the CBFC CC_Update messages of the port
-        :rtype: P_UE_CBFC_CCUPDATE_LLR.GetDataAttr
-        """
-
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-
-    def set(self, llr_desire: UecFrameDesireLlr) -> Token[None]:
-        """Set the LLR desire of the CBFC CC_Update messages of the port.
-
-        :param llr_desire: the LLR desire of the CC_Update messages
-        :type llr_desire: UecFrameDesireLlr
-        """
-
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, llr_desire=llr_desire))
-
-    set_llr_ineligible = functools.partialmethod(set, UecFrameDesireLlr.LLR_INELIGIBLE)
-    """Send the CC_Update messages as LLR ineligible.
-    """
-
-    set_llr_eligible = functools.partialmethod(set, UecFrameDesireLlr.LLR_ELIGIBLE)
-    """Send the CC_Update messages as LLR eligible.
-    """
 
 
 @register_command
@@ -1844,6 +1654,36 @@ class P_UE_CBFC_VC:
 
 @register_command
 @dataclass
+class P_UE_CBFC_VC_STREAMS:
+    """
+    The streams that are mapped to a CBFC virtual channel. The stream-to-virtual-channel
+    mapping is N:1 and is set per stream with ``PS_UE_CBFC_VC``.
+    """
+
+    code: typing.ClassVar[int] = 1054
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _vc_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        stream_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, the indices of the streams mapped to the virtual channel."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the streams mapped to the CBFC virtual channel.
+
+        :return: the indices of the streams mapped to the virtual channel
+        :rtype: P_UE_CBFC_VC_STREAMS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._vc_xindex]))
+
+
+@register_command
+@dataclass
 class P_UE_CBFC_APPLY:
     """
     Copy a staged CBFC configuration data storage into its active counterpart.
@@ -1994,11 +1834,17 @@ class P_UE_CBFC_TX_STATS:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        tx_cbfc_cc_update: int = field(XmpLong())
-        """long integer, the number of CC_Update messages sent."""
+        tx_cc_update: int = field(XmpLong())
+        """long integer, the number of CC_Update messages transmitted since the last clear."""
 
-        tx_port_credit_limit: int = field(XmpLong())
-        """long integer, the credit limit of the port."""
+        cc_update_interval_min: int = field(XmpLong())
+        """long integer, the minimum interval in microseconds between two consecutive Tx CC_Update since the last clear."""
+
+        cc_update_interval_max: int = field(XmpLong())
+        """long integer, the maximum interval in microseconds between two consecutive Tx CC_Update since the last clear."""
+
+        cc_update_interval_avg: int = field(XmpLong())
+        """long integer, the average interval in microseconds between two consecutive Tx CC_Update since the last clear."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CBFC Tx statistics of the port.
@@ -2025,11 +1871,20 @@ class P_UE_CBFC_RX_STATS:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        rx_cbfc_cc_update: int = field(XmpLong())
-        """long integer, the number of CC_Update messages received."""
+        rx_cc_update: int = field(XmpLong())
+        """long integer, unsigned, the number of CC_Update messages received since the last clear."""
 
         rx_lost_credits: int = field(XmpLong())
-        """long integer, the accumulated number of lost credits reported by the CC_Update messages."""
+        """long integer, signed, the accumulative per-port Lost Credits since the last clear."""
+
+        cc_update_interval_min: int = field(XmpLong())
+        """long integer, the minimum interval in microseconds between two consecutive Rx CC_Update since the last clear."""
+
+        cc_update_interval_max: int = field(XmpLong())
+        """long integer, the maximum interval in microseconds between two consecutive Rx CC_Update since the last clear."""
+
+        cc_update_interval_avg: int = field(XmpLong())
+        """long integer, the average interval in microseconds between two consecutive Rx CC_Update since the last clear."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CBFC Rx statistics of the port.
@@ -2061,9 +1916,6 @@ class P_UE_CBFC_RX_ERRORS:
 
         rx_cc_update_bad_opcode: int = field(XmpLong())
         """long integer, the number of CC_Update messages received with an unexpected opcode."""
-
-        rx_cc_update_bad_dmac: int = field(XmpLong())
-        """long integer, the number of CC_Update messages received with an unexpected destination MAC address."""
 
         rx_cc_update_unknown_msg_type: int = field(XmpLong())
         """long integer, the number of CC_Update messages received with an unknown message type."""
@@ -2111,9 +1963,6 @@ class P_UE_CBFC_VC_TX_STATS:
 
         tx_pkts_total: int = field(XmpLong())
         """long integer, the total number of packets transmitted."""
-
-        tx_credit_limit: int = field(XmpLong())
-        """long integer, the credit limit of the virtual channel. Best-effort VC returns 0."""
 
         tx_credits_consumed: int = field(XmpLong())
         """long integer, the number of credits consumed. Best-effort VC returns 0."""
@@ -2187,8 +2036,6 @@ __all__ = [
     "P_UE_CTLOS_RX_STATS",
     "P_UE_CTLOS_TX_STATS",
     "P_UE_CTLOS_SPACING",
-    "P_UE_CTLOS_TX_INTERVAL",
-    "P_UE_CTLOS_RX_INTERVAL",
     "P_UE_CTLOS_RX_ERRORS",
     "P_UE_LINKNEG_OPTIONS",
     "P_UE_LINKNEG_OPTIONS_STATUS",
@@ -2209,9 +2056,9 @@ __all__ = [
     "P_UE_CBFC_CCUPDATE_HDR",
     "P_UE_CBFC_CCUPDATE_TIMER",
     "P_UE_CBFC_CFUPDATE_TIMER",
-    "P_UE_CBFC_CCUPDATE_LLR",
     "P_UE_CBFC_NUMVCS",
     "P_UE_CBFC_LINK",
+    "P_UE_CBFC_VC_STREAMS",
     "P_UE_CBFC_VC_TYPE",
     "P_UE_CBFC_VC",
     "P_UE_CBFC_APPLY",

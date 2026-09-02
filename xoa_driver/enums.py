@@ -442,14 +442,11 @@ __all__ = (
     "UecLlrTxErrPattern",
     "UecLlrTxFsmState",
     "UecLlrRxFsmState",
-<<<<<<< HEAD
     "UecCbfcCreditLimitMethod",
     "UecCbfcVcType",
     "UecCbfcVcMapping",
     "UecCbfcInjectErrType",
     "UecCbfcInjectErrPattern",
-=======
     "ModulePresence",
     "TransceiverPresence",
->>>>>>> origin/dev
 )

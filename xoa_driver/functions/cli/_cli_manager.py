@@ -49,8 +49,13 @@ class KeepAliveThread(threading.Thread):
 
 # Low level driver for TCP/IP based query
 # Do not edit this
+# Default TCP port of the text (CLI) server. A xenaserver started with --isolate shifts every
+# server port by the same offset, so callers on an isolated chassis must pass the shifted value.
+CLI_PORT = 22611
+
+
 class XenaSocketDriver(SimpleSocket):
-    def __init__(self, hostname: str, tcp_port: int = 22611):
+    def __init__(self, hostname: str, tcp_port: int = CLI_PORT):
         super(XenaSocketDriver, self).__init__(hostname=hostname, port=tcp_port)
         self.set_keepalives()
         self.access_semaphore = threading.Semaphore(1)
@@ -94,8 +99,10 @@ class XOACLIManager:
     PORT_TRAFFIC_ON            	= lambda self, port: f"{ port } P_TRAFFIC ON"
     PORT_TRAFFIC_OFF            = lambda self, port: f"{ port } P_TRAFFIC OFF"
 
-    def __init__(self, host: str, debug: bool = False, halt_on_error: bool = False) -> None:
+    def __init__(self, host: str, debug: bool = False, halt_on_error: bool = False,
+                 tcp_port: int = CLI_PORT) -> None:
         self.host    = host
+        self.tcp_port = tcp_port
         self.debug_enabled = debug
         self.halt_on_error_enabled  = halt_on_error
         self.is_log_cmd_empty   = False
@@ -104,7 +111,7 @@ class XOACLIManager:
         if self.logfile_path != None:
             self.is_log_cmd_empty = True
 
-        self.driver = XenaSocketDriver(self.host)
+        self.driver = XenaSocketDriver(self.host, self.tcp_port)
         # self.keepalive_thread = KeepAliveThread(self.driver)
         # self.keepalive_thread.start()
 
@@ -196,7 +203,7 @@ class XOACLIManager:
     def send(self, cmd:str, sync_on: bool = False) -> str:
         """Send command and return response"""
         if self.driver.is_connected == False:
-            self.driver = XenaSocketDriver(self.host)
+            self.driver = XenaSocketDriver(self.host, self.tcp_port)
         res = self.driver.send_and_response(cmd, sync_on=sync_on)
         self.debug_message(f"send()         : { cmd }")
         self.debug_message(f"send() received: { res }")
@@ -211,7 +218,7 @@ class XOACLIManager:
         self.log_command(cmd)
         try:
             if self.driver.is_connected == False:
-                self.driver = XenaSocketDriver(self.host)
+                self.driver = XenaSocketDriver(self.host, self.tcp_port)
             res = self.driver.send_and_response(cmd)
             if res.rstrip('\n') == resp:
                 return True
@@ -246,7 +253,7 @@ class XOACLIManager:
         self.log_command(cmd)
 
         if self.driver.is_connected == False:
-            self.driver = XenaSocketDriver(self.host)
+            self.driver = XenaSocketDriver(self.host, self.tcp_port)
         res = self.driver.send_and_response(cmd)
         if match_resp in res:
             return True
@@ -276,7 +283,7 @@ class XOACLIManager:
 
             self.debug_message(f"send()         : { cmd }")
             if self.driver.is_connected == False:
-                self.driver = XenaSocketDriver(self.host)
+                self.driver = XenaSocketDriver(self.host, self.tcp_port)
             res = self.driver.send_and_response_multiple(cmd, num)
             def mapper(v): return f"{ v[0] }: { v[1] }"
             mes = "\n".join( list( map(mapper, list( zip(cmdlist, res.split('\n')) ) ) ) )
@@ -289,7 +296,7 @@ class XOACLIManager:
                 cmd = command
                 self.debug_message(f"send()         : { cmd }")
                 if self.driver.is_connected == False:
-                    self.driver = XenaSocketDriver(self.host)
+                    self.driver = XenaSocketDriver(self.host, self.tcp_port)
                 res = self.driver.send_and_response(cmd)
                 self.debug_message(f"send() received: { res }")
                 self.log_command(cmd)
