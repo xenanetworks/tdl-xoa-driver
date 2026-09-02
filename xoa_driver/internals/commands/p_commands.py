@@ -588,6 +588,9 @@ class P_CAPABILITIES:
         * Bit 17: Can Tx Gray-coding Endianness
         * Bit 18: Can PMA Bit-mux config
         * Bit 19: Can PMA Sym-mux config
+        * Bit 20: Can LLR
+        * Bit 21: Can Layer1 Event Capture
+        * Bit 22: Can Layer1 CGMII Capture
         """
 
         # fec_engines: int = field(XmpInt(), min_version=465)
