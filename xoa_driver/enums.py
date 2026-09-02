@@ -219,6 +219,8 @@ from .internals.commands.enums import (
     UecLlrTxErrPattern,
     UecLlrTxFsmState,
     UecLlrRxFsmState,
+    ModulePresence,
+    TransceiverPresence,
 )
 
 __all__ = (
@@ -435,4 +437,6 @@ __all__ = (
     "UecLlrTxErrPattern",
     "UecLlrTxFsmState",
     "UecLlrRxFsmState",
+    "ModulePresence",
+    "TransceiverPresence",
 )
