@@ -21,6 +21,7 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     XmpLong,
     XmpSequence,
     XmpStr,
+    XmpJson,
     Hex,
 )
 from .enums import (
@@ -49,7 +50,8 @@ from .enums import (
     ModuleModelName,
     ModuleConfigStatus,
     SolutionTrack,
-    FeatureID
+    FeatureID,
+    TransceiverPresence,
 )
 
 
@@ -1437,6 +1439,59 @@ class M_LICENSE_ONLINE:
 
 @register_command
 @dataclass
+class M_TCVR_INDICES:
+    """Get the indices of transceiver cages on a module."""
+
+    code: typing.ClassVar[int] = 407
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        cage_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpByte()]))
+        """Transceiver cage indices."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the indices of transceiver cages on the module.
+
+        :return: the transceiver cage indices
+        :rtype: M_TCVR_INDICES.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module))
+
+
+@register_command
+@dataclass
+class M_TCVR_PRESENCE:
+    """Get the presence state and metadata for a transceiver."""
+
+    code: typing.ClassVar[int] = 408
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _cage_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        presence: TransceiverPresence = field(XmpByte())
+        """Transceiver presence state."""
+        data: dict = field(XmpJson(min_len=2))
+        """Transceiver/cage metadata in JSON format. For internal use, contents/layout subject to change at any time."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the transceiver presence state and metadata.
+
+        :return: the cage presence state and metadata
+        :rtype: M_TCVR_PRESENCE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, indices=[self._cage_xindex]))
+
+
+@register_command
+@dataclass
 class M_TXCLOCKSOURCE_NEW:
     """
     For test modules with advanced timing features, select what clock drives the port TX
@@ -2062,6 +2117,8 @@ __all__ = [
     "M_STATUS",
     "M_TIMEADJUSTMENT",
     "M_TIMESYNC",
+    "M_TCVR_INDICES",
+    "M_TCVR_PRESENCE",
     "M_TXCLOCKFILTER_NEW",
     "M_TXCLOCKSOURCE_NEW",
     "M_TXCLOCKSTATUS_NEW",

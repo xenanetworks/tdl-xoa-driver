@@ -3229,6 +3229,32 @@ class ModuleConfigStatus(IntEnum):
     PROGRESSING = 2
     FAILED = 3
 
+
+class ModulePresence(IntEnum):
+    """Module presence state."""
+
+    NOT_PRESENT = 0
+    """Module is not present"""
+    PRESENT = 1
+    """Module is present"""
+    END_OF_LIFE = 2
+    """Module has reached end of life"""
+    UNKNOWN = 3
+    """Module presence is unknown"""
+
+
+class TransceiverPresence(IntEnum):
+    """Transceiver presence state."""
+
+    NOT_PRESENT = 0
+    """Transceiver is not present"""
+    PRESENT = 1
+    """Transceiver is present"""
+    DETECTING = 2
+    """Transceiver inserted, currently being detected"""
+    DETECTION_FAILURE = 3
+    """Transceiver inserted, but detection failed"""
+
 #endregion
 
 #region FEC CW enums
@@ -3542,7 +3568,7 @@ class UecLlrTxErrType(IntEnum):
 
     LLR_ACK_DROP = 5
     """LLR_ACK drop"""
-    
+
     LLR_NACK_DROP = 6
     """LLR_NACK drop"""
 
