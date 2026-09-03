@@ -17,7 +17,7 @@ from xoa_driver.internals.commands import (
     P_COMMENT,
     P_INTERFACE,
     P_RECEIVESYNC,
-    PL1_EVENT_CAPTURE_QLEN
+    PL1_EVENT_LOGGING_QLEN
 )
 from xoa_driver.internals.state_storage import ports_state
 from xoa_driver.internals.utils import attributes as utils
@@ -66,10 +66,10 @@ class BasePort(ABC, Generic[PortStateStorage]):
         
         :type: P_COMMENT
         """
-        self.l1_event_capture_qlen = PL1_EVENT_CAPTURE_QLEN(self._conn, module_id, port_id)
+        self.l1_event_logging_qlen = PL1_EVENT_LOGGING_QLEN(self._conn, module_id, port_id)
         """L1 event capture queue length of the port.
         
-        :type: PL1_EVENT_CAPTURE_QLEN
+        :type: PL1_EVENT_LOGGING_QLEN
         """
 
     def __await__(self):
@@ -130,7 +130,7 @@ class BasePort(ABC, Generic[PortStateStorage]):
     Register a callback to the event that the port's physical interface type changes.
     """
 
-    on_l1_event_capture_data = functools.partialmethod(utils.on_event, PL1_EVENT_CAPTURE_QLEN)
+    on_l1_event_logging_data = functools.partialmethod(utils.on_event, PL1_EVENT_LOGGING_QLEN)
     """
     Register a callback to the event that the port's L1 event capture data becomes available.
     """

@@ -34,7 +34,7 @@ from .enums import (
 
 @register_command
 @dataclass
-class PL1_EVENT_CAPTURE_READ:
+class PL1_EVENT_LOGGING_READ:
     """
     Read the list of captured Layer-1 event entries. Each entry consists of four parameters, event type, event condition, event lane, and timestamp.
     
@@ -43,7 +43,7 @@ class PL1_EVENT_CAPTURE_READ:
         {
           "evread": [
           {
-            "$po-type": "l1_event_capture_entry",
+            "$po-type": "l1_event_logging_entry",
             "payload": {
             "evtype_s": "PCS_LOA",
             "evtype": 6,
@@ -59,7 +59,7 @@ class PL1_EVENT_CAPTURE_READ:
         {
           "evread": [
           {
-            "$po-type": "l1_event_capture_entry_with_lane",
+            "$po-type": "l1_event_logging_entry_with_lane",
             "payload": {
             "evtype_s": "LANE_PRBS_LOCK",
             "evtype": 14,
@@ -97,7 +97,7 @@ class PL1_EVENT_CAPTURE_READ:
         """Read the list of captured Layer-1 event entries.
 
         :return: List of captured Layer-1 event entries
-        :rtype: PL1_EVENT_CAPTURE_READ.GetDataAttr
+        :rtype: PL1_EVENT_LOGGING_READ.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
@@ -106,7 +106,7 @@ class PL1_EVENT_CAPTURE_READ:
 
 @register_command
 @dataclass
-class PL1_EVENT_CAPTURE_CONFIG:
+class PL1_EVENT_LOGGING_CONFIG:
     """
     Subscribes/unsubscribes to a specific Layer-1 event. An event consists of three parameters ``<event_type> <event_cond> <event_serdes>``. 
     """
@@ -149,7 +149,7 @@ class PL1_EVENT_CAPTURE_CONFIG:
       
 @register_command
 @dataclass
-class PL1_EVENT_CAPTURE_SUBLIST:
+class PL1_EVENT_LOGGING_SUBLIST:
     """
     Return the currently configured event subscriptions.
     
@@ -158,7 +158,7 @@ class PL1_EVENT_CAPTURE_SUBLIST:
         {
           "evread": [
           {
-            "$po-type": "l1_event_capture_entry",
+            "$po-type": "l1_event_logging_entry",
             "payload": {
             "evtype_s": "PCS_LOA",
             "evtype": 6,
@@ -173,7 +173,7 @@ class PL1_EVENT_CAPTURE_SUBLIST:
         {
           "evread": [
           {
-            "$po-type": "l1_event_capture_entry_with_lane",
+            "$po-type": "l1_event_logging_entry_with_lane",
             "payload": {
             "evtype_s": "LANE_PRBS_LOCK",
             "evtype": 14,
@@ -209,7 +209,7 @@ class PL1_EVENT_CAPTURE_SUBLIST:
         """Read the list of currently configured Layer-1 event subscriptions.
 
         :return: List of currently configured Layer-1 event subscriptions
-        :rtype: PL1_EVENT_CAPTURE_SUBLIST.GetDataAttr
+        :rtype: PL1_EVENT_LOGGING_SUBLIST.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
@@ -227,7 +227,7 @@ class PL1_EVENT_CAPTURE_SUBLIST:
 
 @register_command
 @dataclass
-class PL1_EVENT_CAPTURE_STATE:
+class PL1_EVENT_LOGGING_STATE:
     """
     Layer-1 Event Capture state. It is used to enable or disable the Layer-1 Event Capture feature.
     """
@@ -253,7 +253,7 @@ class PL1_EVENT_CAPTURE_STATE:
         """Returns the Layer-1 Event Capture state.
 
         :return: Layer-1 Event Capture state
-        :rtype: PL1_EVENT_CAPTURE_STATE.GetDataAttr
+        :rtype: PL1_EVENT_LOGGING_STATE.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
@@ -270,7 +270,7 @@ class PL1_EVENT_CAPTURE_STATE:
 
 @register_command
 @dataclass
-class PL1_EVENT_CAPTURE_MARK:
+class PL1_EVENT_LOGGING_MARK:
     """
     Trigger the hardware to generate a **Marker Event**.
     It is useful for marking specific points in time during the capture process,
@@ -297,7 +297,7 @@ class PL1_EVENT_CAPTURE_MARK:
       
 @register_command
 @dataclass
-class PL1_EVENT_CAPTURE_QLEN:
+class PL1_EVENT_LOGGING_QLEN:
     """
     Return the current Layer-1 Event Capture queue length.
     """
@@ -319,7 +319,7 @@ class PL1_EVENT_CAPTURE_QLEN:
         """Returns the current Layer-1 Event Capture queue length.
 
         :return: Current Layer-1 Event Capture queue length
-        :rtype: PL1_EVENT_CAPTURE_QLEN.GetDataAttr
+        :rtype: PL1_EVENT_LOGGING_QLEN.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
@@ -328,7 +328,7 @@ class PL1_EVENT_CAPTURE_QLEN:
 
 @register_command
 @dataclass
-class PL1_EVENT_CAPTURE_RSFEC_THRESH:
+class PL1_EVENT_LOGGING_RSFEC_THRESH:
     """
     Get or set the RS-FEC threshold for Layer-1 Event Capture.
     """
@@ -353,7 +353,7 @@ class PL1_EVENT_CAPTURE_RSFEC_THRESH:
         """Returns the current RS-FEC threshold.
 
         :return: Current RS-FEC threshold
-        :rtype: PL1_EVENT_CAPTURE_RSFEC_THRESH.GetDataAttr
+        :rtype: PL1_EVENT_LOGGING_RSFEC_THRESH.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
@@ -476,11 +476,11 @@ class PL1_EVENT_CAPTURE_RSFEC_THRESH:
       
 
 __all__ = [
-    "PL1_EVENT_CAPTURE_READ",
-    "PL1_EVENT_CAPTURE_CONFIG",
-    "PL1_EVENT_CAPTURE_SUBLIST",
-    "PL1_EVENT_CAPTURE_STATE",
-    "PL1_EVENT_CAPTURE_MARK",
-    "PL1_EVENT_CAPTURE_QLEN",
-    "PL1_EVENT_CAPTURE_RSFEC_THRESH"
+    "PL1_EVENT_LOGGING_READ",
+    "PL1_EVENT_LOGGING_CONFIG",
+    "PL1_EVENT_LOGGING_SUBLIST",
+    "PL1_EVENT_LOGGING_STATE",
+    "PL1_EVENT_LOGGING_MARK",
+    "PL1_EVENT_LOGGING_QLEN",
+    "PL1_EVENT_LOGGING_RSFEC_THRESH"
 ]
