@@ -3465,6 +3465,22 @@ class FeatureID(IntEnum):
 
 
 #region UEC enums
+class UecCbfcClearDirection(IntEnum):
+    """Direction for clearing UE CBFC counters"""
+
+    NONE = 0
+    """No counter will be cleared"""
+
+    RX = 1
+    """Clear all CBFC RX counters"""
+
+    TX = 2
+    """Clear all CBFC TX counters"""
+
+    ALL = 3
+    """Clear all CBFC RX and TX counters"""
+
+
 class UecCtlosClearDirection(IntEnum):
     """Direction for clearing UE CtlOS counters"""
 

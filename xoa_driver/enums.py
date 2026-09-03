@@ -224,6 +224,7 @@ from .internals.commands.enums import (
     UecCbfcVcMapping,
     UecCbfcInjectErrType,
     UecCbfcInjectErrPattern,
+    UecCbfcClearDirection,
     ModulePresence,
     TransceiverPresence,
 )
@@ -447,6 +448,7 @@ __all__ = (
     "UecCbfcVcMapping",
     "UecCbfcInjectErrType",
     "UecCbfcInjectErrPattern",
+    "UecCbfcClearDirection",
     "ModulePresence",
     "TransceiverPresence",
 )

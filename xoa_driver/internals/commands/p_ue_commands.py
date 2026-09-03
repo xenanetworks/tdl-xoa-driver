@@ -46,6 +46,7 @@ from .enums import (
     UecCbfcVcMapping,
     UecCbfcInjectErrType,
     UecCbfcInjectErrPattern,
+    UecCbfcClearDirection,
 )
 
 
@@ -1654,6 +1655,50 @@ class P_UE_CBFC_VC:
 
 @register_command
 @dataclass
+class P_UE_CBFC_CLEAR:
+    """
+    Clear UE CBFC counters and statistics in the specified direction(s).
+    """
+
+    code: typing.ClassVar[int] = 1055
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class SetDataAttr(RequestBodyStruct):
+        direction: UecCbfcClearDirection = field(XmpByte())
+        """coded byte, direction of the counters to clear."""
+
+    def set(self, direction: UecCbfcClearDirection) -> Token[None]:
+        """Clear the CBFC counters in the given direction.
+
+        :param direction: direction of the counters to clear
+        :type direction: UecCbfcClearDirection
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, direction=direction))
+
+    clear_none = functools.partialmethod(set, UecCbfcClearDirection.NONE)
+    """Clear no CBFC counters.
+    """
+
+    clear_rx = functools.partialmethod(set, UecCbfcClearDirection.RX)
+    """Clear all CBFC RX counters.
+    """
+
+    clear_tx = functools.partialmethod(set, UecCbfcClearDirection.TX)
+    """Clear all CBFC TX counters.
+    """
+
+    clear_all = functools.partialmethod(set, UecCbfcClearDirection.ALL)
+    """Clear all CBFC RX and TX counters.
+    """
+
+
+@register_command
+@dataclass
 class P_UE_CBFC_VC_STREAMS:
     """
     The streams that are mapped to a CBFC virtual channel. The stream-to-virtual-channel
@@ -2064,6 +2109,7 @@ __all__ = [
     "P_UE_CBFC_APPLY",
     "P_UE_CBFC_INJECT_ERR",
     "P_UE_CBFC_CC_INC",
+    "P_UE_CBFC_CLEAR",
     "P_UE_CBFC_TX_STATS",
     "P_UE_CBFC_RX_STATS",
     "P_UE_CBFC_RX_ERRORS",
