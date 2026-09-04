@@ -224,6 +224,9 @@ from .internals.commands.enums import (
     L1EventCaptureType,
     L1EventCaptureCondition,
     L1CaptureSubscription,
+    L1EventLoggingType,
+    L1EventLoggingCondition,
+    L1EventLoggingSubscription,
 )
 
 __all__ = (
@@ -445,4 +448,7 @@ __all__ = (
     "L1EventCaptureType",
     "L1EventCaptureCondition",
     "L1CaptureSubscription",
+    "L1EventLoggingType",
+    "L1EventLoggingCondition",
+    "L1EventLoggingSubscription",
 )

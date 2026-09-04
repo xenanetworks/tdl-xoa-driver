@@ -3631,7 +3631,7 @@ class UecLlrRxFsmState(IntEnum):
 
 # region Layer 1 Capture
 
-class L1EventCaptureType(IntEnum):
+class L1EventLoggingType(IntEnum):
     """Layer-1 event capture types."""
 
     MARKER = 0
@@ -3689,7 +3689,7 @@ class L1EventCaptureType(IntEnum):
     """SerDes lane CDR lock state change event."""
 
 
-class L1EventCaptureCondition(IntEnum):
+class L1EventLoggingCondition(IntEnum):
     """Layer-1 event capture conditions."""
 
     FALLING = 0
@@ -3699,7 +3699,7 @@ class L1EventCaptureCondition(IntEnum):
     """Event is triggered when the state changes from false to true, 0 to 1, or low to high."""
 
 
-class L1CaptureSubscription(IntEnum):
+class L1EventLoggingSubscription(IntEnum):
     """Layer-1 capture subscription actions."""
     
     UNSUBSCRIBE = 0

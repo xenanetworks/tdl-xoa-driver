@@ -25,9 +25,9 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     XmpJson,
 )
 from .enums import (
-    L1EventCaptureType,
-    L1EventCaptureCondition,
-    L1CaptureSubscription,
+    L1EventLoggingType,
+    L1EventLoggingCondition,
+    L1EventLoggingSubscription,
     IsEnabled,
 )
 
@@ -36,7 +36,7 @@ from .enums import (
 @dataclass
 class PL1_EVENT_LOGGING_READ:
     """
-    Read the list of captured Layer-1 event entries. Each entry consists of four parameters, event type, event condition, event lane, and timestamp.
+    Read the list of logged Layer-1 event entries. Each entry consists of four parameters, event type, event condition, event lane, and timestamp.
     
     * For port-specific events, the JSON response is structured as follows::
 
@@ -74,8 +74,8 @@ class PL1_EVENT_LOGGING_READ:
     where 
 
     - ``evtype_s``: Event type as a string.
-    - ``evtype``: Event type as an integer. See :ref:`layer_1_event_capture_event_types_table` for the list of supported event types.
-    - ``asserted``: Boolean indicating if the event is asserted. See :ref:`layer_1_event_capture_event_conditions_table` for the list of supported event conditions.
+    - ``evtype``: Event type as an integer. See :ref:`layer_1_event_logging_types_table` for the list of supported event types.
+    - ``asserted``: Boolean indicating if the event is asserted. See :ref:`layer_1_event_logging_event_conditions_table` for the list of supported event conditions.
     - ``lane``: Lane number (>= 0) for lane-specific events.
     - ``ts``: Timestamp of the event in the unit of 0.5 nanosecond. The timestamp is relative to the previously delivered event, not an absolute hardware timestamp.
     """
@@ -94,9 +94,9 @@ class PL1_EVENT_LOGGING_READ:
 
 
     def get(self) -> Token[GetDataAttr]:
-        """Read the list of captured Layer-1 event entries.
+        """Read the list of logged Layer-1 event entries.
 
-        :return: List of captured Layer-1 event entries
+        :return: List of logged Layer-1 event entries
         :rtype: PL1_EVENT_LOGGING_READ.GetDataAttr
         """
 
@@ -121,24 +121,24 @@ class PL1_EVENT_LOGGING_CONFIG:
 
     class SetDataAttr(RequestBodyStruct):
 
-        action: L1CaptureSubscription = field(XmpByte())
+        action: L1EventLoggingSubscription = field(XmpByte())
         """Subscribe or unsubscribe to the event."""
         
-        event_type: L1EventCaptureType = field(XmpByte())
+        event_type: L1EventLoggingType = field(XmpByte())
         """Type of the event to subscribe to."""
 
-        event_cond: L1EventCaptureCondition = field(XmpByte())
+        event_cond: L1EventLoggingCondition = field(XmpByte())
         """Condition that triggers the event."""
 
-    def set(self, action: L1CaptureSubscription, event_type: L1EventCaptureType, event_cond: L1EventCaptureCondition) -> Token[None]:
+    def set(self, action: L1EventLoggingSubscription, event_type: L1EventLoggingType, event_cond: L1EventLoggingCondition) -> Token[None]:
         """Subscribe or unsubscribe to the event.
         
         :param action: Subscribe or unsubscribe to the event
-        :type action: L1CaptureSubscription
+        :type action: L1EventLoggingSubscription
         :param event_type: Type of the event to subscribe to
-        :type event_type: L1EventCaptureType
+        :type event_type: L1EventLoggingType
         :param event_cond: Condition that triggers the event
-        :type event_cond: L1EventCaptureCondition
+        :type event_cond: L1EventLoggingCondition
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port,
@@ -187,8 +187,8 @@ class PL1_EVENT_LOGGING_SUBLIST:
     where 
 
     - ``evtype_s``: Event type as a string.
-    - ``evtype``: Event type as an integer. See :ref:`layer_1_event_capture_event_types_table` for the list of supported event types.
-    - ``asserted``: Boolean indicating if the event is asserted. See :ref:`layer_1_event_capture_event_conditions_table` for the list of supported event conditions.
+    - ``evtype``: Event type as an integer. See :ref:`l1_event_types_n_conds` for the list of supported event types.
+    - ``asserted``: Boolean indicating if the event is asserted. See :ref:`layer_1_event_logging_event_conditions_table` for the list of supported event conditions.
     - ``lane``: SerDes index number (>= 0) for SerDes-specific events.
     """
 
@@ -229,7 +229,7 @@ class PL1_EVENT_LOGGING_SUBLIST:
 @dataclass
 class PL1_EVENT_LOGGING_STATE:
     """
-    Layer-1 Event Capture state. It is used to enable or disable the Layer-1 Event Capture feature.
+    Layer-1 Event Logging state. It is used to enable or disable the Layer-1 Event Logging feature.
     """
 
     code: typing.ClassVar[int] = 1303
@@ -242,7 +242,7 @@ class PL1_EVENT_LOGGING_STATE:
     class GetDataAttr(ResponseBodyStruct):
 
         state: IsEnabled = field(XmpByte())
-        """Layer-1 Event Capture state. Indicates if the feature is enabled or disabled."""
+        """Layer-1 Event Logging state. Indicates if the feature is enabled or disabled."""
 
     class SetDataAttr(RequestBodyStruct):
 
@@ -250,18 +250,18 @@ class PL1_EVENT_LOGGING_STATE:
         """Enable/Disable event logging."""
 
     def get(self) -> Token[GetDataAttr]:
-        """Returns the Layer-1 Event Capture state.
+        """Returns the Layer-1 Event Logging state.
 
-        :return: Layer-1 Event Capture state
+        :return: Layer-1 Event Logging state
         :rtype: PL1_EVENT_LOGGING_STATE.GetDataAttr
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
     def set(self, state: IsEnabled) -> Token[None]:
-        """Set the Layer-1 Event Capture state.
+        """Set the Layer-1 Event Logging state.
 
-        :param state: Layer-1 Event Capture state.
+        :param state: Layer-1 Event Logging state.
         :type state: IsEnabled
         """
 
@@ -273,7 +273,7 @@ class PL1_EVENT_LOGGING_STATE:
 class PL1_EVENT_LOGGING_MARK:
     """
     Trigger the hardware to generate a **Marker Event**.
-    It is useful for marking specific points in time during the capture process,
+    It is useful for marking specific points in time during the logging process,
     allowing you to correlate events with specific actions or occurrences in the system.
     """
 
@@ -299,7 +299,7 @@ class PL1_EVENT_LOGGING_MARK:
 @dataclass
 class PL1_EVENT_LOGGING_QLEN:
     """
-    Return the current Layer-1 Event Capture queue length.
+    Return the current Layer-1 Event Logging queue length.
     """
 
     code: typing.ClassVar[int] = 1305
@@ -312,13 +312,13 @@ class PL1_EVENT_LOGGING_QLEN:
     class GetDataAttr(ResponseBodyStruct):
 
         qlen: int = field(XmpInt())
-        """Current Layer-1 Event Capture queue length."""
+        """Current Layer-1 Event Logging queue length."""
 
 
     def get(self) -> Token[GetDataAttr]:
-        """Returns the current Layer-1 Event Capture queue length.
+        """Returns the current Layer-1 Event Logging queue length.
 
-        :return: Current Layer-1 Event Capture queue length
+        :return: Current Layer-1 Event Logging queue length
         :rtype: PL1_EVENT_LOGGING_QLEN.GetDataAttr
         """
 
@@ -330,7 +330,7 @@ class PL1_EVENT_LOGGING_QLEN:
 @dataclass
 class PL1_EVENT_LOGGING_RSFEC_THRESH:
     """
-    Get or set the RS-FEC threshold for Layer-1 Event Capture.
+    Get or set the RS-FEC threshold for Layer-1 Event Logging.
     """
 
     code: typing.ClassVar[int] = 1306
