@@ -1,9 +1,8 @@
-"""Port Commands - Layer 1 Capture"""
+"""Port Commands - Layer 1 Event Logging"""
 
 from __future__ import annotations
 from dataclasses import dataclass
 import typing
-import functools
 from xoa_driver.internals.core.builders import (
     build_get_request,
     build_set_request
@@ -17,11 +16,6 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     ResponseBodyStruct,
     XmpByte,
     XmpInt,
-    XmpSequence,
-    XmpStr,
-    Hex,
-    XmpHex,
-    XmpLong,
     XmpJson,
 )
 from .enums import (
@@ -156,7 +150,7 @@ class PL1_EVENT_LOGGING_SUBLIST:
     * For port-specific events, the JSON response is structured as follows::
 
         {
-          "evread": [
+          "evsub": [
           {
             "$po-type": "l1_event_logging_entry",
             "payload": {
@@ -171,7 +165,7 @@ class PL1_EVENT_LOGGING_SUBLIST:
     * For lane-specific events, the JSON response is structured as follows::
 
         {
-          "evread": [
+          "evsub": [
           {
             "$po-type": "l1_event_logging_entry_with_lane",
             "payload": {
@@ -214,10 +208,16 @@ class PL1_EVENT_LOGGING_SUBLIST:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, evsublist: dict) -> Token[None]:
-        """Set the list of currently configured Layer-1 event subscriptions.
+    class SetDataAttr(RequestBodyStruct):
 
-        :param evsublist: List of new configured Layer-1 event subscriptions
+        evsublist: dict = field(XmpJson(min_len=1))
+        """Write the list of new configured Layer-1 event subscriptions."""
+
+    def set(self, evsublist: dict) -> Token[None]:
+        """Set the list of new configured Layer-1 event subscriptions.
+        NOTE: Events not included in this list will be unsubscribed automatically.
+
+        :param evsublist: Dictionary of new configured Layer-1 event subscriptions
         :type evsublist: dict
         """
 

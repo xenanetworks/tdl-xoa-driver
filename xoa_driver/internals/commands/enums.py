@@ -3463,7 +3463,6 @@ class FeatureID(IntEnum):
     UE_LL = 4
     """Ultra Ethernet Link Layer features"""
 
-#endregion
 
 #region UEC enums
 class UecCtlosClearDirection(IntEnum):
@@ -3690,7 +3689,7 @@ class L1EventLoggingType(IntEnum):
 
 
 class L1EventLoggingCondition(IntEnum):
-    """Layer-1 event capture conditions."""
+    """Layer-1 event logging conditions."""
 
     FALLING = 0
     """Event is triggered when the state changes from true to false, 1 to 0, or high to low."""
@@ -3707,3 +3706,5 @@ class L1EventLoggingSubscription(IntEnum):
     
     SUBSCRIBE = 1
     """Subscribe to the event."""
+
+#endregion

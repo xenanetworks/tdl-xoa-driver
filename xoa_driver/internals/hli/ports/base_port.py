@@ -67,7 +67,7 @@ class BasePort(ABC, Generic[PortStateStorage]):
         :type: P_COMMENT
         """
         self.l1_event_logging_qlen = PL1_EVENT_LOGGING_QLEN(self._conn, module_id, port_id)
-        """L1 event capture queue length of the port.
+        """L1 event logging queue length of the port.
         
         :type: PL1_EVENT_LOGGING_QLEN
         """
@@ -132,5 +132,5 @@ class BasePort(ABC, Generic[PortStateStorage]):
 
     on_l1_event_logging_data = functools.partialmethod(utils.on_event, PL1_EVENT_LOGGING_QLEN)
     """
-    Register a callback to the event that the port's L1 event capture data becomes available.
+    Register a callback to the event that the port's L1 event logging data becomes available.
     """
