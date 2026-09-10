@@ -3687,6 +3687,8 @@ class L1EventLoggingType(IntEnum):
     LANE_CDR_LOCK = 17
     """SerDes lane CDR lock state change event."""
 
+    LANE_UNUSED = 18
+    """SerDes lane unused state change event. Reserved for future use."""
 
 class L1EventLoggingCondition(IntEnum):
     """Layer-1 event logging conditions."""
