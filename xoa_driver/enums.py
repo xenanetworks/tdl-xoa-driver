@@ -221,6 +221,9 @@ from .internals.commands.enums import (
     UecLlrRxFsmState,
     ModulePresence,
     TransceiverPresence,
+    L1EventLoggingType,
+    L1EventLoggingCondition,
+    L1EventLoggingSubscription,
 )
 
 __all__ = (
@@ -439,4 +442,7 @@ __all__ = (
     "UecLlrRxFsmState",
     "ModulePresence",
     "TransceiverPresence",
+    "L1EventLoggingType",
+    "L1EventLoggingCondition",
+    "L1EventLoggingSubscription",
 )

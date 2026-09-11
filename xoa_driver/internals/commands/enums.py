@@ -3627,3 +3627,86 @@ class UecLlrRxFsmState(IntEnum):
     """The RX FSM is in the NACK_SENT state."""
 
 #endregion
+
+# region Layer 1 Capture
+
+class L1EventLoggingType(IntEnum):
+    """Layer-1 event capture types."""
+
+    MARKER = 0
+    """Artificial event used to delimit time in the queue. (This event type requires manual triggering)"""
+
+    OVERFLOW = 1
+    """Artificial event used to report dropped events."""
+
+    LINK_SYNC = 2
+    """Link sync state change event."""
+
+    LOCAL_FAULT = 3
+    """Local fault state change event."""
+
+    REMOTE_FAULT = 4
+    """Remote fault state change event."""
+
+    PCS_AM_LOCK = 5
+    """PCS AM lock state change event."""
+
+    PCS_LOA = 6
+    """PCS Loss of Alignment state change event."""
+
+    PCS_HI_BER = 7
+    """PCS HI-BER state change event."""
+
+    PCS_HI_SER = 8
+    """PCS HI-SER state change event."""
+
+    PCS_DEG_SER = 9
+    """PCS Degraded SER state change event."""
+
+    PCS_ERR_64B66B = 10
+    """PCS 64/66B error state change event."""
+
+    PCS_ERR_256B257B = 11
+    """PCS 256/257B error state change event."""
+
+    FEC_UNCORRECTABLE = 12
+    """FEC uncorrectable error state change event."""
+
+    FEC_CORR_OVER_THRESH = 13
+    """FEC correctable error over threshold state change event."""
+
+    RX_FAULT = 14
+    """Rx fault state change event."""
+
+    LANE_PRBS_LOCK = 15
+    """SerDes lane PRBS lock state change event."""
+
+    LANE_RX_RESET = 16
+    """SerDes lane Rx reset state change event."""
+
+    LANE_CDR_LOCK = 17
+    """SerDes lane CDR lock state change event."""
+
+    LANE_UNUSED = 18
+    """SerDes lane unused state change event. Reserved for future use."""
+
+class L1EventLoggingCondition(IntEnum):
+    """Layer-1 event logging conditions."""
+
+    FALLING = 0
+    """Event is triggered when the state changes from true to false, 1 to 0, or high to low."""
+
+    RISING = 1
+    """Event is triggered when the state changes from false to true, 0 to 1, or low to high."""
+
+
+class L1EventLoggingSubscription(IntEnum):
+    """Layer-1 capture subscription actions."""
+    
+    UNSUBSCRIBE = 0
+    """Unsubscribe from the event."""
+    
+    SUBSCRIBE = 1
+    """Subscribe to the event."""
+
+#endregion
