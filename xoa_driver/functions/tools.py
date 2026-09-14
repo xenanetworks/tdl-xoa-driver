@@ -250,6 +250,8 @@ def dictionize_anlt_log_ctrl_status(
     _fsm_lt_stimuli = bool(_value & enums.AnLtLogControl.LOG_TYPE_FSM_LT_STIMULI)
     _fsm_lt_alg0 = bool(_value & enums.AnLtLogControl.LOG_TYPE_FSM_LT_ALG0)
     _fsm_lt_algn1 = bool(_value & enums.AnLtLogControl.LOG_TYPE_FSM_LT_ALG1)
+    _fsm_lt_nrz = bool(_value & enums.AnLtLogControl.LOG_TYPE_FSM_LT_NRZ)
+    _fsm_lt_coeff_nrz = bool(_value & enums.AnLtLogControl.LOG_TYPE_FSM_LT_COEFF_NRZ)
     return {
         "debug": _debug,
         "an_trace": _an_trace,
@@ -264,6 +266,8 @@ def dictionize_anlt_log_ctrl_status(
         "fsm_lt_stimuli": _fsm_lt_stimuli,
         "fsm_lt_alg0": _fsm_lt_alg0,
         "fsm_lt_algn1": _fsm_lt_algn1,
+        "fsm_lt_nrz": _fsm_lt_nrz,
+        "fsm_lt_coeff_nrz": _fsm_lt_coeff_nrz,
     }
 
 __all__ = (
