@@ -2583,6 +2583,11 @@ class AnLtLogControl(IntFlag):
     LOG_TYPE_FSM_LT_ALG1 = 1<<23
     """link training algorithm -1 state machine transitions"""
 
+    LOG_TYPE_FSM_LT_COEFF_NRZ= 0x7000000
+    """link training algorithm coefficients state machines transitions (NRZ)"""
+
+    LOG_TYPE_FSM_LT_NRZ= 0x8000000
+    """link training state machine transitions (NRZ)"""
 
 class RxEqExtCap(IntEnum):
     """Rx Equalizer Advanced Capability type."""
