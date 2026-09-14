@@ -666,12 +666,22 @@ class P_CAPABILITIES:
         txeq_min_seq: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()], length=10), min_version=470)
         """min-value of individual TXEQ taps, SEQuential: <pre-n> <pre-(n-q)> ... <prr1> <main> <post1> <post2> ...."""
 
+        cdf_max_offset: int = field(XmpInt(), min_version=470)
+        cdf_max_size: int = field(XmpInt(), min_version=470)
+        cdf_max_number: int = field(XmpInt(), min_version=470)
+        cdf_port_memory_size_bytes: int = field(XmpInt(), min_version=470)
+
         adv_anlt_mask: int = field(XmpInt(), min_version=480)
         """bitmask, advanced ANLT capability bitmask."""
 
         adv_layer1_mask: int = field(XmpInt(), min_version=480)
         """bitmask, advanced Layer 1 capability bitmask."""
 
+        max_tpld_offset_bytes: int = field(XmpInt(), min_version=485)
+        """Maximum supported TPLD offset (same value for TX and RX)."""
+
+        max_l1_event_logging_rsfec_threshold: int = field(XmpInt(), min_version=485)
+        """Maximum supported RS-FEC event logging threshold."""
 
 
     def get(self) -> Token[P_CAPABILITIES.GetDataAttr]:
