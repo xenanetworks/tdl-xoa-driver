@@ -521,6 +521,11 @@ class P_UE_LLR_TX_STATS:
 class P_UE_CTLOS_SPACING:
     """
     Configures the CtlOS spacing parameters of the port.
+
+    Only ``min_spacing`` is configurable in this release. ``target_spacing``,
+    ``min_sop_spacing`` and ``min_inframe_spacing`` must still be supplied, but they are
+    accepted without any range check, never reach the hardware, and always read back as
+    their fixed defaults 1600, 256 and 2048.
     """
 
     code: typing.ClassVar[int] = 1010
@@ -532,29 +537,29 @@ class P_UE_CTLOS_SPACING:
 
     class GetDataAttr(ResponseBodyStruct):
         target_spacing: int = field(XmpInt())
-        """integer, the target number of bytes between two CtlOS. Must be a multiple of 8 in the range 400 to 16384."""
+        """integer, the target number of bytes between two CtlOS. Not configurable in this release, always reads 1600."""
 
         min_spacing: int = field(XmpInt())
         """integer, the minimum number of bytes between two CtlOS. Either 400 or 0 (CtlOS may appear back-to-back)."""
 
         min_sop_spacing: int = field(XmpInt())
-        """integer, the minimum number of bytes between the SOP and the first CtlOS in that frame. Either 256 or 0."""
+        """integer, the minimum number of bytes between the SOP and the first CtlOS in that frame. Not configurable in this release, always reads 256."""
 
         min_inframe_spacing: int = field(XmpInt())
-        """integer, the minimum number of bytes between two CtlOS within the same frame. Either 2048 or 0."""
+        """integer, the minimum number of bytes between two CtlOS within the same frame. Not configurable in this release, always reads 2048."""
 
     class SetDataAttr(RequestBodyStruct):
         target_spacing: int = field(XmpInt())
-        """integer, the target number of bytes between two CtlOS. Must be a multiple of 8 in the range 400 to 16384."""
+        """integer, the target number of bytes between two CtlOS. Not configurable in this release, accepted and ignored."""
 
         min_spacing: int = field(XmpInt())
-        """integer, the minimum number of bytes between two CtlOS. Either 400 or 0 (CtlOS may appear back-to-back)."""
+        """integer, the minimum number of bytes between two CtlOS. Must be either 400 or 0 (CtlOS may appear back-to-back); any other value is rejected."""
 
         min_sop_spacing: int = field(XmpInt())
-        """integer, the minimum number of bytes between the SOP and the first CtlOS in that frame. Either 256 or 0."""
+        """integer, the minimum number of bytes between the SOP and the first CtlOS in that frame. Not configurable in this release, accepted and ignored."""
 
         min_inframe_spacing: int = field(XmpInt())
-        """integer, the minimum number of bytes between two CtlOS within the same frame. Either 2048 or 0."""
+        """integer, the minimum number of bytes between two CtlOS within the same frame. Not configurable in this release, accepted and ignored."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CtlOS spacing parameters of the port.
@@ -568,13 +573,13 @@ class P_UE_CTLOS_SPACING:
     def set(self, target_spacing: int, min_spacing: int, min_sop_spacing: int, min_inframe_spacing: int) -> Token[None]:
         """Set the CtlOS spacing parameters of the port.
 
-        :param target_spacing: the target number of bytes between two CtlOS
+        :param target_spacing: the target number of bytes between two CtlOS, not configurable in this release, accepted and ignored
         :type target_spacing: int
-        :param min_spacing: the minimum number of bytes between two CtlOS
+        :param min_spacing: the minimum number of bytes between two CtlOS, either 400 or 0 (CtlOS may appear back-to-back)
         :type min_spacing: int
-        :param min_sop_spacing: the minimum number of bytes between the SOP and the first CtlOS in that frame
+        :param min_sop_spacing: the minimum number of bytes between the SOP and the first CtlOS in that frame, not configurable in this release, accepted and ignored
         :type min_sop_spacing: int
-        :param min_inframe_spacing: the minimum number of bytes between two CtlOS within the same frame
+        :param min_inframe_spacing: the minimum number of bytes between two CtlOS within the same frame, not configurable in this release, accepted and ignored
         :type min_inframe_spacing: int
         """
 
@@ -1408,6 +1413,11 @@ class P_UE_CBFC_CFUPDATE_TIMER:
 class P_UE_CBFC_NUMVCS:
     """
     The number of CBFC virtual channels in a CBFC configuration data storage.
+
+    Only the two local staged storages (0 = local receiver, 1 = local sender) are writable.
+    Reducing the number of virtual channels resets the dropped ones to their defaults, and on
+    the local sender storage it also removes the ``PS_UE_CBFC_VC`` mapping of every stream that
+    pointed at a dropped virtual channel.
     """
 
     code: typing.ClassVar[int] = 1038
@@ -1424,7 +1434,7 @@ class P_UE_CBFC_NUMVCS:
 
     class SetDataAttr(RequestBodyStruct):
         num_vcs: int = field(XmpInt())
-        """integer, the number of virtual channels."""
+        """integer, the number of virtual channels, in the range 1 to 32."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the number of CBFC virtual channels of the storage.
@@ -1450,6 +1460,9 @@ class P_UE_CBFC_NUMVCS:
 class P_UE_CBFC_LINK:
     """
     The CBFC link parameters of a CBFC configuration data storage.
+
+    Only the two local staged storages (0 = local receiver, 1 = local sender) are writable.
+    ``UecCbfcCreditLimitMethod.NONE`` is not supported by the hardware and is rejected.
     """
 
     code: typing.ClassVar[int] = 1039
@@ -1481,10 +1494,10 @@ class P_UE_CBFC_LINK:
         """coded byte, how the receive buffer is distributed across the virtual channels."""
 
         total_credit_limit: int = field(XmpInt())
-        """integer, the credit limit shared by all lossless virtual channels."""
+        """integer, the credit limit shared by all lossless virtual channels, in the range 0 to 524287."""
 
         packet_overhead: int = field(XmpInt())
-        """integer, the per-packet overhead in bytes added when accounting credits."""
+        """integer, the per-packet overhead in bytes added when accounting credits, in the range -16 to 12."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CBFC link parameters of the storage.
@@ -1516,6 +1529,8 @@ class P_UE_CBFC_LINK:
 class P_UE_CBFC_VC_TYPE:
     """
     Whether a CBFC virtual channel is lossless or best-effort.
+
+    Only the two local staged storages (0 = local receiver, 1 = local sender) are writable.
     """
 
     code: typing.ClassVar[int] = 1040
@@ -1567,6 +1582,10 @@ class P_UE_CBFC_VC_TYPE:
 class P_UE_CBFC_VC:
     """
     The credit limit and the packet classification of a CBFC virtual channel.
+
+    Only the two local staged storages (0 = local receiver, 1 = local sender) are writable.
+    ``UecCbfcVcMapping.HANDLE`` is not supported by the classifier and is rejected, so ``handle``
+    is range checked but never programmed.
     """
 
     code: typing.ClassVar[int] = 1041
@@ -1602,25 +1621,25 @@ class P_UE_CBFC_VC:
 
     class SetDataAttr(RequestBodyStruct):
         credit_limit: int = field(XmpInt())
-        """integer, the credit limit of the virtual channel."""
+        """integer, the credit limit of the virtual channel, in the range 0 to 524287. Ignored by a best-effort virtual channel."""
 
         mapping: UecCbfcVcMapping = field(XmpByte())
-        """coded byte, the packet field used to map a packet to the virtual channel."""
+        """coded byte, the packet field used to map a packet to the virtual channel. HANDLE is not supported in this release."""
 
         mask_pcp_dei: Hex = field(XmpHex(size=1))
-        """one hex byte, the mask applied to the VLAN PCP/DEI field."""
+        """one hex byte, the mask applied to the VLAN PCP/DEI field. At most 0x0F."""
 
         value_pcp_dei: Hex = field(XmpHex(size=1))
-        """one hex byte, the value the masked VLAN PCP/DEI field is matched against."""
+        """one hex byte, the value the masked VLAN PCP/DEI field is matched against. At most 0x0F."""
 
         mask_dscp: Hex = field(XmpHex(size=1))
-        """one hex byte, the mask applied to the IP DSCP field."""
+        """one hex byte, the mask applied to the IP DSCP field. At most 0x3F."""
 
         value_dscp: Hex = field(XmpHex(size=1))
-        """one hex byte, the value the masked IP DSCP field is matched against."""
+        """one hex byte, the value the masked IP DSCP field is matched against. At most 0x3F."""
 
         handle: int = field(XmpInt())
-        """integer, the UE packet handle mapped to the virtual channel."""
+        """integer, the UE packet handle mapped to the virtual channel, at most 4095. Not programmed in this release."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the configuration of the CBFC virtual channel.
@@ -1731,7 +1750,9 @@ class P_UE_CBFC_VC_STREAMS:
 @dataclass
 class P_UE_CBFC_APPLY:
     """
-    Copy a staged CBFC configuration data storage into its active counterpart.
+    Copy a staged CBFC configuration data storage into its active counterpart, and push it to
+    the hardware. Applying the local sender storage also re-programs the whole stream-to-virtual-
+    channel table, so a ``P_UE_CBFC_NUMVCS`` reduction is reflected in the hardware.
     """
 
     code: typing.ClassVar[int] = 1042
@@ -1748,7 +1769,7 @@ class P_UE_CBFC_APPLY:
     def set(self, storage_index: int) -> Token[None]:
         """Apply a staged CBFC configuration data storage.
 
-        :param storage_index: the staged configuration data storage to apply
+        :param storage_index: the staged configuration data storage to apply, 0 (local receiver) or 1 (local sender)
         :type storage_index: int
         """
 
@@ -1760,6 +1781,10 @@ class P_UE_CBFC_APPLY:
 class P_UE_CBFC_INJECT_ERR:
     """
     CBFC error injection of the port.
+
+    No burst pattern is defined for CBFC in this release. ``burst_size`` and ``burst_interval``
+    must still be supplied, but they are accepted without any range check and never reach the
+    hardware.
     """
 
     code: typing.ClassVar[int] = 1043
@@ -1777,10 +1802,10 @@ class P_UE_CBFC_INJECT_ERR:
         """coded byte, the pattern of error injection."""
 
         burst_size: int = field(XmpInt())
-        """integer, the number of errors in a burst."""
+        """integer, the number of errors in a burst. Not supported in this release, accepted and ignored."""
 
         burst_interval: int = field(XmpInt())
-        """integer, the interval between bursts."""
+        """integer, the interval between bursts. Not supported in this release, accepted and ignored."""
 
     def set(self, error_type: UecCbfcInjectErrType, pattern: UecCbfcInjectErrPattern, burst_size: int, burst_interval: int) -> Token[None]:
         """Set the CBFC error injection configuration of the port.
@@ -1789,9 +1814,9 @@ class P_UE_CBFC_INJECT_ERR:
         :type error_type: UecCbfcInjectErrType
         :param pattern: the pattern of error injection
         :type pattern: UecCbfcInjectErrPattern
-        :param burst_size: the number of errors in a burst
+        :param burst_size: the number of errors in a burst, not supported in this release, accepted and ignored
         :type burst_size: int
-        :param burst_interval: the interval between bursts
+        :param burst_interval: the interval between bursts, not supported in this release, accepted and ignored
         :type burst_interval: int
         """
 
@@ -1820,6 +1845,10 @@ class P_UE_CBFC_CC_INC:
     """
     The number of credits added to the CC_Update credits consumed counter by the
     CC_UPDATE_INC error injection, and the virtual channel it is applied to.
+
+    CC_Update is generated by the sender, so ``vc_index`` is resolved against the local sender
+    staged storage: it must be below its ``P_UE_CBFC_NUMVCS``, and a non-zero ``credits`` also
+    requires that virtual channel to be lossless.
     """
 
     code: typing.ClassVar[int] = 1044
@@ -1841,7 +1870,7 @@ class P_UE_CBFC_CC_INC:
         """integer, the virtual channel the credit leak is injected on."""
 
         credits: int = field(XmpInt())
-        """integer, the number of credits added to the credits consumed counter."""
+        """integer, the number of credits added to the credits consumed counter, in the range 0 to 1048575."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CC_Update credit increment of the port.
@@ -1857,7 +1886,7 @@ class P_UE_CBFC_CC_INC:
 
         :param vc_index: the virtual channel the credit leak is injected on
         :type vc_index: int
-        :param credits: the number of credits added to the credits consumed counter
+        :param credits: the number of credits added to the credits consumed counter, in the range 0 to 1048575
         :type credits: int
         """
 
@@ -2010,10 +2039,14 @@ class P_UE_CBFC_VC_TX_STATS:
         """long integer, the total number of packets transmitted."""
 
         tx_credits_consumed: int = field(XmpLong())
-        """long integer, the number of credits consumed. Best-effort VC returns 0."""
+        """long integer, signed, sender VC credits consumed (S_VC_CC) since the last clear.
+        A best-effort VC always returns -1.
+        """
 
         tx_credits_freed: int = field(XmpLong())
-        """long integer, the number of credits freed. Best-effort VC returns 0."""
+        """long integer, signed, sender VC credits freed (S_VC_CF) since the last clear.
+        A best-effort VC always returns -1.
+        """
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CBFC Tx statistics of the virtual channel.
@@ -2060,10 +2093,14 @@ class P_UE_CBFC_VC_RX_STATS:
         """long integer, the total number of packets received."""
 
         rx_credits_consumed: int = field(XmpLong())
-        """long integer, the number of credits consumed. Best-effort VC returns 0."""
+        """long integer, signed, receiver VC credits consumed (R_VC_CC) since the last clear.
+        A best-effort VC always returns -1.
+        """
 
         rx_credits_freed: int = field(XmpLong())
-        """long integer, the number of credits freed. Best-effort VC returns 0."""
+        """long integer, signed, receiver VC credits freed (R_VC_CF) since the last clear.
+        A best-effort VC always returns -1.
+        """
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CBFC Rx statistics of the virtual channel.
