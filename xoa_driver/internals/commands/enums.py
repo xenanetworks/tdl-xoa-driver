@@ -3798,4 +3798,14 @@ class UecCbfcInjectErrPattern(IntEnum):
     ONCE = 1
     """Inject the error once."""
 
+
+class UecCbfcMode(IntEnum):
+    """UE CBFC mode of operation, per direction."""
+
+    OFF = 0
+    """The direction is disabled."""
+
+    ON = 1
+    """The direction is enabled."""
+
 #endregion

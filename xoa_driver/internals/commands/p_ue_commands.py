@@ -47,6 +47,7 @@ from .enums import (
     UecCbfcInjectErrType,
     UecCbfcInjectErrPattern,
     UecCbfcClearDirection,
+    UecCbfcMode,
 )
 
 
@@ -1714,6 +1715,59 @@ class P_UE_CBFC_CLEAR:
     clear_all = functools.partialmethod(set, UecCbfcClearDirection.ALL)
     """Clear all CBFC RX and TX counters.
     """
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_MODE:
+    """
+    The CBFC mode of operation of the port, for the sender (TX) and the receiver (RX).
+
+    Turning a direction ``OFF`` stops it from transmitting its link messages - CC_Update for
+    TX, CF_Update for RX - and clears that direction's CBFC statistics. It leaves the CBFC
+    link message configuration and the CBFC virtual channel configuration untouched.
+    """
+
+    code: typing.ClassVar[int] = 1056
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        cbfc_modex_rx: UecCbfcMode = field(XmpByte())
+        """coded byte, the CBFC receiver mode."""
+
+        cbfc_modex_tx: UecCbfcMode = field(XmpByte())
+        """coded byte, the CBFC sender mode."""
+
+    class SetDataAttr(RequestBodyStruct):
+        cbfc_modex_rx: UecCbfcMode = field(XmpByte())
+        """coded byte, the CBFC receiver mode."""
+
+        cbfc_modex_tx: UecCbfcMode = field(XmpByte())
+        """coded byte, the CBFC sender mode."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC mode of the port.
+
+        :return: the CBFC receiver and sender modes of the port
+        :rtype: P_UE_CBFC_MODE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, cbfc_modex_rx: UecCbfcMode, cbfc_modex_tx: UecCbfcMode) -> Token[None]:
+        """Set the CBFC mode of the port.
+
+        :param cbfc_modex_rx: the CBFC receiver mode
+        :type cbfc_modex_rx: UecCbfcMode
+        :param cbfc_modex_tx: the CBFC sender mode
+        :type cbfc_modex_tx: UecCbfcMode
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, cbfc_modex_rx=cbfc_modex_rx, cbfc_modex_tx=cbfc_modex_tx))
 
 
 @register_command
