@@ -227,6 +227,9 @@ from .internals.commands.enums import (
     UecCbfcClearDirection,
     ModulePresence,
     TransceiverPresence,
+    L1EventLoggingType,
+    L1EventLoggingCondition,
+    L1EventLoggingSubscription,
 )
 
 __all__ = (
@@ -451,4 +454,7 @@ __all__ = (
     "UecCbfcClearDirection",
     "ModulePresence",
     "TransceiverPresence",
+    "L1EventLoggingType",
+    "L1EventLoggingCondition",
+    "L1EventLoggingSubscription",
 )

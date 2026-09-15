@@ -32,3 +32,4 @@ from .ps_commands import *  # noqa: F403,F401
 from .pt_commands import *  # noqa: F403,F401
 from .px_commands import *  # noqa: F403,F401
 from .pl1_commands import *  # noqa: F403,F401
+from .pl1_capture_commands import *  # noqa: F403,F401
