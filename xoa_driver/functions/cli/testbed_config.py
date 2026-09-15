@@ -1,15 +1,6 @@
 import asyncio
 from xoa_driver import testers, modules, ports
-from ._cli_manager import XOACLIManager, CLI_PORT
-
-# The binary (XMP) server port. A xenaserver started with --isolate shifts every server port by
-# the same offset, so the CLI port is derived from the one the tester is actually connected to.
-NATIVE_PORT = 22606
-
-
-def _cli_port(tester: testers.L23Tester) -> int:
-    return CLI_PORT + (tester.info.port - NATIVE_PORT)
-
+from ._cli_manager import XOACLIManager
 from typing import List, Tuple
 from ..mgmt import *
 from ._config_block import *
@@ -44,9 +35,8 @@ async def save_testbed_config(tester: testers.L23Tester, ports: List[ports.Gener
     resp = await tester.password.get()
     tester_password = resp.password
     
-    # Connect to the tester's CLI port
-    xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error,
-                       tcp_port=_cli_port(tester))
+    # Connect to the tester on tcp port 22611
+    xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error)
 
     # Log on and set username
     xm.logon_set_owner(tester_password)
@@ -124,9 +114,8 @@ async def load_testbed_config(tester: testers.L23Tester, path: str, mode: str = 
     resp = await tester.password.get()
     tester_password = resp.password
 
-    # Connect to the tester's CLI port
-    xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error,
-                       tcp_port=_cli_port(tester))
+    # Connect to the tester on tcp port 22611
+    xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error)
 
     # Log on and set username
     xm.logon_set_owner(tester_password)
