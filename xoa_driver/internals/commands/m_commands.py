@@ -709,6 +709,39 @@ class M_MEDIASUPPORT:
 
 @register_command
 @dataclass
+class M_MEDIASUPPORTEXT:
+    """
+    This command shows the available speeds on a module. The structure of the returned value is
+    ``[ <solution_track> [ <cage_type> <available_speed_count> [<ports_per_speed> <speed>] ] ]``. ``<solution_track>`` is Solution Track ID as described in the M_SOLUTION_TRACK_INDICES.
+    ``[<ports_per_speed> <speed>]`` is repeated until all speeds supported by the ``<cage_type>`` has been listed.
+    ``[<cage_type> <available_speed_count>]`` is repeated for all cage types on the module including the related ``<ports_per_speed> <speed>`` information.
+    """
+
+    code: typing.ClassVar[int] = 409
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        media_info_list: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """coded integer, media information"""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the media supports by the port, including cage type, available speed count, ports per speed, and the corresponding speed.
+
+        :return:
+            a list of integers. The structure of the returned value is ``[ <solution_track> [ <cage_type> <available_speed_count>[<ports_per_speed> <speed>] ] ]``. ``<solution_track>`` is Solution Track ID as described in the M_SOLUTION_TRACK_INDICES.
+            ``[<ports_per_speed> <speed>]`` is repeated until all speeds supported by the ``<cage_type>`` has been listed.
+            ``[<cage_type> <available_speed_count>]`` is repeated for all cage types on the module including the related ``<ports_per_speed> <speed>`` information.
+
+        :rtype: M_MEDIASUPPORTEXT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module))
+
+@register_command
+@dataclass
 class M_FPGAREIMAGE:
     """
     Reload FPGA image.
@@ -2077,6 +2110,45 @@ class M_SOLUTION_TRACK_ENABLE:
 
         return Token(self._connection, build_set_request(self, module=self._module, key=st_key))
 
+@register_command
+@dataclass
+class M_SOLUTION_TRACK_ACTIVATE:
+    """
+    Activates one or more Solution Tracks as specified in key.
+    """
+
+    code: typing.ClassVar[int] = 494
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class SetDataAttr(RequestBodyStruct):
+        st: SolutionTrack = field(XmpInt())
+        """Solution Track to activate."""
+
+    class GetDataAttr(ResponseBodyStruct):
+        st: SolutionTrack = field(XmpInt())
+        """Currently activated Solution Track."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the currently activated Solution Track.
+
+        :return: The currently activated Solution Track
+        :rtype: M_SOLUTION_TRACK_ACTIVATE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module))
+
+    def set(self, st: SolutionTrack) -> Token[None]:
+        """
+        Activate the specified Solution Track.
+        :param st: Solution Track to activate
+        :type st: SolutionTrack
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, st=st))
+
 
 __all__ = [
     "M_CAPABILITIES",
@@ -2101,6 +2173,7 @@ __all__ = [
     "M_LICENSE_UPDATE_STATUS",
     "M_MEDIA",
     "M_MEDIASUPPORT",
+    "M_MEDIASUPPORTEXT",
     "M_MODEL",
     "M_MODEL_NAME",
     "M_MULTIUSER",
@@ -2129,6 +2202,8 @@ __all__ = [
     "M_VERSIONSTR",
     "M_SOLUTION_TRACK_INDICES",
     "M_SOLUTION_TRACK",
+    "M_SOLUTION_TRACK_ENABLE",
+    "M_SOLUTION_TRACK_ACTIVATE",
     "M_SOLUTION_TRACK_ENABLE",
     "M_SOLUTION_TRACK_DEMO_EXP",
 ]

@@ -20,6 +20,11 @@ from xoa_driver.internals.commands import (
     M_VERSIONNO,
     M_MODEL_NAME,
 )
+from xoa_driver.internals.commands.m_commands import (
+    M_SOLUTION_TRACK_ACTIVATE,
+    M_MEDIASUPPORTEXT,
+    M_TCVR_PRESENCE,
+)
 from xoa_driver.internals.utils import attributes as utils
 
 if TYPE_CHECKING:
@@ -135,4 +140,19 @@ class BaseModule(ABC, Generic[T]):
     on_version_number_change = functools.partialmethod(utils.on_event, M_VERSIONNO)
     """
     Register a callback to the event that the module's version number status changes.
+    """
+
+    on_module_tcvr_change = functools.partialmethod(utils.on_event,  M_TCVR_PRESENCE)
+    """
+    Register a callback to the event that the module's transceiver changes.
+    """
+
+    on_solution_tract_activation = functools.partialmethod(utils.on_event, M_SOLUTION_TRACK_ACTIVATE)
+    """
+    Register a callback to the event that the module's currently activated Solution Track changes.
+    """
+
+    on_media_support_change = functools.partialmethod(utils.on_event, M_MEDIASUPPORTEXT)
+    """
+    Register a callback to the event that the module's media support status changes.
     """
