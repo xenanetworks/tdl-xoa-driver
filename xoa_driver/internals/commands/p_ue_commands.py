@@ -1721,11 +1721,14 @@ class P_UE_CBFC_CLEAR:
 @dataclass
 class P_UE_CBFC_MODE:
     """
-    The CBFC mode of operation of the port, for the sender (TX) and the receiver (RX).
+    The CBFC mode of operation of the port, for the sender (TX) and the receiver (RX). Both
+    directions are ``ON`` by default.
 
-    Turning a direction ``OFF`` stops it from transmitting its link messages - CC_Update for
-    TX, CF_Update for RX - and clears that direction's CBFC statistics. It leaves the CBFC
-    link message configuration and the CBFC virtual channel configuration untouched.
+    Turning the sender ``OFF`` stops CC_Update generation and makes every packet bypass the
+    credit check, so traffic is forwarded uncredited, and the credit wallet is zeroed. Turning
+    the receiver ``OFF`` bypasses credit accounting altogether. Either way that direction's
+    CBFC statistics are cleared, while the CBFC link message configuration and the CBFC
+    virtual channel configuration are left untouched.
     """
 
     code: typing.ClassVar[int] = 1056
