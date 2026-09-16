@@ -2114,7 +2114,7 @@ class M_SOLUTION_TRACK_ENABLE:
 @dataclass
 class M_SOLUTION_TRACK_ACTIVATE:
     """
-    Activates one or more Solution Tracks as specified in key.
+    Activates the specified Solution Track.
     """
 
     code: typing.ClassVar[int] = 494
@@ -2204,6 +2204,5 @@ __all__ = [
     "M_SOLUTION_TRACK",
     "M_SOLUTION_TRACK_ENABLE",
     "M_SOLUTION_TRACK_ACTIVATE",
-    "M_SOLUTION_TRACK_ENABLE",
     "M_SOLUTION_TRACK_DEMO_EXP",
 ]

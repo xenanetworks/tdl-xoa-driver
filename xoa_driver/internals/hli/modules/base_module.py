@@ -147,12 +147,12 @@ class BaseModule(ABC, Generic[T]):
     Register a callback to the event that the module's transceiver changes.
     """
 
-    on_solution_tract_activation = functools.partialmethod(utils.on_event, M_SOLUTION_TRACK_ACTIVATE)
+    on_solution_track_activation = functools.partialmethod(utils.on_event, M_SOLUTION_TRACK_ACTIVATE)
     """
     Register a callback to the event that the module's currently activated Solution Track changes.
     """
 
-    on_media_support_change = functools.partialmethod(utils.on_event, M_MEDIASUPPORTEXT)
+    on_media_supportext_change = functools.partialmethod(utils.on_event, M_MEDIASUPPORTEXT)
     """
     Register a callback to the event that the module's media support status changes.
     """

@@ -1,5 +1,6 @@
 import typing
 from xoa_driver import ports
+from xoa_driver.internals.commands.m_commands import M_SOLUTION_TRACK_ACTIVATE
 from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
 
@@ -36,4 +37,10 @@ class MSolutionTrack:
         """Get the demonstration expire information of the solution track.
         
         :type: M_SOLUTION_TRACK_DEMO_EXP
+        """
+
+        self.activate = M_SOLUTION_TRACK_ACTIVATE(conn, module_id)
+        """Activate the solution track.
+        
+        :type: M_SOLUTION_TRACK_ACTIVATE
         """
