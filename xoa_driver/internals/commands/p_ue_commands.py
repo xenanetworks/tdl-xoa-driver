@@ -2005,9 +2005,6 @@ class P_UE_CBFC_RX_STATS:
         rx_cc_update: int = field(XmpLong())
         """long integer, unsigned, the number of CC_Update messages received since the last clear."""
 
-        rx_lost_credits: int = field(XmpLong())
-        """long integer, signed, the accumulative per-port Lost Credits since the last clear."""
-
         cc_update_interval_min: int = field(XmpLong())
         """long integer, the minimum interval in microseconds between two consecutive Rx CC_Update since the last clear."""
 
@@ -2042,14 +2039,17 @@ class P_UE_CBFC_RX_ERRORS:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
+        rx_lost_credits: int = field(XmpLong())
+        """long integer, signed, the accumulative per-port Lost Credits since the last clear."""
+
         rx_cc_update_bad_cid: int = field(XmpLong())
-        """long integer, the number of CC_Update messages received with an unexpected Company ID."""
+        """long integer, unsigned, the number of CC_Update received with a CID that is not FA-7A-CB, since the last clear."""
 
         rx_cc_update_bad_opcode: int = field(XmpLong())
-        """long integer, the number of CC_Update messages received with an unexpected opcode."""
+        """long integer, unsigned, the number of CC_Update received with an opcode that is not 0xFFFE, since the last clear."""
 
         rx_cc_update_unknown_msg_type: int = field(XmpLong())
-        """long integer, the number of CC_Update messages received with an unknown message type."""
+        """long integer, unsigned, the number of CC_Update received with a message type value that is not 0x01 or 0x02, since the last clear."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CBFC Rx error counters of the port.
