@@ -9,8 +9,6 @@ from xoa_driver.internals.commands import (
     P_UE_CTLOS_RX_STATS,
     P_UE_CTLOS_TX_STATS,
     P_UE_CTLOS_SPACING,
-    P_UE_CTLOS_TX_INTERVAL,
-    P_UE_CTLOS_RX_INTERVAL,
     P_UE_CTLOS_RX_ERRORS,
 )
 
@@ -46,18 +44,6 @@ class UecCtlOsStats:
         """Clear UE CtlOS counters in the specified direction(s).
 
         :type: P_UE_CTLOS_CLEAR
-        """
-        
-        self.rx_interval = P_UE_CTLOS_RX_INTERVAL(conn, module_id, port_id)
-        """UE CtlOS Rx interval statistics.
-
-        :type: P_UE_CTLOS_RX_INTERVAL
-        """
-
-        self.tx_interval = P_UE_CTLOS_TX_INTERVAL(conn, module_id, port_id)
-        """UE CtlOS Tx interval statistics.
-
-        :type: P_UE_CTLOS_TX_INTERVAL
         """
         
         self.rx_errors = P_UE_CTLOS_RX_ERRORS(conn, module_id, port_id)
