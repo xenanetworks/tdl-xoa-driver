@@ -711,10 +711,7 @@ class M_MEDIASUPPORT:
 @dataclass
 class M_MEDIASUPPORTEXT:
     """
-    This command shows the available speeds on a module. The structure of the returned value is
-    ``[ <solution_track> [ <cage_type> <available_speed_count> [<ports_per_speed> <speed>] ] ]``. ``<solution_track>`` is Solution Track ID as described in the M_SOLUTION_TRACK_INDICES.
-    ``[<ports_per_speed> <speed>]`` is repeated until all speeds supported by the ``<cage_type>`` has been listed.
-    ``[<cage_type> <available_speed_count>]`` is repeated for all cage types on the module including the related ``<ports_per_speed> <speed>`` information.
+    This command returns the available combinations of Solution Tracks, cage types and (port, speed) on a module.
     """
 
     code: typing.ClassVar[int] = 409
@@ -731,10 +728,13 @@ class M_MEDIASUPPORTEXT:
         """Get the media supports by the port, including cage type, available speed count, ports per speed, and the corresponding speed.
 
         :return:
-            a list of integers. The structure of the returned value is ``[ <solution_track> [ <cage_type> <available_speed_count>[<ports_per_speed> <speed>] ] ]``. ``<solution_track>`` is Solution Track ID as described in the M_SOLUTION_TRACK_INDICES.
-            ``[<ports_per_speed> <speed>]`` is repeated until all speeds supported by the ``<cage_type>`` has been listed.
-            ``[<cage_type> <available_speed_count>]`` is repeated for all cage types on the module including the related ``<ports_per_speed> <speed>`` information.
-
+            a list of integers. The structure of the returned value is
+            ``[ <solution_track> <cage_type_count> [ <cage_type> <available_speed_count> [<port_count> <speed>] ] ]``.
+            ``<solution_track>`` is Solution Track ID as described in the documentation for M_SOLUTION_TRACK_INDICES.
+            ``<cage_type_count>`` is the number of cage type enties in the following list.
+            ``<cage_type>`` is the type of the cage, as described in the documentation for M_MEDIA.
+            ``<available_speed_count>`` is the number of following (port, speed) configurations for the given cage type.
+            ``<port_count>`` and ``<speed>`` are the number of ports and the speed for the given configuration.
         :rtype: M_MEDIASUPPORTEXT.GetDataAttr
         """
 
