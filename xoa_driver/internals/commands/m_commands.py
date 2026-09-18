@@ -2086,7 +2086,7 @@ class M_SOLUTION_TRACK_DEMO_EXP:
 
 @register_command
 @dataclass
-class M_SOLUTION_TRACK_ENABLE:
+class M_SOLUTION_TRACK_INSTALL:
     """
     Enables one or more Solution Tracks as specified in key.
     """
@@ -2202,7 +2202,7 @@ __all__ = [
     "M_VERSIONSTR",
     "M_SOLUTION_TRACK_INDICES",
     "M_SOLUTION_TRACK",
-    "M_SOLUTION_TRACK_ENABLE",
+    "M_SOLUTION_TRACK_INSTALL",
     "M_SOLUTION_TRACK_ACTIVATE",
     "M_SOLUTION_TRACK_DEMO_EXP",
 ]
