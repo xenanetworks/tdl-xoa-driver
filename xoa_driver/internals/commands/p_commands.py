@@ -1,4 +1,4 @@
-"""Port Commands - Traffic Generation"""
+"""Port Commands - Traffic Generation."""
 from __future__ import annotations
 from dataclasses import dataclass
 import ipaddress
@@ -27,7 +27,6 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     XmpSequence,
     XmpStr,
     Hex,
-    XmpJson,
 )
 from .subtypes import (
     ArpEntry,

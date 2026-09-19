@@ -2033,7 +2033,6 @@ class M_SOLUTION_TRACK:
 
     _connection: 'interfaces.IConnection'
     _module: int
-    _solution_track_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
         feature_ids: typing.List[FeatureID] = field(XmpSequence(types_chunk=[XmpInt()]))
