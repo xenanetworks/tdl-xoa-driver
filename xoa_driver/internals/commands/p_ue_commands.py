@@ -2086,9 +2086,6 @@ class P_UE_CBFC_VC_TX_STATS:
         tx_pkts_last_sec: int = field(XmpLong())
         """long integer, the number of packets transmitted in the last second."""
 
-        tx_bits_total: int = field(XmpLong())
-        """long integer, the total number of bits transmitted."""
-
         tx_bytes_total: int = field(XmpLong())
         """long integer, the total number of bytes transmitted."""
 
@@ -2139,9 +2136,6 @@ class P_UE_CBFC_VC_RX_STATS:
 
         rx_pkts_last_sec: int = field(XmpLong())
         """long integer, the number of packets received in the last second."""
-
-        rx_bits_total: int = field(XmpLong())
-        """long integer, the total number of bits received."""
 
         rx_bytes_total: int = field(XmpLong())
         """long integer, the total number of bytes received."""
