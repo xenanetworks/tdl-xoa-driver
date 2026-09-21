@@ -4,11 +4,6 @@ from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
 
 from .bases.module_l23 import ModuleL23
-from xoa_driver.internals.commands import (
-    M_CLOCKPPBSWEEP,
-    M_CLOCKSWEEPSTATUS,
-    M_HEALTH,
-)
 from .solution_track.solution_track import MSolutionTrack
 from .health.health import MHealth
 from .timing_clock.ppm_sweep import MClockSweep

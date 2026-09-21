@@ -11,7 +11,8 @@ from xoa_driver.internals.commands import (
     M_SOLUTION_TRACK,
     M_SOLUTION_TRACK_INDICES,
     M_SOLUTION_TRACK_DEMO_EXP,
-    M_SOLUTION_TRACK_ENABLE,
+    M_SOLUTION_TRACK_INSTALL,
+    M_SOLUTION_TRACK_ACTIVATE,
 )
 from .solution_track.solution_track import MSolutionTrack
 from .health.health import MHealth
@@ -20,7 +21,7 @@ from .timing_clock.ppm_sweep import MClockSweep
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import __interfaces as m_itf
-    
+
 __all__ = (
     "MEdun800G3S1PSMPX_a",
     "MEdun1600G4S1POSFP_a",
@@ -40,12 +41,12 @@ class ModuleFamilyEdun(ModuleL23):
 
         self.health = MHealth(conn, self.module_id)
         """Module health information"""
-        
+
         self.solution_track = MSolutionTrack(conn, self.module_id)
         """Module solution track control"""
 
 #endregion
-        
+
 
 #region - Edun-800G-3S-1P-SMPX
 @typing.final
@@ -70,7 +71,7 @@ class MEdun800G3S1PSMPX_a(ModuleFamilyEdun):
 @revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP[a]")
 class MEdun1600G4S1POSFP_a(ModuleFamilyEdun):
     """Test module Edun-1600G-4S-1P-OSFP[a]
-    
+
     Supports transceiver cage form factor OSFP (OSFP-IHS).
     """
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
@@ -82,13 +83,13 @@ class MEdun1600G4S1POSFP_a(ModuleFamilyEdun):
             ports_count=self.ports_count
         )
         """Port Index Manager of Edun-1600G-4S-1P-OSFP[a]"""
-        
+
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP[c]")
 class MEdun1600G4S1POSFP_c(ModuleFamilyEdun):
     """Test module Edun-1600G-4S-1P-OSFP[c]
-    
+
     Supports transceiver cage form factor OSFP (OSFP-IHS).
     """
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
@@ -100,16 +101,16 @@ class MEdun1600G4S1POSFP_c(ModuleFamilyEdun):
             ports_count=self.ports_count
         )
         """Port Index Manager of Edun-1600G-4S-1P-OSFP[c]"""
-        
+
 #endregion
 
 
-#region - Edun-1600G-4S-1P-OSFP-RHS        
+#region - Edun-1600G-4S-1P-OSFP-RHS
 @typing.final
 @revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP-RHS[a]")
 class MEdun1600G4S1POSFP_RHS_a(ModuleFamilyEdun):
     """Test module Edun-1600G-4S-1P-OSFP-RHS[a]
-    
+
     Supports transceiver cage form factor OSFP-RHS.
     """
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
@@ -121,13 +122,13 @@ class MEdun1600G4S1POSFP_RHS_a(ModuleFamilyEdun):
             ports_count=self.ports_count
         )
         """Port Index Manager of Edun-1600G-4S-1P-OSFP-RHS[a]"""
-        
+
 
 @typing.final
 @revisions.register_valkyrie_module(rev="Edun-1600G-4S-1P-OSFP-RHS[c]")
 class MEdun1600G4S1POSFP_RHS_c(ModuleFamilyEdun):
     """Test module Edun-1600G-4S-1P-OSFP-RHS[c]
-    
+
     Supports transceiver cage form factor OSFP-RHS.
     """
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
@@ -139,5 +140,5 @@ class MEdun1600G4S1POSFP_RHS_c(ModuleFamilyEdun):
             ports_count=self.ports_count
         )
         """Port Index Manager of Edun-1600G-4S-1P-OSFP-RHS[c]"""
-        
+
 #endregion
