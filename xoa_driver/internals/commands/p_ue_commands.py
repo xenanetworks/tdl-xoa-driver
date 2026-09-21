@@ -41,6 +41,13 @@ from .enums import (
     UecLlrTxErrPattern,
     UecLlrTxFsmState,
     UecLlrRxFsmState,
+    UecCbfcCreditLimitMethod,
+    UecCbfcVcType,
+    UecCbfcVcMapping,
+    UecCbfcInjectErrType,
+    UecCbfcInjectErrPattern,
+    UecCbfcClearDirection,
+    UecCbfcMode,
 )
 
 
@@ -515,6 +522,11 @@ class P_UE_LLR_TX_STATS:
 class P_UE_CTLOS_SPACING:
     """
     Configures the CtlOS spacing parameters of the port.
+
+    Only ``min_spacing`` is configurable in this release. ``target_spacing``,
+    ``min_sop_spacing`` and ``min_inframe_spacing`` must still be supplied, but they are
+    accepted without any range check, never reach the hardware, and always read back as
+    their fixed defaults 1600, 256 and 2048.
     """
 
     code: typing.ClassVar[int] = 1010
@@ -526,29 +538,29 @@ class P_UE_CTLOS_SPACING:
 
     class GetDataAttr(ResponseBodyStruct):
         target_spacing: int = field(XmpInt())
-        """integer, the target CtlOS spacing."""
+        """integer, the target number of bytes between two CtlOS. Not configurable in this release, always reads 1600."""
 
         min_spacing: int = field(XmpInt())
-        """integer, the minimum CtlOS spacing."""
+        """integer, the minimum number of bytes between two CtlOS. Either 400 or 0 (CtlOS may appear back-to-back)."""
 
-        reserved1: int = field(XmpInt())
-        """integer, reserved."""
+        min_sop_spacing: int = field(XmpInt())
+        """integer, the minimum number of bytes between the SOP and the first CtlOS in that frame. Not configurable in this release, always reads 256."""
 
-        reserved2: int = field(XmpInt())
-        """integer, reserved."""
+        min_inframe_spacing: int = field(XmpInt())
+        """integer, the minimum number of bytes between two CtlOS within the same frame. Not configurable in this release, always reads 2048."""
 
     class SetDataAttr(RequestBodyStruct):
         target_spacing: int = field(XmpInt())
-        """integer, the target CtlOS spacing."""
+        """integer, the target number of bytes between two CtlOS. Not configurable in this release, accepted and ignored."""
 
         min_spacing: int = field(XmpInt())
-        """integer, the minimum CtlOS spacing."""
+        """integer, the minimum number of bytes between two CtlOS. Must be either 400 or 0 (CtlOS may appear back-to-back); any other value is rejected."""
 
-        reserved1: int = field(XmpInt())
-        """integer, reserved."""
+        min_sop_spacing: int = field(XmpInt())
+        """integer, the minimum number of bytes between the SOP and the first CtlOS in that frame. Not configurable in this release, accepted and ignored."""
 
-        reserved2: int = field(XmpInt())
-        """integer, reserved."""
+        min_inframe_spacing: int = field(XmpInt())
+        """integer, the minimum number of bytes between two CtlOS within the same frame. Not configurable in this release, accepted and ignored."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CtlOS spacing parameters of the port.
@@ -559,20 +571,20 @@ class P_UE_CTLOS_SPACING:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, target_spacing: int, min_spacing: int, reserved1: int, reserved2: int) -> Token[None]:
+    def set(self, target_spacing: int, min_spacing: int, min_sop_spacing: int, min_inframe_spacing: int) -> Token[None]:
         """Set the CtlOS spacing parameters of the port.
 
-        :param target_spacing: the target CtlOS spacing
+        :param target_spacing: the target number of bytes between two CtlOS, not configurable in this release, accepted and ignored
         :type target_spacing: int
-        :param min_spacing: the minimum CtlOS spacing
+        :param min_spacing: the minimum number of bytes between two CtlOS, either 400 or 0 (CtlOS may appear back-to-back)
         :type min_spacing: int
-        :param reserved1: reserved
-        :type reserved1: int
-        :param reserved2: reserved
-        :type reserved2: int
+        :param min_sop_spacing: the minimum number of bytes between the SOP and the first CtlOS in that frame, not configurable in this release, accepted and ignored
+        :type min_sop_spacing: int
+        :param min_inframe_spacing: the minimum number of bytes between two CtlOS within the same frame, not configurable in this release, accepted and ignored
+        :type min_inframe_spacing: int
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target_spacing=target_spacing, min_spacing=min_spacing, reserved1=reserved1, reserved2=reserved2))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, target_spacing=target_spacing, min_spacing=min_spacing, min_sop_spacing=min_sop_spacing, min_inframe_spacing=min_inframe_spacing))
 
 
 @register_command
@@ -735,7 +747,7 @@ class P_UE_LLR_INIT:
         """2 bytes in hex format, the 16-bit LLR_INIT data."""
 
         min_spacing_multiplier: int = field(XmpInt())
-        """integer, the minimum spacing multiplier."""
+        """integer, the minimum multiplier of the number of bytes between transmission of successive LLR_INIT CtlOS. Range 4 to 256."""
 
     class SetDataAttr(RequestBodyStruct):
         init_seq: Hex = field(XmpHex(size=3))
@@ -745,7 +757,7 @@ class P_UE_LLR_INIT:
         """2 bytes in hex format, the 16-bit LLR_INIT data."""
 
         min_spacing_multiplier: int = field(XmpInt())
-        """integer, the minimum spacing multiplier."""
+        """integer, the minimum multiplier of the number of bytes between transmission of successive LLR_INIT CtlOS. Range 4 to 256."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get the LLR INIT parameters of the port.
@@ -1188,146 +1200,6 @@ class P_UE_LLR_STATUS:
 
 @register_command
 @dataclass
-class P_UE_CTLOS_TX_INTERVAL:
-    """
-    Get the CtlOS Tx interval statistics of the port. For each CtlOS message type, the minimum, maximum, and average intervals are reported.
-    """
-
-    code: typing.ClassVar[int] = 1032
-    pushed: typing.ClassVar[bool] = False
-
-    _connection: 'interfaces.IConnection'
-    _module: int
-    _port: int
-
-    class GetDataAttr(ResponseBodyStruct):
-        ctlos_min: int = field(XmpLong())
-        """long integer, the minimum CtlOS Tx interval."""
-
-        ctlos_max: int = field(XmpLong())
-        """long integer, the maximum CtlOS Tx interval."""
-
-        ctlos_avg: int = field(XmpLong())
-        """long integer, the average CtlOS Tx interval."""
-
-        llr_init_min: int = field(XmpLong())
-        """long integer, the minimum LLR_INIT Tx interval."""
-
-        llr_init_max: int = field(XmpLong())
-        """long integer, the maximum LLR_INIT Tx interval."""
-
-        llr_init_avg: int = field(XmpLong())
-        """long integer, the average LLR_INIT Tx interval."""
-
-        llr_init_echo_min: int = field(XmpLong())
-        """long integer, the minimum LLR_INIT_ECHO Tx interval."""
-
-        llr_init_echo_max: int = field(XmpLong())
-        """long integer, the maximum LLR_INIT_ECHO Tx interval."""
-
-        llr_init_echo_avg: int = field(XmpLong())
-        """long integer, the average LLR_INIT_ECHO Tx interval."""
-
-        llr_ack_min: int = field(XmpLong())
-        """long integer, the minimum LLR_ACK Tx interval."""
-
-        llr_ack_max: int = field(XmpLong())
-        """long integer, the maximum LLR_ACK Tx interval."""
-
-        llr_ack_avg: int = field(XmpLong())
-        """long integer, the average LLR_ACK Tx interval."""
-
-        llr_nack_min: int = field(XmpLong())
-        """long integer, the minimum LLR_NACK Tx interval."""
-
-        llr_nack_max: int = field(XmpLong())
-        """long integer, the maximum LLR_NACK Tx interval."""
-
-        llr_nack_avg: int = field(XmpLong())
-        """long integer, the average LLR_NACK Tx interval."""
-
-    def get(self) -> Token[GetDataAttr]:
-        """Get the CtlOS Tx interval statistics of the port.
-
-        :return: the CtlOS Tx interval statistics of the port
-        :rtype: P_UE_CTLOS_TX_INTERVAL.GetDataAttr
-        """
-
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-
-
-@register_command
-@dataclass
-class P_UE_CTLOS_RX_INTERVAL:
-    """
-    Get the CtlOS Rx interval statistics of the port. For each CtlOS message type, the minimum, maximum, and average intervals are reported.
-    """
-
-    code: typing.ClassVar[int] = 1033
-    pushed: typing.ClassVar[bool] = False
-
-    _connection: 'interfaces.IConnection'
-    _module: int
-    _port: int
-
-    class GetDataAttr(ResponseBodyStruct):
-        ctlos_min: int = field(XmpLong())
-        """long integer, the minimum CtlOS Rx interval."""
-
-        ctlos_max: int = field(XmpLong())
-        """long integer, the maximum CtlOS Rx interval."""
-
-        ctlos_avg: int = field(XmpLong())
-        """long integer, the average CtlOS Rx interval."""
-
-        llr_init_min: int = field(XmpLong())
-        """long integer, the minimum LLR_INIT Rx interval."""
-
-        llr_init_max: int = field(XmpLong())
-        """long integer, the maximum LLR_INIT Rx interval."""
-
-        llr_init_avg: int = field(XmpLong())
-        """long integer, the average LLR_INIT Rx interval."""
-
-        llr_init_echo_min: int = field(XmpLong())
-        """long integer, the minimum LLR_INIT_ECHO Rx interval."""
-
-        llr_init_echo_max: int = field(XmpLong())
-        """long integer, the maximum LLR_INIT_ECHO Rx interval."""
-
-        llr_init_echo_avg: int = field(XmpLong())
-        """long integer, the average LLR_INIT_ECHO Rx interval."""
-
-        llr_ack_min: int = field(XmpLong())
-        """long integer, the minimum LLR_ACK Rx interval."""
-
-        llr_ack_max: int = field(XmpLong())
-        """long integer, the maximum LLR_ACK Rx interval."""
-
-        llr_ack_avg: int = field(XmpLong())
-        """long integer, the average LLR_ACK Rx interval."""
-
-        llr_nack_min: int = field(XmpLong())
-        """long integer, the minimum LLR_NACK Rx interval."""
-
-        llr_nack_max: int = field(XmpLong())
-        """long integer, the maximum LLR_NACK Rx interval."""
-
-        llr_nack_avg: int = field(XmpLong())
-        """long integer, the average LLR_NACK Rx interval."""
-
-    def get(self) -> Token[GetDataAttr]:
-        """Get the CtlOS Rx interval statistics of the port.
-
-        :return: the CtlOS Rx interval statistics of the port
-        :rtype: P_UE_CTLOS_RX_INTERVAL.GetDataAttr
-        """
-
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-
-
-@register_command
-@dataclass
 class P_UE_CTLOS_RX_ERRORS:
     """
     Get the CtlOS Rx error counters of the port.
@@ -1374,6 +1246,922 @@ class P_UE_CTLOS_RX_ERRORS:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
+@register_command
+@dataclass
+class P_UE_CBFC_CCUPDATE_HDR:
+    """
+    The header fields of the CBFC CC_Update message generated by the port.
+    """
+
+    code: typing.ClassVar[int] = 1035
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        dmac: Hex = field(XmpMacAddress())
+        """six hex bytes, the destination MAC address of the CC_Update message."""
+
+        smac: Hex = field(XmpMacAddress())
+        """six hex bytes, the source MAC address of the CC_Update message."""
+
+        ethertype: Hex = field(XmpHex(size=2))
+        """two hex bytes, the EtherType of the CC_Update message."""
+
+        opcode: Hex = field(XmpHex(size=2))
+        """two hex bytes, the opcode of the CC_Update message."""
+
+        cid: Hex = field(XmpHex(size=3))
+        """three hex bytes, the Company ID of the CC_Update message."""
+
+    class SetDataAttr(RequestBodyStruct):
+        dmac: Hex = field(XmpMacAddress())
+        """six hex bytes, the destination MAC address of the CC_Update message."""
+
+        smac: Hex = field(XmpMacAddress())
+        """six hex bytes, the source MAC address of the CC_Update message."""
+
+        ethertype: Hex = field(XmpHex(size=2))
+        """two hex bytes, the EtherType of the CC_Update message."""
+
+        opcode: Hex = field(XmpHex(size=2))
+        """two hex bytes, the opcode of the CC_Update message."""
+
+        cid: Hex = field(XmpHex(size=3))
+        """three hex bytes, the Company ID of the CC_Update message."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC CC_Update message header of the port.
+
+        :return: the CBFC CC_Update message header of the port
+        :rtype: P_UE_CBFC_CCUPDATE_HDR.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, dmac: Hex, smac: Hex, ethertype: Hex, opcode: Hex, cid: Hex) -> Token[None]:
+        """Set the CBFC CC_Update message header of the port.
+
+        :param dmac: the destination MAC address of the CC_Update message
+        :type dmac: Hex
+        :param smac: the source MAC address of the CC_Update message
+        :type smac: Hex
+        :param ethertype: the EtherType of the CC_Update message
+        :type ethertype: Hex
+        :param opcode: the opcode of the CC_Update message
+        :type opcode: Hex
+        :param cid: the Company ID of the CC_Update message
+        :type cid: Hex
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, dmac=dmac, smac=smac, ethertype=ethertype, opcode=opcode, cid=cid))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_CCUPDATE_TIMER:
+    """
+    The period at which the port generates CBFC CC_Update messages.
+    """
+
+    code: typing.ClassVar[int] = 1036
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        cc_msg_timer: int = field(XmpInt())
+        """integer, the CC_Update generation period in microseconds."""
+
+    class SetDataAttr(RequestBodyStruct):
+        cc_msg_timer: int = field(XmpInt())
+        """integer, the CC_Update generation period in microseconds."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC CC_Update generation period of the port.
+
+        :return: the CBFC CC_Update generation period of the port
+        :rtype: P_UE_CBFC_CCUPDATE_TIMER.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, cc_msg_timer: int) -> Token[None]:
+        """Set the CBFC CC_Update generation period of the port.
+
+        :param cc_msg_timer: the CC_Update generation period in microseconds
+        :type cc_msg_timer: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, cc_msg_timer=cc_msg_timer))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_CFUPDATE_TIMER:
+    """
+    The interval bounds at which the port generates CBFC CF_Update CtlOS.
+    """
+
+    code: typing.ClassVar[int] = 1037
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        cf_min_timer: int = field(XmpInt())
+        """integer, the minimum number of bytes between two CF_Update CtlOS."""
+
+        cf_max_timer: int = field(XmpInt())
+        """integer, the maximum number of bytes between two CF_Update CtlOS."""
+
+    class SetDataAttr(RequestBodyStruct):
+        cf_min_timer: int = field(XmpInt())
+        """integer, the minimum number of bytes between two CF_Update CtlOS."""
+
+        cf_max_timer: int = field(XmpInt())
+        """integer, the maximum number of bytes between two CF_Update CtlOS."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC CF_Update timers of the port.
+
+        :return: the CBFC CF_Update timers of the port
+        :rtype: P_UE_CBFC_CFUPDATE_TIMER.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, cf_min_timer: int, cf_max_timer: int) -> Token[None]:
+        """Set the CBFC CF_Update timers of the port.
+
+        :param cf_min_timer: the minimum number of bytes between two CF_Update CtlOS
+        :type cf_min_timer: int
+        :param cf_max_timer: the maximum number of bytes between two CF_Update CtlOS
+        :type cf_max_timer: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, cf_min_timer=cf_min_timer, cf_max_timer=cf_max_timer))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_NUMVCS:
+    """
+    The number of CBFC virtual channels in a CBFC configuration data storage.
+
+    Only the two local staged storages (0 = local receiver, 1 = local sender) are writable.
+    Reducing the number of virtual channels resets the dropped ones to their defaults, and on
+    the local sender storage it also removes the ``PS_UE_CBFC_VC`` mapping of every stream that
+    pointed at a dropped virtual channel.
+    """
+
+    code: typing.ClassVar[int] = 1038
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _storage_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        num_vcs: int = field(XmpInt())
+        """integer, the number of virtual channels."""
+
+    class SetDataAttr(RequestBodyStruct):
+        num_vcs: int = field(XmpInt())
+        """integer, the number of virtual channels, in the range 1 to 32."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the number of CBFC virtual channels of the storage.
+
+        :return: the number of CBFC virtual channels of the storage
+        :rtype: P_UE_CBFC_NUMVCS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._storage_xindex]))
+
+    def set(self, num_vcs: int) -> Token[None]:
+        """Set the number of CBFC virtual channels of the storage.
+
+        :param num_vcs: the number of virtual channels
+        :type num_vcs: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, num_vcs=num_vcs, indices=[self._storage_xindex]))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_LINK:
+    """
+    The CBFC link parameters of a CBFC configuration data storage.
+
+    Only the two local staged storages (0 = local receiver, 1 = local sender) are writable.
+    ``UecCbfcCreditLimitMethod.NONE`` is not supported by the hardware and is rejected.
+    """
+
+    code: typing.ClassVar[int] = 1039
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _storage_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        credit_size: int = field(XmpInt())
+        """integer, the size of a credit in bytes."""
+
+        credit_limit_method: UecCbfcCreditLimitMethod = field(XmpByte())
+        """coded byte, how the receive buffer is distributed across the virtual channels."""
+
+        total_credit_limit: int = field(XmpInt())
+        """integer, the credit limit shared by all lossless virtual channels."""
+
+        packet_overhead: int = field(XmpInt())
+        """integer, the per-packet overhead in bytes added when accounting credits."""
+
+    class SetDataAttr(RequestBodyStruct):
+        credit_size: int = field(XmpInt())
+        """integer, the size of a credit in bytes."""
+
+        credit_limit_method: UecCbfcCreditLimitMethod = field(XmpByte())
+        """coded byte, how the receive buffer is distributed across the virtual channels."""
+
+        total_credit_limit: int = field(XmpInt())
+        """integer, the credit limit shared by all lossless virtual channels, in the range 0 to 524287."""
+
+        packet_overhead: int = field(XmpInt())
+        """integer, the per-packet overhead in bytes added when accounting credits, in the range -16 to 12."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC link parameters of the storage.
+
+        :return: the CBFC link parameters of the storage
+        :rtype: P_UE_CBFC_LINK.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._storage_xindex]))
+
+    def set(self, credit_size: int, credit_limit_method: UecCbfcCreditLimitMethod, total_credit_limit: int, packet_overhead: int) -> Token[None]:
+        """Set the CBFC link parameters of the storage.
+
+        :param credit_size: the size of a credit in bytes
+        :type credit_size: int
+        :param credit_limit_method: how the receive buffer is distributed across the virtual channels
+        :type credit_limit_method: UecCbfcCreditLimitMethod
+        :param total_credit_limit: the credit limit shared by all lossless virtual channels
+        :type total_credit_limit: int
+        :param packet_overhead: the per-packet overhead in bytes added when accounting credits
+        :type packet_overhead: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, credit_size=credit_size, credit_limit_method=credit_limit_method, total_credit_limit=total_credit_limit, packet_overhead=packet_overhead, indices=[self._storage_xindex]))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_VC_TYPE:
+    """
+    Whether a CBFC virtual channel is lossless or best-effort.
+
+    Only the two local staged storages (0 = local receiver, 1 = local sender) are writable.
+    """
+
+    code: typing.ClassVar[int] = 1040
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _vc_xindex: int
+    _storage_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        vc_type: UecCbfcVcType = field(XmpByte())
+        """coded byte, whether the virtual channel is lossless."""
+
+    class SetDataAttr(RequestBodyStruct):
+        vc_type: UecCbfcVcType = field(XmpByte())
+        """coded byte, whether the virtual channel is lossless."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the type of the CBFC virtual channel.
+
+        :return: the type of the CBFC virtual channel
+        :rtype: P_UE_CBFC_VC_TYPE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._vc_xindex, self._storage_xindex]))
+
+    def set(self, vc_type: UecCbfcVcType) -> Token[None]:
+        """Set the type of the CBFC virtual channel.
+
+        :param vc_type: whether the virtual channel is lossless
+        :type vc_type: UecCbfcVcType
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, vc_type=vc_type, indices=[self._vc_xindex, self._storage_xindex]))
+
+    set_best_effort = functools.partialmethod(set, UecCbfcVcType.NO)
+    """Make the virtual channel best-effort.
+    """
+
+    set_lossless = functools.partialmethod(set, UecCbfcVcType.YES)
+    """Make the virtual channel lossless.
+    """
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_VC:
+    """
+    The credit limit and the packet classification of a CBFC virtual channel.
+
+    Only the two local staged storages (0 = local receiver, 1 = local sender) are writable.
+    ``UecCbfcVcMapping.HANDLE`` is not supported by the classifier and is rejected, so ``handle``
+    is range checked but never programmed.
+    """
+
+    code: typing.ClassVar[int] = 1041
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _vc_xindex: int
+    _storage_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        credit_limit: int = field(XmpInt())
+        """integer, the credit limit of the virtual channel."""
+
+        mapping: UecCbfcVcMapping = field(XmpByte())
+        """coded byte, the packet field used to map a packet to the virtual channel."""
+
+        mask_pcp_dei: Hex = field(XmpHex(size=1))
+        """one hex byte, the mask applied to the VLAN PCP/DEI field."""
+
+        value_pcp_dei: Hex = field(XmpHex(size=1))
+        """one hex byte, the value the masked VLAN PCP/DEI field is matched against."""
+
+        mask_dscp: Hex = field(XmpHex(size=1))
+        """one hex byte, the mask applied to the IP DSCP field."""
+
+        value_dscp: Hex = field(XmpHex(size=1))
+        """one hex byte, the value the masked IP DSCP field is matched against."""
+
+        handle: int = field(XmpInt())
+        """integer, the UE packet handle mapped to the virtual channel."""
+
+    class SetDataAttr(RequestBodyStruct):
+        credit_limit: int = field(XmpInt())
+        """integer, the credit limit of the virtual channel, in the range 0 to 524287. Ignored by a best-effort virtual channel."""
+
+        mapping: UecCbfcVcMapping = field(XmpByte())
+        """coded byte, the packet field used to map a packet to the virtual channel. HANDLE is not supported in this release."""
+
+        mask_pcp_dei: Hex = field(XmpHex(size=1))
+        """one hex byte, the mask applied to the VLAN PCP/DEI field. At most 0x0F."""
+
+        value_pcp_dei: Hex = field(XmpHex(size=1))
+        """one hex byte, the value the masked VLAN PCP/DEI field is matched against. At most 0x0F."""
+
+        mask_dscp: Hex = field(XmpHex(size=1))
+        """one hex byte, the mask applied to the IP DSCP field. At most 0x3F."""
+
+        value_dscp: Hex = field(XmpHex(size=1))
+        """one hex byte, the value the masked IP DSCP field is matched against. At most 0x3F."""
+
+        handle: int = field(XmpInt())
+        """integer, the UE packet handle mapped to the virtual channel, at most 4095. Not programmed in this release."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the configuration of the CBFC virtual channel.
+
+        :return: the configuration of the CBFC virtual channel
+        :rtype: P_UE_CBFC_VC.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._vc_xindex, self._storage_xindex]))
+
+    def set(self, credit_limit: int, mapping: UecCbfcVcMapping, mask_pcp_dei: Hex, value_pcp_dei: Hex, mask_dscp: Hex, value_dscp: Hex, handle: int) -> Token[None]:
+        """Set the configuration of the CBFC virtual channel.
+
+        :param credit_limit: the credit limit of the virtual channel
+        :type credit_limit: int
+        :param mapping: the packet field used to map a packet to the virtual channel
+        :type mapping: UecCbfcVcMapping
+        :param mask_pcp_dei: the mask applied to the VLAN PCP/DEI field
+        :type mask_pcp_dei: Hex
+        :param value_pcp_dei: the value the masked VLAN PCP/DEI field is matched against
+        :type value_pcp_dei: Hex
+        :param mask_dscp: the mask applied to the IP DSCP field
+        :type mask_dscp: Hex
+        :param value_dscp: the value the masked IP DSCP field is matched against
+        :type value_dscp: Hex
+        :param handle: the UE packet handle mapped to the virtual channel
+        :type handle: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, credit_limit=credit_limit, mapping=mapping, mask_pcp_dei=mask_pcp_dei, value_pcp_dei=value_pcp_dei, mask_dscp=mask_dscp, value_dscp=value_dscp, handle=handle, indices=[self._vc_xindex, self._storage_xindex]))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_CLEAR:
+    """
+    Clear UE CBFC counters and statistics in the specified direction(s).
+    """
+
+    code: typing.ClassVar[int] = 1055
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class SetDataAttr(RequestBodyStruct):
+        direction: UecCbfcClearDirection = field(XmpByte())
+        """coded byte, direction of the counters to clear."""
+
+    def set(self, direction: UecCbfcClearDirection) -> Token[None]:
+        """Clear the CBFC counters in the given direction.
+
+        :param direction: direction of the counters to clear
+        :type direction: UecCbfcClearDirection
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, direction=direction))
+
+    clear_none = functools.partialmethod(set, UecCbfcClearDirection.NONE)
+    """Clear no CBFC counters.
+    """
+
+    clear_rx = functools.partialmethod(set, UecCbfcClearDirection.RX)
+    """Clear all CBFC RX counters.
+    """
+
+    clear_tx = functools.partialmethod(set, UecCbfcClearDirection.TX)
+    """Clear all CBFC TX counters.
+    """
+
+    clear_all = functools.partialmethod(set, UecCbfcClearDirection.ALL)
+    """Clear all CBFC RX and TX counters.
+    """
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_MODE:
+    """
+    The CBFC mode of operation of the port, for the sender (TX) and the receiver (RX). Both
+    directions are ``ON`` by default.
+
+    Turning the sender ``OFF`` stops CC_Update generation and makes every packet bypass the
+    credit check, so traffic is forwarded uncredited, and the credit wallet is zeroed. Turning
+    the receiver ``OFF`` bypasses credit accounting altogether. Either way that direction's
+    CBFC statistics are cleared, while the CBFC link message configuration and the CBFC
+    virtual channel configuration are left untouched.
+    """
+
+    code: typing.ClassVar[int] = 1056
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        cbfc_modex_rx: UecCbfcMode = field(XmpByte())
+        """coded byte, the CBFC receiver mode."""
+
+        cbfc_modex_tx: UecCbfcMode = field(XmpByte())
+        """coded byte, the CBFC sender mode."""
+
+    class SetDataAttr(RequestBodyStruct):
+        cbfc_modex_rx: UecCbfcMode = field(XmpByte())
+        """coded byte, the CBFC receiver mode."""
+
+        cbfc_modex_tx: UecCbfcMode = field(XmpByte())
+        """coded byte, the CBFC sender mode."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC mode of the port.
+
+        :return: the CBFC receiver and sender modes of the port
+        :rtype: P_UE_CBFC_MODE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, cbfc_modex_rx: UecCbfcMode, cbfc_modex_tx: UecCbfcMode) -> Token[None]:
+        """Set the CBFC mode of the port.
+
+        :param cbfc_modex_rx: the CBFC receiver mode
+        :type cbfc_modex_rx: UecCbfcMode
+        :param cbfc_modex_tx: the CBFC sender mode
+        :type cbfc_modex_tx: UecCbfcMode
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, cbfc_modex_rx=cbfc_modex_rx, cbfc_modex_tx=cbfc_modex_tx))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_VC_STREAMS:
+    """
+    The streams that are mapped to a CBFC virtual channel. The stream-to-virtual-channel
+    mapping is N:1 and is set per stream with ``PS_UE_CBFC_VC``.
+    """
+
+    code: typing.ClassVar[int] = 1054
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _vc_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        stream_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """list of integers, the indices of the streams mapped to the virtual channel."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the streams mapped to the CBFC virtual channel.
+
+        :return: the indices of the streams mapped to the virtual channel
+        :rtype: P_UE_CBFC_VC_STREAMS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._vc_xindex]))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_APPLY:
+    """
+    Copy a staged CBFC configuration data storage into its active counterpart, and push it to
+    the hardware. Applying the local sender storage also re-programs the whole stream-to-virtual-
+    channel table, so a ``P_UE_CBFC_NUMVCS`` reduction is reflected in the hardware.
+    """
+
+    code: typing.ClassVar[int] = 1042
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class SetDataAttr(RequestBodyStruct):
+        storage_index: int = field(XmpInt())
+        """integer, the staged configuration data storage to apply."""
+
+    def set(self, storage_index: int) -> Token[None]:
+        """Apply a staged CBFC configuration data storage.
+
+        :param storage_index: the staged configuration data storage to apply, 0 (local receiver) or 1 (local sender)
+        :type storage_index: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, storage_index=storage_index))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_INJECT_ERR:
+    """
+    CBFC error injection of the port.
+
+    No burst pattern is defined for CBFC in this release. ``burst_size`` and ``burst_interval``
+    must still be supplied, but they are accepted without any range check and never reach the
+    hardware.
+    """
+
+    code: typing.ClassVar[int] = 1043
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class SetDataAttr(RequestBodyStruct):
+        error_type: UecCbfcInjectErrType = field(XmpByte())
+        """coded byte, the type of error to inject."""
+
+        pattern: UecCbfcInjectErrPattern = field(XmpByte())
+        """coded byte, the pattern of error injection."""
+
+        burst_size: int = field(XmpInt())
+        """integer, the number of errors in a burst. Not supported in this release, accepted and ignored."""
+
+        burst_interval: int = field(XmpInt())
+        """integer, the interval between bursts. Not supported in this release, accepted and ignored."""
+
+    def set(self, error_type: UecCbfcInjectErrType, pattern: UecCbfcInjectErrPattern, burst_size: int, burst_interval: int) -> Token[None]:
+        """Set the CBFC error injection configuration of the port.
+
+        :param error_type: the type of error to inject
+        :type error_type: UecCbfcInjectErrType
+        :param pattern: the pattern of error injection
+        :type pattern: UecCbfcInjectErrPattern
+        :param burst_size: the number of errors in a burst, not supported in this release, accepted and ignored
+        :type burst_size: int
+        :param burst_interval: the interval between bursts, not supported in this release, accepted and ignored
+        :type burst_interval: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, error_type=error_type, pattern=pattern, burst_size=burst_size, burst_interval=burst_interval))
+
+    inject_cc_update_inc = functools.partialmethod(set, UecCbfcInjectErrType.CC_UPDATE_INC, UecCbfcInjectErrPattern.ONCE, 1, 1)
+    """Increase the CC_Update credits consumed counter once, creating a credit leak.
+    """
+
+    inject_cf_update_drop = functools.partialmethod(set, UecCbfcInjectErrType.CF_UPDATE_DROP, UecCbfcInjectErrPattern.ONCE, 1, 1)
+    """Drop the next CF_Update once.
+    """
+
+    inject_cc_update_bad_fcs = functools.partialmethod(set, UecCbfcInjectErrType.CC_UPDATE_BAD_FCS, UecCbfcInjectErrPattern.ONCE, 1, 1)
+    """Inject a bad FCS in the next CC_Update message.
+    """
+
+    inject_cc_update_poisoned_fcs = functools.partialmethod(set, UecCbfcInjectErrType.CC_UPDATE_POISONED_FCS, UecCbfcInjectErrPattern.ONCE, 1, 1)
+    """Inject a poisoned FCS in the next CC_Update message.
+    """
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_CC_INC:
+    """
+    The number of credits added to the CC_Update credits consumed counter by the
+    CC_UPDATE_INC error injection, and the virtual channel it is applied to.
+
+    CC_Update is generated by the sender, so ``vc_index`` is resolved against the local sender
+    staged storage: it must be below its ``P_UE_CBFC_NUMVCS``, and a non-zero ``credits`` also
+    requires that virtual channel to be lossless.
+    """
+
+    code: typing.ClassVar[int] = 1044
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        vc_index: int = field(XmpInt())
+        """integer, the virtual channel the credit leak is injected on."""
+
+        credits: int = field(XmpInt())
+        """integer, the number of credits added to the credits consumed counter."""
+
+    class SetDataAttr(RequestBodyStruct):
+        vc_index: int = field(XmpInt())
+        """integer, the virtual channel the credit leak is injected on."""
+
+        credits: int = field(XmpInt())
+        """integer, the number of credits added to the credits consumed counter, in the range 0 to 1048575."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CC_Update credit increment of the port.
+
+        :return: the CC_Update credit increment of the port
+        :rtype: P_UE_CBFC_CC_INC.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, vc_index: int, credits: int) -> Token[None]:
+        """Set the CC_Update credit increment of the port.
+
+        :param vc_index: the virtual channel the credit leak is injected on
+        :type vc_index: int
+        :param credits: the number of credits added to the credits consumed counter, in the range 0 to 1048575
+        :type credits: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, vc_index=vc_index, credits=credits))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_TX_STATS:
+    """
+    CBFC Tx statistics of the port.
+    """
+
+    code: typing.ClassVar[int] = 1046
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        tx_cc_update: int = field(XmpLong())
+        """long integer, the number of CC_Update messages transmitted since the last clear."""
+
+        cc_update_interval_min: int = field(XmpLong())
+        """long integer, the minimum interval in microseconds between two consecutive Tx CC_Update since the last clear."""
+
+        cc_update_interval_max: int = field(XmpLong())
+        """long integer, the maximum interval in microseconds between two consecutive Tx CC_Update since the last clear."""
+
+        cc_update_interval_avg: int = field(XmpLong())
+        """long integer, the average interval in microseconds between two consecutive Tx CC_Update since the last clear."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC Tx statistics of the port.
+
+        :return: the CBFC Tx statistics of the port
+        :rtype: P_UE_CBFC_TX_STATS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_RX_STATS:
+    """
+    CBFC Rx statistics of the port.
+    """
+
+    code: typing.ClassVar[int] = 1047
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        rx_cc_update: int = field(XmpLong())
+        """long integer, unsigned, the number of CC_Update messages received since the last clear."""
+
+        cc_update_interval_min: int = field(XmpLong())
+        """long integer, the minimum interval in microseconds between two consecutive Rx CC_Update since the last clear."""
+
+        cc_update_interval_max: int = field(XmpLong())
+        """long integer, the maximum interval in microseconds between two consecutive Rx CC_Update since the last clear."""
+
+        cc_update_interval_avg: int = field(XmpLong())
+        """long integer, the average interval in microseconds between two consecutive Rx CC_Update since the last clear."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC Rx statistics of the port.
+
+        :return: the CBFC Rx statistics of the port
+        :rtype: P_UE_CBFC_RX_STATS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_RX_ERRORS:
+    """
+    CBFC Rx error counters of the port.
+    """
+
+    code: typing.ClassVar[int] = 1049
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        rx_lost_credits: int = field(XmpLong())
+        """long integer, signed, the accumulative per-port Lost Credits since the last clear."""
+
+        rx_cc_update_bad_cid: int = field(XmpLong())
+        """long integer, unsigned, the number of CC_Update received with a CID that is not FA-7A-CB, since the last clear."""
+
+        rx_cc_update_bad_opcode: int = field(XmpLong())
+        """long integer, unsigned, the number of CC_Update received with an opcode that is not 0xFFFE, since the last clear."""
+
+        rx_cc_update_unknown_msg_type: int = field(XmpLong())
+        """long integer, unsigned, the number of CC_Update received with a message type value that is not 0x01 or 0x02, since the last clear."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC Rx error counters of the port.
+
+        :return: the CBFC Rx error counters of the port
+        :rtype: P_UE_CBFC_RX_ERRORS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_VC_TX_STATS:
+    """
+    CBFC Tx statistics of a virtual channel.
+    """
+
+    code: typing.ClassVar[int] = 1050
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _vc_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        tx_bits_last_sec: int = field(XmpLong())
+        """long integer, the number of bits transmitted in the last second."""
+
+        tx_bytes_last_sec: int = field(XmpLong())
+        """long integer, the number of bytes transmitted in the last second."""
+
+        tx_pkts_last_sec: int = field(XmpLong())
+        """long integer, the number of packets transmitted in the last second."""
+
+        tx_bytes_total: int = field(XmpLong())
+        """long integer, the total number of bytes transmitted."""
+
+        tx_pkts_total: int = field(XmpLong())
+        """long integer, the total number of packets transmitted."""
+
+        tx_credits_consumed: int = field(XmpLong())
+        """long integer, signed, sender VC credits consumed (S_VC_CC) since the last clear.
+        A best-effort VC always returns -1.
+        """
+
+        tx_credits_freed: int = field(XmpLong())
+        """long integer, signed, sender VC credits freed (S_VC_CF) since the last clear.
+        A best-effort VC always returns -1.
+        """
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC Tx statistics of the virtual channel.
+
+        :return: the CBFC Tx statistics of the virtual channel
+        :rtype: P_UE_CBFC_VC_TX_STATS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._vc_xindex]))
+
+
+@register_command
+@dataclass
+class P_UE_CBFC_VC_RX_STATS:
+    """
+    CBFC Rx statistics of a virtual channel.
+    """
+
+    code: typing.ClassVar[int] = 1051
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _vc_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        rx_bits_last_sec: int = field(XmpLong())
+        """long integer, the number of bits received in the last second."""
+
+        rx_bytes_last_sec: int = field(XmpLong())
+        """long integer, the number of bytes received in the last second."""
+
+        rx_pkts_last_sec: int = field(XmpLong())
+        """long integer, the number of packets received in the last second."""
+
+        rx_bytes_total: int = field(XmpLong())
+        """long integer, the total number of bytes received."""
+
+        rx_pkts_total: int = field(XmpLong())
+        """long integer, the total number of packets received."""
+
+        rx_credits_consumed: int = field(XmpLong())
+        """long integer, signed, receiver VC credits consumed (R_VC_CC) since the last clear.
+        A best-effort VC always returns -1.
+        """
+
+        rx_credits_freed: int = field(XmpLong())
+        """long integer, signed, receiver VC credits freed (R_VC_CF) since the last clear.
+        A best-effort VC always returns -1.
+        """
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the CBFC Rx statistics of the virtual channel.
+
+        :return: the CBFC Rx statistics of the virtual channel
+        :rtype: P_UE_CBFC_VC_RX_STATS.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._vc_xindex]))
+
 
 
 __all__ = [
@@ -1381,8 +2169,6 @@ __all__ = [
     "P_UE_CTLOS_RX_STATS",
     "P_UE_CTLOS_TX_STATS",
     "P_UE_CTLOS_SPACING",
-    "P_UE_CTLOS_TX_INTERVAL",
-    "P_UE_CTLOS_RX_INTERVAL",
     "P_UE_CTLOS_RX_ERRORS",
     "P_UE_LINKNEG_OPTIONS",
     "P_UE_LINKNEG_OPTIONS_STATUS",
@@ -1400,4 +2186,21 @@ __all__ = [
     "P_UE_LLR_TXFSM_STATE",
     "P_UE_LLR_RXFSM_STATE",
     "P_UE_LLR_STATUS",
+    "P_UE_CBFC_CCUPDATE_HDR",
+    "P_UE_CBFC_CCUPDATE_TIMER",
+    "P_UE_CBFC_CFUPDATE_TIMER",
+    "P_UE_CBFC_NUMVCS",
+    "P_UE_CBFC_LINK",
+    "P_UE_CBFC_VC_STREAMS",
+    "P_UE_CBFC_VC_TYPE",
+    "P_UE_CBFC_VC",
+    "P_UE_CBFC_APPLY",
+    "P_UE_CBFC_INJECT_ERR",
+    "P_UE_CBFC_CC_INC",
+    "P_UE_CBFC_CLEAR",
+    "P_UE_CBFC_TX_STATS",
+    "P_UE_CBFC_RX_STATS",
+    "P_UE_CBFC_RX_ERRORS",
+    "P_UE_CBFC_VC_TX_STATS",
+    "P_UE_CBFC_VC_RX_STATS",
 ]
