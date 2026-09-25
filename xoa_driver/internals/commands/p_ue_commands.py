@@ -1894,10 +1894,10 @@ class P_UE_CBFC_APPLY:
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, storage_index=storage_index))
     
     
-    apply_local_rx = functools.partialmethod(set, storage_index=0)
+    local_rx = functools.partialmethod(set, storage_index=0)
     """Apply the local receiver staged configuration."""
     
-    apply_local_tx = functools.partialmethod(set, storage_index=1)
+    local_tx = functools.partialmethod(set, storage_index=1)
     """Apply the local sender staged configuration."""
 
 

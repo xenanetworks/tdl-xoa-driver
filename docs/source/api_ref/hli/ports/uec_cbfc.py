@@ -115,15 +115,15 @@ async def my_awesome_func(stop_event: asyncio.Event):
     )
         
     # Apply the Local Receiver Staged to Active
-    await port.uec.cbfc.apply_local_rx()
+    await port.uec.cbfc.apply.local_rx()
 
     # Apply the Local Sender Staged to Active
-    await port.uec.cbfc.apply_local_tx()
+    await port.uec.cbfc.apply.local_tx()
     
     """Streams-to-VCs Mapping"""
     # Create streams on the port
     stream_0 = await port.streams.create()
-    stream_0.packet.length.set_fixed(64, 64)
+    await stream_0.packet.length.set_fixed(64, 64)
     await stream_0.packet.header.protocol.set(
         segments = [enums.ProtocolOption.ETHERNET,
                     enums.ProtocolOption.VLAN]
@@ -138,7 +138,10 @@ async def my_awesome_func(stop_event: asyncio.Event):
     await stream_0.packet.header.data.set(hex_data=str(eth)+str(vlan))
     
     # Map the created stream to a VC
-    await stream_0.uec.cbfc.vc.set(vc_index=0)
+    await stream_0.uec.cbfc.vc_mapping.set(vc_index=[0])
+    
+    # Remove the mapping of the stream
+    await stream_0.uec.cbfc.vc_mapping.remove_mapping()
     
     """CBFC link message statistics"""
     # CBFC CC_Update Statistics (Rx)
@@ -208,6 +211,10 @@ async def my_awesome_func(stop_event: asyncio.Event):
     await port.uec.cbfc.statistics.clear.clear_tx()
     await port.uec.cbfc.statistics.clear.clear_all()
     await port.uec.cbfc.statistics.clear.clear_none()
+    
+    """Check streams mapped to Tx VC"""
+    response = await port.uec.cbfc.vc_local_tx_active.vc[0].stream_indices.get()
+    response.stream_indices
     
     
     # [end]

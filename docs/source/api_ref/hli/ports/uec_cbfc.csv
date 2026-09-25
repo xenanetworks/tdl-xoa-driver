@@ -78,3 +78,7 @@
 78,CBFC Statistics Clear Tx,await port.uec.cbfc.statistics.clear.clear_tx(),Clear CBFC transmit statistics
 79,CBFC Statistics Clear All,await port.uec.cbfc.statistics.clear.clear_all(),Clear all CBFC statistics
 80,CBFC Statistics Clear None,await port.uec.cbfc.statistics.clear.clear_none(),Disable CBFC statistics clearing
+81,CBFC Stream Mapping Set,await port.uec.cbfc.vc_mapping.set(vc_index=[0]),Set the CBFC stream mapping for a VC
+82,CBFC Stream Mapping Remove,await port.uec.cbfc.vc_mapping.remove_mapping(),Remove the CBFC stream mapping
+83,CBFC Tx Active VC Stream Indices Get,response = await port.uec.cbfc.vc_local_tx_active.vc[0].stream_indices.get(),Get the active Tx VC stream indices
+84,CBFC Tx Active VC Stream Indices,response.stream_indices,Current active Tx VC stream index list

@@ -23,6 +23,8 @@ from xoa_driver.internals.commands import (
     P_UE_LLR_STATUS,
 )
 
+from xoa_driver.internals.warn import deprecated
+
 class UecLlr:
     """UE LLR Link Layer Retry"""
 
@@ -63,6 +65,22 @@ class UecLlr:
         
         :type: UecLlrErrorInjection
         """
+
+    @property
+    def err_inject(self) -> "UecLlrErrorInjection":
+        deprecated(
+            "UecLlr.err_inject is deprecated; use UecLlr.error_injection instead.",
+            stacklevel=2,
+        )
+        return self.error_injection
+
+    @err_inject.setter
+    def err_inject(self, value: "UecLlrErrorInjection") -> None:
+        deprecated(
+            "UecLlr.err_inject is deprecated; use UecLlr.error_injection instead.",
+            stacklevel=2,
+        )
+        self.error_injection = value
         
 
 class UecLlrStats:
