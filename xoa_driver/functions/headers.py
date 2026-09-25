@@ -155,11 +155,27 @@ class VLAN:
     vid: int = 0
     type: EtherType = EtherType.NONE
     
+    @property
+    def pri(self) -> int:
+        return self.pcp
+    
+    @pri.setter
+    def pri(self, value: int) -> None:
+        self.pcp = value
+        
+    @property
+    def id(self) -> int:
+        return self.vid
+    
+    @id.setter
+    def id(self, value: int) -> None:
+        self.vid = value
+    
     def __str__(self):
-        _pri_dei: str = '{:01X}'.format((self.pri<<1)+self.dei)
-        _id: str = '{:03X}'.format(self.id)
+        _pcp_dei: str = '{:01X}'.format((self.pcp<<1)+self.dei)
+        _vid: str = '{:03X}'.format(self.vid)
         _type: str = '{:04X}'.format(self.type.value)
-        return f"{_pri_dei}{_id}{_type}".upper()
+        return f"{_pcp_dei}{_vid}{_type}".upper()
     
 
 ####################################
