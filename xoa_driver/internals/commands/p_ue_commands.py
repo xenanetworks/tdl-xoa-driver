@@ -1236,6 +1236,20 @@ class P_UE_CTLOS_RX_ERRORS:
 
         llr_ctlos_padding_error: int = field(XmpLong())
         """long integer, the number of LLR CtlOS padding errors."""
+        
+        llr_ack_nack_seq_error_cnt: int = field(XmpLong())
+        """long integer, the number of LLR_ACK/NACK received with a sequence error."""
+        
+        cf_update_interval_high: int = field(XmpLong())
+        """long integer, the number of CF_UPDATE received with an interval that is too high."""
+
+        cf_update_interval_low: int = field(XmpLong())
+        """long integer, the number of CF_UPDATE received with an interval that is too low."""
+        
+        cf_update_padding_error: int = field(XmpLong())
+        """long integer, the number of CF_UPDATE received with a padding error."""
+        
+        
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CtlOS Rx error counters of the port.

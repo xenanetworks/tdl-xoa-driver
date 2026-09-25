@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 from .ctlos import UecCtlOs
 from .linkneg import LinkNeg
 from .llr import UecLlr
+from .cbfc import UecCbfc
 
 class UltraEthernet:
     """Ultra Ethernet of the port"""
@@ -30,4 +31,10 @@ class UltraEthernet:
         """UE LLR (Link Layer Retry) of the port.
 
         :type: UecLlr
+        """
+
+        self.cbfc = UecCbfc(conn, module_id, port_id)
+        """UE CBFC (Credit-Based Flow Control) of the port.
+
+        :type: UecCbfc
         """
