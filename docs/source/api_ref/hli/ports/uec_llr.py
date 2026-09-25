@@ -99,13 +99,13 @@ async def my_awesome_func(stop_event: asyncio.Event):
     
     """LLR Error Injection"""
     # Sequence Drop – Causes the LLR transmitter to skip the next sequence number, simulating a lost frame
-    await port.uec.llr.err_inject.inject.inject_seq_drop()
+    await port.uec.llr.error_injection.inject.inject_seq_drop()
     
     # Sequence Duplicate – Causes the LLR transmitter to retransmit the previous sequence number, simulating a duplicate frame.
-    await port.uec.llr.err_inject.inject.inject_seq_duplicate()
+    await port.uec.llr.error_injection.inject.inject_seq_duplicate()
     
     # Causes the LLR transmitter to inject an invalid Frame Check Sequence (FCS) into a frame
-    await port.uec.llr.err_inject.inject.inject_fcs_bad()
+    await port.uec.llr.error_injection.inject.inject_fcs_bad()
 
     
     """LLR FSM Statistics"""
