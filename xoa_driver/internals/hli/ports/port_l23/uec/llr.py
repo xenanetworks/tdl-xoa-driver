@@ -58,7 +58,7 @@ class UecLlr:
         :type: UecLlrFsm
         """
         
-        self.err_inject = UecLlrErrorInjection(conn, module_id, port_id)
+        self.error_injection = UecLlrErrorInjection(conn, module_id, port_id)
         """UE LLR error injection.
         
         :type: UecLlrErrorInjection
