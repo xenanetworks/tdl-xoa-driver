@@ -9,18 +9,18 @@ from xoa_driver.internals.commands import (
     P_UE_LINKNEG_OPTIONS_STATUS,
 )
 
-class LinkNeg:
+class UecLinkNeg:
     """UE Link Negotiation of the port"""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
 
-        self.link_options = LinkNegLinkOptions(conn, module_id, port_id)
+        self.link_options = UecLinkNegLinkOptions(conn, module_id, port_id)
         """UE Link Negotiation link options of the port.
 
-        :type: LinkNegLinkOptions
+        :type: UecLinkNegLinkOptions
         """
 
-class LinkNegLinkOptions:
+class UecLinkNegLinkOptions:
     """UE Link Negotiation link options"""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
