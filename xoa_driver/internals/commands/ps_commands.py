@@ -2382,14 +2382,14 @@ class PS_UE_CBFC_VC:
     _stream_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        vc_index: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
-        """list of integers, the index of the virtual channel the stream is mapped to.
+        vc_index: int = field(XmpInt())
+        """the index of the virtual channel the stream is mapped to.
         Empty if the stream is not mapped to any virtual channel.
         """
 
     class SetDataAttr(RequestBodyStruct):
-        vc_index: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
-        """list of integers, the index of the virtual channel to map the stream to.
+        vc_index: int = field(XmpInt())
+        """the index of the virtual channel to map the stream to.
         Empty to remove the mapping of the stream.
         """
 
@@ -2402,11 +2402,11 @@ class PS_UE_CBFC_VC:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._stream_xindex]))
 
-    def set(self, vc_index: typing.List[int]) -> Token[None]:
+    def set(self, vc_index: int) -> Token[None]:
         """Map the stream to a CBFC virtual channel.
 
         :param vc_index: the index of the virtual channel to map the stream to, empty to remove the mapping
-        :type vc_index: typing.List[int]
+        :type vc_index: int
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._stream_xindex], vc_index=vc_index))

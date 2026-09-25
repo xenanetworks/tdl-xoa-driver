@@ -37,58 +37,70 @@ class UecCbfc:
         :type: P_UE_CBFC_MODE
         """
         
-        self.ccupdate = UecCbfcCcupdate(conn, module_id, port_id)
+        self.cc_update = UecCbfcCcupdate(conn, module_id, port_id)
         """UE CBFC CC_Update configuration of the port.
 
         :type: UecCbfcCcupdate
         """
         
-        self.cfupdate = UecCbfcCfupdate(conn, module_id, port_id)
+        self.cf_update = UecCbfcCfupdate(conn, module_id, port_id)
         """UE CBFC CF_Update configuration of the port.
 
         :type: UecCbfcCfupdate
         """
         
-        self.vc_local_rx_staged = UecCbfcConfigurationBase(conn, module_id, port_id, storage_index=0)
+        self.vc_local_rx_staged = UecCbfcLocalRxStaged(conn, module_id, port_id)
         """UE CBFC Local RX Staged VC configuration of the port.
 
-        :type: UecCbfcVcConfiguration
+        :type: UecCbfcLocalRxStaged
         """
         
-        self.vc_local_tx_staged = UecCbfcConfigurationBase(conn, module_id, port_id, storage_index=1)
+        self.vc_local_tx_staged = UecCbfcLocalTxStaged(conn, module_id, port_id)
         """UE CBFC Local TX Staged VC configuration of the port.
 
-        :type: UecCbfcVcConfiguration
+        :type: UecCbfcLocalTxStaged
         """
         
-        self.vc_local_rx_active = UecCbfcConfigurationBase(conn, module_id, port_id, storage_index=2)
+        self.vc_local_rx_active = UecCbfcLocalRxActive(conn, module_id, port_id)
         """UE CBFC Local RX Active VC configuration of the port.
 
-        :type: UecCbfcVcConfiguration
+        :type: UecCbfcLocalRxActive
         """
         
-        self.vc_local_tx_active = UecCbfcConfigurationBase(conn, module_id, port_id, storage_index=3)
+        self.vc_local_tx_active = UecCbfcLocalTxActive(conn, module_id, port_id)
         """UE CBFC Local TX Active VC configuration of the port.
 
-        :type: UecCbfcVcConfiguration
+        :type: UecCbfcLocalTxActive
         """
         
-        self.vc_remote_tx_staged = UecCbfcConfigurationBase(conn, module_id, port_id, storage_index=4)
+        self.vc_remote_tx_staged = UecCbfcRemoteTxStaged(conn, module_id, port_id)
         """UE CBFC Remote TX Staged VC configuration of the port.
 
-        :type: UecCbfcVcConfiguration
+        :type: UecCbfcRemoteTxStaged
         """
         
-        self.vc_remote_rx_staged = UecCbfcConfigurationBase(conn, module_id, port_id, storage_index=5)
+        self.vc_remote_rx_staged = UecCbfcRemoteRxStaged(conn, module_id, port_id)
         """UE CBFC Remote RX Staged VC configuration of the port.
 
-        :type: UecCbfcVcConfiguration
+        :type: UecCbfcRemoteRxStaged
         """
         
         self.apply = P_UE_CBFC_APPLY(conn, module_id, port_id)
         """UE CBFC Apply staged configuration to active VC configuration of the port.
 
         :type: P_UE_CBFC_APPLY
+        """
+        
+        self.statistics = UecCbfcStats(conn, module_id, port_id)
+        """UE CBFC statistics of the port.
+
+        :type: UecCbfcStats
+        """
+        
+        self.error_injection = UecCbfcErrorInjection(conn, module_id, port_id)
+        """UE CBFC error injection.
+        
+        :type: UecCbfcErrorInject
         """
         
 
@@ -234,6 +246,7 @@ class UecCbfcPerVcConfigurationBase:
         :type: P_UE_CBFC_VC
         """
         
+
 class UecCbfcPerVcConfigurationTxActive(UecCbfcPerVcConfigurationBase):
     """CBFC per-VC Tx Active configuration of the port."""
     
@@ -247,23 +260,24 @@ class UecCbfcPerVcConfigurationTxActive(UecCbfcPerVcConfigurationBase):
         """
 
 
-class UecCbfcErrorInject:
+class UecCbfcErrorInjection:
     """CBFC Error Inject configuration of the port."""
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         
-        self.cc_inc = P_UE_CBFC_CC_INC(conn, module_id, port_id)
-        """CBFC CC Increment configuration of the port.
+        self.cc_update_inc_config = P_UE_CBFC_CC_INC(conn, module_id, port_id)
+        """CBFC cc_update credit increment configuration of the port.
 
         :type: P_UE_CBFC_CC_INC
         """
         
-        self.error_inject = P_UE_CBFC_INJECT_ERR(conn, module_id, port_id)
+        self.inject = P_UE_CBFC_INJECT_ERR(conn, module_id, port_id)
         """CBFC Error Inject configuration of the port.
 
         :type: P_UE_CBFC_INJECT_ERR
         """
-        
+
+
 class UecCbfcPortStatistics:
     """CBFC Statistics configuration of the port."""
 
@@ -280,7 +294,8 @@ class UecCbfcPortStatistics:
 
         :type: P_UE_CBFC_RX_STATS
         """
-    
+
+
 class UecCbfcVcStatistics:
     """CBFC per-VC Statistics configuration of the port."""
 

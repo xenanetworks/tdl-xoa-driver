@@ -6,6 +6,11 @@ from xoa_driver.misc import Hex
 from enum import Enum
 from dataclasses import dataclass, field
 
+
+def _normalize_mac(mac: str) -> str:
+    return mac.translate(str.maketrans("", "", ".:-"))
+
+
 class EtherType(Enum):
     IPv4 = 0x0800
     IPv6 = 0x86DD
@@ -134,8 +139,8 @@ class Ethernet:
     ethertype: EtherType = EtherType.NONE
     
     def __str__(self):
-        _dst_mac: str = self.dst_mac.replace(".", "")
-        _src_mac: str = self.src_mac.replace(".", "")
+        _dst_mac: str = _normalize_mac(self.dst_mac)
+        _src_mac: str = _normalize_mac(self.src_mac)
         _ethertype: str = '{:04X}'.format(self.ethertype.value)
         return f"{_dst_mac}{_src_mac}{_ethertype}".upper()
     
@@ -145,9 +150,9 @@ class Ethernet:
 
 @dataclass
 class VLAN:
-    pri: int = 0
+    pcp: int = 0
     dei: int = 0
-    id: int = 0
+    vid: int = 0
     type: EtherType = EtherType.NONE
     
     def __str__(self):
@@ -178,9 +183,9 @@ class ARP:
         _hardware_size: str = '{:02X}'.format(self.hardware_size)
         _protocol_size: str = '{:02X}'.format(self.protocol_size)
         _opcode: str = '{:04X}'.format(self.opcode.value)
-        _sender_mac: str = self.sender_mac.replace(".", "")
+        _sender_mac: str = _normalize_mac(self.sender_mac)
         _sender_ip: str = hexlify(IPv4Address(self.sender_ip).packed).decode()
-        _target_mac: str = self.target_mac.replace(".", "")
+        _target_mac: str = _normalize_mac(self.target_mac)
         _target_ip: str = hexlify(IPv4Address(self.target_ip).packed).decode()
         return f"{_hardware_type}{_protocol_type}{_hardware_size}{_protocol_size}{_opcode}{_sender_mac}{_sender_ip}{_target_mac}{_target_ip}".upper()
 
@@ -498,7 +503,7 @@ class DHCPV4:
         _yiaddr: str = hexlify(IPv4Address(self.yiaddr).packed).decode()
         _siaddr: str = hexlify(IPv4Address(self.siaddr).packed).decode()
         _giaddr: str = hexlify(IPv4Address(self.giaddr).packed).decode()
-        _chaddr: str = self.chaddr.replace(".", "")
+        _chaddr: str = _normalize_mac(self.chaddr)
         _chaddr = _chaddr + "00"*(16-int(len(_chaddr)/2))
         _sname: str = self.sname + "00"*(64-int(len(self.sname)/2))
         _file: str = self.file + "00"*(128-int(len(self.file)/2))
@@ -530,7 +535,7 @@ class DHCPOptionClientIdentifier:
         _code: str = '{:02X}'.format(DHCPOptionCode.ClientIdentifier.value)
         _len: str = '{:02X}'.format(self.len)
         _htype: str = '{:02X}'.format(self.htype)
-        _client_mac: str = self.client_mac.replace(".", "")
+        _client_mac: str = _normalize_mac(self.client_mac)
         return f"{_code}{_len}{_htype}{_client_mac}".upper()
     
 @dataclass
