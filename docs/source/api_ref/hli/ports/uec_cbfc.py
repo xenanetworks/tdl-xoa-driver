@@ -213,6 +213,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
     await port.uec.cbfc.statistics.clear.clear_none()
     
     """Check streams mapped to Tx VC"""
+    # Get the stream indices mapped to a Tx VC
     response = await port.uec.cbfc.vc_local_tx_active.vc[0].stream_indices.get()
     response.stream_indices
     
