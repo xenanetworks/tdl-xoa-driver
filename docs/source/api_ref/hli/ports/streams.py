@@ -201,9 +201,9 @@ async def my_awesome_func(stop_event: asyncio.Event):
     eth.ethertype = headers.EtherType.VLAN
 
     vlan = headers.VLAN()
-    vlan.pri = 3
+    vlan.pcp = 3
     vlan.dei = 0
-    vlan.id = 100
+    vlan.vid = 100
     vlan.type = headers.EtherType.IPv4
 
     ipv4 = headers.IPV4()

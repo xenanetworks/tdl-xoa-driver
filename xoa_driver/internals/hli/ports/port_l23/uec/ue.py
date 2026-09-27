@@ -6,8 +6,9 @@ if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 
 from .ctlos import UecCtlOs
-from .linkneg import LinkNeg
+from .linkneg import UecLinkNeg
 from .llr import UecLlr
+from .cbfc import UecCbfc
 
 class UltraEthernet:
     """Ultra Ethernet of the port"""
@@ -20,14 +21,20 @@ class UltraEthernet:
         :type: UecCtlOs
         """
 
-        self.linkneg = LinkNeg(conn, module_id, port_id)
+        self.linkneg = UecLinkNeg(conn, module_id, port_id)
         """UE Link Negotiation of the port.
 
-        :type: LinkNeg
+        :type: UecLinkNeg
         """
 
         self.llr = UecLlr(conn, module_id, port_id)
         """UE LLR (Link Layer Retry) of the port.
 
         :type: UecLlr
+        """
+
+        self.cbfc = UecCbfc(conn, module_id, port_id)
+        """UE CBFC (Credit-Based Flow Control) of the port.
+
+        :type: UecCbfc
         """

@@ -2383,13 +2383,13 @@ class PS_UE_CBFC_VC:
 
     class GetDataAttr(ResponseBodyStruct):
         vc_index: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
-        """list of integers, the index of the virtual channel the stream is mapped to.
+        """the index of the virtual channel the stream is mapped to.
         Empty if the stream is not mapped to any virtual channel.
         """
 
     class SetDataAttr(RequestBodyStruct):
         vc_index: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
-        """list of integers, the index of the virtual channel to map the stream to.
+        """the index of the virtual channel to map the stream to.
         Empty to remove the mapping of the stream.
         """
 
@@ -2410,6 +2410,10 @@ class PS_UE_CBFC_VC:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._stream_xindex], vc_index=vc_index))
+    
+    remove_mapping = functools.partialmethod(set, [])
+    """Remove the mapping of the stream to any CBFC virtual channel.
+    """
 
 __all__ = [
     "PS_ARPREQUEST",

@@ -12,9 +12,9 @@
 12,Stream Create,stream = await port.streams.create(),Create a stream on the port
 13,Stream LLR Desire Set Eligible,await stream.uec.llr.desire.set_llr_eligible(),Set the stream's LLR desire to LLR-eligible
 14,Stream LLR Desire Set Ineligible,await stream.uec.llr.desire.set_llr_ineligible(),Set the stream's LLR desire to LLR-ineligible
-15,LLR Error Inject Seq Drop,await port.uec.llr.err_inject.inject.inject_seq_drop(),Cause the LLR transmitter to skip the next sequence number simulating a lost frame
-16,LLR Error Inject Seq Duplicate,await port.uec.llr.err_inject.inject.inject_seq_duplicate(),Cause the LLR transmitter to retransmit the previous sequence number simulating a duplicate frame
-17,LLR Error Inject Bad FCS,await port.uec.llr.err_inject.inject.inject_fcs_bad(),Cause the LLR transmitter to inject an invalid FCS into a frame
+15,LLR Error Inject Seq Drop,await port.uec.llr.error_injection.inject.inject_seq_drop(),Cause the LLR transmitter to skip the next sequence number simulating a lost frame
+16,LLR Error Inject Seq Duplicate,await port.uec.llr.error_injection.inject.inject_seq_duplicate(),Cause the LLR transmitter to retransmit the previous sequence number simulating a duplicate frame
+17,LLR Error Inject Bad FCS,await port.uec.llr.error_injection.inject.inject_fcs_bad(),Cause the LLR transmitter to inject an invalid FCS into a frame
 18,LLR Tx FSM Stats Get,resp = await port.uec.llr.fsm.tx.get(),Get the current Tx FSM state and accumulated Tx FSM state time
 19,LLR Tx FSM State,resp.txfsm_state,Current Tx FSM state
 20,LLR Tx FSM Time in LLR Off,resp.ns_in_llr_off,Accumulated time (ns) spent in LLR Off state (Tx)

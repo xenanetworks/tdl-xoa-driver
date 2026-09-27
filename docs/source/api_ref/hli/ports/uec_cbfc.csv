@@ -1,0 +1,45 @@
+1,CBFC Mode Enable Rx Only,await port.uec.cbfc.mode.enable_rx_only(),Enable CBFC receive-only mode
+2,CBFC Mode Enable Tx Only,await port.uec.cbfc.mode.enable_tx_only(),Enable CBFC transmit-only mode
+3,CBFC Mode Enable Both,await port.uec.cbfc.mode.enable_both(),Enable CBFC transmit and receive mode
+4,CBFC Mode Disable Both,await port.uec.cbfc.mode.disable_both(),Disable CBFC transmit and receive mode
+5,CBFC Mode Get,response = await port.uec.cbfc.mode.get(),Get the current CBFC mode
+6,CBFC CC_Update Header Set,"await port.uec.cbfc.cc_update.header.set(dmac=""001122334455"", smac=""001122334455"", ethertype=""88B5"", opcode=""FFFE"", cid=""FA7ACB"")",Configure the CC_Update message header
+7,CBFC CC_Update Header Get,response = await port.uec.cbfc.cc_update.header.get(),Get the CC_Update message header configuration
+8,CBFC CC_Update Timer Set,await port.uec.cbfc.cc_update.timer.set(cc_msg_timer=5),Configure the CC_Update timer
+9,CBFC CC_Update Timer Get,response = await port.uec.cbfc.cc_update.timer.get(),Get the CC_Update timer configuration
+10,CBFC CF_Update Timer Set,"await port.uec.cbfc.cf_update.timer.set(cf_min_timer=800, cf_max_timer=16384)",Configure the CF_Update timers
+11,CBFC CF_Update Timer Get,response = await port.uec.cbfc.cf_update.timer.get(),Get the CF_Update timer configuration
+12,CBFC Local Rx Staged Number of VCs Set,await port.uec.cbfc.vc_local_rx_staged.numvcs.set(num_vcs=4),Configure the number of local receiver staged VCs
+13,CBFC Local Rx Staged Link Config Set,"await port.uec.cbfc.vc_local_rx_staged.link_config.set(credit_size=64, credit_limit_method=enums.UecCbfcCreditLimitMethod.TOTAL, total_credit_limit=524287, packet_overhead=0)",Configure local receiver staged link parameters
+14,CBFC Local Rx Staged VC Set Best Effort,await port.uec.cbfc.vc_local_rx_staged.vc[i].type.set_best_effort(),Set a local receiver staged VC to best-effort
+15,CBFC Local Rx Staged VC Set Lossless,await port.uec.cbfc.vc_local_rx_staged.vc[i].type.set_lossless(),Set a local receiver staged VC to lossless
+16,CBFC Local Rx Staged VC Config Set,"await port.uec.cbfc.vc_local_rx_staged.vc[i].config.set(credit_limit=524287, mapping=enums.UecCbfcVcMapping.VLAN, mask_pcp_dei=""F"", value_pcp_dei=""F"", mask_dscp=""3F"", value_dscp=""3F"", handle=0)",Configure a local receiver staged VC
+17,CBFC Local Tx Staged Number of VCs Set,await port.uec.cbfc.vc_local_tx_staged.numvcs.set(num_vcs=4),Configure the number of local sender staged VCs
+18,CBFC Local Tx Staged Link Config Set,"await port.uec.cbfc.vc_local_tx_staged.link_config.set(credit_size=64, credit_limit_method=enums.UecCbfcCreditLimitMethod.TOTAL, total_credit_limit=524287, packet_overhead=0)",Configure local sender staged link parameters
+19,CBFC Local Tx Staged VC Set Best Effort,await port.uec.cbfc.vc_local_tx_staged.vc[i].type.set_best_effort(),Set a local sender staged VC to best-effort
+20,CBFC Local Tx Staged VC Set Lossless,await port.uec.cbfc.vc_local_tx_staged.vc[i].type.set_lossless(),Set a local sender staged VC to lossless
+21,CBFC Local Tx Staged VC Config Set,"await port.uec.cbfc.vc_local_tx_staged.vc[i].config.set(credit_limit=524287, mapping=enums.UecCbfcVcMapping.VLAN, mask_pcp_dei=""F"", value_pcp_dei=""F"", mask_dscp=""3F"", value_dscp=""3F"", handle=0)",Configure a local sender staged VC
+22,CBFC Apply Local Rx,await port.uec.cbfc.apply.local_rx(),Apply local receiver staged configuration
+23,CBFC Apply Local Tx,await port.uec.cbfc.apply.local_tx(),Apply local sender staged configuration
+24,Stream Create,stream_0 = await port.streams.create(),Create a stream on the port
+25,Stream Packet Length Set,"await stream_0.packet.length.set_fixed(64, 64)",Set a fixed stream packet length
+26,Stream Packet Protocol Set,"await stream_0.packet.header.protocol.set(segments=[enums.ProtocolOption.ETHERNET, enums.ProtocolOption.VLAN])",Configure the stream packet protocols
+27,Stream Packet Header Data Set,await stream_0.packet.header.data.set(hex_data=str(eth)+str(vlan)),Configure the stream packet header data
+28,Stream CBFC VC Mapping Set,await stream_0.uec.cbfc.vc_mapping.set(vc_index=[0]),Map a stream to a CBFC VC
+29,Stream CBFC VC Mapping Remove,await stream_0.uec.cbfc.vc_mapping.remove_mapping(),Remove the stream's CBFC VC mapping
+30,CBFC Port Rx CC_Update Statistics Get,response = await port.uec.cbfc.statistics.port.rx.get(),Get CBFC port receive CC_Update statistics
+31,CBFC Port Tx CC_Update Statistics Get,response = await port.uec.cbfc.statistics.port.tx.get(),Get CBFC port transmit CC_Update statistics
+32,CBFC Rx CF_Update Statistics Get,response = await port.uec.ctlos.statistics.rx.get(),Get CBFC receive CF_Update statistics
+33,CBFC Tx CF_Update Statistics Get,response = await port.uec.ctlos.statistics.tx.get(),Get CBFC transmit CF_Update statistics
+34,CBFC VC Rx Traffic Statistics Get,response = await port.uec.cbfc.statistics.vc[0].rx.get(),Get CBFC VC receive traffic statistics
+35,CBFC VC Tx Traffic Statistics Get,response = await port.uec.cbfc.statistics.vc[0].tx.get(),Get CBFC VC transmit traffic statistics
+36,CBFC Error Statistics Rx Get,response = await port.uec.cbfc.statistics.error.rx.get(),Get CBFC receive error statistics
+37,CBFC CC_Update Increment Config Set,"await port.uec.cbfc.error_injection.cc_update_inc_config.set(vc_index=0, credit_increment=100)",Configure CC_Update credit increment error injection
+38,CBFC Error Inject CC_Update Increment,await port.uec.cbfc.error_injection.inject.cc_update_inc(),Inject a CC_Update credit increment error
+39,CBFC Error Inject CC_Update Bad FCS,await port.uec.cbfc.error_injection.inject.cc_update_bad_fcs(),Inject a CC_Update bad FCS error
+40,CBFC Error Inject CC_Update Poisoned FCS,await port.uec.cbfc.error_injection.inject.cc_update_poisoned_fcs(),Inject a CC_Update poisoned FCS error
+41,CBFC Statistics Clear Rx,await port.uec.cbfc.statistics.clear.clear_rx(),Clear CBFC receive statistics
+42,CBFC Statistics Clear Tx,await port.uec.cbfc.statistics.clear.clear_tx(),Clear CBFC transmit statistics
+43,CBFC Statistics Clear All,await port.uec.cbfc.statistics.clear.clear_all(),Clear all CBFC statistics
+44,CBFC Statistics Clear None,await port.uec.cbfc.statistics.clear.clear_none(),Disable CBFC statistics clearing
+45,CBFC Tx Active VC Stream Indices Get,response = await port.uec.cbfc.vc_local_tx_active.vc[0].stream_indices.get(),Get the active Tx VC stream indices

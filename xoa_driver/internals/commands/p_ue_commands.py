@@ -141,6 +141,8 @@ class P_UE_CTLOS_RX_STATS:
         llr_init_echo_mismatch: int = field(XmpLong())
         """The number of Rx LLR_INIT_ECHO CtlOS with a sequence number or data that does not match the most recently transmitted LLR_INIT CtlOS."""
 
+        cbfc_cf_update_cnt: int = field(XmpLong())
+        """The number of CF_UPDATE CtlOS received."""
 
     def get(self) -> Token[GetDataAttr]:
         """Get UE CtlOS Rx statistics.
@@ -191,6 +193,9 @@ class P_UE_CTLOS_TX_STATS:
 
         llr_init_echo_data: Hex = field(XmpHex(size=2))
         """The LLR_INIT_ECHO data. 2 bytes in hex format."""
+        
+        cbfc_cf_update_cnt: int = field(XmpLong())
+        """The number of CF_UPDATE CtlOS transmitted."""
 
 
     def get(self) -> Token[GetDataAttr]:
@@ -1236,6 +1241,20 @@ class P_UE_CTLOS_RX_ERRORS:
 
         llr_ctlos_padding_error: int = field(XmpLong())
         """long integer, the number of LLR CtlOS padding errors."""
+        
+        llr_ack_nack_seq_error_cnt: int = field(XmpLong())
+        """long integer, the number of LLR_ACK/NACK received with a sequence error."""
+        
+        cf_update_interval_high: int = field(XmpLong())
+        """long integer, the number of CF_UPDATE received with an interval that is too high."""
+
+        cf_update_interval_low: int = field(XmpLong())
+        """long integer, the number of CF_UPDATE received with an interval that is too low."""
+        
+        cf_update_padding_error: int = field(XmpLong())
+        """long integer, the number of CF_UPDATE received with a padding error."""
+        
+        
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CtlOS Rx error counters of the port.
@@ -1262,35 +1281,59 @@ class P_UE_CBFC_CCUPDATE_HDR:
 
     class GetDataAttr(ResponseBodyStruct):
         dmac: Hex = field(XmpMacAddress())
-        """six hex bytes, the destination MAC address of the CC_Update message."""
+        """six hex bytes, the destination MAC address of the CC_Update message.
+        
+        Destination MAC address for the CC_Update message. Default set to "0180C2000001" or the 48-bit individual address of the destination station.
+        """
 
         smac: Hex = field(XmpMacAddress())
         """six hex bytes, the source MAC address of the CC_Update message."""
 
         ethertype: Hex = field(XmpHex(size=2))
-        """two hex bytes, the EtherType of the CC_Update message."""
+        """two hex bytes, the EtherType of the CC_Update message.
+        
+        Default set to "88B5".
+        """
 
         opcode: Hex = field(XmpHex(size=2))
-        """two hex bytes, the opcode of the CC_Update message."""
+        """two hex bytes, the opcode of the CC_Update message.
+        
+        Default set to "FFFE".
+        """
 
         cid: Hex = field(XmpHex(size=3))
-        """three hex bytes, the Company ID of the CC_Update message."""
+        """three hex bytes, the Company ID of the CC_Update message.
+        
+        Default set to "FA7ACB".
+        """
 
     class SetDataAttr(RequestBodyStruct):
         dmac: Hex = field(XmpMacAddress())
-        """six hex bytes, the destination MAC address of the CC_Update message."""
+        """six hex bytes, the destination MAC address of the CC_Update message.
+        
+        Destination MAC address for the CC_Update message. Default set to "0180C2000001" or the 48-bit individual address of the destination station.
+        """
 
         smac: Hex = field(XmpMacAddress())
         """six hex bytes, the source MAC address of the CC_Update message."""
 
         ethertype: Hex = field(XmpHex(size=2))
-        """two hex bytes, the EtherType of the CC_Update message."""
+        """two hex bytes, the EtherType of the CC_Update message.
+        
+        Default set to "88B5".
+        """
 
         opcode: Hex = field(XmpHex(size=2))
-        """two hex bytes, the opcode of the CC_Update message."""
+        """two hex bytes, the opcode of the CC_Update message.
+        
+        Default set to "FFFE".
+        """
 
         cid: Hex = field(XmpHex(size=3))
-        """three hex bytes, the Company ID of the CC_Update message."""
+        """three hex bytes, the Company ID of the CC_Update message.
+        
+        Default set to "FA7ACB".
+        """
 
     def get(self) -> Token[GetDataAttr]:
         """Get the CBFC CC_Update message header of the port.
@@ -1304,15 +1347,15 @@ class P_UE_CBFC_CCUPDATE_HDR:
     def set(self, dmac: Hex, smac: Hex, ethertype: Hex, opcode: Hex, cid: Hex) -> Token[None]:
         """Set the CBFC CC_Update message header of the port.
 
-        :param dmac: the destination MAC address of the CC_Update message
+        :param dmac: the destination MAC address of the CC_Update message, default set to "0180C2000001"
         :type dmac: Hex
-        :param smac: the source MAC address of the CC_Update message
+        :param smac: the source MAC address of the CC_Update message, default set to port MAC address.
         :type smac: Hex
-        :param ethertype: the EtherType of the CC_Update message
+        :param ethertype: the EtherType of the CC_Update message, default set to "88B5"
         :type ethertype: Hex
-        :param opcode: the opcode of the CC_Update message
+        :param opcode: the opcode of the CC_Update message, default set to "FFFE"
         :type opcode: Hex
-        :param cid: the Company ID of the CC_Update message
+        :param cid: the Company ID of the CC_Update message, default set to "FA7ACB"
         :type cid: Hex
         """
 
@@ -1400,9 +1443,9 @@ class P_UE_CBFC_CFUPDATE_TIMER:
     def set(self, cf_min_timer: int, cf_max_timer: int) -> Token[None]:
         """Set the CBFC CF_Update timers of the port.
 
-        :param cf_min_timer: the minimum number of bytes between two CF_Update CtlOS
+        :param cf_min_timer: the minimum number of bytes between two CF_Update CtlOS. Default: 800. Allowed range: 800 bytes to 16384 bytes. Resolution: 8 bytes.
         :type cf_min_timer: int
-        :param cf_max_timer: the maximum number of bytes between two CF_Update CtlOS
+        :param cf_max_timer: the maximum number of bytes between two CF_Update CtlOS. Default: 16384. Allowed range: 16384 bytes to 1048576 bytes with granularity of 16384 bytes (16 KB to 1 MB with granularity of 16 KB). Resolution: 16384 bytes.
         :type cf_max_timer: int
         """
 
@@ -1739,17 +1782,17 @@ class P_UE_CBFC_MODE:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        cbfc_modex_rx: UecCbfcMode = field(XmpByte())
+        rx_mode: UecCbfcMode = field(XmpByte())
         """coded byte, the CBFC receiver mode."""
 
-        cbfc_modex_tx: UecCbfcMode = field(XmpByte())
+        tx_mode: UecCbfcMode = field(XmpByte())
         """coded byte, the CBFC sender mode."""
 
     class SetDataAttr(RequestBodyStruct):
-        cbfc_modex_rx: UecCbfcMode = field(XmpByte())
+        rx_mode: UecCbfcMode = field(XmpByte())
         """coded byte, the CBFC receiver mode."""
 
-        cbfc_modex_tx: UecCbfcMode = field(XmpByte())
+        tx_mode: UecCbfcMode = field(XmpByte())
         """coded byte, the CBFC sender mode."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -1761,16 +1804,34 @@ class P_UE_CBFC_MODE:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, cbfc_modex_rx: UecCbfcMode, cbfc_modex_tx: UecCbfcMode) -> Token[None]:
+    def set(self, rx_mode: UecCbfcMode, tx_mode: UecCbfcMode) -> Token[None]:
         """Set the CBFC mode of the port.
 
-        :param cbfc_modex_rx: the CBFC receiver mode
-        :type cbfc_modex_rx: UecCbfcMode
-        :param cbfc_modex_tx: the CBFC sender mode
-        :type cbfc_modex_tx: UecCbfcMode
+        :param rx_mode: the CBFC receiver mode
+        :type rx_mode: UecCbfcMode
+        :param tx_mode: the CBFC sender mode
+        :type tx_mode: UecCbfcMode
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, cbfc_modex_rx=cbfc_modex_rx, cbfc_modex_tx=cbfc_modex_tx))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, rx_mode=rx_mode, tx_mode=tx_mode))
+    
+    enable_rx_only = functools.partialmethod(set, UecCbfcMode.ON, UecCbfcMode.OFF)
+    """Enable the CBFC receiver while disabling the sender.
+    """
+    
+    enable_tx_only = functools.partialmethod(set, UecCbfcMode.OFF, UecCbfcMode.ON)
+    """Enable the CBFC sender while disabling the receiver.
+    """
+    
+    enable_both = functools.partialmethod(set, UecCbfcMode.ON, UecCbfcMode.ON)
+    """Enable both the CBFC receiver and sender.
+    """
+    
+    disable_both = functools.partialmethod(set, UecCbfcMode.OFF, UecCbfcMode.OFF)
+    """Disable both the CBFC receiver and sender.
+    """
+    
+    
 
 
 @register_command
@@ -1831,6 +1892,13 @@ class P_UE_CBFC_APPLY:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, storage_index=storage_index))
+    
+    
+    local_rx = functools.partialmethod(set, storage_index=0)
+    """Apply the local receiver staged configuration."""
+    
+    local_tx = functools.partialmethod(set, storage_index=1)
+    """Apply the local sender staged configuration."""
 
 
 @register_command
@@ -1879,19 +1947,19 @@ class P_UE_CBFC_INJECT_ERR:
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, error_type=error_type, pattern=pattern, burst_size=burst_size, burst_interval=burst_interval))
 
-    inject_cc_update_inc = functools.partialmethod(set, UecCbfcInjectErrType.CC_UPDATE_INC, UecCbfcInjectErrPattern.ONCE, 1, 1)
+    cc_update_inc = functools.partialmethod(set, UecCbfcInjectErrType.CC_UPDATE_INC, UecCbfcInjectErrPattern.ONCE, 1, 1)
     """Increase the CC_Update credits consumed counter once, creating a credit leak.
     """
 
-    inject_cf_update_drop = functools.partialmethod(set, UecCbfcInjectErrType.CF_UPDATE_DROP, UecCbfcInjectErrPattern.ONCE, 1, 1)
-    """Drop the next CF_Update once.
-    """
+    # inject_cf_update_drop = functools.partialmethod(set, UecCbfcInjectErrType.CF_UPDATE_DROP, UecCbfcInjectErrPattern.ONCE, 1, 1)
+    #"""Drop the next CF_Update once.
+    #"""
 
-    inject_cc_update_bad_fcs = functools.partialmethod(set, UecCbfcInjectErrType.CC_UPDATE_BAD_FCS, UecCbfcInjectErrPattern.ONCE, 1, 1)
+    cc_update_bad_fcs = functools.partialmethod(set, UecCbfcInjectErrType.CC_UPDATE_BAD_FCS, UecCbfcInjectErrPattern.ONCE, 1, 1)
     """Inject a bad FCS in the next CC_Update message.
     """
 
-    inject_cc_update_poisoned_fcs = functools.partialmethod(set, UecCbfcInjectErrType.CC_UPDATE_POISONED_FCS, UecCbfcInjectErrPattern.ONCE, 1, 1)
+    cc_update_poisoned_fcs = functools.partialmethod(set, UecCbfcInjectErrType.CC_UPDATE_POISONED_FCS, UecCbfcInjectErrPattern.ONCE, 1, 1)
     """Inject a poisoned FCS in the next CC_Update message.
     """
 
@@ -1919,14 +1987,14 @@ class P_UE_CBFC_CC_INC:
         vc_index: int = field(XmpInt())
         """integer, the virtual channel the credit leak is injected on."""
 
-        credits: int = field(XmpInt())
+        credit_increment: int = field(XmpInt())
         """integer, the number of credits added to the credits consumed counter."""
 
     class SetDataAttr(RequestBodyStruct):
         vc_index: int = field(XmpInt())
         """integer, the virtual channel the credit leak is injected on."""
 
-        credits: int = field(XmpInt())
+        credit_increment: int = field(XmpInt())
         """integer, the number of credits added to the credits consumed counter, in the range 0 to 1048575."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -1938,16 +2006,16 @@ class P_UE_CBFC_CC_INC:
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-    def set(self, vc_index: int, credits: int) -> Token[None]:
+    def set(self, vc_index: int, credit_increment: int) -> Token[None]:
         """Set the CC_Update credit increment of the port.
 
         :param vc_index: the virtual channel the credit leak is injected on
         :type vc_index: int
-        :param credits: the number of credits added to the credits consumed counter, in the range 0 to 1048575
-        :type credits: int
+        :param credit_increment: the number of credits added to the credits consumed counter, in the range 0 to 1048575
+        :type credit_increment: int
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, vc_index=vc_index, credits=credits))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, vc_index=vc_index, credit_increment=credit_increment))
 
 
 @register_command
@@ -1965,7 +2033,7 @@ class P_UE_CBFC_TX_STATS:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        tx_cc_update: int = field(XmpLong())
+        cc_update_count: int = field(XmpLong())
         """long integer, the number of CC_Update messages transmitted since the last clear."""
 
         cc_update_interval_min: int = field(XmpLong())
@@ -2002,7 +2070,7 @@ class P_UE_CBFC_RX_STATS:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        rx_cc_update: int = field(XmpLong())
+        cc_update_count: int = field(XmpLong())
         """long integer, unsigned, the number of CC_Update messages received since the last clear."""
 
         cc_update_interval_min: int = field(XmpLong())
@@ -2039,16 +2107,16 @@ class P_UE_CBFC_RX_ERRORS:
     _port: int
 
     class GetDataAttr(ResponseBodyStruct):
-        rx_lost_credits: int = field(XmpLong())
+        lost_credits: int = field(XmpLong())
         """long integer, signed, the accumulative per-port Lost Credits since the last clear."""
 
-        rx_cc_update_bad_cid: int = field(XmpLong())
+        cc_update_bad_cid: int = field(XmpLong())
         """long integer, unsigned, the number of CC_Update received with a CID that is not FA-7A-CB, since the last clear."""
 
-        rx_cc_update_bad_opcode: int = field(XmpLong())
+        cc_update_bad_opcode: int = field(XmpLong())
         """long integer, unsigned, the number of CC_Update received with an opcode that is not 0xFFFE, since the last clear."""
 
-        rx_cc_update_unknown_msg_type: int = field(XmpLong())
+        cc_update_unknown_msg_type: int = field(XmpLong())
         """long integer, unsigned, the number of CC_Update received with a message type value that is not 0x01 or 0x02, since the last clear."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -2077,27 +2145,27 @@ class P_UE_CBFC_VC_TX_STATS:
     _vc_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        tx_bits_last_sec: int = field(XmpLong())
+        bits_last_sec: int = field(XmpLong())
         """long integer, the number of bits transmitted in the last second."""
 
-        tx_bytes_last_sec: int = field(XmpLong())
+        bytes_last_sec: int = field(XmpLong())
         """long integer, the number of bytes transmitted in the last second."""
 
-        tx_pkts_last_sec: int = field(XmpLong())
+        pkts_last_sec: int = field(XmpLong())
         """long integer, the number of packets transmitted in the last second."""
 
-        tx_bytes_total: int = field(XmpLong())
+        bytes_total: int = field(XmpLong())
         """long integer, the total number of bytes transmitted."""
 
-        tx_pkts_total: int = field(XmpLong())
+        pkts_total: int = field(XmpLong())
         """long integer, the total number of packets transmitted."""
 
-        tx_credits_consumed: int = field(XmpLong())
+        credits_consumed: int = field(XmpLong())
         """long integer, signed, sender VC credits consumed (S_VC_CC) since the last clear.
         A best-effort VC always returns -1.
         """
 
-        tx_credits_freed: int = field(XmpLong())
+        credits_freed: int = field(XmpLong())
         """long integer, signed, sender VC credits freed (S_VC_CF) since the last clear.
         A best-effort VC always returns -1.
         """
@@ -2128,27 +2196,27 @@ class P_UE_CBFC_VC_RX_STATS:
     _vc_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
-        rx_bits_last_sec: int = field(XmpLong())
+        bits_last_sec: int = field(XmpLong())
         """long integer, the number of bits received in the last second."""
 
-        rx_bytes_last_sec: int = field(XmpLong())
+        bytes_last_sec: int = field(XmpLong())
         """long integer, the number of bytes received in the last second."""
 
-        rx_pkts_last_sec: int = field(XmpLong())
+        pkts_last_sec: int = field(XmpLong())
         """long integer, the number of packets received in the last second."""
 
-        rx_bytes_total: int = field(XmpLong())
+        bytes_total: int = field(XmpLong())
         """long integer, the total number of bytes received."""
 
-        rx_pkts_total: int = field(XmpLong())
+        pkts_total: int = field(XmpLong())
         """long integer, the total number of packets received."""
 
-        rx_credits_consumed: int = field(XmpLong())
+        credits_consumed: int = field(XmpLong())
         """long integer, signed, receiver VC credits consumed (R_VC_CC) since the last clear.
         A best-effort VC always returns -1.
         """
 
-        rx_credits_freed: int = field(XmpLong())
+        credits_freed: int = field(XmpLong())
         """long integer, signed, receiver VC credits freed (R_VC_CF) since the last clear.
         A best-effort VC always returns -1.
         """

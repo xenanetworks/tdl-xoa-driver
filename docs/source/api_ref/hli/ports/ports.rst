@@ -71,26 +71,47 @@ Transceiver API Examples
     :end-before: [end]
 
 
-Ultra Ethernet APIs
+UE LLR APIs
 -----------------------------
 
-Ultra Ethernet APIs Summary Table
+UE LLR APIs Summary Table
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. csv-table:: Ultra Ethernet APIs Overview
+.. csv-table:: UE LLR APIs Overview
     :header: "Id", "Action", "API", "Description"
     :widths: auto
-    :file: uec.csv
+    :file: uec_llr.csv
 
 
-Ultra Ethernet API Examples
+UE LLR API Examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. literalinclude:: uec.py
-    :caption: Examples - Ultra Ethernet APIs
+.. literalinclude:: uec_llr.py
+    :caption: Examples - UE LLR APIs
     :start-at: [ports]
     :end-before: [end]
 
+
+
+UE CBFC APIs
+-----------------------------
+
+UE CBFC APIs Summary Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. csv-table:: UE CBFC APIs Overview
+    :header: "Id", "Action", "API", "Description"
+    :widths: auto
+    :file: uec_cbfc.csv
+
+
+UE CBFC API Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: uec_cbfc.py
+    :caption: Examples - UE CBFC APIs
+    :start-at: [ports]
+    :end-before: [end]
 
 
 
