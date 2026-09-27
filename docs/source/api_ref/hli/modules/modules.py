@@ -227,6 +227,12 @@ async def my_awesome_func(stop_event: asyncio.Event):
         # Activate ST-CORE (Use basic core features without Solution Tracks)
         await module.solution_track.activate.set(st=enums.SolutionTrack.CORE)
         
+        
+        """Supported Configurations (Extended)"""
+        # Get the supported media configurations of the module.
+        resp_obj = await module.supported_configs_ext.get()
+        resp_obj.media_info_list
+        
 
 
     # [E100 Chimera Specific APIs]
