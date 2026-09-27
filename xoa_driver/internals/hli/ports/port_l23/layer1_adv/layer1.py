@@ -96,7 +96,7 @@ class Layer1Adv:
         """
         
         self.event_logging = L1EventLogging(conn, module_id, port_id)
-        """Event logging configuration and status.
+        """Event logging subscription configuration and status.
 
         :type: L1EventLogging
         """
