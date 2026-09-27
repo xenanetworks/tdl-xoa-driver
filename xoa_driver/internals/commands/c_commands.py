@@ -41,7 +41,8 @@ from .enums import (
     TimeKeeperServiceStatus,
     TimeKeeperServiceAction,
     ChassisModelNumber,
-    ChassisModelName
+    ChassisModelName,
+    ModulePresence,
 )
 
 
@@ -1283,8 +1284,32 @@ class C_DEBUGCMD:
 
     def get(self) -> Token[GetDataAttr]:
         return Token(self._connection, build_get_request(self, indices=[self._cmd_xindex]))
-    
-    
+
+
+
+@register_command
+@dataclass
+class C_MODULE_PRESENCE:
+    """Get the presence state of every module slot in the chassis."""
+
+    code: typing.ClassVar[int] = 38
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+
+    class GetDataAttr(ResponseBodyStruct):
+        presence: typing.List[ModulePresence] = field(XmpSequence(types_chunk=[XmpByte()]))
+        """Presence state for each module slot."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the presence state of every module slot in the chassis.
+
+        :return: the presence state for each module slot
+        :rtype: C_MODULE_PRESENCE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self))
+
 
 @register_command
 @dataclass
@@ -1967,9 +1992,9 @@ class C_TKSTATUSEXT:
     class GetDataAttr(ResponseBodyStruct):
         status_string: str = field(XmpStr())
         """string, extended status in JSON format. The string is formatted as shown in the example below.
-            
+
             .. code-block::json
-            
+
                 {
                     "FormatVersion": 1,
                     "ApplicationVersion": 452.0,
@@ -2064,7 +2089,7 @@ class C_MODEL_NUMBER:
         """
 
         return Token(self._connection, build_get_request(self))
-    
+
 
 @register_command
 @dataclass
@@ -2115,6 +2140,7 @@ __all__ = [
     "C_MODEL",
     "C_MODEL_NAME",
     "C_MODEL_NUMBER",
+    "C_MODULE_PRESENCE",
     "C_MULTIUSER",
     "C_NAME",
     "C_OWNER",

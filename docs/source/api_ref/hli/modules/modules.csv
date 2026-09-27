@@ -45,3 +45,10 @@
 "44","Set Chimera TX Clock Source","module.tx_clock.source.set()","Set the TX clock source (E100 Chimera)"
 "45","Get Chimera TX Clock Source","module.tx_clock.source.get()","Get the TX clock source (E100 Chimera)"
 "46","Get Chimera TX Clock Status","module.tx_clock.status.get()","Get the TX clock status (E100 Chimera)"
+"47","Use Solution Track UEC","module.solution_track.activate.set()","Activate ST-AI (for UEC features)"
+"48","Use Solution Track ADV-ANLT","module.solution_track.activate.set()","Activate ST-ANLT (for Adv. ANLT features)"
+"49","Use Solution Track ADV-L1","module.solution_track.activate.set()","Activate ST-L1 (for Adv. Layer 1 features)"
+"50","Use Solution Track MACSEC","module.solution_track.activate.set()","Activate ST-SEC (for MACsec features)"
+"51","Use No Solution Track","module.solution_track.activate.set()","Activate CORE (Use basic core features without Solution Tracks)"
+"52","Get Supported Configurations (Extended)","module.supported_configs_ext.get()","Get the supported media configurations of the module (Z800 Freya and Z1600 Edun)"
+

@@ -21,6 +21,7 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     XmpLong,
     XmpSequence,
     XmpStr,
+    XmpJson,
     Hex,
 )
 from .enums import (
@@ -49,7 +50,8 @@ from .enums import (
     ModuleModelName,
     ModuleConfigStatus,
     SolutionTrack,
-    FeatureID
+    FeatureID,
+    TransceiverPresence,
 )
 
 
@@ -704,6 +706,39 @@ class M_MEDIASUPPORT:
 
         return Token(self._connection, build_get_request(self, module=self._module))
 
+
+@register_command
+@dataclass
+class M_MEDIASUPPORTEXT:
+    """
+    This command returns the available combinations of Solution Tracks, cage types and (port, speed) on a module.
+    """
+
+    code: typing.ClassVar[int] = 409
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        media_info_list: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
+        """coded integer, media information"""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the media supports by the port, including cage type, available speed count, ports per speed, and the corresponding speed.
+
+        :return:
+            a list of integers. The structure of the returned value is
+            ``[ <solution_track> <cage_type_count> [ <cage_type> <available_speed_count> [<port_count> <speed>] ] ]``.
+            ``<solution_track>`` is Solution Track ID as described in the documentation for M_SOLUTION_TRACK_INDICES.
+            ``<cage_type_count>`` is the number of cage type enties in the following list.
+            ``<cage_type>`` is the type of the cage, as described in the documentation for M_MEDIA.
+            ``<available_speed_count>`` is the number of following (port, speed) configurations for the given cage type.
+            ``<port_count>`` and ``<speed>`` are the number of ports and the speed for the given configuration.
+        :rtype: M_MEDIASUPPORTEXT.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module))
 
 @register_command
 @dataclass
@@ -1437,6 +1472,59 @@ class M_LICENSE_ONLINE:
 
 @register_command
 @dataclass
+class M_TCVR_INDICES:
+    """Get the indices of transceiver cages on a module."""
+
+    code: typing.ClassVar[int] = 407
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        cage_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpByte()]))
+        """Transceiver cage indices."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the indices of transceiver cages on the module.
+
+        :return: the transceiver cage indices
+        :rtype: M_TCVR_INDICES.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module))
+
+
+@register_command
+@dataclass
+class M_TCVR_PRESENCE:
+    """Get the presence state and metadata for a transceiver."""
+
+    code: typing.ClassVar[int] = 408
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _cage_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        presence: TransceiverPresence = field(XmpByte())
+        """Transceiver presence state."""
+        data: dict = field(XmpJson(min_len=2))
+        """Transceiver/cage metadata in JSON format. For internal use, contents/layout subject to change at any time."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the transceiver presence state and metadata.
+
+        :return: the cage presence state and metadata
+        :rtype: M_TCVR_PRESENCE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, indices=[self._cage_xindex]))
+
+
+@register_command
+@dataclass
 class M_TXCLOCKSOURCE_NEW:
     """
     For test modules with advanced timing features, select what clock drives the port TX
@@ -1945,7 +2033,6 @@ class M_SOLUTION_TRACK:
 
     _connection: 'interfaces.IConnection'
     _module: int
-    _solution_track_xindex: int
 
     class GetDataAttr(ResponseBodyStruct):
         feature_ids: typing.List[FeatureID] = field(XmpSequence(types_chunk=[XmpInt()]))
@@ -1998,7 +2085,7 @@ class M_SOLUTION_TRACK_DEMO_EXP:
 
 @register_command
 @dataclass
-class M_SOLUTION_TRACK_ENABLE:
+class M_SOLUTION_TRACK_INSTALL:
     """
     Enables one or more Solution Tracks as specified in key.
     """
@@ -2021,6 +2108,45 @@ class M_SOLUTION_TRACK_ENABLE:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, key=st_key))
+
+@register_command
+@dataclass
+class M_SOLUTION_TRACK_ACTIVATE:
+    """
+    Activates the specified Solution Track.
+    """
+
+    code: typing.ClassVar[int] = 494
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+
+    class SetDataAttr(RequestBodyStruct):
+        st: SolutionTrack = field(XmpInt())
+        """Solution Track to activate."""
+
+    class GetDataAttr(ResponseBodyStruct):
+        st: SolutionTrack = field(XmpInt())
+        """Currently activated Solution Track."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the currently activated Solution Track.
+
+        :return: The currently activated Solution Track
+        :rtype: M_SOLUTION_TRACK_ACTIVATE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module))
+
+    def set(self, st: SolutionTrack) -> Token[None]:
+        """
+        Activate the specified Solution Track.
+        :param st: Solution Track to activate
+        :type st: SolutionTrack
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, st=st))
 
 
 __all__ = [
@@ -2046,6 +2172,7 @@ __all__ = [
     "M_LICENSE_UPDATE_STATUS",
     "M_MEDIA",
     "M_MEDIASUPPORT",
+    "M_MEDIASUPPORTEXT",
     "M_MODEL",
     "M_MODEL_NAME",
     "M_MULTIUSER",
@@ -2062,6 +2189,8 @@ __all__ = [
     "M_STATUS",
     "M_TIMEADJUSTMENT",
     "M_TIMESYNC",
+    "M_TCVR_INDICES",
+    "M_TCVR_PRESENCE",
     "M_TXCLOCKFILTER_NEW",
     "M_TXCLOCKSOURCE_NEW",
     "M_TXCLOCKSTATUS_NEW",
@@ -2072,6 +2201,7 @@ __all__ = [
     "M_VERSIONSTR",
     "M_SOLUTION_TRACK_INDICES",
     "M_SOLUTION_TRACK",
-    "M_SOLUTION_TRACK_ENABLE",
+    "M_SOLUTION_TRACK_INSTALL",
+    "M_SOLUTION_TRACK_ACTIVATE",
     "M_SOLUTION_TRACK_DEMO_EXP",
 ]

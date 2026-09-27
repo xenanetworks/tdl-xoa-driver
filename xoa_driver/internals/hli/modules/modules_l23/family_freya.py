@@ -5,9 +5,7 @@ from xoa_driver.internals.utils.managers import ports_manager as pm
 
 from .bases.module_l23 import ModuleL23
 from xoa_driver.internals.commands import (
-    M_CLOCKPPBSWEEP,
-    M_CLOCKSWEEPSTATUS,
-    M_HEALTH,
+    M_MEDIASUPPORTEXT,
 )
 from .solution_track.solution_track import MSolutionTrack
 from .health.health import MHealth
@@ -89,6 +87,9 @@ class ModuleFamilyFreya(ModuleL23):
         
         self.solution_track = MSolutionTrack(conn, self.module_id)
         """Module solution track control"""
+        
+        self.supported_configs_ext = M_MEDIASUPPORTEXT(conn, self.module_id)
+        """Supported media configurations (extended)"""
 
 #endregion
 

@@ -2583,6 +2583,11 @@ class AnLtLogControl(IntFlag):
     LOG_TYPE_FSM_LT_ALG1 = 1<<23
     """link training algorithm -1 state machine transitions"""
 
+    LOG_TYPE_FSM_LT_COEFF_NRZ= 0x7000000
+    """link training algorithm coefficients state machines transitions (NRZ)"""
+
+    LOG_TYPE_FSM_LT_NRZ= 0x8000000
+    """link training state machine transitions (NRZ)"""
 
 class RxEqExtCap(IntEnum):
     """Rx Equalizer Advanced Capability type."""
@@ -3229,6 +3234,32 @@ class ModuleConfigStatus(IntEnum):
     PROGRESSING = 2
     FAILED = 3
 
+
+class ModulePresence(IntEnum):
+    """Module presence state."""
+
+    NOT_PRESENT = 0
+    """Module is not present"""
+    PRESENT = 1
+    """Module is present"""
+    END_OF_LIFE = 2
+    """Module has reached end of life"""
+    UNKNOWN = 3
+    """Module presence is unknown"""
+
+
+class TransceiverPresence(IntEnum):
+    """Transceiver presence state."""
+
+    NOT_PRESENT = 0
+    """Transceiver is not present"""
+    PRESENT = 1
+    """Transceiver is present"""
+    DETECTING = 2
+    """Transceiver inserted, currently being detected"""
+    DETECTION_FAILURE = 3
+    """Transceiver inserted, but detection failed"""
+
 #endregion
 
 #region FEC CW enums
@@ -3439,6 +3470,22 @@ class FeatureID(IntEnum):
 
 
 #region UEC enums
+class UecCbfcClearDirection(IntEnum):
+    """Direction for clearing UE CBFC counters"""
+
+    NONE = 0
+    """No counter will be cleared"""
+
+    RX = 1
+    """Clear all CBFC RX counters"""
+
+    TX = 2
+    """Clear all CBFC TX counters"""
+
+    ALL = 3
+    """Clear all CBFC RX and TX counters"""
+
+
 class UecCtlosClearDirection(IntEnum):
     """Direction for clearing UE CtlOS counters"""
 
@@ -3542,7 +3589,7 @@ class UecLlrTxErrType(IntEnum):
 
     LLR_ACK_DROP = 5
     """LLR_ACK drop"""
-    
+
     LLR_NACK_DROP = 6
     """LLR_NACK drop"""
 
@@ -3599,5 +3646,167 @@ class UecLlrRxFsmState(IntEnum):
 
     NACK_SENT = 3
     """The RX FSM is in the NACK_SENT state."""
+
+#endregion
+
+# region Layer 1 Capture
+
+class L1EventLoggingType(IntEnum):
+    """Layer-1 event capture types."""
+
+    MARKER = 0
+    """Artificial event used to delimit time in the queue. (This event type requires manual triggering)"""
+
+    OVERFLOW = 1
+    """Artificial event used to report dropped events."""
+
+    LINK_SYNC = 2
+    """Link sync state change event."""
+
+    LOCAL_FAULT = 3
+    """Local fault state change event."""
+
+    REMOTE_FAULT = 4
+    """Remote fault state change event."""
+
+    PCS_AM_LOCK = 5
+    """PCS AM lock state change event."""
+
+    PCS_LOA = 6
+    """PCS Loss of Alignment state change event."""
+
+    PCS_HI_BER = 7
+    """PCS HI-BER state change event."""
+
+    PCS_HI_SER = 8
+    """PCS HI-SER state change event."""
+
+    PCS_DEG_SER = 9
+    """PCS Degraded SER state change event."""
+
+    PCS_ERR_64B66B = 10
+    """PCS 64/66B error state change event."""
+
+    PCS_ERR_256B257B = 11
+    """PCS 256/257B error state change event."""
+
+    FEC_UNCORRECTABLE = 12
+    """FEC uncorrectable error state change event."""
+
+    FEC_CORR_OVER_THRESH = 13
+    """FEC correctable error over threshold state change event."""
+
+    RX_FAULT = 14
+    """Rx fault state change event."""
+
+    LANE_PRBS_LOCK = 15
+    """SerDes lane PRBS lock state change event."""
+
+    LANE_RX_RESET = 16
+    """SerDes lane Rx reset state change event."""
+
+    LANE_CDR_LOCK = 17
+    """SerDes lane CDR lock state change event."""
+
+    LANE_UNUSED = 18
+    """SerDes lane unused state change event. Reserved for future use."""
+
+class L1EventLoggingCondition(IntEnum):
+    """Layer-1 event logging conditions."""
+
+    FALLING = 0
+    """Event is triggered when the state changes from true to false, 1 to 0, or high to low."""
+
+    RISING = 1
+    """Event is triggered when the state changes from false to true, 0 to 1, or low to high."""
+
+
+class L1EventLoggingSubscription(IntEnum):
+    """Layer-1 capture subscription actions."""
+    
+    UNSUBSCRIBE = 0
+    """Unsubscribe from the event."""
+    
+    SUBSCRIBE = 1
+    """Subscribe to the event."""
+
+
+class UecCbfcCreditLimitMethod(IntEnum):
+    """UE CBFC method used to distribute the receive buffer across the VCs."""
+
+    NONE = 0
+    """No credit limit is assigned."""
+
+    TOTAL = 1
+    """A total credit limit is shared by all lossless VCs."""
+
+    PER_VC = 2
+    """Each lossless VC has its own credit limit."""
+
+
+class UecCbfcVcType(IntEnum):
+    """UE CBFC virtual channel type."""
+
+    NO = 0
+    """Best-effort VC, not flow controlled."""
+
+    YES = 1
+    """Lossless VC, flow controlled by CBFC."""
+
+
+class UecCbfcVcMapping(IntEnum):
+    """UE CBFC packet field used to map a packet to a virtual channel."""
+
+    DISABLE = 0
+    """No packet is mapped to the VC."""
+
+    VLAN = 1
+    """Map on the VLAN PCP/DEI field."""
+
+    DSCP = 2
+    """Map on the IP DSCP field."""
+
+    HANDLE = 3
+    """Map on the UE packet handle."""
+
+
+class UecCbfcInjectErrType(IntEnum):
+    """UE CBFC error injection type."""
+
+    NONE = 0
+    """The type is N/A."""
+
+    CC_UPDATE_INC = 1
+    """Increase the CC_Update credits consumed counter, creating a credit leak."""
+
+    CF_UPDATE_DROP = 2
+    """Drop the next CF_Update, simulating a packet loss."""
+
+    CC_UPDATE_BAD_FCS = 3
+    """Inject a bad FCS in the next CC_Update message."""
+
+    CC_UPDATE_POISONED_FCS = 4
+    """Inject a poisoned FCS in the next CC_Update message."""
+
+
+class UecCbfcInjectErrPattern(IntEnum):
+    """UE CBFC error injection pattern."""
+
+    NONE = 0
+    """The pattern is N/A."""
+
+    ONCE = 1
+    """Inject the error once."""
+
+
+class UecCbfcMode(IntEnum):
+    """UE CBFC mode of operation, per direction."""
+
+    OFF = 0
+    """The direction is disabled."""
+
+    ON = 1
+    """The direction is enabled."""
+    
 
 #endregion
