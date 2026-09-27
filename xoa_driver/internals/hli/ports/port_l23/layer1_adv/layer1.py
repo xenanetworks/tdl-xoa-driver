@@ -15,6 +15,7 @@ from xoa_driver.internals.commands import (
 )
 
 from .pcs import PcsLayerAdv
+from .event_logging import L1EventLogging
 
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
@@ -92,6 +93,12 @@ class Layer1Adv:
         """Clear Layer 1 advanced statistics counters on the port.
 
         :type: PL1_CLEAR
+        """
+        
+        self.event_logging = L1EventLogging(conn, module_id, port_id)
+        """Event logging configuration and status.
+
+        :type: L1EventLogging
         """
 
 
