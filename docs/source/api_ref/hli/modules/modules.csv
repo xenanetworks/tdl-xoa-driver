@@ -45,3 +45,8 @@
 "44","Set Chimera TX Clock Source","module.tx_clock.source.set()","Set the TX clock source (E100 Chimera)"
 "45","Get Chimera TX Clock Source","module.tx_clock.source.get()","Get the TX clock source (E100 Chimera)"
 "46","Get Chimera TX Clock Status","module.tx_clock.status.get()","Get the TX clock status (E100 Chimera)"
+"47","Activate Solution Track AI","module.solution_track.activate.set()","Activate ST-AI (for UEC features)"
+"48","Activate Solution Track ANLT","module.solution_track.activate.set()","Activate ST-ANLT (for Adv. ANLT features)"
+"49","Activate Solution Track L1","module.solution_track.activate.set()","Activate ST-L1 (for Adv. Layer 1 features)"
+"50","Activate Solution Track SEC","module.solution_track.activate.set()","Activate ST-SEC (for MACsec features)"
+"51","Activate Solution Track CORE","module.solution_track.activate.set()","Activate ST-CORE (Use basic core features without Solution Tracks)"

@@ -214,7 +214,20 @@ async def my_awesome_func(stop_event: asyncio.Event):
         """Clock PPM Sweep Status"""
         # Get the clock PPM sweep status.
         resp_obj = await module.clock_sweep.status.get()
-    
+
+        """Solution Track Control"""
+        # Activate ST-AI (for UEC features)
+        await module.solution_track.activate.set(st=enums.SolutionTrack.AI)
+        # Activate ST-ANLT (for Adv. ANLT features)
+        await module.solution_track.activate.set(st=enums.SolutionTrack.ANLT)
+        # Activate ST-L1 (for Adv. Layer 1 features)
+        await module.solution_track.activate.set(st=enums.SolutionTrack.L1)
+        # Activate ST-SEC (for MACsec features)
+        await module.solution_track.activate.set(st=enums.SolutionTrack.SEC)
+        # Activate ST-CORE (Use basic core features without Solution Tracks)
+        await module.solution_track.activate.set(st=enums.SolutionTrack.CORE)
+        
+
 
     # [E100 Chimera Specific APIs]
     if isinstance(module, modules.E100ChimeraModule):
