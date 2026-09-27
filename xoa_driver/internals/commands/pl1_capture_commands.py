@@ -102,7 +102,7 @@ class PL1_EVENT_LOGGING_READ:
 @dataclass
 class PL1_EVENT_LOGGING_CONFIG:
     """
-    Subscribes/unsubscribes to a specific Layer-1 event. An event consists of three parameters ``<event_type> <event_cond> <event_serdes>``. 
+    Subscribes/unsubscribes to a specific Layer-1 event. 
     """
 
     code: typing.ClassVar[int] = 1301
@@ -136,11 +136,11 @@ class PL1_EVENT_LOGGING_CONFIG:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port,
-                                                         action=action, event_type=event_type,
-                                                         event_cond=event_cond, indices=[self._serdes_lane]))
-      
-      
-      
+                                                        action=action, event_type=event_type,
+                                                        event_cond=event_cond, indices=[self._serdes_lane]))
+
+
+
 @register_command
 @dataclass
 class PL1_EVENT_LOGGING_SUBLIST:
