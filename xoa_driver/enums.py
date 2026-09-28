@@ -201,6 +201,9 @@ from .internals.commands.enums import (
     TrueFalse,
     PcsErrorInjectionType,
     ClearStatsDirection,
+    L1EventLoggingType,
+    L1EventLoggingCondition,
+    L1EventLoggingSubscription,
     LLDPClearTarget,
     LLDPOpMode,
     PcsLaneErrorInjectionType,
@@ -228,7 +231,7 @@ from .internals.commands.enums import (
     UecCbfcMode,
     ModulePresence,
     TransceiverPresence,
-    L1EventLoggingType,
+    L1CGMIICaptureType,
     L1EventLoggingCondition,
     L1EventLoggingSubscription,
 )

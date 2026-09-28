@@ -3649,7 +3649,7 @@ class UecLlrRxFsmState(IntEnum):
 
 #endregion
 
-# region Layer 1 Capture
+# region Layer 1 Event Logging
 
 class L1EventLoggingType(IntEnum):
     """Layer-1 event capture types."""
@@ -3729,6 +3729,29 @@ class L1EventLoggingSubscription(IntEnum):
     
     SUBSCRIBE = 1
     """Subscribe to the event."""
+
+
+#endregion Layer 1 Event Logging
+
+# region Layer 1 CGMII Capture
+
+class L1CGMIICaptureTriggerType(IntEnum):
+    """Layer-1 CGMII capture trigger types."""
+
+    DATAWORD = 0
+    """Trigger on any(?) dataword."""
+
+    ERROR = 1
+    """Trigger on any codeword error."""
+
+    UEC = 2
+    """Trigger on any UEC related dataword."""
+
+    FORCED = 3
+    """Trigger on user forced trigger."""
+
+
+#endregion Layer 1 CGMII Capture
 
 
 class UecCbfcCreditLimitMethod(IntEnum):
