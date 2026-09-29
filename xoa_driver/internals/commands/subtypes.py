@@ -87,6 +87,6 @@ class QueueStatsElem:
     tx_packets: int = field(XmpLong())  # Total Sent Packets
 
 @dataclass
-class CGMIICodeword:
+class L1CGMIICodeword:
     data: int = field(XmpLong(signed=False))  # CGMII codeword data
     ctrl: int = field(XmpByte(signed=False))  # CGMII codeword control. 1 bit for each byte in the data field.
