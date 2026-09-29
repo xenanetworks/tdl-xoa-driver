@@ -21,13 +21,14 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     XmpJson,
 )
 from .enums import (
+    L1CGMIICaptureMode,
     L1CGMIICaptureTriggerType,
     L1EventLoggingType,
     L1EventLoggingCondition,
     L1EventLoggingSubscription,
     IsEnabled,
 )
-from .subtypes import CGMIICodeword
+from .subtypes import L1CGMIICodeword
 
 @register_command
 @dataclass
@@ -39,15 +40,15 @@ class PL1_EVENT_LOGGING_READ:
 
         {
           "evread": [
-          {
-            "$po-type": "l1_event_logging_entry",
-            "payload": {
-            "evtype_s": "PCS_LOA",
-            "evtype": 6,
-            "asserted": true,
-            "ts": 1234
+            {
+              "$po-type": "l1_event_logging_entry",
+              "payload": {
+                "evtype_s": "PCS_LOA",
+                "evtype": 6,
+                "asserted": true,
+                "ts": 1234
+              }
             }
-          }
           ]
         }
 
@@ -55,16 +56,16 @@ class PL1_EVENT_LOGGING_READ:
 
         {
           "evread": [
-          {
-            "$po-type": "l1_event_logging_entry_with_lane",
-            "payload": {
-            "evtype_s": "LANE_PRBS_LOCK",
-            "evtype": 14,
-            "asserted": true,
-            "lane": 0,
-            "ts": 1234
+            {
+              "$po-type": "l1_event_logging_entry_with_lane",
+              "payload": {
+                "evtype_s": "LANE_PRBS_LOCK",
+                "evtype": 14,
+                "asserted": true,
+                "lane": 0,
+                "ts": 1234
+              }
             }
-          }
           ]
         }
 
@@ -414,6 +415,92 @@ class PL1_CGMII_CAPTURE_STATE:
 
 @register_command
 @dataclass
+class PL1_CGMII_CAPTURE_MODE:
+    """
+    Layer-1 CGMII capture mode. It is used to get or set the mode of the Layer-1 CGMII capture feature.
+    """
+
+    code: typing.ClassVar[int] = 1316
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        mode: L1CGMIICaptureMode = field(XmpByte())
+        """Layer-1 CGMII capture mode. Indicates the current mode of the feature."""
+
+    class SetDataAttr(RequestBodyStruct):
+
+        mode: L1CGMIICaptureMode = field(XmpByte())
+        """Set the mode of the Layer-1 CGMII capture feature."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the Layer-1 CGMII capture mode.
+
+        :return: Layer-1 CGMII capture mode
+        :rtype: PL1_CGMII_CAPTURE_MODE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, mode: L1CGMIICaptureMode) -> Token[None]:
+        """Set the Layer-1 CGMII capture mode.
+
+        :param mode: Layer-1 CGMII capture mode.
+        :type mode: L1CGMIICaptureMode
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, mode=mode))
+
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_SIZE:
+    """
+    Layer-1 CGMII capture size. It is used to get or set the size of the Layer-1 CGMII capture feature.
+    NOTE: The size will be rounded up to the nearest multiple of the hardware granularity.
+    Therefore, the queried size may be slightly larger than the requested size.
+    """
+
+    code: typing.ClassVar[int] = 1317
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        size: int = field(XmpInt(signed=False))
+        """Layer-1 CGMII capture size. Indicates the size of the Layer-1 CGMII capture feature."""
+
+    class SetDataAttr(RequestBodyStruct):
+
+        size: int = field(XmpInt(signed=False))
+        """Set the size of the Layer-1 CGMII capture feature."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the Layer-1 CGMII capture size.
+
+        :return: Layer-1 CGMII capture size
+        :rtype: PL1_CGMII_CAPTURE_SIZE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, size: int) -> Token[None]:
+        """Set the Layer-1 CGMII capture size.
+
+        :param size: Layer-1 CGMII capture size.
+        :type size: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, size=size))
+
+@register_command
+@dataclass
 class PL1_CGMII_CAPTURE_READ:
     """
     Read the meta data of the oldest Layer-1 CGMII capture. 
@@ -465,11 +552,11 @@ class PL1_CGMII_CAPTURE_DATA:
     _module: int
     _port: int
     _offset: int  # The starting offset of the CGMII codeword data to read.
-    _count: int  # The maximum number of CGMII codeword data elements to read. If zero read as many as possible.
+    _count: int  # The maximum number of CGMII codeword data elements to read. If 0 (zero) read as many as possible.
 
     class GetDataAttr(ResponseBodyStruct):
 
-        gcmii_data: typing.List[CGMIICodeword] = field(XmpSequence(types_chunk=[CGMIICodeword]))
+        gcmii_data: typing.List[L1CGMIICodeword] = field(XmpSequence(types_chunk=[XmpLong(signed=False),XmpByte()]))
         """The CGMII codeword data chunk of the oldest captured Layer-1 CGMII entry from _offset and max _count elements."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -615,13 +702,16 @@ __all__ = [
     "PL1_CGMII_CAPTURE_CONSUMED",
     "PL1_CGMII_CAPTURE_DATA",
     "PL1_CGMII_CAPTURE_FORCE",
+    "PL1_CGMII_CAPTURE_MODE",
     "PL1_CGMII_CAPTURE_READ",
     "PL1_CGMII_CAPTURE_STATE",
-    "PL1_EVENT_LOGGING_READ",
+    "PL1_CGMII_CAPTURE_SIZE",
+    "PL1_CGMII_CAPTURE_QLEN",
     "PL1_EVENT_LOGGING_CONFIG",
-    "PL1_EVENT_LOGGING_SUBLIST",
-    "PL1_EVENT_LOGGING_STATE",
     "PL1_EVENT_LOGGING_MARK",
     "PL1_EVENT_LOGGING_QLEN",
-    "PL1_EVENT_LOGGING_RSFEC_THRESH"
+    "PL1_EVENT_LOGGING_READ",
+    "PL1_EVENT_LOGGING_RSFEC_THRESH",
+    "PL1_EVENT_LOGGING_STATE",
+    "PL1_EVENT_LOGGING_SUBLIST",
 ]

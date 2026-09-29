@@ -17,7 +17,8 @@ from xoa_driver.internals.commands import (
     P_COMMENT,
     P_INTERFACE,
     P_RECEIVESYNC,
-    PL1_EVENT_LOGGING_QLEN
+    PL1_CGMII_CAPTURE_QLEN,
+    PL1_EVENT_LOGGING_QLEN,
 )
 from xoa_driver.internals.state_storage import ports_state
 from xoa_driver.internals.utils import attributes as utils
@@ -133,4 +134,9 @@ class BasePort(ABC, Generic[PortStateStorage]):
     on_l1_event_logging_data = functools.partialmethod(utils.on_event, PL1_EVENT_LOGGING_QLEN)
     """
     Register a callback to the event that the port's L1 event logging data becomes available.
+    """
+
+    on_l1_cgmii_capture_data = functools.partialmethod(utils.on_event, PL1_CGMII_CAPTURE_QLEN)
+    """
+    Register a callback to the event that the port's L1 CGMII capture data becomes available.
     """

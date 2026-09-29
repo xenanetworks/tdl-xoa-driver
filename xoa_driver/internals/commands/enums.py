@@ -3735,6 +3735,22 @@ class L1EventLoggingSubscription(IntEnum):
 
 # region Layer 1 CGMII Capture
 
+class L1CGMIICaptureMode(IntEnum):
+    """Layer-1 CGMII capture modes."""
+
+    UNKNOWN = 0
+    """Unknown capture mode."""
+
+    PRE_TRIGGER = 1
+    """Pre-trigger capture mode."""
+
+    POST_TRIGGER = 2
+    """Post-trigger capture mode."""
+
+    PRE_POST_TRIGGER = 3
+    """Pre and post-trigger capture mode."""
+
+
 class L1CGMIICaptureTriggerType(IntEnum):
     """Layer-1 CGMII capture trigger types."""
 

@@ -9,6 +9,7 @@ from .internals.commands.subtypes import (
     NdpEntry,
     DhcpEntry,
     GroupAddressElem,
+    L1CGMIICodeword,
     VlanTag,
     QueueStatsElem,
 )
@@ -35,6 +36,7 @@ __all__ = (
     "NdpEntry",
     "DhcpEntry",
     "GroupAddressElem",
+    "L1CGMIICodeword",
     "VlanTag",
     "QueueStatsElem",
     "ConnectionGroup",
