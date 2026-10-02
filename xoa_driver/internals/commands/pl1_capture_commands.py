@@ -556,7 +556,7 @@ class PL1_CGMII_CAPTURE_DATA:
 
     class GetDataAttr(ResponseBodyStruct):
 
-        gcmii_data: typing.List[L1CGMIICodeword] = field(XmpSequence(types_chunk=[XmpLong(signed=False),XmpByte()]))
+        cgmii_data: typing.List[L1CGMIICodeword] = field(XmpSequence(types_chunk=[XmpLong(signed=False),XmpByte()]))
         """The CGMII codeword data chunk of the oldest captured Layer-1 CGMII entry from _offset and max _count elements."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -566,7 +566,7 @@ class PL1_CGMII_CAPTURE_DATA:
         :rtype: PL1_CGMII_CAPTURE_DATA.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, offset=self._offset, count=self._count))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._offset, self._count]))
 
 
 @register_command
