@@ -3738,16 +3738,13 @@ class L1EventLoggingSubscription(IntEnum):
 class L1CGMIICaptureMode(IntEnum):
     """Layer-1 CGMII capture modes."""
 
-    UNKNOWN = 0
-    """Unknown capture mode."""
-
-    PRE_TRIGGER = 1
+    PRE_TRIGGER = 0
     """Pre-trigger capture mode."""
 
-    POST_TRIGGER = 2
+    POST_TRIGGER = 1
     """Post-trigger capture mode."""
 
-    PRE_POST_TRIGGER = 3
+    PRE_POST_TRIGGER = 2
     """Pre and post-trigger capture mode."""
 
 

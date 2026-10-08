@@ -76,7 +76,7 @@ class PL1_EVENT_LOGGING_READ:
     - ``evtype``: Event type as an integer. See :ref:`layer_1_event_logging_types_table` for the list of supported event types.
     - ``asserted``: Boolean indicating if the event is asserted. See :ref:`layer_1_event_logging_event_conditions_table` for the list of supported event conditions.
     - ``lane``: Lane number (>= 0) for lane-specific events.
-    - ``ts``: Timestamp of the event in the unit of 0.5 nanosecond. The timestamp is relative to the previously delivered event, not an absolute hardware timestamp.
+    - ``ts``: Absolute timestamp of the event in the unit of 0.5 nanosecond.
     """
 
     code: typing.ClassVar[int] = 1300
