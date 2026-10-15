@@ -3784,17 +3784,38 @@ class L1CGMIICaptureMode(IntEnum):
 class L1CGMIICaptureTriggerType(IntEnum):
     """Layer-1 CGMII capture trigger types."""
 
-    DATAWORD = 0
-    """Trigger on any(?) dataword."""
-
-    ERROR = 1
-    """Trigger on any codeword error."""
-
-    UEC = 2
-    """Trigger on any UEC related dataword."""
-
-    FORCED = 3
+    FORCED = 0
     """Trigger on user forced trigger."""
+
+    DATAWORD = 1
+    """Trigger on any(?) dataword. /D/."""
+
+    ERROR = 2
+    """Trigger on any codeword error. /E/ (0xFE)."""
+
+    UEC = 3
+    """Trigger on any UEC related dataword. /K/ (0x5C)."""
+
+    RX_FCS = 4
+    """Trigger on any Rx FCS error."""
+
+    START_OF_PACKET = 5
+    """Trigger on the start of a packet. /S/ (0xFB)."""
+
+    END_OF_PACKET = 6
+    """Trigger on the end of a packet. /T/ (0xFD)."""
+
+    LOW_POWER_IDLE = 7
+    """Trigger on the low power idle state. /LI/ (0x06)."""
+
+    LOCAL_FAULT = 8
+    """Trigger on the local fault state.."""
+
+    REMOTE_FAULT = 9
+    """Trigger on the remote fault state.."""
+
+    CONF_UEC = 10
+    """Trigger on a configured UEC event."""
 
 
 #endregion Layer 1 CGMII Capture
