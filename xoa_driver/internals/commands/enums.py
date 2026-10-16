@@ -3797,7 +3797,7 @@ class L1CGMIICaptureTriggerType(IntEnum):
     UEC = 3
     """Trigger on any UEC related dataword. /K/ (0x5C)."""
 
-    RX_FCS = 4
+    RX_FCS_ERROR = 4
     """Trigger on any Rx FCS error."""
 
     START_OF_PACKET = 5
