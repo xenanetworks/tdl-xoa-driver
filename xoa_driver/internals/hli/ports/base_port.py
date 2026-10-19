@@ -1,4 +1,5 @@
 import functools
+import warnings
 from typing import Self
 from abc import (
     ABC,
@@ -22,6 +23,8 @@ from xoa_driver.internals.commands import (
 from xoa_driver.internals.state_storage import ports_state
 from xoa_driver.internals.utils import attributes as utils
 from xoa_driver.internals.utils import kind
+from xoa_driver.internals.warn import XoaDeprecationWarning
+
 
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
@@ -35,7 +38,13 @@ class BasePort(ABC, Generic[PortStateStorage]):
 
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         self._conn = conn
-        self.kind = kind.PortKind(module_id, port_id)
+        
+        self.identity = kind.PortKind(module_id, port_id)
+        """Port identity (module ID and port ID).
+        
+        :type: kind.PortKind
+        """
+        
         self.sync_status = P_RECEIVESYNC(conn, module_id, port_id)
         """Port sync status.
         
@@ -46,22 +55,22 @@ class BasePort(ABC, Generic[PortStateStorage]):
         
         :type: P_INTERFACE
         """
-        self.reservation = P_RESERVATION(self._conn, *self.kind)
+        self.reservation = P_RESERVATION(self._conn, *self.identity)
         """Port reservation action.
         
         :type: P_RESERVATION
         """
-        self.reserved_by = P_RESERVEDBY(self._conn, *self.kind)
+        self.reserved_by = P_RESERVEDBY(self._conn, *self.identity)
         """Port reservation status.
         
         :type: P_RESERVEDBY
         """
-        self.reset = P_RESET(self._conn, *self.kind)
+        self.reset = P_RESET(self._conn, *self.identity)
         """Port reset action.
         
         :type: P_RESET
         """
-        self.comment = P_COMMENT(self._conn, *self.kind)
+        self.comment = P_COMMENT(self._conn, *self.identity)
         """Port description.
         
         :type: P_COMMENT
@@ -71,6 +80,30 @@ class BasePort(ABC, Generic[PortStateStorage]):
         
         :type: PL1_EVENT_LOGGING_QLEN
         """
+    
+    @property
+    def kind(self) -> kind.PortKind:
+        """Deprecated. Use 'identity' instead.
+        """
+        
+        warnings.warn(
+            "BasePort.kind is deprecated; use BasePort.identity instead.",
+            XoaDeprecationWarning,
+            stacklevel=2,
+        )
+        return self.identity
+    
+    @kind.setter
+    def kind(self, value: "kind.PortKind") -> None:
+        """Deprecated. Use 'identity' instead.
+        """
+        
+        warnings.warn(
+            "BasePort.kind is deprecated; use BasePort.identity instead.",
+            XoaDeprecationWarning,
+            stacklevel=2,
+        )
+        self.identity = value
 
     def __await__(self):
         return self._setup().__await__()

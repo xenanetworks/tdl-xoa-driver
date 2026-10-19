@@ -3,7 +3,7 @@
 "3","Obtain Multiple Streams","port.streams.obtain_multiple()","Obtain multiple existing stream objects"
 "4","Sync Streams","port.streams.server_sync()","Sync existing streams from port"
 "5","Get Stream Index","stream.idx","Get the stream index"
-"6","Get Stream Module/Port Index","stream.kind.module_id/port_id","Get stream's module and port index"
+"6","Get Stream Module/Port Index","stream.identity.module_id/port_id","Get stream's module and port index"
 "7","Remove Stream by Index","port.streams.remove()","Remove a stream from the port by index"
 "8","Delete Stream","stream.delete()","Remove a stream from the port using object"
 "9","Set Stream Description","stream.comment.set()","Set a text description for the stream"

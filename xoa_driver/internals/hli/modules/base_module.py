@@ -26,6 +26,7 @@ from xoa_driver.internals.commands.m_commands import (
     M_TCVR_PRESENCE,
 )
 from xoa_driver.internals.utils import attributes as utils
+from xoa_driver.internals.utils import kind
 
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
@@ -44,6 +45,9 @@ class BaseModule(ABC, Generic[T]):
         self._conn = conn
         self.module_id = init_data.module_id
         self.ports_count = init_data.ports_count
+        self.identity = kind.ModuleKind(self.module_id)
+        """Module identity (module ID).
+        """
         self.reservation = M_RESERVATION(self._conn, self.module_id)
         """Test module's reservation action.
 

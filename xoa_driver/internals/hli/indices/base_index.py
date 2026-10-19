@@ -5,6 +5,9 @@ from typing import (
     Type,
     TYPE_CHECKING,
 )
+import warnings
+from xoa_driver.internals.warn import XoaDeprecationWarning
+
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from xoa_driver.internals.utils import kind
@@ -18,11 +21,41 @@ class BaseIndex(abc.ABC):
     def __init__(self, conn: "itf.IConnection", kind: "kind.IndicesKind", observer: "observer.IndicesObserver") -> None:
         self._observer = observer
         self._conn = conn
-        self.kind = kind
+        
+        self.identity = kind
+        """Index identity (module ID, port ID, and index ID).
+
+        :type: kind.IndicesKind
+        """
+    
+    @property
+    def kind(self) -> "kind.IndicesKind":
+        """Deprecated. Use 'identity' instead.
+        """
+        
+        warnings.warn(
+            "BaseIndex.kind is deprecated; use BaseIndex.identity instead.",
+            XoaDeprecationWarning,
+            stacklevel=2,
+        )
+        return self.identity
+    
+    @kind.setter
+    def kind(self, value: "kind.IndicesKind") -> None:
+        """Deprecated. Use 'identity' instead.
+        """
+        
+        warnings.warn(
+            "BaseIndex.kind is deprecated; use BaseIndex.identity instead.",
+            XoaDeprecationWarning,
+            stacklevel=2,
+        )
+        self.identity = value
 
     @property
     def idx(self) -> int:
-        return self.kind.index_id
+        """Short for 'identity.index_id'."""
+        return self.identity.index_id
 
     @abc.abstractmethod
     async def delete(self) -> None:

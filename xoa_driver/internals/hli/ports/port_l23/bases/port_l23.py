@@ -65,10 +65,6 @@ from xoa_driver.internals.hli.indices.match_term import MatchTermIdx
 from ..trafficgen.capture import PortCapture
 from ..trafficgen.tgen import *
 
-LengthTermIndices = idx_mgr.IndexManager[LengthTermIdx]
-MatchTermIndices = idx_mgr.IndexManager[MatchTermIdx]
-
-
 class BasePortL23(base_port.BasePort[ports_state.PortL23LocalState]):
     """L23 port layout which is relevant to all L23 ports."""
 
@@ -232,7 +228,7 @@ class BasePortL23(base_port.BasePort[ports_state.PortL23LocalState]):
         :type: PortL23LocalState
         """
 
-        self.length_terms: LengthTermIndices = idx_mgr.IndexManager(
+        self.length_terms: idx_mgr.IndexManager[LengthTermIdx] = idx_mgr.IndexManager(
             conn,
             LengthTermIdx,
             module_id,
@@ -240,10 +236,10 @@ class BasePortL23(base_port.BasePort[ports_state.PortL23LocalState]):
         )
         """L23 port's length term index manager.
 
-        :type: LengthTermIndices
+        :type: IndexManager[LengthTermIdx]
         """
 
-        self.match_terms: MatchTermIndices = idx_mgr.IndexManager(
+        self.match_terms: idx_mgr.IndexManager[MatchTermIdx] = idx_mgr.IndexManager(
             conn,
             MatchTermIdx,
             module_id,
@@ -251,7 +247,7 @@ class BasePortL23(base_port.BasePort[ports_state.PortL23LocalState]):
         )
         """L23 port's match term index manager.
 
-        :type: MatchTermIndices
+        :type: IndexManager[MatchTermIdx]
         """
 
         self.used_tpld_ids = P_USED_TPLDID(conn, module_id, port_id)

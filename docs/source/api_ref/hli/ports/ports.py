@@ -599,8 +599,8 @@ async def my_awesome_func(stop_event: asyncio.Event):
     filter.idx
 
     """Get filter's module and port index"""
-    filter.kind.module_id
-    filter.kind.port_id
+    filter.identity.module_id
+    filter.identity.port_id
 
     """Filter - Enable"""
     await filter.enable.set_on()
@@ -638,8 +638,8 @@ async def my_awesome_func(stop_event: asyncio.Event):
     length_term.idx
 
     """Get length term's module and port index"""
-    length_term.kind.module_id
-    length_term.kind.port_id
+    length_term.identity.module_id
+    length_term.identity.port_id
 
     """Sync Existing Length Terms from Port"""
     await port.length_terms.server_sync()
@@ -672,8 +672,8 @@ async def my_awesome_func(stop_event: asyncio.Event):
     match_term.idx
 
     """Get match term's module and port index"""
-    match_term.kind.module_id
-    match_term.kind.port_id
+    match_term.identity.module_id
+    match_term.identity.port_id
 
     """Sync Existing Match Terms from Port"""
     await port.match_terms.server_sync()
@@ -703,8 +703,8 @@ async def my_awesome_func(stop_event: asyncio.Event):
     histogram.idx
 
     """Get histogram's module and port index"""
-    histogram.kind.module_id
-    histogram.kind.port_id
+    histogram.identity.module_id
+    histogram.identity.port_id
 
     """Sync Existing Histograms from Port"""
     await port.datasets.server_sync()
