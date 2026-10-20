@@ -57,6 +57,7 @@ from .enums import (
     PcsErrorInjectionType,
     ClearStatsDirection,
     PcsLaneErrorInjectionType,
+    PhyReachMode,
 )
 
 
@@ -366,8 +367,8 @@ class PL1_CFG_TMP:
         :type values: typing.List[int]
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._type], values=values))
-    
-    
+
+
 @register_command
 @dataclass
 class PL1_LINKTRAIN_CMD:
@@ -442,7 +443,7 @@ class PL1_LT_PHYTXEQ_RANGE:
         """integer, the lower bound of the tap. When set, the value is ignored when <response> == AUTO."""
         max: int = field(XmpInt())
         """integer, the upper bound of the tap. When set, the value is ignored when <response> == AUTO.)"""
-        
+
     class SetDataAttr(RequestBodyStruct):
         response: FreyaLinkTrainingRangeResponse = field(XmpByte())
         """byte, the response when either of the bounds is triggered. Default is AUTO."""
@@ -454,7 +455,7 @@ class PL1_LT_PHYTXEQ_RANGE:
 
     def get(self) -> Token[GetDataAttr]:
         """Get the lower and the upper bound of transmit equalizer (native value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
-        
+
         :return: lower and upper bound of transmit equalizer (native value) and response mode
         :rtype: PL1_LT_PHYTXEQ_RANGE.GetDataAttr
         """
@@ -462,14 +463,14 @@ class PL1_LT_PHYTXEQ_RANGE:
 
     def set(self, response:FreyaLinkTrainingRangeResponse, min: int, max: int) -> Token[None]:
         """Set the lower and the upper bound of transmit equalizer (native value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
-        
+
         :param response: byte, the response when either of the bounds is triggered. Default is AUTO.
         :type response: FreyaLinkTrainingRangeResponse
         :param min: integer, the lower bound of the tap. When set, the value is ignored when <response> == AUTO.
 
             * For <tap_index> == PRE3/PRE/POST, negative, scaled by 1E3.
             * For <tap_index> == MAIN/PRE2, positive, scaled by 1E3.
-        
+
         :type min: int
 
         :param max: integer, the upper bound of the tap. When set, the value is ignored when <response> == AUTO.
@@ -482,14 +483,14 @@ class PL1_LT_PHYTXEQ_RANGE:
         return Token(
             self._connection,
             build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._tap_xindex], response=response, min=min, max=max))
-    
+
 
 @register_command
 @dataclass
 class PL1_LT_PHYTXEQ_RANGE_COEFF:
     """
     Configure the lower and the upper bound of transmit equalizer (IEEE coefficient value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
-    
+
     Whenever <response> == AUTO (the default), min and max will have their default values, which can be read with “get”. Any value that attempt to set the min and max when <response> == AUTO will be ignored by the chassis.
 
     """
@@ -509,7 +510,7 @@ class PL1_LT_PHYTXEQ_RANGE_COEFF:
         min: int = field(XmpInt())
         """
         integer, the lower bound of the tap. When set, the value is ignored when <response> == AUTO.
-        
+
         * For <tap_index> == PRE3/PRE/POST, negative, scaled by 1E3.
         * For <tap_index> == MAIN/PRE2, positive, scaled by 1E3.
 
@@ -517,19 +518,19 @@ class PL1_LT_PHYTXEQ_RANGE_COEFF:
         max: int = field(XmpInt())
         """
         integer, the upper bound of the tap. When set, the value is ignored when <response> == AUTO.
-        
+
         * For <tap_index> == PRE3/PRE/POST, negative, scaled by 1E3.
         * For <tap_index> == MAIN/PRE2, positive, scaled by 1E3.
 
         """
-        
+
     class SetDataAttr(RequestBodyStruct):
         response: FreyaLinkTrainingRangeResponse = field(XmpByte())
         """byte, the response when either of the bounds is triggered. Default is AUTO."""
         min: int = field(XmpInt())
         """
         integer, the lower bound of the tap. When set, the value is ignored when <response> == AUTO.
-        
+
         * For <tap_index> == PRE3/PRE/POST, negative, scaled by 1E3.
         * For <tap_index> == MAIN/PRE2, positive, scaled by 1E3.
 
@@ -537,7 +538,7 @@ class PL1_LT_PHYTXEQ_RANGE_COEFF:
         max: int = field(XmpInt())
         """
         integer, the upper bound of the tap. When set, the value is ignored when <response> == AUTO.
-        
+
         * For <tap_index> == PRE3/PRE/POST, negative, scaled by 1E3.
         * For <tap_index> == MAIN/PRE2, positive, scaled by 1E3.
 
@@ -546,7 +547,7 @@ class PL1_LT_PHYTXEQ_RANGE_COEFF:
 
     def get(self) -> Token[GetDataAttr]:
         """Get the lower and the upper bound of transmit equalizer (IEEE coefficient value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
-        
+
         :return: lower and upper bound of transmit equalizer (IEEE coefficient value) and response mode
         :rtype: PL1_LT_PHYTXEQ_RANGE_COEFF.GetDataAttr
         """
@@ -554,7 +555,7 @@ class PL1_LT_PHYTXEQ_RANGE_COEFF:
 
     def set(self, response:FreyaLinkTrainingRangeResponse, min: int, max: int) -> Token[None]:
         """Set the lower and the upper bound of transmit equalizer (IEEE coefficient value) of the serdes, and how the serdes responds to an increment/decrement request when either bound is reached.
-        
+
         :param response: byte, the response when either of the bounds is triggered. Default is AUTO.
         :type response: FreyaLinkTrainingRangeResponse
         :param min: integer, the lower bound of the tap. When set, the value is ignored when <response> == AUTO.
@@ -604,7 +605,7 @@ class PL1_CTRL:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._func_xindex], opcode=opcode))
-    
+
 @register_command
 @dataclass
 class PL1_GET_DATA:
@@ -702,7 +703,7 @@ class PL1_PRESET_CONFIG:
         """integer, main tap value."""
         post: int = field(XmpInt())
         """integer, post tap value. Default = 0 (neutral)"""
-        
+
     class SetDataAttr(RequestBodyStruct):
         response: FreyaPresetResponse = field(XmpByte())
         """integer, byte, the response to the received IC request. Default = ACCEPT."""
@@ -787,7 +788,7 @@ class PL1_PRESET_CONFIG_LEVEL:
         """integer, main tap value in mV, ranges from 507 to 998."""
         post: int = field(XmpInt())
         """integer, post tap value in dB/10, ranges from 0 to 187 Default = 0 (neutral)"""
-        
+
     class SetDataAttr(RequestBodyStruct):
         response: FreyaPresetResponse = field(XmpByte())
         """integer, byte, the response to the received IC request. Default = ACCEPT."""
@@ -830,7 +831,7 @@ class PL1_PRESET_CONFIG_LEVEL:
         return Token(
             self._connection,
             build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._preset_xindex], response=response, pre3=pre3, pre2=pre2, pre=pre, main=main, post=post))
-    
+
 
 @register_command
 @dataclass
@@ -862,7 +863,7 @@ class PL1_PRESET_CONFIG_COEFF:
         """integer, main tap value, positive, scaled by 1E3. Default = 1000"""
         post: int = field(XmpInt())
         """integer, post tap value, negative, scaled by 1E3. Default = 0 (neutral)"""
-        
+
     class SetDataAttr(RequestBodyStruct):
         response: FreyaPresetResponse = field(XmpByte())
         """integer, byte, the response to the received IC request. Default = ACCEPT."""
@@ -905,7 +906,7 @@ class PL1_PRESET_CONFIG_COEFF:
         return Token(
             self._connection,
             build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex, self._preset_xindex], response=response, pre3=pre3, pre2=pre2, pre=pre, main=main, post=post))
-    
+
 
 @register_command
 @dataclass
@@ -917,7 +918,7 @@ class PL1_PHYTXEQ_LEVEL:
 
     - **Regular Freya**: Original fixed format [pre3, pre2, pre, main, post]
     - **Loki-4P and H-Freya/Edun**: Variable number in N*pre, main, M*post layout
-        
+
         ``[pre_n, pre_n-1, ..., pre_1, main, post_1, post_2, ..., post_m]``
 
     Query port capabilities for ``numtxeqtaps`` and ``numtxeqpretaps`` to determine
@@ -991,7 +992,7 @@ class PL1_PHYTXEQ_COEFF:
 
     - **Regular Freya**: Original fixed format [pre3, pre2, pre, main, post]
     - **Loki-4P and H-Freya/Edun**: Variable number in N*pre, main, M*post layout
-        
+
         ``[pre_n, pre_n-1, ..., pre_1, main, post_1, post_2, ..., post_m]``
 
     Use P_CAPABILITIES to query ``numtxeqtaps`` and ``numtxeqpretaps`` to determine
@@ -1082,12 +1083,12 @@ class PL1_AUTONEG_STATUS:
     class GetDataAttr(ResponseBodyStruct):
         mode: AutoNegMode = field(XmpInt())
         """Autoneg mode
-        
+
         :type mode: AutoNegMode
         """
         autoneg_state: AutoNegStatus = field(XmpInt())
         """Autoneg status
-        
+
         :type autoneg_state: AutoNegStatus
         """
 
@@ -1095,7 +1096,7 @@ class PL1_AUTONEG_STATUS:
         """Received technology abilities bitmask from the remote port
 
         To parse the bitmask, refer to the :class:`AutoNegTecAbility` enum IntFlag.
-        
+
         :type received_tech_abilities: Hex, 16 characters long.
         """
 
@@ -1103,7 +1104,7 @@ class PL1_AUTONEG_STATUS:
         """Received FEC capabilities bitmask from the remote port
 
         To parse the bitmask, refer to the :class:`AutoNegFECAbility` enum IntFlag.
-        
+
         :type received_fec_abilities: Hex, 2 characters long.
         """
 
@@ -1111,28 +1112,28 @@ class PL1_AUTONEG_STATUS:
         """Received pause capabilities bitmask from the remote port
 
         To parse the bitmask, refer to the :class:`AutoNegPauseAbility` enum IntFlag.
-        
+
         :type received_pause_mode: Hex, 2 characters long.
         """
 
         tech_ability_hcd_status: AutoNegTechAbilityHCDStatus = field(XmpInt())
         """HCD technology ability negotiation status
-        
+
         :type tech_ability_hcd_status: AutoNegTechAbilityHCDStatus
         """
 
         tech_ability_hcd_value: AutoNegTecAbilityHCD = field(XmpInt())
         """HCD technology ability negotiation result
-        
+
         :type tech_ability_hcd_value: AutoNegTecAbilityHCD
         """
 
         fec_mode_result: FECMode = field(XmpInt())
         """FEC mode negotiation result
-        
+
         :type fec_mode_result: FECMode
         """
-        
+
         pause_mode_result: PauseMode = field(XmpInt())
         """Pause mode negotiation result
 
@@ -1165,14 +1166,14 @@ class PL1_AUTONEG_ABILITIES:
     class GetDataAttr(ResponseBodyStruct):
         tech_abilities_supported: Hex = field(XmpHex(size=8))
         """Supported technology abilities by the port. This returns a value in Hex of the format HHHHHHHH (64 bits). Each bit corresponds to technology ability as defined in :class:`AutoNegTecAbility`. A bit of 1 means the corresponding technology ability is supported by the port.
-        
-        
+
+
         :type tech_abilities_supported: Hex, 16 characters long.
         """
 
         fec_modes_supported: Hex = field(XmpHex(size=1))
         """Supported FEC modes by the port. This returns a value in Hex of the format HH (8 bits). Each bit corresponds to FEC mode as defined in :class:`AutoNegFECAbility`. A bit of 1 means the corresponding FEC mode is supported by the port.
-        
+
         :type fec_modes_supported: Hex, 2 characters long.
         """
 
@@ -1189,7 +1190,7 @@ class PL1_AUTONEG_ABILITIES:
         :rtype: Token[GetDataAttr]
         """
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-    
+
 @register_command
 @dataclass
 class PL1_PCS_VARIANT:
@@ -1281,11 +1282,11 @@ class PL1_CWE_CYCLE:
         :type error_len: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, loop=loop, cycle_len=cycle_len, error_len=error_len))
-    
+
     set_continuous = functools.partialmethod(set, 0)
     """Set continuous loop
     """
-    
+
 
 @register_command
 @dataclass
@@ -1304,7 +1305,7 @@ class PL1_CWE_ERR_SYM_INDICES:
     class GetDataAttr(ResponseBodyStruct):
         error_sym_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
         """the indices of the position of the errored symbols.
-        
+
             * An empty list means there is no errored symbol in the errored codewords.
 
             * The indices in the list must not duplicate.
@@ -1318,7 +1319,7 @@ class PL1_CWE_ERR_SYM_INDICES:
     class SetDataAttr(RequestBodyStruct):
         error_sym_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
         """the indices of the position of the errored symbols.
-        
+
             * An empty list means there is no errored symbol in the errored codewords.
 
             * The indices in the list must not duplicate.
@@ -1344,7 +1345,7 @@ class PL1_CWE_ERR_SYM_INDICES:
         :type error_sym_indices: typing.List[int]
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, error_sym_indices=error_sym_indices))
-    
+
 
 @register_command
 @dataclass
@@ -1389,7 +1390,7 @@ class PL1_CWE_BIT_ERR_MASK:
         :type bitmask: Hex
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, mode=mode, bitmask=bitmask))
-    
+
     set_all_bits = functools.partialmethod(set, FecCodewordBitErrorMaskMode.STATIC, Hex("03FF"))
     """Set all bits to errored bits in an errored symbol.
     """
@@ -1416,7 +1417,7 @@ class PL1_CWE_FEC_ENGINE:
     class GetDataAttr(ResponseBodyStruct):
         bitmask: Hex = field(XmpHex(size=1))
         """big endian.
-        
+
             * the highest bit corresponds to FEC engine 4 (0x08)
 
             * the lowest bit corresponds to FEC engine 1 (0x01)
@@ -1426,7 +1427,7 @@ class PL1_CWE_FEC_ENGINE:
     class SetDataAttr(RequestBodyStruct):
         bitmask: Hex = field(XmpHex(size=1))
         """big endian.
-        
+
             * the highest bit corresponds to FEC engine 4 (0x08)
 
             * the lowest bit corresponds to FEC engine 1 (0x01)
@@ -1448,11 +1449,11 @@ class PL1_CWE_FEC_ENGINE:
         :type bitmask: Hex
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, bitmask=bitmask))
-    
+
     set_all_engines = functools.partialmethod(set, Hex("0F"))
     """Use all FEC engines
     """
-    
+
 
 @register_command
 @dataclass
@@ -1516,7 +1517,7 @@ class PL1_AUTONEG_CONFIG:
 
     def get(self) -> Token[GetDataAttr]:
         """Get the advertised technology abilities, FEC abilities, and pause abilities of the port.
-        
+
         :return: The advertised abilities
         :rtype: PL1_AUTONEG_CONFIG.GetDataAttr
         """
@@ -1535,7 +1536,7 @@ class PL1_AUTONEG_CONFIG:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, advertised_tech_abilities=tech_abilities, advertised_fec_abilities=fec_abilities, advertised_pause_mode=pause_mode))
-    
+
 @register_command
 @dataclass
 class PL1_ANLT:
@@ -1567,7 +1568,7 @@ class PL1_ANLT:
     def set(self, an_mode: FreyaAutonegMode, lt_mode: FreyaLinkTrainingMode) -> Token[None]:
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, an_mode=an_mode, lt_mode=lt_mode))
-    
+
     enable_an_only = functools.partialmethod(set, FreyaAutonegMode.ENABLED, FreyaLinkTrainingMode.DISABLED)
     """Enable Autoneg only.
     """
@@ -1706,7 +1707,7 @@ class PL1_LINKTRAIN_CONFIG:
         :return: A token indicating the completion of the set operation
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, oos_preset=oos_preset, timeout_mode=timeout_mode))
-    
+
 @register_command
 @dataclass
 class PL1_LINKTRAIN_STATUS:
@@ -1738,7 +1739,7 @@ class PL1_LINKTRAIN_STATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
-    
+
 @register_command
 @dataclass
 class PL1_CWE_CONTROL:
@@ -1777,7 +1778,7 @@ class PL1_CWE_CONTROL:
         :return: A token indicating the completion of the set operation
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, action=action))
-    
+
     set_start = functools.partialmethod(set, StartOrStop.START)
     """Start FEC codeword error injection.
     """
@@ -1785,7 +1786,7 @@ class PL1_CWE_CONTROL:
     set_stop = functools.partialmethod(set, StartOrStop.STOP)
     """Stop FEC codeword error injection.
     """
-    
+
 
 @register_command
 @dataclass
@@ -1847,8 +1848,8 @@ class PL1_PNSWAP_TX:
         :type on_off: OnOff
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, on_off=on_off, indices=[self._serdes_xindex])) 
-    
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, on_off=on_off, indices=[self._serdes_xindex]))
+
     set_on = functools.partialmethod(set, OnOff.ON)
     """Set P/N polarity swap of the SerDes in the transmission direction to ON
     """
@@ -1856,7 +1857,7 @@ class PL1_PNSWAP_TX:
     set_off = functools.partialmethod(set, OnOff.OFF)
     """Set P/N polarity swap of the SerDes in the transmission direction to OFF
     """
-    
+
 
 @register_command
 @dataclass
@@ -1895,8 +1896,8 @@ class PL1_PNSWAP_RX:
         :type on_off: OnOff
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, on_off=on_off, indices=[self._serdes_xindex])) 
-    
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, on_off=on_off, indices=[self._serdes_xindex]))
+
     set_on = functools.partialmethod(set, OnOff.ON)
     """Set P/N polarity swap of the SerDes in the receiving direction to ON
     """
@@ -1972,7 +1973,7 @@ class PL1_LOA_STATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-    
+
 
 
 @register_command
@@ -2005,7 +2006,7 @@ class PL1_HIBER_STATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-    
+
 
 
 
@@ -2045,7 +2046,7 @@ class PL1_HISER_STATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-    
+
 
 @register_command
 @dataclass
@@ -2069,7 +2070,7 @@ class PL1_HISER_ALARM:
     class SetDataAttr(RequestBodyStruct):
         alarm_state: OnOff = field(XmpByte())
         """Enables or disables the High SER Alarm on the port. `ON` enables the alarm, `OFF` disables it."""
-        
+
 
     def get(self) -> Token[GetDataAttr]:
         """Get the High SER Alarm state of the port.
@@ -2079,7 +2080,7 @@ class PL1_HISER_ALARM:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-    
+
     def set(self, alarm_state: OnOff) -> Token[None]:
         """Set the High SER Alarm state of the port.
 
@@ -2088,11 +2089,11 @@ class PL1_HISER_ALARM:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, alarm_state=alarm_state))
-    
+
 
     set_off = functools.partialmethod(set, OnOff.OFF)
     """Set the High SER Alarm state of the port to `OFF`, disabling the alarm."""
-    
+
     set_on = functools.partialmethod(set, OnOff.ON)
     """Set the High SER Alarm state of the port to `ON`, enabling the alarm."""
 
@@ -2131,8 +2132,8 @@ class PL1_DEGSER_STATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-    
-    
+
+
 
 @register_command
 @dataclass
@@ -2182,7 +2183,7 @@ class PL1_DEGSER_THRESH:
 
         degrade_interval: int = field(XmpInt(signed=False))
         """Number of RS-FEC codewords over which to monitor for symbol errors. Valid range is 2 to 65534. Must be an even number and a multiple of the number of PCS flows."""
-        
+
 
     def get(self) -> Token[GetDataAttr]:
         """Get the thresholds for the Degraded SER Alarm.
@@ -2192,7 +2193,7 @@ class PL1_DEGSER_THRESH:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-    
+
     def set(self, act_thresh: int, deact_thresh: int, degrade_interval: int) -> Token[None]:
         """Set the thresholds for the Degraded SER Alarm.
 
@@ -2238,8 +2239,8 @@ class PL1_LINKDOWN_STATUS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-    
-    
+
+
 
 @register_command
 @dataclass
@@ -2299,7 +2300,7 @@ class PL1_INJECT_ERR:
 
     def set(self, type: PcsErrorInjectionType) -> Token[None]:
         """Inject an error on the Tx port immediately when called.
-        
+
         :param type: Type of error to inject
         :type type: PcsErrorInjectionType
         """
@@ -2338,13 +2339,13 @@ class PL1_CLEAR:
 
     def set(self, direction: ClearStatsDirection) -> Token[None]:
         """Clear Layer 1 counters in the specified direction(s).
-        
+
         :param direction: Direction of counters to clear
         :type direction: ClearStatsDirection
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, direction=direction))
-    
+
     set_none = functools.partialmethod(set, ClearStatsDirection.NONE)
     """Clear no counters"""
 
@@ -2394,7 +2395,7 @@ class PL1_RX_FREQ:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
-    
+
 
 
 @register_command
@@ -2594,7 +2595,7 @@ class PL1_INJECT_ERR_CNT:
 
         hi_ser_count: int = field(XmpLong(signed=False))
         """Number of cumulated Tx High SER events since the last clearance."""
-        
+
         itb_count: int = field(XmpLong(signed=False))
         """Number of cumulated Tx Invalid 256b/257b Transcode Blocks since the last clearance."""
 
@@ -2664,7 +2665,7 @@ class PL1_PCSL_AM_CORR:
 
       * At least 4, for 40G (no FEC or FC-FEC), 50G ETC (no FEC or FC-FEC), 50GAUI-2 (RS-FEC KP), 100G (no FEC)
       * At least 5, for 50G ETC (RS-FEC KR), 50G IEEE (RS-FEC KP), 100G (RS-FEC KR, RS-FEC KP, RS-FEC KP-Int), 200G (RS-FEC KP-Int), 400G (RS-FEC KP-Int), 800G (RS-FEC KP-Int), 1.6T (RS-FEC KP-Int)
-    
+
     """
 
     code: typing.ClassVar[int] = 572
@@ -2690,7 +2691,7 @@ class PL1_PCSL_AM_CORR:
         cm_nibble_indices: typing.List[int] = field(XmpSequence(types_chunk=[XmpInt()]))
         """The indices of the nibbles in CM to be corrupted. The valid range of nibble index is from 0 to 11 (6 bytes in total). The index list is allowed to be empty, which means no CM nibble will be corrupted. Duplicated indices are allowed but not recommended. Default value = empty list.
         """
-        
+
 
     def get(self) -> Token[GetDataAttr]:
         """Get the current PCSL AM corruption configuration.
@@ -2700,7 +2701,7 @@ class PL1_PCSL_AM_CORR:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._pcsl_xindex]))
-    
+
     def set(self, am_bad_count: int, cm_nibble_indices: typing.List[int]) -> Token[None]:
         """Set the PCSL AM corruption configuration.
 
@@ -2736,7 +2737,7 @@ class PL1_PCSL_INJECT_ERR:
 
     def set(self, type: PcsLaneErrorInjectionType) -> Token[None]:
         """Inject an error on the specified PCSL immediately when called.
-        
+
         :param type: Type of error to inject
         :type type: PcsLaneErrorInjectionType
         """
@@ -2752,7 +2753,7 @@ class PL1_PCSL_INJECT_ERR:
 @dataclass
 class PL1_PCSL_INJECT_ERR_CNT:
     """
-    Returns the per-pcsl cumulative number of Tx Layer-1 error events since last clearance. 
+    Returns the per-pcsl cumulative number of Tx Layer-1 error events since last clearance.
     """
 
     code: typing.ClassVar[int] = 575
@@ -2770,7 +2771,7 @@ class PL1_PCSL_INJECT_ERR_CNT:
 
 
     def get(self) -> Token[GetDataAttr]:
-        """Returns the per-pcsl cumulative number of Tx Layer-1 error events since last clearance. 
+        """Returns the per-pcsl cumulative number of Tx Layer-1 error events since last clearance.
 
         :return: Per-PCSL cumulative number of Tx Layer-1 errors since last clearance
         :rtype: PL1_PCSL_INJECT_ERR_CNT.GetDataAttr
@@ -2779,6 +2780,59 @@ class PL1_PCSL_INJECT_ERR_CNT:
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._pcsl_xindex]))
 
 
+@register_command
+@dataclass
+class PL1_PHY_REACH:
+    """
+    Configure and read the PHY reach mode of the port.
+    The serdes index is dummy; by hardware limitation all serdes share the same reach mode.
+
+    The reach mode controls whether the PHY operates in Extended Reach (ER) or
+    Normal Reach (NR) mode, or determines it automatically.
+    """
+
+    code: typing.ClassVar[int] = 576
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _serdes_xindex: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        mode: PhyReachMode = field(XmpByte())
+        """PHY reach mode."""
+
+    class SetDataAttr(RequestBodyStruct):
+        mode: PhyReachMode = field(XmpByte())
+        """PHY reach mode."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the PHY reach mode of the specified SerDes.
+
+        :return: The PHY reach mode
+        :rtype: PL1_PHY_REACH.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex]))
+
+    def set(self, mode: PhyReachMode) -> Token[None]:
+        """Set the PHY reach mode of the specified SerDes.
+
+        :param mode: The PHY reach mode to set
+        :type mode: PhyReachMode
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._serdes_xindex], mode=mode))
+
+    set_auto = functools.partialmethod(set, PhyReachMode.AUTO)
+    """Let the PHY determine the reach mode automatically."""
+
+    set_force_er = functools.partialmethod(set, PhyReachMode.FORCE_ER)
+    """Force Extended Reach (ER)."""
+
+    set_force_nr = functools.partialmethod(set, PhyReachMode.FORCE_NR)
+    """Force Normal Reach (NR)."""
 
 
 __all__ = [
@@ -2836,4 +2890,5 @@ __all__ = [
     "PL1_PCSL_AM_CORR",
     "PL1_PCSL_INJECT_ERR",
     "PL1_PCSL_INJECT_ERR_CNT",
+    "PL1_PHY_REACH",
 ]
