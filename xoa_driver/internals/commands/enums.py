@@ -3723,10 +3723,10 @@ class L1EventLoggingCondition(IntEnum):
 
 class L1EventLoggingSubscription(IntEnum):
     """Layer-1 capture subscription actions."""
-    
+
     UNSUBSCRIBE = 0
     """Unsubscribe from the event."""
-    
+
     SUBSCRIBE = 1
     """Subscribe to the event."""
 
@@ -3807,6 +3807,22 @@ class UecCbfcMode(IntEnum):
 
     ON = 1
     """The direction is enabled."""
-    
+
+
+class PhyReachMode(IntEnum):
+    """Extended/near range PHY configuration"""
+
+    UNKNOWN = 0
+    """Unknown or illegal setting"""
+
+    AUTO = 1
+    """Automatic"""
+
+    FORCE_ER = 2
+    """Force Extended range"""
+
+    FORCE_NR = 3
+    """Force Near range"""
+
 
 #endregion
