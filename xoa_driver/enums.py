@@ -231,6 +231,7 @@ from .internals.commands.enums import (
     L1EventLoggingType,
     L1EventLoggingCondition,
     L1EventLoggingSubscription,
+    PhyReachMode,
 )
 
 __all__ = (
@@ -459,4 +460,5 @@ __all__ = (
     "L1EventLoggingType",
     "L1EventLoggingCondition",
     "L1EventLoggingSubscription",
+    "PhyReachMode"
 )
