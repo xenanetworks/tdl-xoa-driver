@@ -2026,6 +2026,15 @@ class M_SOLUTION_TRACK_INDICES:
 class M_SOLUTION_TRACK:
     """
     Given a Solution Track index, returns a list of integers representing the enabled Feature IDs on the specified module.
+    
+    Solution Track index is specified by the user.
+    
+    * ``0 = CORE``, Core Solution Track
+    * ``1 = SEC``, Security Solution Track
+    * ``2 = L1``, Advanced Layer 1 Solution Track
+    * ``3 = ANLT``, Advanced ANLT Solution Track
+    * ``4 = AI``, AI & UEC Solution Track
+    
     """
 
     code: typing.ClassVar[int] = 491
@@ -2033,10 +2042,12 @@ class M_SOLUTION_TRACK:
 
     _connection: 'interfaces.IConnection'
     _module: int
+    _st_index: int
 
     class GetDataAttr(ResponseBodyStruct):
         feature_ids: typing.List[FeatureID] = field(XmpSequence(types_chunk=[XmpInt()]))
-        """Enabled Feature IDs for the given Solution Track."""
+        """Enabled Feature IDs for the given Solution Track.
+        """
 
     def get(self) -> Token[GetDataAttr]:
         """Get the currently enabled Feature IDs for the given Solution Track.
@@ -2045,7 +2056,7 @@ class M_SOLUTION_TRACK:
         :rtype: M_SOLUTION_TRACK.GetDataAttr
         """
 
-        return Token(self._connection, build_get_request(self, module=self._module, indices=[self._solution_track_xindex]))
+        return Token(self._connection, build_get_request(self, module=self._module, indices=[self._st_index]))
 
 
 @register_command

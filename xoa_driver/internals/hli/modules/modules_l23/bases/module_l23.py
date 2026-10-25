@@ -30,6 +30,9 @@ from xoa_driver.internals.commands import (
     M_UPGRADEPAR,
     M_VERSIONSTR,
     M_RECONFIG_STATUS,
+    M_SOLUTION_TRACK_ACTIVATE,
+    M_MEDIASUPPORTEXT,
+    M_TCVR_PRESENCE,
 )
 
 from xoa_driver.internals.utils import attributes as utils
@@ -52,6 +55,7 @@ from ..module_config.module_type import (
     ModuleConfig,
 )
 from ..upgrade.upgrade import MUpgrade
+from ..cage.tcvr_cage import MTcvrCage
 
 
 if typing.TYPE_CHECKING:
@@ -144,6 +148,12 @@ class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
 
         :type: MUpgrade
         """
+        
+        self.tcvr_cage = MTcvrCage(conn, self.module_id)
+        """Test module's transceiver cage management.
+
+        :type: MTcvrCage
+        """
 
         self.ports: typing.Optional[pm.PortsManager] = None
         """L23 Port Index Manager of the test module.
@@ -217,3 +227,18 @@ class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
 
     on_timing_clock_local_adjust_change = functools.partialmethod(utils.on_event, M_CLOCKPPB)
     """Register a callback to the event that the module's clock adjustment ppb changes."""
+    
+    on_module_tcvr_change = functools.partialmethod(utils.on_event,  M_TCVR_PRESENCE)
+    """
+    Register a callback to the event that the module's transceiver changes.
+    """
+
+    on_solution_track_activation = functools.partialmethod(utils.on_event, M_SOLUTION_TRACK_ACTIVATE)
+    """
+    Register a callback to the event that the module's currently activated Solution Track changes.
+    """
+
+    on_media_supportext_change = functools.partialmethod(utils.on_event, M_MEDIASUPPORTEXT)
+    """
+    Register a callback to the event that the module's media support status changes.
+    """
