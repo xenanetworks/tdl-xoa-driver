@@ -31,6 +31,6 @@ This documentation covers how to use the XOA Python API, including how to instal
    :maxdepth: 2
    :caption: API Reference Guide
 
-   api_ref/hl_index
-   api_ref/ll_index
+   High-Level API & Functions <api_ref/hli/index>
+   Low-Level API <api_ref/lli/index>
    

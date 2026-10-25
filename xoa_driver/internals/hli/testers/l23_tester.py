@@ -22,19 +22,18 @@ from .genuine.l_23 import (
     rest_api,
     health,
 )
-if TYPE_CHECKING:
-    from xoa_driver import modules
-
 from xoa_driver.internals.core.transporter.logger import CustomLogger
 from xoa_driver.internals.state_storage import testers_state
 from xoa_driver.internals.hli import revisions
 from xoa_driver.internals import exceptions
 
+if TYPE_CHECKING:
+    from xoa_driver import modules
 
 TypeL23Manager = mm.ModulesManager[
     Union[
         "modules.GenericL23Module",
-        "modules.ModuleChimera",
+        "modules.E100ChimeraModule",
     ]
 ]
 

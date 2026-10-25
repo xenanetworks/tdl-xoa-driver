@@ -20,12 +20,8 @@ from xoa_driver.internals.commands import (
     M_VERSIONNO,
     M_MODEL_NAME,
 )
-from xoa_driver.internals.commands.m_commands import (
-    M_SOLUTION_TRACK_ACTIVATE,
-    M_MEDIASUPPORTEXT,
-    M_TCVR_PRESENCE,
-)
 from xoa_driver.internals.utils import attributes as utils
+from xoa_driver.internals.utils import kind
 
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
@@ -44,6 +40,9 @@ class BaseModule(ABC, Generic[T]):
         self._conn = conn
         self.module_id = init_data.module_id
         self.ports_count = init_data.ports_count
+        self.identity = kind.ModuleKind(self.module_id)
+        """Module identity (module ID).
+        """
         self.reservation = M_RESERVATION(self._conn, self.module_id)
         """Test module's reservation action.
 
@@ -140,19 +139,4 @@ class BaseModule(ABC, Generic[T]):
     on_version_number_change = functools.partialmethod(utils.on_event, M_VERSIONNO)
     """
     Register a callback to the event that the module's version number status changes.
-    """
-
-    on_module_tcvr_change = functools.partialmethod(utils.on_event,  M_TCVR_PRESENCE)
-    """
-    Register a callback to the event that the module's transceiver changes.
-    """
-
-    on_solution_track_activation = functools.partialmethod(utils.on_event, M_SOLUTION_TRACK_ACTIVATE)
-    """
-    Register a callback to the event that the module's currently activated Solution Track changes.
-    """
-
-    on_media_supportext_change = functools.partialmethod(utils.on_event, M_MEDIASUPPORTEXT)
-    """
-    Register a callback to the event that the module's media support status changes.
     """

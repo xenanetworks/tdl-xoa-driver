@@ -123,7 +123,7 @@ async def my_awesome_func(stop_event: asyncio.Event):
         await port.macsec.decode.set_off()
 
         # Assing Tx SC to the stream by Tx SC index
-        await stream.macsec.assign.set(tx_sc_index=txsc_obj.kind.index_id)
+        await stream.macsec.assign.set(tx_sc_index=txsc_obj.identity.index_id)
 
         # Enable MACsec encode on the stream
         await stream.macsec.enable.set_on()

@@ -57,8 +57,8 @@ async def my_awesome_func(stop_event: asyncio.Event):
 
 
     """Get stream's module and port index"""
-    stream.kind.module_id
-    stream.kind.port_id
+    stream.identity.module_id
+    stream.identity.port_id
 
 
     """Remove Stream by Index"""

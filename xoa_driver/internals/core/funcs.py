@@ -28,7 +28,7 @@ async def establish_connection(transporter: "TransportationHandler", host: str, 
         )
     except OSError:
         raise exceptions.XoaConnectionError(host, port) from None
-    except asyncio.exceptions.TimeoutError:
+    except asyncio.exceptions.TimeoutError: # type: ignore
         raise exceptions.XoaConnectionTimeoutError(host, port, seconds_timeout) from None
 
 

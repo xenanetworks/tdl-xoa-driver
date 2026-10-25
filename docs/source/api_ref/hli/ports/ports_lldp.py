@@ -50,8 +50,8 @@ async def my_awesome_func(stop_event: asyncio.Event):
         lldp_agent.idx
 
         """Get LLDP Agent's module and port index"""
-        lldp_agent.kind.module_id
-        lldp_agent.kind.port_id
+        lldp_agent.identity.module_id
+        lldp_agent.identity.port_id
 
         """Remove LLDP Agent by Index"""
         # Remove a LLDP agent from the port by its index.

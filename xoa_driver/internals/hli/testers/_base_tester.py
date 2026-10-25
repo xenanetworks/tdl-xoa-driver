@@ -251,7 +251,7 @@ class BaseTester(ABC, Generic[TesterStateStorage]):
         :type callback: Callable
         """
 
-        self._conn.subscribe(C_RESERVATION, callback)
+        self._conn.subscribe(C_RESERVATION, callback) # type: ignore
 
     def on_reserved_by_change(self, callback: "Callable") -> None:
         """
@@ -261,6 +261,6 @@ class BaseTester(ABC, Generic[TesterStateStorage]):
         :type callback: Callable
         """
 
-        self._conn.subscribe(C_RESERVEDBY, callback)
+        self._conn.subscribe(C_RESERVEDBY, callback) # type: ignore
 
     # endregion
