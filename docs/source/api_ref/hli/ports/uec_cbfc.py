@@ -1,8 +1,7 @@
 from xoa_driver.internals.hli.indices.lldp import lldp_agent
-from xoa_driver import hlfuncs, headers
 import asyncio
 from xoa_driver import testers, modules, ports, enums, utils, misc
-from xoa_driver.hlfuncs import * 
+from xoa_driver.hlfuncs import *
 
 
 async def my_awesome_func(stop_event: asyncio.Event):

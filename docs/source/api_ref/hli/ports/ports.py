@@ -3,7 +3,6 @@ from xoa_driver import testers, modules, ports, enums, utils, misc
 from xoa_driver.hlfuncs import * 
 from xoa_driver.misc import Hex, ArpEntry, NdpEntry
 import ipaddress
-from xoa_driver.internals.hli.ports.port_l23.bases.port_l23_genuine import BasePortL23Genuine
 
 async def my_awesome_func(stop_event: asyncio.Event):
 

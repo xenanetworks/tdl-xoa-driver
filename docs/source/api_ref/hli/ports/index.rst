@@ -1,5 +1,9 @@
-``ports`` module
+``ports`` - Port APIs
 =========================
+
+.. code-block:: python
+
+    from xoa_driver import ports
 
 Traffic Generation APIs
 ------------------------

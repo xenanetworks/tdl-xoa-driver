@@ -1,5 +1,9 @@
-``enums`` module
+``enums`` - Enumeration Types
 =================================
+
+.. code-block:: python
+
+    from xoa_driver import enums
 
 .. currentmodule:: xoa_driver.enums
 

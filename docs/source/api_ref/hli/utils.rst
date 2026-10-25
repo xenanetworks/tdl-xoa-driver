@@ -1,5 +1,10 @@
-``utils`` module
+``utils`` - Utility Functions
 =================================
+
+.. code-block:: python
+
+    from xoa_driver import utils
+
 
 .. currentmodule:: xoa_driver.utils
 

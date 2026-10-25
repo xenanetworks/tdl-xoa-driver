@@ -1,6 +1,10 @@
-``misc`` module
+``misc`` - Data Types
 =================================
 
+.. code-block:: python
+
+    from xoa_driver import misc
+    
 .. currentmodule:: xoa_driver.misc
 
 .. autosummary::

@@ -1,5 +1,9 @@
-``testers`` module
-=========================
+``testers`` - Chassis APIs
+==========================
+
+.. code-block:: python
+
+    from xoa_driver import testers
 
 Tester APIs Overview
 --------------------

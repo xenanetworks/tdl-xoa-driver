@@ -1,6 +1,10 @@
-Low-Level API Script Examples
+Low-Level API Script Example
 =============================
 
-Low-Level API Script Examples demonstrate how to use the XOA Python Low-Level API to interact with Xena testers at a more granular level. These examples cover various scenarios, including configuring ports, setting up traffic streams, and collecting statistics.
+.. literalinclude:: low_level_api.py
+    :caption: Low-Level API Example Script
 
-* `Low-Level API Examples <https://github.com/xenanetworks/tdl-xoa-python-script-library/tree/main/low_level_api>`_
+
+.. note::
+    
+    You can also find the example script in: `Low-Level API Examples <https://github.com/xenanetworks/tdl-xoa-python-script-library/tree/main/low_level_api>`_

@@ -1,12 +1,13 @@
-``mgmt`` module
-===============================
+``mgmt`` - Resource management functions 
+==========================================
 
-The ``mgmt`` module offers high-level functions for managing test chassis, modules, and ports.
+The ``mgmt`` module offers functions for managing test chassis, modules, and ports.
 
 
 .. currentmodule:: xoa_driver.hlfuncs.mgmt
 
-.. rubric:: Chassis Reservation and System Uptime
+Chassis Reservation and System Uptime
+-------------------------------------
 
 .. autosummary::
 
@@ -15,7 +16,8 @@ The ``mgmt`` module offers high-level functions for managing test chassis, modul
     get_chassis_sys_uptime
 
 
-.. rubric:: Module Object from ID
+Obtain Module Instance
+----------------------
 
 .. autosummary::
 
@@ -23,7 +25,8 @@ The ``mgmt`` module offers high-level functions for managing test chassis, modul
     obtain_module_by_id
     obtain_module_by_port_id
 
-.. rubric:: Module Reservation
+Module Reservation
+------------------
 
 .. autosummary::
 
@@ -31,7 +34,8 @@ The ``mgmt`` module offers high-level functions for managing test chassis, modul
     release_modules
 
 
-.. rubric:: Module Configuration
+Module Configuration
+---------------------
 
 .. autosummary::
 
@@ -40,14 +44,16 @@ The ``mgmt`` module offers high-level functions for managing test chassis, modul
     set_module_config
 
 
-.. rubric:: Module Warranty Checking 
+Module Warranty Checking 
+------------------------
 
 .. autosummary::
 
     get_module_eol_date
     get_module_eol_days
 
-.. rubric:: Module Cage Count and Insertions
+Module Cage Count and Insertions
+--------------------------------
 
 .. autosummary::
 
@@ -55,7 +61,8 @@ The ``mgmt`` module offers high-level functions for managing test chassis, modul
     get_cage_count
 
 
-.. rubric:: Port Object from ID
+Port Object from ID
+-------------------
 
 .. autosummary::
 
@@ -63,7 +70,8 @@ The ``mgmt`` module offers high-level functions for managing test chassis, modul
     obtain_port_by_id
 
 
-.. rubric:: Port Reservation and Stream Removal
+Port Reservation and Stream Removal
+-----------------------------------
 
 .. autosummary::
 

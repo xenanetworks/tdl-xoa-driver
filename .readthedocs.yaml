@@ -22,8 +22,10 @@ sphinx:
   configuration: docs/source/conf.py
   fail_on_warning: false
 
-# Build all format
-formats: all
+# Build format
+formats:
+  - htmlzip
+  - pdf
 
 # Optionally declare the Python requirements required to build your docs
 python:

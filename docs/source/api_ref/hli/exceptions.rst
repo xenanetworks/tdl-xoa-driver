@@ -1,5 +1,9 @@
-``exceptions`` module
+``exceptions`` - Exception Types
 =================================
+
+.. code-block:: python
+
+    from xoa_driver import exceptions
 
 .. currentmodule:: xoa_driver.exceptions
 
