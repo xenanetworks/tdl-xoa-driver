@@ -14,13 +14,6 @@ from typing import (
 )
 from xoa_driver import enums, ports
 from xoa_driver.utils import apply
-if TYPE_CHECKING:
-    from xoa_driver.ports import GenericL23Port, Z800FreyaPort, Z1600EdunPort, GenericAnyPort, E100ChimeraPort
-    from xoa_driver.modules import GenericAnyModule, GenericL23Module, Z800FreyaModule, Z1600EdunModule, E100ChimeraModule
-    from xoa_driver.testers import L23Tester
-    FreyaEdunModule = Union[Z800FreyaModule, Z1600EdunModule]
-    FreyaEdunPort = Union[Z800FreyaPort, Z1600EdunPort]
-    from xoa_driver.internals.commands.enums import MediaConfigurationType
 from .exceptions import (
     NotSupportMedia,
     NotSupportPortSpeed,
@@ -30,6 +23,15 @@ from .tools import MODULE_EOL_INFO
 from itertools import chain  # type: ignore[Pylance false warning]
 from datetime import datetime
 import json
+
+if TYPE_CHECKING:
+    from xoa_driver.ports import GenericL23Port, Z800FreyaPort, Z1600EdunPort, GenericAnyPort, E100ChimeraPort
+    from xoa_driver.modules import GenericAnyModule, GenericL23Module, Z800FreyaModule, Z1600EdunModule, E100ChimeraModule
+    from xoa_driver.testers import L23Tester
+    FreyaEdunModule = Union[Z800FreyaModule, Z1600EdunModule]
+    FreyaEdunPort = Union[Z800FreyaPort, Z1600EdunPort]
+    from xoa_driver.internals.commands.enums import MediaConfigurationType
+
 
 
 # region Testers
@@ -73,7 +75,7 @@ async def release_tester(
     elif r.operation == enums.ReservedStatus.RESERVED_BY_YOU:
         await tester.reservation.set_release()
     if should_release_modules_ports:
-        await release_modules(list(tester.modules), True)
+        await release_modules([m for m in tester.modules], True)
 
 
 async def get_chassis_sys_uptime(tester: L23Tester) -> int:

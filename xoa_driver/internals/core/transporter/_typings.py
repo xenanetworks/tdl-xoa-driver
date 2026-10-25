@@ -8,7 +8,7 @@ from .protocol.struct_header import ResponseHeader
 from ..token import Token
 
 
-# The defenition of generic Types
+# The definition of generic Types
 
 HeaderType = t.TypeVar("HeaderType", bound="ResponseHeader", covariant=True)
 T_ = t.TypeVar("T_", covariant=True)

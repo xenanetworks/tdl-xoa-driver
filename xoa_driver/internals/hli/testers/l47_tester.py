@@ -12,13 +12,12 @@ from xoa_driver.internals.core.transporter.logger import CustomLogger
 from xoa_driver.internals.utils.managers import modules_manager as mm
 from xoa_driver.internals.hli import revisions
 from xoa_driver.internals import exceptions
-if TYPE_CHECKING:
-    from xoa_driver.internals.hli.modules import module_l47 as ml47
-
 from xoa_driver.internals.state_storage import testers_state
 from ._base_tester import BaseTester
 from .genuine import management_interface as mi
 
+if TYPE_CHECKING:
+    from xoa_driver.internals.hli.modules import module_l47 as ml47
 
 def get_module_type(revision: str) -> "Type":
     module_type = revisions.VULCAN_MODULES.get(revision)

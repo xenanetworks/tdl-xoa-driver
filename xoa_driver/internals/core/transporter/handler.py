@@ -50,7 +50,7 @@ class TransportationHandler(asyncio.Protocol):
     def is_connected(self) -> bool:
         return not (self.__transport is None or self.__transport.is_closing())
 
-    def connection_made(self, transport: asyncio.Transport) -> None:
+    def connection_made(self, transport: asyncio.Transport) -> None: # type: ignore
         self.__transport = transport
         self.peername = transport.get_extra_info("peername")
         self.__pkt_processor.start()
@@ -120,7 +120,7 @@ class TransportationHandler(asyncio.Protocol):
         )
 
     def on_disconnected(self, callback: Callable) -> None:
-        """Regiser users callback which will be called after connection was terminated."""
+        """Register users callback which will be called after connection was terminated."""
         self.__resp_publisher.subscribe_connection_lost(callback)
 
     def set_outdated(self) -> None:

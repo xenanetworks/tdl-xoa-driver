@@ -7,10 +7,10 @@ class XmpRegistryException(Exception):
     ...
 
 
-class XmpCmdDuplicatedDefenitionError(XmpRegistryException):
+class XmpCmdDuplicatedDefinitionError(XmpRegistryException):
     def __init__(self, xmc_cls: Type[XoaCommandType]) -> None:
         self.cmd_type = xmc_cls
-        self.msg = f"The defenition of <{self.cmd_type.__name__}> is duplicated."
+        self.msg = f"The definition of <{self.cmd_type.__name__}> is duplicated."
         super().__init__(self.msg)
 
 
@@ -29,7 +29,7 @@ def register_command(xmc_cls: Type[XoaCommandType]) -> Type:
     """A decorator used for register commands descriptors in to global registry"""
     global COMMANDS_REGISTRY
     if xmc_cls.code in COMMANDS_REGISTRY:
-        raise XmpCmdDuplicatedDefenitionError(xmc_cls)
+        raise XmpCmdDuplicatedDefinitionError(xmc_cls)
     COMMANDS_REGISTRY[xmc_cls.code] = xmc_cls
     return xmc_cls
 
