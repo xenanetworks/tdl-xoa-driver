@@ -524,9 +524,6 @@ class PL1_CGMII_CAPTURE_READ:
         cgmii_data_size: int = field(XmpInt(signed=False))
         """The CGMII data size of the oldest Layer-1 CGMII capture."""
 
-        dropped_captures: bool = field(XmpByte())
-        """Indicates whether any CGMII captures were dropped before the oldest Layer-1 CGMII capture."""
-
     def get(self) -> Token[GetDataAttr]:
         """Read the meta data of the oldest captured Layer-1 CGMII entry.
 
