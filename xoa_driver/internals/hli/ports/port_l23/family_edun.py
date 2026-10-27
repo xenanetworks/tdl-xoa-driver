@@ -23,6 +23,7 @@ __all__ = (
     "PEdun1600G4S1POSFP_RHS_a",
     "PEdun1600G4S1POSFP_IHS_c",
     "PEdun1600G4S1POSFP_RHS_c",
+    "PEdun800G3S1PUAL_c",
 )
 
 
@@ -107,5 +108,11 @@ class PEdun1600G4S1POSFP_IHS_c(FamilyEdun):
 @typing.final
 class PEdun1600G4S1POSFP_RHS_c(FamilyEdun):
     """L23 port on Edun-1600G-4S-1P-OSFP-RHS[c] module.
+    """
+    ...
+
+@typing.final
+class PEdun800G3S1PUAL_c(FamilyEdun):
+    """L23 port on Edun-800G-3S-1P-UAL[c] module.
     """
     ...

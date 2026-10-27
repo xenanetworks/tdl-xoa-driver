@@ -21,6 +21,7 @@ __all__ = (
     "MEdun1600G4S1POSFP_c",
     "MEdun1600G4S1POSFP_RHS_a",
     "MEdun1600G4S1POSFP_RHS_c",
+    "MEdun800G3S1PUAL_c",
 )
 
 #region - Module Family Edun
@@ -136,5 +137,27 @@ class MEdun1600G4S1POSFP_RHS_c(ModuleFamilyEdun):
             ports_count=self.ports_count
         )
         """Port Index Manager of Edun-1600G-4S-1P-OSFP-RHS[c]"""
+
+#endregion
+
+
+#region - Edun-800G-3S-1P-UAL
+@typing.final
+@revisions.register_valkyrie_module(rev="Edun-800G-3S-1P-UAL[c]")
+class MEdun800G3S1PUAL_c(ModuleFamilyEdun):
+    """Test module Edun-800G-3S-1P-UAL[c]
+
+    UALink module on Edun-1600G-4S-1P-OSFP[c] hardware.
+    Supports transceiver cage form factor OSFP (OSFP-IHS).
+    """
+    def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
+        super().__init__(conn, init_data)
+        self.ports: pm.PortsManager[ports.PEdun800G3S1PUAL_c] = pm.PortsManager(
+            conn=conn,
+            ports_type=ports.PEdun800G3S1PUAL_c,
+            module_id=self.module_id,
+            ports_count=self.ports_count
+        )
+        """Port Index Manager of Edun-800G-3S-1P-UAL[c]"""
 
 #endregion
