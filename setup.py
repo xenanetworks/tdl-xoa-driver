@@ -21,12 +21,11 @@ def main():
         maintainer_email="xena-sales@teledyne.com",
         url="https://github.com/xenanetworks/tdl-xoa-driver",
         packages=setuptools.find_packages(),
-        license='Apache 2.0',
+        license='Apache-2.0',
         classifiers=[
             "Development Status :: 5 - Production/Stable",
             "Intended Audience :: Developers",
             "Topic :: Software Development :: Libraries :: Python Modules",
-            "License :: OSI Approved :: Apache Software License",
             "Programming Language :: Python :: 3.11",
             "Programming Language :: Python :: 3.12",
             "Programming Language :: Python :: 3.13",
