@@ -30,7 +30,6 @@ from xoa_driver.internals.commands import (
     M_UPGRADEPAR,
     M_VERSIONSTR,
     M_RECONFIG_STATUS,
-    M_SOLUTION_TRACK_ACTIVATE,
     M_MEDIASUPPORTEXT,
     M_TCVR_PRESENCE,
 )
@@ -184,7 +183,13 @@ class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
     """Register a callback to the event that the module's CFP type (:class:`M_CFPTYPE`) changes."""
 
     on_cfp_config_change = functools.partialmethod(utils.on_event, M_CFPCONFIGEXT)
-    """Register a callback to the event that the module's CFP configuration changes."""
+    """
+    .. deprecated:: Use `on_cfp_config_change` instead.
+    
+    """
+    
+    on_port_speed_config_change = functools.partialmethod(utils.on_event, M_CFPCONFIGEXT)
+    """Register a callback to the event that the module's port speed configuration changes."""
 
     on_status_change = functools.partialmethod(utils.on_event, M_STATUS)
     """Register a callback to the event that the module's status changes."""
@@ -217,6 +222,12 @@ class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
     """Register a callback to the event that the module's supported media changes."""
 
     on_media_change = functools.partialmethod(utils.on_event, M_MEDIA)
+    """
+    .. deprecated:: Use `on_media_config_change` instead.
+    
+    """
+    
+    on_media_config_change = functools.partialmethod(utils.on_event, M_MEDIA)
     """Register a callback to the event that the module's media and available speeds change."""
 
     on_comment_change = functools.partialmethod(utils.on_event, M_COMMENT)
@@ -228,14 +239,9 @@ class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
     on_timing_clock_local_adjust_change = functools.partialmethod(utils.on_event, M_CLOCKPPB)
     """Register a callback to the event that the module's clock adjustment ppb changes."""
     
-    on_module_tcvr_change = functools.partialmethod(utils.on_event,  M_TCVR_PRESENCE)
+    on_module_tcvr_change = functools.partialmethod(utils.on_event, M_TCVR_PRESENCE)
     """
     Register a callback to the event that the module's transceiver changes.
-    """
-
-    on_solution_track_activation = functools.partialmethod(utils.on_event, M_SOLUTION_TRACK_ACTIVATE)
-    """
-    Register a callback to the event that the module's currently activated Solution Track changes.
     """
 
     on_media_supportext_change = functools.partialmethod(utils.on_event, M_MEDIASUPPORTEXT)

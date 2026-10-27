@@ -1,4 +1,6 @@
 import typing
+import functools
+from xoa_driver.internals.utils import attributes as utils  
 from xoa_driver import ports
 from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
@@ -6,6 +8,7 @@ from xoa_driver.internals.utils.managers import ports_manager as pm
 from .bases.module_l23 import ModuleL23
 from xoa_driver.internals.commands import (
     M_MEDIASUPPORTEXT,
+    M_SOLUTION_TRACK_ACTIVATE,
 )
 from .solution_track.solution_track import MSolutionTrack
 from .health.health import MHealth
@@ -40,6 +43,11 @@ class ModuleFamilyEdun(ModuleL23):
         
         self.supported_configs_ext = M_MEDIASUPPORTEXT(conn, self.module_id)
         """Supported media configurations (extended)"""
+        
+    on_solution_track_activation = functools.partialmethod(utils.on_event, M_SOLUTION_TRACK_ACTIVATE)
+    """
+    Register a callback to the event that the module's currently activated Solution Track changes.
+    """
 
 #endregion
 

@@ -72,8 +72,8 @@ Z400ThorModule = Union[
 
 #region - Z400 Thor II Module Type
 Z400ThorModuleNG = Union[
-    MThor400G7S2P_a_g2,
-    MThor400G7S2P_c_g2,
+    MThor400G7S2P_a,
+    MThor400G7S2P_c,
 ]
 
 #endregion
@@ -206,8 +206,8 @@ GenericL23Module = Union[
     MThor400G7S1P_c,
     MThor400G7S1P_d,
     #MThor400G7S2P_a,
-    MThor400G7S2P_a_g2,
-    MThor400G7S2P_c_g2,
+    MThor400G7S2P_a,
+    MThor400G7S2P_c,
     
     MFreya800G1S1P_a,
     MFreya800G1S1P_b,
@@ -337,8 +337,8 @@ __all__ = (
     "MThor400G7S1P_d",
 
     "Z400ThorModuleNG",
-    "MThor400G7S2P_a_g2",
-    "MThor400G7S2P_c_g2",
+    "MThor400G7S2P_a",
+    "MThor400G7S2P_c",
     
     "Z800FreyaModule",
     "MFreya800G1S1P_a",
