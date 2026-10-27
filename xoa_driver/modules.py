@@ -144,6 +144,7 @@ Z1600EdunModule = Union[
     MEdun1600G4S1POSFP_RHS_a,
     MEdun1600G4S1POSFP_c,
     MEdun1600G4S1POSFP_RHS_c,
+    MEdun800G3S1PUAL_c,
 ]
 #endregion
 
@@ -270,6 +271,7 @@ GenericL23Module = Union[
     MEdun1600G4S1POSFP_RHS_a,
     MEdun1600G4S1POSFP_c,
     MEdun1600G4S1POSFP_RHS_c,
+    MEdun800G3S1PUAL_c,
 ]
 #endregion
 
@@ -402,6 +404,7 @@ __all__ = (
     "MEdun1600G4S1POSFP_RHS_a",
     "MEdun1600G4S1POSFP_c",
     "MEdun1600G4S1POSFP_RHS_c",
+    "MEdun800G3S1PUAL_c",
 
     "E100ChimeraModule",
     "MChi100G5S2P",

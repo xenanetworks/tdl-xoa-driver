@@ -109,6 +109,7 @@ Z1600EdunPort = typing.Union[
     PEdun1600G4S1POSFP_c,
     PEdun1600G4S1POSFP_IHS_c,
     PEdun1600G4S1POSFP_RHS_c,
+    PEdun800G3S1PUAL_c,
 ]
 
 E100ChimeraPort = typing.Union[
@@ -200,6 +201,7 @@ GenericL23Port = typing.Union[
     PEdun1600G4S1POSFP_c,
     PEdun1600G4S1POSFP_IHS_c,
     PEdun1600G4S1POSFP_RHS_c,
+    PEdun800G3S1PUAL_c,
 ]
 
 GenericAnyPort = typing.Union[
@@ -302,6 +304,7 @@ __all__ = (
     "PEdun1600G4S1POSFP_c",
     "PEdun1600G4S1POSFP_IHS_c",
     "PEdun1600G4S1POSFP_RHS_c",
+    "PEdun800G3S1PUAL_c",
 
     "E100ChimeraPort",
     "PortChimera",

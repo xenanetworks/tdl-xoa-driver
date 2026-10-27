@@ -3227,6 +3227,7 @@ class ModuleModelName(IntEnum):
     Z_1604_S_EDUN = 16
     Z_1608_O_EDUN = 17
     Z_1616_O_EDUN = 18
+    Z_2244_UAL_EDUN = 19
 
 class ModuleConfigStatus(IntEnum):
     UNKNOWN = 0
