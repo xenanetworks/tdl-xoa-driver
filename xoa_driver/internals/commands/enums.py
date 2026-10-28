@@ -3744,6 +3744,18 @@ class L1EventLoggingType(IntEnum):
     LANE_UNUSED = 18
     """SerDes lane unused state change event. Reserved for future use."""
 
+    LANE_AN_SYNC = 19
+    """SerDes lane auto-negotiation DME sync acquired event."""
+
+    LANE_AN_QUIET = 20
+    """SerDes lane auto-negotiation quiet state event."""
+
+    LANE_LT_SYNC = 21
+    """SerDes lane link-training frame sync acquired event."""
+
+    LANE_UNUSED_2 = 22
+    """Reserved SerDes lane event type."""
+
 
 class L1EventLoggingCondition(IntEnum):
     """Layer-1 event logging conditions."""
