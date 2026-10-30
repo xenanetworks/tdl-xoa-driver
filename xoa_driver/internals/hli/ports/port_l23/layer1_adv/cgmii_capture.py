@@ -172,7 +172,7 @@ class L1CGMIICapture:
             return "D"      # payload/data
 
         str = ''
-        for i in range(8):
+        for i in range(7, -1, -1):
             b = (cgmii_codeword.data >> (8 * i)) & 0xFF
             c = (cgmii_codeword.ctrl >> i) & 0x1
             str += ctrlsymbol(b) if c else datasymbol(b)
