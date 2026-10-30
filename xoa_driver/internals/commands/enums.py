@@ -1,7 +1,6 @@
 """Enums used in various commands."""
 
 from enum import IntEnum, IntFlag
-from typing import Union
 
 
 #region L23 enums
@@ -627,57 +626,57 @@ class ProtocolOption(IntEnum):
     RAW_97 = 159
     RAW_98 = 158
     RAW_99 = 157
-    RAW_100	= 156
-    RAW_101	= 155
-    RAW_102	= 154
-    RAW_103	= 153
-    RAW_104	= 152
-    RAW_105	= 151
-    RAW_106	= 150
-    RAW_107	= 149
-    RAW_108	= 148
-    RAW_109	= 147
-    RAW_110	= 146
-    RAW_111	= 145
-    RAW_112	= 144
-    RAW_113	= 143
-    RAW_114	= 142
-    RAW_115	= 141
-    RAW_116	= 140
-    RAW_117	= 139
-    RAW_118	= 138
-    RAW_119	= 137
-    RAW_120	= 136
-    RAW_121	= 135
-    RAW_122	= 134
-    RAW_123	= 133
-    RAW_124	= 132
-    RAW_125	= 131
-    RAW_126	= 130
-    RAW_127	= 129
-    RAW_128	= 128
-    RAW_129	= 127
-    RAW_130	= 126
-    RAW_131	= 125
-    RAW_132	= 124
-    RAW_133	= 123
-    RAW_134	= 122
-    RAW_135	= 121
-    RAW_136	= 120
-    RAW_137	= 119
-    RAW_138	= 118
-    RAW_139	= 117
-    RAW_140	= 116
-    RAW_141	= 115
-    RAW_142	= 114
-    RAW_143	= 113
-    RAW_144	= 112
-    RAW_145	= 111
-    RAW_146	= 110
-    RAW_147	= 109
-    RAW_148	= 108
-    RAW_149	= 107
-    RAW_150	= 106
+    RAW_100 = 156
+    RAW_101 = 155
+    RAW_102 = 154
+    RAW_103 = 153
+    RAW_104 = 152
+    RAW_105 = 151
+    RAW_106 = 150
+    RAW_107 = 149
+    RAW_108 = 148
+    RAW_109 = 147
+    RAW_110 = 146
+    RAW_111 = 145
+    RAW_112 = 144
+    RAW_113 = 143
+    RAW_114 = 142
+    RAW_115 = 141
+    RAW_116 = 140
+    RAW_117 = 139
+    RAW_118 = 138
+    RAW_119 = 137
+    RAW_120 = 136
+    RAW_121 = 135
+    RAW_122 = 134
+    RAW_123 = 133
+    RAW_124 = 132
+    RAW_125 = 131
+    RAW_126 = 130
+    RAW_127 = 129
+    RAW_128 = 128
+    RAW_129 = 127
+    RAW_130 = 126
+    RAW_131 = 125
+    RAW_132 = 124
+    RAW_133 = 123
+    RAW_134 = 122
+    RAW_135 = 121
+    RAW_136 = 120
+    RAW_137 = 119
+    RAW_138 = 118
+    RAW_139 = 117
+    RAW_140 = 116
+    RAW_141 = 115
+    RAW_142 = 114
+    RAW_143 = 113
+    RAW_144 = 112
+    RAW_145 = 111
+    RAW_146 = 110
+    RAW_147 = 109
+    RAW_148 = 108
+    RAW_149 = 107
+    RAW_150 = 106
 
 
 class ModifierAction(IntEnum):
@@ -1533,11 +1532,13 @@ class ReconciliationSublayerSupport(IntEnum):
     FAULT_SIGNALING = 1
     """Supported, which means P_FAULTSTATUS and P_FAULTSIGNALLING are supported by the port."""
 
+
 class StreamOption(IntEnum):
     """Stream Options"""
 
     INCPLDFROM0 = 0
     """This flag affects the INC8/DEC8/INC16/DEC16 payload types (refer to the PS_PAYLOAD command): With the flag set, the first payload byte/word after the header will be 0 (INC8/INC16) or -1 (DEC8/DEC16). With the flag unset, the default is used: The first payload byte/word of the payload will be equal to <length of header> (INC8/INC16), or -<length of header> - 1 (DEC8/DEC16)."""
+
 
 class ModifierEndianness(IntEnum):
     """Stream modifier endianness"""
@@ -1549,6 +1550,7 @@ class ModifierEndianness(IntEnum):
     """Modifier inc/dec starts from the MSB"""
 
 #endregion
+
 
 #region L47 enums
 class Role(IntEnum):
@@ -1809,16 +1811,16 @@ class IsPresent(IntEnum):
 
 
 class LicenseSpeed(IntEnum):
-    UNDEFINED   = 0
-    F100M       = 1
-    F1G         = 2
-    F2_5G       = 3
-    F5G         = 4
-    F10G        = 5
-    F25G        = 6
-    F40G        = 7
-    F50G        = 8
-    F100G       = 9
+    UNDEFINED = 0
+    F100M = 1
+    F1G = 2
+    F2_5G = 3
+    F5G = 4
+    F10G = 5
+    F25G = 6
+    F40G = 7
+    F50G = 8
+    F100G = 9
 
 
 class TLSVersion(IntEnum):
@@ -2143,19 +2145,19 @@ class AutoNegFECOption(IntFlag):
 
     DEFAULT_FEC = 0
     """Default FEC"""
-    NO_FEC = 1<<0
+    NO_FEC = 1 << 0
     """No FEC"""
-    FCFEC = 1<<1
+    FCFEC = 1 << 1
     """Firecode FEC"""
-    RSFEC_CL91 = 1<<2
+    RSFEC_CL91 = 1 << 2
     """RS FEC Cl91"""
-    RS528 = 1<<8
+    RS528 = 1 << 8
     """RS 528"""
-    RS544 = 1<<9
+    RS544 = 1 << 9
     """RS 544"""
-    RS272 = 1<<10
+    RS272 = 1 << 10
     """RS 272"""
-    RSFEC_CL161 = 1<<3
+    RSFEC_CL161 = 1 << 3
     """RS CL 161"""
 
 
@@ -2200,19 +2202,19 @@ class AutoNegFECStatus(IntFlag):
 
     DEFAULT_FEC = 0
     """Default FEC"""
-    NO_FEC = 1<<0
+    NO_FEC = 1 << 0
     """No FEC"""
-    FC_FEC = 1<<1
+    FC_FEC = 1 << 1
     """Firecode FEC"""
-    RSFEC_CL91 = 1<<2
+    RSFEC_CL91 = 1 << 2
     """RS FEC Cl91"""
-    RS528 = 1<<8
+    RS528 = 1 << 8
     """RS 528"""
-    RS544 = 1<<9
+    RS544 = 1 << 9
     """RS 544"""
-    RS272 = 1<<10
+    RS272 = 1 << 10
     """RS 272"""
-    RSFEC_CL161 = 1<<3
+    RSFEC_CL161 = 1 << 3
     """RS CL 161"""
 
 
@@ -2544,50 +2546,51 @@ class AnLtLogControl(IntFlag):
     """
 
     # 1st nibble
-    LOG_TYPE_DEBUG = 1<<1
+    LOG_TYPE_DEBUG = 1 << 1
     """debug log output"""
 
-    LOG_TYPE_AN_TRACE = 1<<2
+    LOG_TYPE_AN_TRACE = 1 << 2
     """autonegotiation trace output"""
 
-    LOG_TYPE_LT_TRACE = 1<<3
+    LOG_TYPE_LT_TRACE = 1 << 3
     """link training trace output"""
 
     # 2nd nibble
-    LOG_TYPE_ALG_TRACE = 1<<4
+    LOG_TYPE_ALG_TRACE = 1 << 4
     """link training algorithm trace"""
 
     # 5th nibble
-    LOG_TYPE_FSM_PORT = 1<<16
+    LOG_TYPE_FSM_PORT = 1 << 16
     """port state machine transitions"""
 
-    LOG_TYPE_FSM_ANEG = 1<<17
+    LOG_TYPE_FSM_ANEG = 1 << 17
     """autonegotiation state machine transitions. What we act on"""
 
-    LOG_TYPE_FSM_ANEG_STIMULI = 1<<18
+    LOG_TYPE_FSM_ANEG_STIMULI = 1 << 18
     """autonegotiation stimuli state machine transitions. What we ask"""
 
-    LOG_TYPE_FSM_LT = 1<<19
+    LOG_TYPE_FSM_LT = 1 << 19
     """link training state machine transitions"""
 
     # 6th nibble
-    LOG_TYPE_FSM_LT_COEFF = 1<<20
+    LOG_TYPE_FSM_LT_COEFF = 1 << 20
     """link training coefficient state machine transitions. What we act on"""
 
-    LOG_TYPE_FSM_LT_STIMULI = 1<<21
+    LOG_TYPE_FSM_LT_STIMULI = 1 << 21
     """link training stimuli state machine transitions. What we ask"""
 
-    LOG_TYPE_FSM_LT_ALG0 = 1<<22
+    LOG_TYPE_FSM_LT_ALG0 = 1 << 22
     """link training algorithm 0 state machine transitions"""
 
-    LOG_TYPE_FSM_LT_ALG1 = 1<<23
+    LOG_TYPE_FSM_LT_ALG1 = 1 << 23
     """link training algorithm -1 state machine transitions"""
 
-    LOG_TYPE_FSM_LT_COEFF_NRZ= 0x7000000
+    LOG_TYPE_FSM_LT_COEFF_NRZ = 0x7000000
     """link training algorithm coefficients state machines transitions (NRZ)"""
 
-    LOG_TYPE_FSM_LT_NRZ= 0x8000000
+    LOG_TYPE_FSM_LT_NRZ = 0x8000000
     """link training state machine transitions (NRZ)"""
+
 
 class RxEqExtCap(IntEnum):
     """Rx Equalizer Advanced Capability type."""
@@ -2716,6 +2719,7 @@ class RxEqExtCapMode(IntEnum):
     FREEZE = 2
     """Freeze."""
 
+
 class PreCodingMode(IntEnum):
     """Rx/Tx Pre-Coding Mode."""
 
@@ -2745,6 +2749,7 @@ class Endianness(IntEnum):
     REVERTED = 1
     """Little Endian"""
 
+
 class FreyaAutonegMode(IntEnum):
     """Auto Neg Mode"""
 
@@ -2752,6 +2757,7 @@ class FreyaAutonegMode(IntEnum):
     """Auto Neg Off"""
     ENABLED = 1
     """Auto Neg On"""
+
 
 class FreyaLinkTrainingMode(IntEnum):
     """Link Training Mode"""
@@ -2765,122 +2771,125 @@ class FreyaLinkTrainingMode(IntEnum):
     ENABLED_INTERACTIVE = 2
     """Link training in interactive mode, requiring manual operation."""
 
+
 class AutoNegTecAbility(IntFlag):
     """Auto Neg Technical Abilities"""
 
-    ETC_800G_CR8_KR8 = 1<<29
+    ETC_800G_CR8_KR8 = 1 << 29
     """ETC_800G_CR8_KR8"""
 
-    ETC_400G_CR8_KR8 = 1<<28
+    ETC_400G_CR8_KR8 = 1 << 28
     """ETC_400G_CR8_KR8"""
 
-    ETC_50G_CR2 = 1<<27
+    ETC_50G_CR2 = 1 << 27
     """ETC_50G_CR2"""
 
-    ETC_50G_KR2 = 1<<26
+    ETC_50G_KR2 = 1 << 26
     """ETC_50G_KR2"""
 
-    ETC_25G_CR = 1<<25
+    ETC_25G_CR = 1 << 25
     """ETC_25G_CR"""
 
-    ETC_25G_KR = 1<<24
+    ETC_25G_KR = 1 << 24
     """ETC_25G_KR"""
 
-    IEEE_1_6TBASE_CR8_KR8 = 1<<23
+    IEEE_1_6TBASE_CR8_KR8 = 1 << 23
     """IEEE_1_6TBASE_CR8_KR8"""
 
-    IEEE_800GBASE_CR4_KR4 = 1<<22
+    IEEE_800GBASE_CR4_KR4 = 1 << 22
     """IEEE_800GBASE_CR4_KR4"""
 
-    IEEE_400GBASE_CR2_KR2 = 1<<21
+    IEEE_400GBASE_CR2_KR2 = 1 << 21
     """IEEE_400GBASE_CR2_KR2"""
 
-    IEEE_200GBASE_CR1_KR1 = 1<<20
+    IEEE_200GBASE_CR1_KR1 = 1 << 20
     """IEEE_200GBASE_CR1_KR1"""
 
-    IEEE_800GBASE_CR8_KR8 = 1<<19
+    IEEE_800GBASE_CR8_KR8 = 1 << 19
     """IEEE_800GBASE_CR8_KR8"""
 
-    IEEE_400GBASE_CR4_KR4 = 1<<18
+    IEEE_400GBASE_CR4_KR4 = 1 << 18
     """IEEE_400GBASE_CR4_KR4"""
 
-    IEEE_200GBASE_CR2_KR2 = 1<<17
+    IEEE_200GBASE_CR2_KR2 = 1 << 17
     """IEEE_200GBASE_CR2_KR2"""
 
-    IEEE_100GBASE_CR1_KR1 = 1<<16
+    IEEE_100GBASE_CR1_KR1 = 1 << 16
     """IEEE_100GBASE_CR1_KR1"""
 
-    IEEE_200GBASE_CR4_KR4 = 1<<15
+    IEEE_200GBASE_CR4_KR4 = 1 << 15
     """IEEE_200GBASE_CR4_KR4"""
 
-    IEEE_100GBASE_CR2_KR2 = 1<<14
+    IEEE_100GBASE_CR2_KR2 = 1 << 14
     """IEEE_100GBASE_CR2_KR2"""
 
-    IEEE_50GBASE_CR_KR = 1<<13
+    IEEE_50GBASE_CR_KR = 1 << 13
     """IEEE_50GBASE_CR_KR"""
 
-    IEEE_5GBASE_KR = 1<<12
+    IEEE_5GBASE_KR = 1 << 12
     """IEEE_5GBASE_KR"""
 
-    IEEE_2_5GBASE_KX = 1<<11
+    IEEE_2_5GBASE_KX = 1 << 11
     """IEEE_2_5GBASE_KX"""
 
-    IEEE_25GBASE_CR_KR = 1<<10
+    IEEE_25GBASE_CR_KR = 1 << 10
     """IEEE_25GBASE_CR_KR"""
 
-    IEEE_25GBASE_CR_S_KR_S = 1<<9
+    IEEE_25GBASE_CR_S_KR_S = 1 << 9
     """IEEE_25GBASE_CR_S_KR_S"""
 
-    IEEE_100GBASE_CR4 = 1<<8
+    IEEE_100GBASE_CR4 = 1 << 8
     """IEEE_100GBASE_CR4"""
 
-    IEEE_100GBASE_KR4 = 1<<7
+    IEEE_100GBASE_KR4 = 1 << 7
     """IEEE_100GBASE_KR4"""
 
-    IEEE_100GBASE_KP4 = 1<<6
+    IEEE_100GBASE_KP4 = 1 << 6
     """IEEE_100GBASE_KP4"""
 
-    IEEE_100GBASE_CR10 = 1<<5
+    IEEE_100GBASE_CR10 = 1 << 5
     """IEEE_100GBASE_CR10"""
 
-    IEEE_40GBASE_CR4 = 1<<4
+    IEEE_40GBASE_CR4 = 1 << 4
     """IEEE_40GBASE_CR4"""
 
-    IEEE_40GBASE_KR4 = 1<<3
+    IEEE_40GBASE_KR4 = 1 << 3
     """IEEE_40GBASE_KR4"""
 
-    IEEE_10GBASE_KR = 1<<2
+    IEEE_10GBASE_KR = 1 << 2
     """IEEE_10GBASE_KR"""
 
-    IEEE_10GBASE_KX4 = 1<<1
+    IEEE_10GBASE_KX4 = 1 << 1
     """IEEE_10GBASE_KX4"""
 
-    IEEE_1000BASE_KX = 1<<0
+    IEEE_1000BASE_KX = 1 << 0
     """IEEE_1000BASE_KX"""
 
     DEFAULT_TECH = 0
     """Default Tech Ability"""
 
+
 class AutoNegFECAbility(IntFlag):
     """Auto Neg FEC ability"""
 
-    RS_FEC_Int = 1<<4
+    RS_FEC_Int = 1 << 4
     """RS_FEC_Int"""
 
-    FC_FEC_25G_REQUEST = 1<<3
+    FC_FEC_25G_REQUEST = 1 << 3
     """FC_FEC_25G_REQUEST"""
 
-    RS_FEC_25G_REQUEST = 1<<2
+    RS_FEC_25G_REQUEST = 1 << 2
     """RS_FEC_25G_REQUEST"""
 
-    FC_FEC_10G_REQUEST = 1<<1
+    FC_FEC_10G_REQUEST = 1 << 1
     """FC_FEC_10G_REQUEST"""
 
-    FC_FEC_10G_ABILITY = 1<<0
+    FC_FEC_10G_ABILITY = 1 << 0
     """FC_FEC_10G_ABILITY"""
 
     DEFAULT_FEC = 0
     """Default FEC Ability"""
+
 
 class AutoNegPauseAbility(IntFlag):
     """AutoNeg Pause ability"""
@@ -2888,11 +2897,12 @@ class AutoNegPauseAbility(IntFlag):
     NO_PAUSE = 0
     """NO_PAUSE"""
 
-    ASYM_PAUSE = 1<<1
+    ASYM_PAUSE = 1 << 1
     """ASYM_PAUSE"""
 
-    SYM_PAUSE = 1<<0
+    SYM_PAUSE = 1 << 0
     """SYM_PAUSE"""
+
 
 class AutoNegTechAbilityHCDStatus(IntEnum):
     """Auto Neg Tech Ability HCD Status"""
@@ -2903,6 +2913,7 @@ class AutoNegTechAbilityHCDStatus(IntEnum):
     FAILED = 2
     """FAILED"""
 
+
 class FreyaOutOfSyncPreset(IntEnum):
     """Link Training out-of-sync preset"""
 
@@ -2911,6 +2922,7 @@ class FreyaOutOfSyncPreset(IntEnum):
 
     CURRENT = 1
     """CURRENT"""
+
 
 class Layer1Control(IntEnum):
     """Layer 1 control"""
@@ -2925,6 +2937,7 @@ class Layer1Opcode(IntEnum):
     START_SCAN = 0
     """ for sampled eye scan"""
 
+
 class FreyaPCSVariant(IntEnum):
     """PCS variant"""
 
@@ -2933,6 +2946,7 @@ class FreyaPCSVariant(IntEnum):
 
     ETC = 2
     """ETC"""
+
 
 class AutoNegTecAbilityHCD(IntEnum):
     """Auto Neg Technical Abilities HCD"""
@@ -3027,6 +3041,7 @@ class AutoNegTecAbilityHCD(IntEnum):
     IEEE_1000BASE_KX = 0
     """IEEE_1000BASE_KX"""
 
+
 class FreyaPresetResponse(IntEnum):
     """Response to the received IC request"""
 
@@ -3035,6 +3050,7 @@ class FreyaPresetResponse(IntEnum):
 
     ACCEPT = 1
     """Acknowledge the IC request and apply the corresponding preset value."""
+
 
 class FreyaPresetIndex(IntEnum):
     """Preset index for FreyaPresetResponse"""
@@ -3056,6 +3072,7 @@ class FreyaPresetIndex(IntEnum):
 
     LOS = 255
     """Preset when out of sync"""
+
 
 class FreyaTapIndex(IntEnum):
     """Preset index for FreyaPresetResponse"""
@@ -3111,6 +3128,7 @@ class FreyaAutorestartMode(IntEnum):
 
 #endregion
 
+
 #region misc enums
 class DhcpState(IntEnum):
     DHCP_STATE_UNKNOWN = 0
@@ -3118,88 +3136,92 @@ class DhcpState(IntEnum):
     DHCP_STATE_COMPLETED = 2
     DHCP_STATE_FAILED = 3
 
+
 class DhcpVlanState(IntEnum):
     DHCP_VLAN_OFF = 0
-    DHCP_VLAN_ON  = 1
+    DHCP_VLAN_ON = 1
+
 
 class VlanType(IntEnum):
     TYPE_C = 0
-    TYPE_S  = 1
+    TYPE_S = 1
+
 
 class ChassisModelNumber(IntEnum):
-    NA      = 0
-    XB1     = 1
-    XB2     = 2
-    XB3     = 3
-    XB4     = 4
-    XB5     = 5
-    XB6     = 6
-    XB7     = 7
-    XB8     = 8
-    XB9     = 9
-    XB10    = 10
-    XB10_5  = 11
-    XB11    = 12
-    XB12    = 13
-    XB13    = 14
-    XB14    = 15
-    XB15    = 16
-    XB16    = 17
-    XB17    = 18
-    XB18    = 19
-    XB19    = 20
-    XB20    = 21
-    XB21    = 22
-    XB22    = 23
-    XB23    = 24
-    XB33    = 25
-    XC1     = 26
-    XC2     = 27
-    XC3     = 28
-    XC4     = 29
-    XC5     = 30
-    XC6     = 31
-    XC7     = 32
-    XC8     = 33
-    XC9     = 34
-    XC10    = 35
-    XC11    = 36
-    XC12    = 37
-    XC13    = 38
-    XC14    = 39
-    XC15    = 40
-    XC16    = 41
-    XC17    = 42
-    XC18    = 43
-    XC19    = 44
-    XC20    = 45
-    XC21    = 46
-    XC22    = 47
-    XC23    = 48
-    XC24    = 49
-    XC25    = 50
-    XC26    = 51
+    NA = 0
+    XB1 = 1
+    XB2 = 2
+    XB3 = 3
+    XB4 = 4
+    XB5 = 5
+    XB6 = 6
+    XB7 = 7
+    XB8 = 8
+    XB9 = 9
+    XB10 = 10
+    XB10_5 = 11
+    XB11 = 12
+    XB12 = 13
+    XB13 = 14
+    XB14 = 15
+    XB15 = 16
+    XB16 = 17
+    XB17 = 18
+    XB18 = 19
+    XB19 = 20
+    XB20 = 21
+    XB21 = 22
+    XB22 = 23
+    XB23 = 24
+    XB33 = 25
+    XC1 = 26
+    XC2 = 27
+    XC3 = 28
+    XC4 = 29
+    XC5 = 30
+    XC6 = 31
+    XC7 = 32
+    XC8 = 33
+    XC9 = 34
+    XC10 = 35
+    XC11 = 36
+    XC12 = 37
+    XC13 = 38
+    XC14 = 39
+    XC15 = 40
+    XC16 = 41
+    XC17 = 42
+    XC18 = 43
+    XC19 = 44
+    XC20 = 45
+    XC21 = 46
+    XC22 = 47
+    XC23 = 48
+    XC24 = 49
+    XC25 = 50
+    XC26 = 51
+
 
 class ChassisModelName(IntEnum):
-    NA                  = 0
-    B720                = 1
-    B720D               = 2
-    B2400               = 3
-    Z_01_T_C_ODIN       = 4
-    Z_100_Q_C_LOKI      = 5
-    Z_10_S_C_ODIN       = 6
-    Z_10_C_C_ODIN       = 7
-    Z_10_R_C_ODIN       = 8
-    Z_10_S_X_C_ODIN     = 9
-    Z_01_S_C_ODIN       = 10
-    Z_01_S_X_C_ODIN     = 11
-    Z_400_Q_C_THOR      = 12
-    Z_400_Q_LE_C_THOR   = 13
-    Z_800_Q_C_FREYA     = 14
-    Z_800_O_C_FREYA     = 15
-    Z_800_Q_A_C_FREYA   = 16
-    Z_800_O_A_C_FREYA   = 17
-    E_100_Q_C_CHIMERA   = 18
+    NA = 0
+    B720 = 1
+    B720D = 2
+    B2400 = 3
+    Z_01_T_C_ODIN = 4
+    Z_100_Q_C_LOKI = 5
+    Z_10_S_C_ODIN = 6
+    Z_10_C_C_ODIN = 7
+    Z_10_R_C_ODIN = 8
+    Z_10_S_X_C_ODIN = 9
+    Z_01_S_C_ODIN = 10
+    Z_01_S_X_C_ODIN = 11
+    Z_400_Q_C_THOR = 12
+    Z_400_Q_LE_C_THOR = 13
+    Z_800_Q_C_FREYA = 14
+    Z_800_O_C_FREYA = 15
+    Z_800_Q_A_C_FREYA = 16
+    Z_800_O_A_C_FREYA = 17
+    E_100_Q_C_CHIMERA = 18
     Z_100_Q_X_C_LOKI = 19
     Z_400_Q_X_C_THOR = 20
     Z_800_Q_X_C_FREYA = 21
@@ -3207,19 +3229,20 @@ class ChassisModelName(IntEnum):
     Z_1608_O_C_EDUN = 23
     B_6400 = 24
 
+
 class ModuleModelName(IntEnum):
-    NA              = 0
-    Z_01_T_ODIN     = 1
-    Z_100_Q_LOKI    = 2
-    Z_10_S_ODIN     = 3
-    Z_10_R_ODIN     = 4
-    Z_10_S_X_ODIN   = 5
-    Z_01_S_ODIN     = 6
-    Z_01_S_X_ODIN   = 7
-    Z_400_Q_THOR    = 8
+    NA = 0
+    Z_01_T_ODIN = 1
+    Z_100_Q_LOKI = 2
+    Z_10_S_ODIN = 3
+    Z_10_R_ODIN = 4
+    Z_10_S_X_ODIN = 5
+    Z_01_S_ODIN = 6
+    Z_01_S_X_ODIN = 7
+    Z_400_Q_THOR = 8
     Z_400_Q_LE_THOR = 9
-    Z_800_Q_FREYA   = 10
-    Z_800_O_FREYA   = 11
+    Z_800_Q_FREYA = 10
+    Z_800_O_FREYA = 11
     E_100_Q_CHIMERA = 12
     Z_100_Q_X_LOKI = 13
     Z_400_Q_X_THOR = 14
@@ -3228,6 +3251,7 @@ class ModuleModelName(IntEnum):
     Z_1608_O_EDUN = 17
     Z_1616_O_EDUN = 18
     Z_2244_UAL_EDUN = 19
+
 
 class ModuleConfigStatus(IntEnum):
     UNKNOWN = 0
@@ -3265,6 +3289,7 @@ class TransceiverPresence(IntEnum):
 
 #region FEC CW enums
 
+
 class FecCodewordBitErrorMaskMode(IntEnum):
     """FEC Codeword Bit Error Mask Mode"""
 
@@ -3280,6 +3305,7 @@ class FecCodewordBitErrorMaskMode(IntEnum):
 #endregion
 
 #region MACSec enums
+
 
 class MACSecSCIMode(IntEnum):
     """MACSec SCI Mode"""
@@ -3339,6 +3365,7 @@ class MACSecEncryptionMode(IntEnum):
     INTEGRITY_ONLY = 1
     """MACsec only provides integrity."""
 
+
 class MACSecPNMode(IntEnum):
     """Modes for TX PN after the start-traffic"""
 
@@ -3392,6 +3419,7 @@ class ClearStatsDirection(IntFlag):
     ALL = 3
     """Clear all stats (RX and TX)"""
 
+
 class LLDPClearTarget(IntFlag):
     """LLDP Clear Target"""
 
@@ -3406,6 +3434,7 @@ class LLDPClearTarget(IntFlag):
 
     ALL = 3
     """Clear all LLDP information."""
+
 
 class LLDPOpMode(IntEnum):
     """LLDP Operation Mode"""
@@ -3431,6 +3460,7 @@ class PcsLaneErrorInjectionType(IntEnum):
 
     AM = 1
     """Alignment Marker (AM) error injection"""
+
 
 class SolutionTrack(IntEnum):
     """Solution Tracks"""
@@ -3514,6 +3544,7 @@ class UecFrameDesireLlr(IntEnum):
 
     LLR_ELIGIBLE = 2
     """LLR eligible"""
+
 
 class UecLinkOptionLlr(IntEnum):
     """UE Link Option LLR"""
@@ -3650,7 +3681,8 @@ class UecLlrRxFsmState(IntEnum):
 
 #endregion
 
-# region Layer 1 Capture
+# region Layer 1 Event Logging
+
 
 class L1EventLoggingType(IntEnum):
     """Layer-1 event capture types."""
@@ -3712,6 +3744,19 @@ class L1EventLoggingType(IntEnum):
     LANE_UNUSED = 18
     """SerDes lane unused state change event. Reserved for future use."""
 
+    LANE_AN_SYNC = 19
+    """SerDes lane auto-negotiation DME sync acquired event."""
+
+    LANE_AN_QUIET = 20
+    """SerDes lane auto-negotiation quiet state event."""
+
+    LANE_LT_SYNC = 21
+    """SerDes lane link-training frame sync acquired event."""
+
+    LANE_UNUSED_2 = 22
+    """Reserved SerDes lane event type."""
+
+
 class L1EventLoggingCondition(IntEnum):
     """Layer-1 event logging conditions."""
 
@@ -3730,6 +3775,63 @@ class L1EventLoggingSubscription(IntEnum):
 
     SUBSCRIBE = 1
     """Subscribe to the event."""
+
+
+#endregion Layer 1 Event Logging
+
+# region Layer 1 CGMII Capture
+
+class L1CGMIICaptureMode(IntEnum):
+    """Layer-1 CGMII capture modes."""
+
+    PRE_TRIGGER = 0
+    """Pre-trigger capture mode."""
+
+    POST_TRIGGER = 1
+    """Post-trigger capture mode."""
+
+    PRE_POST_TRIGGER = 2
+    """Pre and post-trigger capture mode."""
+
+
+class L1CGMIICaptureTriggerType(IntEnum):
+    """Layer-1 CGMII capture trigger types."""
+
+    FORCED = 0
+    """Trigger on user forced trigger."""
+
+    DATAWORD = 1
+    """Trigger on any(?) dataword. /D/."""
+
+    ERROR = 2
+    """Trigger on any codeword error. /E/ (0xFE)."""
+
+    UEC = 3
+    """Trigger on any UEC related dataword. /K/ (0x5C)."""
+
+    RX_FCS_ERROR = 4
+    """Trigger on any Rx FCS error."""
+
+    START_OF_PACKET = 5
+    """Trigger on the start of a packet. /S/ (0xFB)."""
+
+    END_OF_PACKET = 6
+    """Trigger on the end of a packet. /T/ (0xFD)."""
+
+    LOW_POWER_IDLE = 7
+    """Trigger on the low power idle state. /LI/ (0x06)."""
+
+    LOCAL_FAULT = 8
+    """Trigger on the local fault state.."""
+
+    REMOTE_FAULT = 9
+    """Trigger on the remote fault state.."""
+
+    CONF_UEC = 10
+    """Trigger on a configured UEC event."""
+
+
+#endregion Layer 1 CGMII Capture
 
 
 class UecCbfcCreditLimitMethod(IntEnum):
@@ -3824,6 +3926,5 @@ class PhyReachMode(IntEnum):
 
     FORCE_NR = 3
     """Force Near range"""
-
 
 #endregion

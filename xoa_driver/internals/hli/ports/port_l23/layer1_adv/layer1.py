@@ -14,13 +14,16 @@ from xoa_driver.internals.commands import (
     PL1_TX_PPM,
 )
 
+
 from .pcs import PcsLayerAdv
 from .event_logging import L1EventLogging
+from .cgmii_capture import L1CGMIICapture
 
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from ..family_freya import FamilyFreya
     from ..family_edun import FamilyEdun
+
 
 class SerdesAdv:
     """Serdes Advanced Statistics"""
@@ -32,10 +35,10 @@ class SerdesAdv:
 
         :type: PL1_CDRLOL_STATUS
         """
-        
+
         self.rx_freq = PL1_RX_FREQ(conn, module_id, port_id, serdes_idx)
         """Return the current, minimum and maximum port Rx frequency in Hz of the specified SerDes.
-        
+
         :type: PL1_RX_FREQ
         """
 
@@ -59,9 +62,9 @@ class Layer1Adv:
         self.serdes: Tuple["SerdesAdv", ...] = tuple(
             SerdesAdv(conn, module_id, port_id, serdes_idx=idx)
             for idx in range(port.info.capabilities.serdes_count)
-        ) 
+        )
         """SerDes Lane
-        
+
         :type: Tuple[SerdesAdv, ...]
         """
 
@@ -94,12 +97,15 @@ class Layer1Adv:
 
         :type: PL1_CLEAR
         """
-        
+
         self.event_logging = L1EventLogging(conn, module_id, port_id)
         """Event logging subscription configuration and status.
 
         :type: L1EventLogging
         """
 
+        self.cgmii_capture = L1CGMIICapture(conn, module_id, port_id)
+        """Layer-1 CGMII Capture interface for the actual CGMII capture.
 
-        
+        :type: L1CGMIICapture
+        """
