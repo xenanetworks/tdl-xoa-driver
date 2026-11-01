@@ -4,6 +4,7 @@ from functools import (
     partial,
 )
 
+import sys
 from io import BytesIO
 from typing import (
     Any,
@@ -13,10 +14,6 @@ from typing import (
     NamedTuple,
     Type,
     cast,
-)
-from typing import (
-    Self,
-    dataclass_transform,
 )
 
 from . import utils
@@ -32,6 +29,14 @@ from .exceptions import (
     FieldDeclarationError,
     FirmwareVersionError,
 )
+
+
+if sys.version_info >= (3, 11):
+    from typing import dataclass_transform
+else:
+    # typing.dataclass_transform is 3.11+; this no-op keeps the decorator below valid on 3.10.
+    def dataclass_transform(**kwargs):
+        return lambda cls_or_fn: cls_or_fn
 
 
 RESPONSE_CLS_NAME = "ResponseBodyStruct"

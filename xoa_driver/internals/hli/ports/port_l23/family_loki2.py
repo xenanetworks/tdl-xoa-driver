@@ -18,6 +18,9 @@ __all__ = (
 )
 
 
+Self = typing.TypeVar("Self", bound="FamilyLoki2")
+
+
 class FamilyLoki2(BasePortL23Genuine):
     def __init__(self, conn: "itf.IConnection", module_id: int, port_id: int) -> None:
         super().__init__(conn, module_id, port_id)
@@ -40,7 +43,7 @@ class FamilyLoki2(BasePortL23Genuine):
         """
         
 
-    async def _setup(self) -> typing.Self:
+    async def _setup(self: Self) -> Self:
         await super()._setup()
         self.layer1 = Layer1(self._conn, self)
         """Layer 1"""

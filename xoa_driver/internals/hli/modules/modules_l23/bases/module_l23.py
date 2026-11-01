@@ -2,7 +2,7 @@ from __future__ import annotations
 import asyncio
 import functools
 import typing
-from typing import Self
+from typing import TypeVar
 from xoa_driver.internals.commands import (
     M_MEDIA,
     M_STATUS,
@@ -60,6 +60,9 @@ from ..cage.tcvr_cage import MTcvrCage
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from ...module_chimera import ModuleChimera
+
+
+Self = TypeVar("Self", bound="ModuleL23")
 
 
 class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
@@ -169,7 +172,7 @@ class ModuleL23(bm.BaseModule["modules_state.ModuleL23LocalState"]):
         """
         return self._local_states
 
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         if self.ports is None:
             raise NotImplementedError("Ports manager type are not defined.")  # Maybe can be better solution then this...
         await asyncio.gather(

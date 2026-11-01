@@ -2,7 +2,6 @@ from typing import (
     TYPE_CHECKING,
     Tuple,
     Union,
-    Self,
 )
 
 from xoa_driver.internals.commands import (

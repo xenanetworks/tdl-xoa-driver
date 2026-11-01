@@ -1,7 +1,7 @@
 import asyncio
 import functools
 import typing
-from typing import Self
+from typing import TypeVar
 from xoa_driver.internals.commands import (
     M_LICENSE_DEMO_INFO,
     M_LICENSE_MAINTENANCE_INFO,
@@ -278,6 +278,9 @@ class ModuleSystem:
         """
 
 
+Self = TypeVar("Self", bound="ModuleL47")
+
+
 @revisions.register_vulcan_module(rev="Xena L47 Module")
 class ModuleL47(bm.BaseModule["modules_state.ModuleLocalState"]):
     """
@@ -376,7 +379,7 @@ class ModuleL47(bm.BaseModule["modules_state.ModuleLocalState"]):
 
         return self._local_states
 
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         await asyncio.gather(
             self._local_states.initiate(self),
             self.ports.fill()

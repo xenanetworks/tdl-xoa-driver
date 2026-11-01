@@ -15,7 +15,7 @@ XOA Python API requires that you `install Python <https://realpython.com/install
 
 .. note:: 
 
-    XOA Python API requires Python >= 3.11
+    XOA Python API requires Python >= 3.10
 
 ``pip``
 ^^^^^^^

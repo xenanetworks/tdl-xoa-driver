@@ -2,7 +2,7 @@ from typing import (
     TYPE_CHECKING,
     Tuple,
 )
-from typing import Self
+from typing import TypeVar
 if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
 from xoa_driver.internals.commands import (
@@ -14,6 +14,9 @@ from xoa_driver.internals.commands import (
     PP_EYEDWELLBITS,
 )
 from xoa_driver import enums
+
+Self = TypeVar("Self", bound="EyeDiagram")
+
 
 class EyeDiagram:
     """L23 high-speed port SerDes eye diagram."""
@@ -56,7 +59,7 @@ class EyeDiagram:
     def __await__(self):
         return self._setup().__await__()
 
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         resolution = await self.resolution.get()
         self.read_column = tuple(
             PP_EYEREAD(

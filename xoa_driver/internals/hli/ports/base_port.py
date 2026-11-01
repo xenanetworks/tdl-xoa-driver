@@ -1,6 +1,5 @@
 import functools
 import warnings
-from typing import Self
 from abc import (
     ABC,
     abstractmethod,
@@ -31,6 +30,9 @@ if TYPE_CHECKING:
 
 
 PortStateStorage = TypeVar('PortStateStorage', bound="ports_state.PortLocalState")
+
+
+Self = TypeVar("Self", bound="BasePort")
 
 
 class BasePort(ABC, Generic[PortStateStorage]):
@@ -109,7 +111,7 @@ class BasePort(ABC, Generic[PortStateStorage]):
         return self._setup().__await__()
 
     @abstractmethod
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         return self
 
     def _check_identity(self, request) -> bool:

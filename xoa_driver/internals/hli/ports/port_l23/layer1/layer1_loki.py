@@ -1,7 +1,7 @@
 from typing import (
     TYPE_CHECKING,
     Tuple,
-    Self,
+    TypeVar,
 )
 
 from xoa_driver.internals.commands import (
@@ -19,6 +19,9 @@ if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from ..family_loki import FamilyLoki
     
+Self = TypeVar("Self", bound="SerDesLoki")
+
+
 class SerDesLoki:
     """L23 high-speed port SerDes configuration and status."""
 
@@ -45,7 +48,7 @@ class SerDesLoki:
     def __await__(self):
         return self._setup().__await__()
 
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         await self.eye_diagram
         return self
 

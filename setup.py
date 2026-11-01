@@ -26,12 +26,13 @@ def main():
             "Development Status :: 5 - Production/Stable",
             "Intended Audience :: Developers",
             "Topic :: Software Development :: Libraries :: Python Modules",
+            "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
             "Programming Language :: Python :: 3.12",
             "Programming Language :: Python :: 3.13",
             "Programming Language :: Python :: 3.14",
         ],
-        python_requires=">=3.11",
+        python_requires=">=3.10",
     )
 
 

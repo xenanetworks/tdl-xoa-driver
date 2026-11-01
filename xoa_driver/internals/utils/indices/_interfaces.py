@@ -2,7 +2,7 @@ from typing import (
     Protocol,
     List,
     TypeVar,
-    Self,
+    Type,
     TYPE_CHECKING,
 )
 
@@ -10,6 +10,9 @@ if TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from .. import kind as kind_module
     from . import observer as idx_obs
+
+
+Self = TypeVar("Self", bound="IIndexType")
 
 
 class IIndexType(Protocol):
@@ -29,7 +32,7 @@ class IIndexType(Protocol):
 
     @classmethod
     async def _new(
-        cls, 
+        cls: Type[Self], 
         conn: "itf.IConnection", 
         kind: "kind_module.IndicesKind", 
         observer: "idx_obs.IndicesObserver"

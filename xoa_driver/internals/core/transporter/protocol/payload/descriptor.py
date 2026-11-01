@@ -18,7 +18,6 @@ from typing import (
 
 from typing import (
     NoReturn,
-    Self,
 )
 
 from .field import FieldSpecs
@@ -40,13 +39,18 @@ class GetInstance(Protocol):
 # endregion
 
 
+Self = TypeVar("Self", bound="FieldDescriptor")
+RequestSelf = TypeVar("RequestSelf", bound="RequestFieldDescr")
+ResponseSelf = TypeVar("ResponseSelf", bound="ResponseFieldDescr")
+
+
 class FieldDescriptor(ABC, Generic[GenericType]):
     '''
     Descriptor representing getter and setter of the field
     '''
     __slots__ = ("idx", "specs", "public_name",)
 
-    def __init__(self: Self, idx: int, specs: FieldSpecs) -> None:
+    def __init__(self, idx: int, specs: FieldSpecs) -> None:
         # Will be called from the Meta class
         self.idx = idx
         self.specs = specs
@@ -55,7 +59,7 @@ class FieldDescriptor(ABC, Generic[GenericType]):
         self.public_name = name
 
     @abstractmethod
-    def __set__(self: Self, instance, value: GenericType) -> None:
+    def __set__(self, instance, value: GenericType) -> None:
         # Executed at the runtimne
         raise NotImplementedError()
 
@@ -68,18 +72,18 @@ class FieldDescriptor(ABC, Generic[GenericType]):
 class RequestFieldDescr(FieldDescriptor[GenericType]):
     __slots__ = ("to_xmp_context", "fmt")
 
-    def __init__(self: Self, idx: int, specs: FieldSpecs, user_type: Type[Any]) -> None:
+    def __init__(self, idx: int, specs: FieldSpecs, user_type: Type[Any]) -> None:
         super().__init__(idx, specs)
         self.fmt = self.specs.format()
         self.to_xmp_context: Callable[[Any], Any] = self.specs.get_context_formatter(user_type, False)
 
-    def __set__(self: Self, instance: SetInstance, value: GenericType) -> None:
+    def __set__(self, instance: SetInstance, value: GenericType) -> None:
         """Transform values from Python to Bxmp and store them in to the buffer"""
         # Executed at the runtimne
         val_ = self.to_xmp_context(value)
         instance._buffer.write(self.specs.pack(self.fmt, val=val_))
 
-    def __get__(self: Self, instance: SetInstance, cls) -> NoReturn | Self:
+    def __get__(self: RequestSelf, instance: SetInstance, cls) -> NoReturn | RequestSelf:
         # Executed at the runtimne
         if instance is None:
             return self
@@ -89,15 +93,15 @@ class RequestFieldDescr(FieldDescriptor[GenericType]):
 class ResponseFieldDescr(FieldDescriptor[GenericType]):
     __slots__ = ("to_py_context",)
 
-    def __init__(self: Self, idx: int, specs: FieldSpecs, user_type: Type[Any]) -> None:
+    def __init__(self, idx: int, specs: FieldSpecs, user_type: Type[Any]) -> None:
         super().__init__(idx, specs)
         self.to_py_context: Callable[[Any], Any] = self.specs.get_context_formatter(user_type, True)
 
-    def __set__(self: Self, instance: GetInstance, value: GenericType) -> NoReturn:
+    def __set__(self, instance: GetInstance, value: GenericType) -> NoReturn:
         # Executed at the runtimne
         raise RuntimeError from None
 
-    def __get__(self: Self, instance: GetInstance, cls) -> GenericType | Self:
+    def __get__(self: ResponseSelf, instance: GetInstance, cls) -> GenericType | ResponseSelf:
         """Unpack values from the buffer and converting to expected type if required"""
         # Executed at the runtimne
         if instance is None:

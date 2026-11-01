@@ -3,7 +3,7 @@ from typing import (
     TYPE_CHECKING,
     Type
 )
-from typing import Self
+from typing import TypeVar
 from xoa_driver.internals.commands import (
     C_REMOTEPORTCOUNTS,
     C_BUILDSTRING,
@@ -27,6 +27,9 @@ def get_module_type(revision: str) -> "Type":
             set(revisions.VULCAN_MODULES.keys()),
         )
     return module_type
+
+
+Self = TypeVar("Self", bound="L47Tester")
 
 
 class L47Tester(BaseTester["testers_state.GenuineTesterLocalState"]):
@@ -94,7 +97,7 @@ class L47Tester(BaseTester["testers_state.GenuineTesterLocalState"]):
         """
         return self._local_states
 
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         await super()._setup()
         await self._local_states.initiate(self)
         self._local_states.register_subscriptions(self)

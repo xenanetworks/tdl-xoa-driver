@@ -1,8 +1,11 @@
 from __future__ import annotations
 from asyncio import Future
 from typing import Generic
-from typing import Self
+from typing import TypeVar
 from ._typings import HeaderType
+
+
+Self = TypeVar("Self", bound="StreamReader")
 
 
 class StreamReader(Generic[HeaderType]):
@@ -14,7 +17,7 @@ class StreamReader(Generic[HeaderType]):
         self._waiter = None  # A future used by _wait_for_data()
         self.__header_struct = header_struct
 
-    def __aiter__(self) -> Self:
+    def __aiter__(self: Self) -> Self:
         return self
 
     async def __anext__(self) -> tuple[HeaderType, bytes]:

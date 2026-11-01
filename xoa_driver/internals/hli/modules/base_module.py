@@ -9,7 +9,6 @@ from abc import (
     ABC,
     abstractmethod,
 )
-from typing import Self
 from xoa_driver.internals.commands import enums
 from xoa_driver.internals.commands import (
     M_MODEL,
@@ -30,6 +29,9 @@ if TYPE_CHECKING:
 
 
 T = TypeVar('T', bound="modules_state.ModuleLocalState")
+
+
+Self = TypeVar("Self", bound="BaseModule")
 
 
 class BaseModule(ABC, Generic[T]):
@@ -97,7 +99,7 @@ class BaseModule(ABC, Generic[T]):
         return self._setup().__await__()
 
     @abstractmethod
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         raise NotImplementedError()
 
     def _check_identity(self, request) -> bool:

@@ -1,7 +1,7 @@
 import typing
 import asyncio
 import functools
-from typing import Self
+from typing import TypeVar
 from xoa_driver.internals.commands import (
     M_STATUS,
     M_UPGRADE,
@@ -142,6 +142,9 @@ class ChTiming:
         """
 
 
+Self = TypeVar("Self", bound="ModuleChimera")
+
+
 class ModuleChimera(bm.BaseModule["modules_state.ModuleLocalState"]):
     """
     This is a conceptual class of Chimera module.
@@ -265,7 +268,7 @@ class ModuleChimera(bm.BaseModule["modules_state.ModuleLocalState"]):
     def info(self) -> modules_state.ModuleLocalState:
         return self._local_states
 
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         await asyncio.gather(
             self._local_states.initiate(self),
             self.ports.fill()

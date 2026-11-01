@@ -1,6 +1,6 @@
 import asyncio
 import typing
-from typing import Self
+from typing import TypeVar
 from xoa_driver.internals.commands import (
     M_COMMENT,
     M_CAPABILITIES,
@@ -13,6 +13,9 @@ from . import base_module as bm
 if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from . import __interfaces as m_itf
+
+
+Self = TypeVar("Self", bound="ModuleL23VE")
 
 
 class ModuleL23VE(bm.BaseModule["modules_state.ModuleLocalState"]):
@@ -64,7 +67,7 @@ class ModuleL23VE(bm.BaseModule["modules_state.ModuleLocalState"]):
 
         return self._local_states
 
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         await asyncio.gather(
             self._local_states.initiate(self),
             self.ports.fill()

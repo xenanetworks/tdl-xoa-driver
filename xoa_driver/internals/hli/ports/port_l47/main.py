@@ -1,6 +1,6 @@
 import functools
 from typing import TYPE_CHECKING
-from typing import Self
+from typing import TypeVar
 
 from xoa_driver.internals.commands import (
     P4_TRAFFIC,
@@ -61,6 +61,9 @@ class PCapture:
 
         :type: P4_CAPTURE_GET_NEXT
         """
+
+
+Self = TypeVar("Self", bound="PortL47")
 
 
 class PortL47(base_port.BasePort["ports_state.PortL47LocalState"]):
@@ -210,7 +213,7 @@ class PortL47(base_port.BasePort["ports_state.PortL47LocalState"]):
     def info(self) -> ports_state.PortL47LocalState:
         return self._local_states
 
-    async def _setup(self) -> Self:
+    async def _setup(self: Self) -> Self:
         await self._local_states.initiate(self)
         self._local_states.register_subscriptions(self)
         return self
