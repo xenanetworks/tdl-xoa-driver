@@ -201,6 +201,9 @@ from .internals.commands.enums import (
     TrueFalse,
     PcsErrorInjectionType,
     ClearStatsDirection,
+    L1EventLoggingType,
+    L1EventLoggingCondition,
+    L1EventLoggingSubscription,
     LLDPClearTarget,
     LLDPOpMode,
     PcsLaneErrorInjectionType,
@@ -228,7 +231,8 @@ from .internals.commands.enums import (
     UecCbfcMode,
     ModulePresence,
     TransceiverPresence,
-    L1EventLoggingType,
+    L1CGMIICaptureTriggerType,
+    L1CGMIICaptureMode,
     L1EventLoggingCondition,
     L1EventLoggingSubscription,
     PhyReachMode,
@@ -460,5 +464,7 @@ __all__ = (
     "L1EventLoggingType",
     "L1EventLoggingCondition",
     "L1EventLoggingSubscription",
-    "PhyReachMode"
+    "PhyReachMode",
+    "L1CGMIICaptureMode",
+    "L1CGMIICaptureTriggerType",
 )

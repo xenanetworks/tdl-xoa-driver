@@ -1,4 +1,4 @@
-"""Port Commands - Layer 1 Event Logging"""
+"""Port Commands - Layer 1 CGMII Capture and Event Logging"""
 
 from __future__ import annotations
 from dataclasses import dataclass
@@ -9,6 +9,7 @@ from xoa_driver.internals.core.builders import (
 )
 from xoa_driver.internals.core import interfaces
 from xoa_driver.internals.core.token import Token
+from xoa_driver.internals.core.transporter.protocol.payload.types import XmpSequence
 from xoa_driver.internals.core.transporter.registry import register_command
 from xoa_driver.internals.core.transporter.protocol.payload import (
     field,
@@ -16,14 +17,18 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     ResponseBodyStruct,
     XmpByte,
     XmpInt,
+    XmpLong,
     XmpJson,
 )
 from .enums import (
+    L1CGMIICaptureMode,
+    L1CGMIICaptureTriggerType,
     L1EventLoggingType,
     L1EventLoggingCondition,
     L1EventLoggingSubscription,
     IsEnabled,
 )
+from .subtypes import L1CGMIICodeword
 
 
 @register_command
@@ -31,20 +36,20 @@ from .enums import (
 class PL1_EVENT_LOGGING_READ:
     """
     Read the list of logged Layer-1 event entries. Each entry consists of four parameters, event type, event condition, event lane, and timestamp.
-    
+
     * For port-specific events, the JSON response is structured as follows::
 
         {
           "evread": [
-          {
-            "$po-type": "l1_event_logging_entry",
-            "payload": {
-            "evtype_s": "PCS_LOA",
-            "evtype": 6,
-            "asserted": true,
-            "ts": 1234
+            {
+              "$po-type": "l1_event_logging_entry",
+              "payload": {
+                "evtype_s": "PCS_LOA",
+                "evtype": 6,
+                "asserted": true,
+                "ts": 1234
+              }
             }
-          }
           ]
         }
 
@@ -52,26 +57,26 @@ class PL1_EVENT_LOGGING_READ:
 
         {
           "evread": [
-          {
-            "$po-type": "l1_event_logging_entry_with_lane",
-            "payload": {
-            "evtype_s": "LANE_PRBS_LOCK",
-            "evtype": 14,
-            "asserted": true,
-            "lane": 0,
-            "ts": 1234
+            {
+              "$po-type": "l1_event_logging_entry_with_lane",
+              "payload": {
+                "evtype_s": "LANE_PRBS_LOCK",
+                "evtype": 14,
+                "asserted": true,
+                "lane": 0,
+                "ts": 1234
+              }
             }
-          }
           ]
         }
 
-    where 
+    where
 
     - ``evtype_s``: Event type as a string.
     - ``evtype``: Event type as an integer. See :ref:`layer_1_event_logging_types_table` for the list of supported event types.
     - ``asserted``: Boolean indicating if the event is asserted. See :ref:`layer_1_event_logging_event_conditions_table` for the list of supported event conditions.
     - ``lane``: Lane number (>= 0) for lane-specific events.
-    - ``ts``: Timestamp of the event in the unit of 0.5 nanosecond. The timestamp is relative to the previously delivered event, not an absolute hardware timestamp.
+    - ``ts``: Absolute timestamp of the event in the unit of 0.5 nanosecond.
     """
 
     code: typing.ClassVar[int] = 1300
@@ -86,7 +91,6 @@ class PL1_EVENT_LOGGING_READ:
         evread: dict = field(XmpJson(min_len=2))
         """event read value. Reads up to 32 events per call and returns them as JSON."""
 
-
     def get(self) -> Token[GetDataAttr]:
         """Read the list of logged Layer-1 event entries.
 
@@ -97,12 +101,11 @@ class PL1_EVENT_LOGGING_READ:
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
 
-
 @register_command
 @dataclass
 class PL1_EVENT_LOGGING_CONFIG:
     """
-    Subscribes/unsubscribes to a specific Layer-1 event. 
+    Subscribes/unsubscribes to a specific Layer-1 event.
     """
 
     code: typing.ClassVar[int] = 1301
@@ -117,7 +120,7 @@ class PL1_EVENT_LOGGING_CONFIG:
 
         action: L1EventLoggingSubscription = field(XmpByte())
         """Subscribe or unsubscribe to the event."""
-        
+
         event_type: L1EventLoggingType = field(XmpByte())
         """Type of the event to subscribe to."""
 
@@ -126,7 +129,7 @@ class PL1_EVENT_LOGGING_CONFIG:
 
     def set(self, action: L1EventLoggingSubscription, event_type: L1EventLoggingType, event_cond: L1EventLoggingCondition) -> Token[None]:
         """Subscribe or unsubscribe to the event.
-        
+
         :param action: Subscribe or unsubscribe to the event
         :type action: L1EventLoggingSubscription
         :param event_type: Type of the event to subscribe to
@@ -136,9 +139,8 @@ class PL1_EVENT_LOGGING_CONFIG:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port,
-                                                        action=action, event_type=event_type,
-                                                        event_cond=event_cond, indices=[self._serdes_lane]))
-
+                                                         action=action, event_type=event_type,
+                                                         event_cond=event_cond, indices=[self._serdes_lane]))
 
 
 @register_command
@@ -146,7 +148,7 @@ class PL1_EVENT_LOGGING_CONFIG:
 class PL1_EVENT_LOGGING_SUBLIST:
     """
     Return the currently configured event subscriptions.
-    
+
     * For port-specific events, the JSON response is structured as follows::
 
         {
@@ -178,7 +180,7 @@ class PL1_EVENT_LOGGING_SUBLIST:
           ]
         }
 
-    where 
+    where
 
     - ``evtype_s``: Event type as a string.
     - ``evtype``: Event type as an integer. See :ref:`l1_event_types_n_conds` for the list of supported event types.
@@ -197,7 +199,6 @@ class PL1_EVENT_LOGGING_SUBLIST:
 
         evsub: dict = field(XmpJson(min_len=2))
         """event read value. Reads up to 32 events per call and returns them as JSON."""
-
 
     def get(self) -> Token[GetDataAttr]:
         """Read the list of currently configured Layer-1 event subscriptions.
@@ -222,7 +223,6 @@ class PL1_EVENT_LOGGING_SUBLIST:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, evsublist=evsublist))
-
 
 
 @register_command
@@ -292,9 +292,8 @@ class PL1_EVENT_LOGGING_MARK:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port))
-      
-      
-      
+
+
 @register_command
 @dataclass
 class PL1_EVENT_LOGGING_QLEN:
@@ -314,7 +313,6 @@ class PL1_EVENT_LOGGING_QLEN:
         qlen: int = field(XmpInt())
         """Current Layer-1 Event Logging queue length."""
 
-
     def get(self) -> Token[GetDataAttr]:
         """Returns the current Layer-1 Event Logging queue length.
 
@@ -323,8 +321,7 @@ class PL1_EVENT_LOGGING_QLEN:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-      
-      
+
 
 @register_command
 @dataclass
@@ -367,120 +364,348 @@ class PL1_EVENT_LOGGING_RSFEC_THRESH:
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, rsfec_thresh=rsfec_thresh))
 
-# @register_command
-# @dataclass
-# class PL1_MII_CAPTURE_READ:
-#     """
-#     Read the list of captured Layer-1 MII entries. 
-    
-#     * For port-specific events, the JSON response is structured as follows::
 
-#         {
-#           "miiread": [
-#             {
-#               "$po-type": "l1_mii_capture_entry",
-#               "payload": {
-#                 "trtype_s": "ERROR",
-#                 "trtype": 1,
-#                 "ts": 123456,
-#                 "triggerpos": 8,
-#                 "miidata": [
-#                   {
-#                     "data": 72623859790382856,
-#                     "ctrl": 1
-#                   }
-#                 ]
-#               }
-#             }
-#           ]
-#         }
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_STATE:
+    """
+    Layer-1 CGMII capture state. It is used to enable or disable the Layer-1 CGMII capture feature.
+    """
 
+    code: typing.ClassVar[int] = 1313
+    pushed: typing.ClassVar[bool] = False
 
-#     where
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
 
-#     - `trtype_s`: Trigger name.
-#     - `trtype`: Numeric trigger type.
-#     - `ts`: Captured hardware timestamp.
-#     - `triggerpos`: Index of the trigger point within the returned circular sample window.
-#     - `miidata`: Sequence of captured MII words, each carrying 8 bytes of `data` and 1 byte of `ctrl` bits.
-#     """
+    class GetDataAttr(ResponseBodyStruct):
 
-#     code: typing.ClassVar[int] = 1310
-#     pushed: typing.ClassVar[bool] = False
+        state: IsEnabled = field(XmpByte())
+        """Layer-1 CGMII capture state. Indicates if the feature is enabled or disabled."""
 
-#     _connection: 'interfaces.IConnection'
-#     _module: int
-#     _port: int
+    class SetDataAttr(RequestBodyStruct):
 
-#     class GetDataAttr(ResponseBodyStruct):
+        state: IsEnabled = field(XmpByte())
+        """Enable/Disable Layer-1 CGMII capture."""
 
-#         miiread: dict = field(XmpJson(min_len=2))
-#         """MII read value. Reads up to 16 MII entries per call and returns them as JSON."""
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the Layer-1 CGMII capture state.
+
+        :return: Layer-1 CGMII capture state
+        :rtype: PL1_CGMII_CAPTURE_STATE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, state: IsEnabled) -> Token[None]:
+        """Set the Layer-1 CGMII capture state.
+
+        :param state: Layer-1 CGMII capture state.
+        :type state: IsEnabled
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, state=state))
 
 
-#     def get(self) -> Token[GetDataAttr]:
-#         """Read the list of captured Layer-1 MII entries.
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_MODE:
+    """
+    Layer-1 CGMII capture mode. It is used to get or set the mode of the Layer-1 CGMII capture feature.
+    """
 
-#         :return: List of captured Layer-1 MII entries
-#         :rtype: PL1_MII_CAPTURE_READ.GetDataAttr
-#         """
+    code: typing.ClassVar[int] = 1316
+    pushed: typing.ClassVar[bool] = False
 
-#         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
 
+    class GetDataAttr(ResponseBodyStruct):
 
+        mode: L1CGMIICaptureMode = field(XmpByte())
+        """Layer-1 CGMII capture mode. Indicates the current mode of the feature."""
 
-# @register_command
-# @dataclass
-# class PL1_XGMII_CAPTURE_CONFIG:
-#     """
-#     Subscribes/unsubscribes to a Layer-1 event. An event consists of three parameters ``<event_type> <event_cond> <event_serdes>``. 
-#     """
+    class SetDataAttr(RequestBodyStruct):
 
-#     code: typing.ClassVar[int] = 1311
-#     pushed: typing.ClassVar[bool] = False
+        mode: L1CGMIICaptureMode = field(XmpByte())
+        """Set the mode of the Layer-1 CGMII capture feature."""
 
-#     _connection: 'interfaces.IConnection'
-#     _module: int
-#     _port: int
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the Layer-1 CGMII capture mode.
 
-#     class SetDataAttr(RequestBodyStruct):
+        :return: Layer-1 CGMII capture mode
+        :rtype: PL1_CGMII_CAPTURE_MODE.GetDataAttr
+        """
 
-#         action: L1CaptureSubscription = field(XmpByte())
-#         """Subscribe or unsubscribe to the event."""
-        
-#         event_type: L1EventCaptureType = field(XmpByte())
-#         """Type of the event to subscribe to."""
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
 
-#         event_cond: L1EventCaptureCondition = field(XmpByte())
-#         """Condition that triggers the event."""
-        
-#         event_serdes: int = field(XmpInt())
-#         """SerDes lane index associated with the event. Use -1 if the event is not SerDes-specific."""
+    def set(self, mode: L1CGMIICaptureMode) -> Token[None]:
+        """Set the Layer-1 CGMII capture mode.
 
-#     def set(self, action: L1CaptureSubscription, event_type: L1EventCaptureType, event_cond: L1EventCaptureCondition, event_serdes: int) -> Token[None]:
-#         """Subscribe or unsubscribe to the event.
-        
-#         :param action: Subscribe or unsubscribe to the event
-#         :type action: L1CaptureSubscription
-#         :param event_type: Type of the event to subscribe to
-#         :type event_type: L1EventCaptureType
-#         :param event_cond: Condition that triggers the event
-#         :type event_cond: L1EventCaptureCondition
-#         :param event_serdes: SerDes lane index associated with the event. Use -1 if the event is not SerDes-specific.
-#         :type event_serdes: int
-#         """
+        :param mode: Layer-1 CGMII capture mode.
+        :type mode: L1CGMIICaptureMode
+        """
 
-#         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, action=action, event_type=event_type, event_cond=event_cond, event_serdes=event_serdes))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, mode=mode))
 
 
-      
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_SIZE:
+    """
+    Layer-1 CGMII capture size. It is used to get or set the size of the Layer-1 CGMII capture feature.
+    NOTE: The size will be rounded up to the nearest multiple of the hardware granularity.
+    Therefore, the queried size may be slightly larger than the requested size.
+    """
+
+    code: typing.ClassVar[int] = 1317
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        size: int = field(XmpInt(signed=False))
+        """Layer-1 CGMII capture size. Indicates the size of the Layer-1 CGMII capture feature."""
+
+    class SetDataAttr(RequestBodyStruct):
+
+        size: int = field(XmpInt(signed=False))
+        """Set the size of the Layer-1 CGMII capture feature."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the Layer-1 CGMII capture size.
+
+        :return: Layer-1 CGMII capture size
+        :rtype: PL1_CGMII_CAPTURE_SIZE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, size: int) -> Token[None]:
+        """Set the Layer-1 CGMII capture size.
+
+        :param size: Layer-1 CGMII capture size.
+        :type size: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, size=size))
+
+
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_READ:
+    """
+    Read the meta data of the oldest Layer-1 CGMII capture.
+    """
+
+    code: typing.ClassVar[int] = 1310
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        triggertype: L1CGMIICaptureTriggerType = field(XmpByte())
+        """The trigger type of the oldest captured Layer-1 CGMII capture."""
+
+        timestamp: int = field(XmpLong(signed=False))
+        """The timestamp of the oldest Layer-1 CGMII capture."""
+
+        triggerpos: int = field(XmpInt(signed=False))
+        """The position of CGMII codeword that triggered the oldest Layer-1 CGMII capture."""
+
+        cgmii_data_size: int = field(XmpInt(signed=False))
+        """The CGMII data size of the oldest Layer-1 CGMII capture."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Read the meta data of the oldest captured Layer-1 CGMII entry.
+
+        :return: Meta data of the oldest captured Layer-1 CGMII entry
+        :rtype: PL1_CGMII_CAPTURE_READ.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_DATA:
+    """
+    Read some CGMII codeword data of the oldest Layer-1 CGMII capture.
+    The amount of data read is determined by the offset and count parameters.
+    """
+
+    code: typing.ClassVar[int] = 1318
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _offset: int  # The starting offset of the CGMII codeword data to read.
+    _count: int  # The maximum number of CGMII codeword data elements to read. If 0 (zero) read as many as possible.
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        cgmii_data: typing.List[L1CGMIICodeword] = field(XmpSequence(types_chunk=[XmpLong(signed=False), XmpByte()]))
+        """The CGMII codeword data chunk of the oldest captured Layer-1 CGMII entry from _offset and max _count elements."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Read the CGMII codeword data of the oldest captured Layer-1 CGMII entry.
+
+        :return: CGMII codeword data of the oldest captured Layer-1 CGMII entry
+        :rtype: PL1_CGMII_CAPTURE_DATA.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._offset, self._count]))
+
+
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_CONSUMED:
+    """
+    Inform the system that the oldest CGMII capture trace for the specified port has been consumed and is no longer needed.
+    Any resource related to this capture will be released.
+    """
+
+    code: typing.ClassVar[int] = 1319
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class SetDataAttr(RequestBodyStruct):
+        pass
+
+    def set(self) -> Token[None]:
+        """
+        Inform the system that the oldest CGMII capture trace has been consumed.
+        """
+
+        """
+        :return: None
+        :rtype: None
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_QLEN:
+    """
+    Return the current Layer-1 CGMII capture queue length.
+    """
+
+    code: typing.ClassVar[int] = 1315
+    pushed: typing.ClassVar[bool] = True
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        qlen: int = field(XmpInt())
+        """Current Layer-1 CGMII capture queue length."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the current Layer-1 CGMII capture queue length.
+
+        :return: Current Layer-1 CGMII capture queue length
+        :rtype: PL1_CGMII_CAPTURE_QLEN.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_FORCE:
+    """
+    Trigger a CGMII capture for the specified port.
+    Any resource related to this capture will be released.
+    """
+
+    code: typing.ClassVar[int] = 1314
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class SetDataAttr(RequestBodyStruct):
+        pass
+
+    def set(self) -> Token[None]:
+        """
+        Trigger a CGMII capture for the specified port.
+        """
+
+        """
+        :return: None
+        :rtype: None
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port))
+
+
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_CONFIG:
+    """
+    Enable/Disable the Layer-1 CGMII capture for a specific event.
+    """
+
+    code: typing.ClassVar[int] = 1311
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class SetDataAttr(RequestBodyStruct):
+
+        enable: IsEnabled = field(XmpByte())
+        """Enable or disable the trigger."""
+
+        trigger_type: L1CGMIICaptureTriggerType = field(XmpByte())
+        """Type of the trigger to subscribe to."""
+
+    def set(self, enable: IsEnabled, trigger_type: L1CGMIICaptureTriggerType) -> Token[None]:
+        """Enable or disable the trigger.
+
+        :param enable: Enable or disable the trigger
+        :type enable: IsEnabled
+        :param trigger_type: Type of the trigger to enable/disable
+        :type trigger_type: L1CGMIICaptureTriggerType
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, enable=enable, trigger_type=trigger_type))
+
 
 __all__ = [
-    "PL1_EVENT_LOGGING_READ",
+    "PL1_CGMII_CAPTURE_CONFIG",
+    "PL1_CGMII_CAPTURE_CONSUMED",
+    "PL1_CGMII_CAPTURE_DATA",
+    "PL1_CGMII_CAPTURE_FORCE",
+    "PL1_CGMII_CAPTURE_MODE",
+    "PL1_CGMII_CAPTURE_READ",
+    "PL1_CGMII_CAPTURE_STATE",
+    "PL1_CGMII_CAPTURE_SIZE",
+    "PL1_CGMII_CAPTURE_QLEN",
     "PL1_EVENT_LOGGING_CONFIG",
-    "PL1_EVENT_LOGGING_SUBLIST",
-    "PL1_EVENT_LOGGING_STATE",
     "PL1_EVENT_LOGGING_MARK",
     "PL1_EVENT_LOGGING_QLEN",
-    "PL1_EVENT_LOGGING_RSFEC_THRESH"
+    "PL1_EVENT_LOGGING_READ",
+    "PL1_EVENT_LOGGING_RSFEC_THRESH",
+    "PL1_EVENT_LOGGING_STATE",
+    "PL1_EVENT_LOGGING_SUBLIST",
 ]

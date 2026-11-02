@@ -42,7 +42,7 @@ class MSolutionTrack:
         :type: M_SOLUTION_TRACK_ACTIVATE
         """
 
-        self.solution_track = M_SOLUTION_TRACK(conn, module_id)
+        self.solution_track = M_SOLUTION_TRACK(conn, module_id, 0)  # Defaults to Core solution track, Needs Fixing...
         """Get the solution track feature information.
 
         :type: M_SOLUTION_TRACK

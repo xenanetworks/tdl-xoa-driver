@@ -681,7 +681,9 @@ class P_CAPABILITIES:
 
         max_l1_event_logging_rsfec_threshold: int = field(XmpInt(), min_version=485)
         """Maximum supported RS-FEC event logging threshold."""
-
+        
+        max_l1_cgmii_capture_size: int = field(XmpInt(), min_version=486)
+        """Maximum number of CGMII Codewords that can be captured."""
 
     def get(self) -> Token[P_CAPABILITIES.GetDataAttr]:
         """Get the internal limits, aka. capabilities, of the port.
