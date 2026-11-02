@@ -2742,7 +2742,7 @@ class PL1_PCSL_INJECT_ERR:
         :type type: PcsLaneErrorInjectionType
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, type=type))
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._pcsl_xindex], type=type))
 
     inject_am = functools.partialmethod(set, PcsLaneErrorInjectionType.AM)
     """Inject Alignment Marker (AM) error"""
