@@ -464,7 +464,7 @@ __all__ = (
     "L1EventLoggingType",
     "L1EventLoggingCondition",
     "L1EventLoggingSubscription",
-    "PhyReachMode"
+    "PhyReachMode",
     "L1CGMIICaptureMode",
     "L1CGMIICaptureTriggerType",
 )

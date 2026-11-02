@@ -98,7 +98,6 @@ class L1CGMIICaptureInfo:
     trtype: L1CGMIICaptureTriggerType
     timestamp: int
     trpos: int
-    dropped: bool
     captured_data: list[L1CGMIICodeword]
 
 
@@ -129,7 +128,6 @@ class L1CGMIICapture:
             trtype=metadata.triggertype,
             timestamp=metadata.timestamp,
             trpos=metadata.triggerpos,
-            dropped=metadata.dropped_captures,
             captured_data=[]
         )
         datasize = metadata.cgmii_data_size
