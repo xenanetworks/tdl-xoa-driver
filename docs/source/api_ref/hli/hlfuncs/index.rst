@@ -12,8 +12,9 @@
 
     mgmt - Resource management functions <mgmt>
     headers - Predefined headers <headers>
-    config_io - Port configuration functions <config_io>
+    config_io - Port/testbed configuration save/load functions <config_io>
     anlt - AN/LT functions <anlt>
-    xcvr - Transceiver functions <xcvr>
+    xcvr - Transceiver low-level R/W and I2C functions <xcvr>
     cmis - CMIS functions <cmis/index>
     layer1_adv - Advanced Layer 1 functions <layer1_adv>
+    async_to_sync - Async-to-sync bridge <async_to_sync>
