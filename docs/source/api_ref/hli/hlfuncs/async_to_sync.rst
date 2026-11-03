@@ -8,7 +8,7 @@ The ``async_to_sync`` module provides a bridge to use async functions in a synch
 Module Contents
 -----------------
 
-.. automodule:: xoa_driver.hlfuncs.async_to_sync
+.. autoclass:: XenaAsyncToSyncBridge
     :members:
     :show-inheritance:
     :undoc-members:

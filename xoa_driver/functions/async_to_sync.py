@@ -25,8 +25,14 @@ import queue
 T = TypeVar("T")
 
 class XenaAsyncToSyncBridge:
-    """This is a async-to-sync bridge class that encapsulates XOA asyncio functions 
-    so you can use the APIs in a non-async fashion.
+    """Run XOA coroutines from synchronous code.
+
+    The bridge runs an asyncio event loop on a dedicated background thread.
+    Calling the bridge blocks until the coroutine completes and returns its
+    result. Use it from a synchronous thread, not from the bridge's event-loop
+    thread.
+
+    Call :meth:`close` when finished to stop the background thread.
 
     Example:
 
@@ -80,17 +86,34 @@ class XenaAsyncToSyncBridge:
     __slots__ = ("loop", "thread", "_events")
 
     def __init__(self) -> None:
+        """Start the background thread that will run the event loop.
+
+        The loop may not be running immediately when this method returns.
+        """
         self.loop: asyncio.AbstractEventLoop | None = None
         self.thread = threading.Thread(target=self._run_event_loop)
         self.thread.start()
         self._events = queue.Queue()
 
     def _run_event_loop(self):
+        """Create and run the event loop on the background thread."""
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
         self.loop.run_forever()
 
     def run_coroutine_threadsafe(self, coro: Coroutine[Any, Any, T]) -> T:
+        """Submit a coroutine to the background loop and block for its result.
+
+        Args:
+            coro: The coroutine to run.
+
+        Returns:
+            The value returned by the coroutine.
+
+        Raises:
+            RuntimeError: If the event loop has not been initialized.
+            Exception: Any exception raised by the coroutine.
+        """
         if not self.loop:
             raise RuntimeError("Event loop is not running")
         future_ = asyncio.run_coroutine_threadsafe(coro, self.loop)
@@ -99,15 +122,25 @@ class XenaAsyncToSyncBridge:
         return future_.result()
 
     def is_thread_started(self) -> bool:
+        """Return whether the background event loop is running."""
         return self.loop is not None and self.loop.is_running()
 
     def close(self) -> None:
+        """Request the event loop to stop and wait for its thread to exit."""
         if not self.loop:
             return None
         self.loop.call_soon_threadsafe(self.loop.stop)
         self.thread.join()
 
     def __call__(self, coro):
+        """Run a coroutine on the background loop and block for its result.
+
+        Args:
+            coro: The coroutine to run.
+
+        Returns:
+            The value returned by the coroutine.
+        """
         if self.loop is None:
             raise RuntimeError("Thread not started")
 
