@@ -13,6 +13,8 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
     Hex,
 )
 from .enums import (
+    IsEnabled,
+    L1CGMIICaptureTriggerType,
     OnOff,
     VlanType
 )
@@ -90,3 +92,17 @@ class QueueStatsElem:
 class L1CGMIICodeword:
     data: int = field(XmpLong(signed=False))  # CGMII codeword data
     ctrl: int = field(XmpByte(signed=False))  # CGMII codeword control. 1 bit for each byte in the data field.
+
+
+@dataclass
+class L1CGMIICaptureSubscriptionType:
+    def __init__(self, enabled, trigger_type):
+        offset = max(L1CGMIICaptureTriggerType) + 1
+        self.enabled = enabled - offset if enabled >= offset else enabled + offset
+        self.trigger_type = trigger_type
+
+    enabled: IsEnabled = field(XmpByte())
+    """Indicates whether the Layer-1 CGMII capture subscription is enabled."""
+
+    trigger_type: L1CGMIICaptureTriggerType = field(XmpByte())
+    """The type of the Layer-1 CGMII capture trigger."""

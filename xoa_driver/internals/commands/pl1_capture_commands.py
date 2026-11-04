@@ -23,12 +23,15 @@ from xoa_driver.internals.core.transporter.protocol.payload import (
 from .enums import (
     L1CGMIICaptureMode,
     L1CGMIICaptureTriggerType,
+    L1CGMIICaptureUecFilter,
+    L1CGMIICaptureUecMetric,
+    L1CGMIICaptureUecOperator,
     L1EventLoggingType,
     L1EventLoggingCondition,
     L1EventLoggingSubscription,
     IsEnabled,
 )
-from .subtypes import L1CGMIICodeword
+from .subtypes import L1CGMIICaptureSubscriptionType, L1CGMIICodeword
 
 
 @register_command
@@ -673,22 +676,104 @@ class PL1_CGMII_CAPTURE_CONFIG:
 
     class SetDataAttr(RequestBodyStruct):
 
-        enable: IsEnabled = field(XmpByte())
+        subscriptions: typing.List[L1CGMIICaptureSubscriptionType] = field(XmpSequence(types_chunk=[XmpByte(), XmpByte()]))
         """Enable or disable the trigger."""
 
-        trigger_type: L1CGMIICaptureTriggerType = field(XmpByte())
-        """Type of the trigger to subscribe to."""
-
-    def set(self, enable: IsEnabled, trigger_type: L1CGMIICaptureTriggerType) -> Token[None]:
+    def set(self, subscriptions: typing.List[L1CGMIICaptureSubscriptionType]) -> Token[None]:
         """Enable or disable the trigger.
 
-        :param enable: Enable or disable the trigger
-        :type enable: IsEnabled
-        :param trigger_type: Type of the trigger to enable/disable
-        :type trigger_type: L1CGMIICaptureTriggerType
+        :param subscriptions: List of subscriptions to set for the Layer-1 CGMII capture
+        :type subscriptions: typing.List[L1CGMIICaptureSubscriptionType]
+        """
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, subscriptions=subscriptions))
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        subscriptions: typing.List[L1CGMIICaptureSubscriptionType] = field(XmpSequence(types_chunk=[XmpByte(), XmpByte()]))
+        """Current Layer-1 CGMII capture subscriptions."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the current Layer-1 CGMII capture subscriptions.
+
+        :return: Current Layer-1 CGMII capture subscriptions
+        :rtype: PL1_CGMII_CAPTURE_CONFIG.GetDataAttr
+        """
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+@register_command
+@dataclass
+class PL1_CGMII_CAPTURE_UEC_CONFIG:
+    """
+    Layer-1 CGMII capture mode. It is used to get or set the mode of the Layer-1 CGMII capture feature.
+    """
+
+    code: typing.ClassVar[int] = 1312
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+
+        metric: L1CGMIICaptureUecMetric = field(XmpByte())
+        """Layer-1 CGMII capture UEC metric. Indicates the metric used for the UEC capture."""
+        
+        operator: L1CGMIICaptureUecOperator = field(XmpByte())
+        """Layer-1 CGMII capture UEC operator. Indicates the operator used for the UEC metric."""
+
+        threshold: int = field(XmpInt(signed=False))
+        """Layer-1 CGMII capture UEC threshold. Indicates the threshold value used for the UEC metric."""
+        
+        filter: L1CGMIICaptureUecFilter = field(XmpByte())
+        """Layer-1 CGMII capture UEC filter. Indicates the filter applied for the UEC metric."""
+
+        vc_index: int = field(XmpInt(signed=False))
+        """Layer-1 CGMII capture UEC virtual channel index. Indicates the VC index used for the UEC metric."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Returns the Layer-1 CGMII capture mode.
+
+        :return: Layer-1 CGMII capture mode
+        :rtype: PL1_CGMII_CAPTURE_UEC_CONFIG.GetDataAttr
         """
 
-        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, enable=enable, trigger_type=trigger_type))
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+
+    class SetDataAttr(RequestBodyStruct):
+
+        metric: L1CGMIICaptureUecMetric = field(XmpByte())
+        """Set the UEC metric for the Layer-1 CGMII capture feature."""
+
+        operator: L1CGMIICaptureUecOperator = field(XmpByte())
+        """Set the UEC operator for the Layer-1 CGMII capture feature."""
+
+        threshold: int = field(XmpInt(signed=False))
+        """Set the UEC threshold for the Layer-1 CGMII capture feature."""
+
+        filter: L1CGMIICaptureUecFilter = field(XmpByte())
+        """Set the UEC filter for the Layer-1 CGMII capture feature."""
+
+        vc_index: int = field(XmpInt(signed=False))
+        """Set the UEC virtual channel index for the Layer-1 CGMII capture feature."""
+
+    def set(self, metric: L1CGMIICaptureUecMetric, operator: L1CGMIICaptureUecOperator, threshold: int = 0, filter: L1CGMIICaptureUecFilter = L1CGMIICaptureUecFilter.NONE, vc_index: int = 0) -> Token[None]:
+        """Set the Layer-1 CGMII capture mode.
+
+        :param metric: Layer-1 CGMII capture UEC metric.
+        :type metric: L1CGMIICaptureUecMetric
+        :param operator: Layer-1 CGMII capture UEC operator.
+        :type operator: L1CGMIICaptureUecOperator
+        :param threshold: Layer-1 CGMII capture UEC threshold.
+        :type threshold: int
+        :param filter: Layer-1 CGMII capture UEC filter.
+        :type filter: L1CGMIICaptureUecFilter
+        :param vc_index: Layer-1 CGMII capture UEC virtual channel index.
+        :type vc_index: int
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, metric=metric, operator=operator, threshold=threshold, filter=filter, vc_index=vc_index))
 
 
 __all__ = [
@@ -702,6 +787,7 @@ __all__ = [
     "PL1_CGMII_CAPTURE_SIZE",
     "PL1_CGMII_CAPTURE_QLEN",
     "PL1_EVENT_LOGGING_CONFIG",
+    "PL1_CGMII_CAPTURE_UEC_CONFIG",
     "PL1_EVENT_LOGGING_MARK",
     "PL1_EVENT_LOGGING_QLEN",
     "PL1_EVENT_LOGGING_READ",
