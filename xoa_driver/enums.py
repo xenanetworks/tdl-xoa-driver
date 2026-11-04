@@ -233,6 +233,9 @@ from .internals.commands.enums import (
     TransceiverPresence,
     L1CGMIICaptureTriggerType,
     L1CGMIICaptureMode,
+    L1CGMIICaptureUecMetric,
+    L1CGMIICaptureUecOperator,
+    L1CGMIICaptureUecFilter,
     L1EventLoggingCondition,
     L1EventLoggingSubscription,
     PhyReachMode,
@@ -467,4 +470,7 @@ __all__ = (
     "PhyReachMode",
     "L1CGMIICaptureMode",
     "L1CGMIICaptureTriggerType",
+    "L1CGMIICaptureUecMetric",
+    "L1CGMIICaptureUecOperator",
+    "L1CGMIICaptureUecFilter"
 )

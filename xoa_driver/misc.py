@@ -10,6 +10,7 @@ from .internals.commands.subtypes import (
     DhcpEntry,
     GroupAddressElem,
     L1CGMIICodeword,
+    L1CGMIICaptureSubscriptionType,
     VlanTag,
     QueueStatsElem,
 )
@@ -37,6 +38,7 @@ __all__ = (
     "DhcpEntry",
     "GroupAddressElem",
     "L1CGMIICodeword",
+    "L1CGMIICaptureSubscriptionType",
     "VlanTag",
     "QueueStatsElem",
     "ConnectionGroup",

@@ -3831,6 +3831,70 @@ class L1CGMIICaptureTriggerType(IntEnum):
     """Trigger on a configured UEC event."""
 
 
+class L1CGMIICaptureUecMetric(IntEnum):
+    """Layer-1 CGMII capture UEC metrics."""
+
+    NONE = 0
+    """No UEC metric, use operator NOP."""
+
+    DISTANCE = 1
+    """Codewords since the previous matching CtlOS."""
+
+    SOP_CTLOS_DISTANCE = 2
+    """Codewords since the preceeding /S/ (start of packet) CtlOS."""
+
+    INFRAME_CTLOS_DISTANCE = 3
+    """As above, but only considering in-frame CtlOS."""
+
+    LLR_SEQ = 4
+    """LLR sequence number related metric (20 bit)."""
+
+    LLR_DATA = 5
+    """LLR data related metric (16 bit)."""
+
+    CF_UPDATE_COUNT = 6
+    """Credit count related metric (15 bit)."""
+
+class L1CGMIICaptureUecOperator(IntEnum):
+    """Layer-1 CGMII capture UEC operators."""
+
+    NOP = 0
+    """No operation."""
+
+    EQ = 1
+    """Equal == threshold."""
+
+    NEQ = 2
+    """Not equal != threshold."""
+
+    LT = 3
+    """Less than < threshold."""
+
+    GT = 4
+    """Greater than > threshold."""
+
+
+class L1CGMIICaptureUecFilter(IntEnum):
+    """Layer-1 CGMII capture UEC filters."""
+
+    NONE = 0
+    """Any CtlOS message type (aka No filter)."""
+
+    LLR_ACK = 1
+    """CtlOS message type 0x01."""
+
+    LLR_NACK = 2
+    """CtlOS message type 0x02."""
+
+    LLR_INIT = 3
+    """CtlOS message type 0x03."""
+
+    LLR_INIT_ECHO = 4
+    """CtlOS message type 0x04."""
+
+    CF_UPDATE = 5
+    """CtlOS message type 0x10."""
+
 #endregion Layer 1 CGMII Capture
 
 
