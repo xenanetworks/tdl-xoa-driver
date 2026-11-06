@@ -152,6 +152,15 @@ class CMD0041hFirmwareManagementFeaturesReply(CMDBaseReply):
         * i:     8 x 16 = 128 bytes (16 <= i <= 256)
 
         """
+        
+        self.epl_block_size: int = 8 * (self.read_write_length_ext + 1)
+        """integer, Maximum block size for EPL write.
+        """
+        self.lpl_block_size: int = 8 * (min(self.read_write_length_ext, 15) + 1)
+        """integer, Maximum block size for LPL write.
+        """
+        
+        
         self.write_mechanism: int = reply['write_mechanism']
         """integer, Firmware update supported mechanism
 

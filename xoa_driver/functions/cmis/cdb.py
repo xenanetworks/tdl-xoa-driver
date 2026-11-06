@@ -1025,11 +1025,11 @@ async def firmware_download_procedure(port: GenericL23Port, cdb_instance: int, f
 
     # Read capabilities (CMD 0041h)
     # Read size of START_LPL, erase byte
-    reply_obj = await cmd_0041h_fw_mgmt_features_reply(port, cdb_instance)
-    firmware_header_size = reply_obj.start_cmd_payload_size
+    fw_mgmt_features_reply = await cmd_0041h_fw_mgmt_features_reply(port, cdb_instance)
+    firmware_header_size = fw_mgmt_features_reply.start_cmd_payload_size
 
     # Determine the write mechanism
-    write_mechanism = reply_obj.write_mechanism
+    write_mechanism = fw_mgmt_features_reply.write_mechanism
     if write_mechanism == WriteMechanism.NONE_SUPPORTED:
         print("Write Mechanism is not supported. Unable to proceed with firmware update.")
         return False
@@ -1043,20 +1043,25 @@ async def firmware_download_procedure(port: GenericL23Port, cdb_instance: int, f
         print(("Both CMD 0103h and CMD 0104h are supported. Will use the preferred write mechanism."))
 
     # Read the erased byte value
-    erased_byte = reply_obj.erased_byte
-    if reply_obj.abort_cmd == 0 and use_abort_for_failure:
+    erased_byte = fw_mgmt_features_reply.erased_byte
+    if fw_mgmt_features_reply.abort_cmd == 0 and use_abort_for_failure:
         use_abort_for_failure = False
         print("CMD 0102h Abort Firmware Download is not supported by the module. Will use CMD 0107h Complete Firmware Download instead.")
 
+    # Determine the block size based on the write mechanism
+    if use_epl_write:
+        block_size = fw_mgmt_features_reply.epl_block_size
+    else:
+        block_size = fw_mgmt_features_reply.lpl_block_size
     # Start the data block write loop
-    return await _write_data_block_loop(port, cdb_instance, firmware_file, firmware_header_size, erased_byte, use_epl_write, use_abort_for_failure)
+    return await _write_data_block_loop(port, cdb_instance, firmware_file, firmware_header_size, erased_byte, use_epl_write, use_abort_for_failure, block_size)
 
 
 ##################
 # Helper functions
 ##################
 
-async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmware_filename: str, firmware_header_size: int, erased_byte: int, use_epl_write: bool, use_abort_for_failure: bool) -> bool:
+async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmware_filename: str, firmware_header_size: int, erased_byte: int, use_epl_write: bool, use_abort_for_failure: bool, block_size: int) -> bool:
     """Write data block loop
 
     :param port: the port object
@@ -1073,17 +1078,17 @@ async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmwa
     :type use_epl_write: bool
     :param use_abort_for_failure: should the procedure use CMD 0102h Abort Firmware Download to abort the firmware download on failure.
     :type use_abort_for_failure: bool
+    :param block_size: size of the data block to write
+    :type block_size: int
     """
     if use_epl_write:
         write_func_map = {
-            "block_size": 2048,
             "write_cmd_func": cmd_0104h_write_firmware_block_epl_cmd,
             "write_reply_func": cmd_0104h_write_firmware_block_epl_reply,
             "description": "CMD 0104h: (Write Firmware Block EPL)"
         }
     else:
         write_func_map = {
-            "block_size": 116,
             "write_cmd_func": cmd_0103h_write_firmware_block_lpl_cmd,
             "write_reply_func": cmd_0103h_write_firmware_block_lpl_reply,
             "description": "CMD 0103h: (Write Firmware Block LPL)"
@@ -1109,7 +1114,7 @@ async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmwa
         addr = 0
         while True:
             # Read a block of firmware data
-            data_block = f.read(write_func_map["block_size"])
+            data_block = f.read(block_size)
             if not data_block:
                 print("EOF. No more data to read.")
                 break
