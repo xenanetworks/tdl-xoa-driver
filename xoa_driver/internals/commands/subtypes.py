@@ -96,11 +96,6 @@ class L1CGMIICodeword:
 
 @dataclass
 class L1CGMIICaptureSubscriptionType:
-    def __init__(self, enabled, trigger_type):
-        offset = max(L1CGMIICaptureTriggerType) + 1
-        self.enabled = enabled - offset if enabled >= offset else enabled + offset
-        self.trigger_type = trigger_type
-
     enabled: IsEnabled = field(XmpByte())
     """Indicates whether the Layer-1 CGMII capture subscription is enabled."""
 

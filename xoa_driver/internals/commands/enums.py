@@ -3741,20 +3741,14 @@ class L1EventLoggingType(IntEnum):
     LANE_CDR_LOCK = 17
     """SerDes lane CDR lock state change event."""
 
-    LANE_UNUSED = 18
-    """SerDes lane unused state change event. Reserved for future use."""
-
-    LANE_AN_SYNC = 19
+    LANE_AN_SYNC = 18
     """SerDes lane auto-negotiation DME sync acquired event."""
 
-    LANE_AN_QUIET = 20
+    LANE_AN_QUIET = 19
     """SerDes lane auto-negotiation quiet state event."""
 
-    LANE_LT_SYNC = 21
+    LANE_LT_SYNC = 20
     """SerDes lane link-training frame sync acquired event."""
-
-    LANE_UNUSED_2 = 22
-    """Reserved SerDes lane event type."""
 
 
 class L1EventLoggingCondition(IntEnum):
@@ -3797,37 +3791,37 @@ class L1CGMIICaptureMode(IntEnum):
 class L1CGMIICaptureTriggerType(IntEnum):
     """Layer-1 CGMII capture trigger types."""
 
-    FORCED = 0
+    FORCED = 2
     """Trigger on user forced trigger."""
 
-    DATAWORD = 1
+    DATAWORD = 3
     """Trigger on any(?) dataword. /D/."""
 
-    ERROR = 2
+    ERROR = 4
     """Trigger on any codeword error. /E/ (0xFE)."""
 
-    UEC = 3
+    UEC = 5
     """Trigger on any UEC related dataword. /K/ (0x5C)."""
 
-    RX_FCS_ERROR = 4
+    RX_FCS_ERROR = 6
     """Trigger on any Rx FCS error."""
 
-    START_OF_PACKET = 5
+    START_OF_PACKET = 7
     """Trigger on the start of a packet. /S/ (0xFB)."""
 
-    END_OF_PACKET = 6
+    END_OF_PACKET = 8
     """Trigger on the end of a packet. /T/ (0xFD)."""
 
-    LOW_POWER_IDLE = 7
+    LOW_POWER_IDLE = 9
     """Trigger on the low power idle state. /LI/ (0x06)."""
 
-    LOCAL_FAULT = 8
+    LOCAL_FAULT = 10
     """Trigger on the local fault state.."""
 
-    REMOTE_FAULT = 9
+    REMOTE_FAULT = 11
     """Trigger on the remote fault state.."""
 
-    CONF_UEC = 10
+    CONF_UEC = 12
     """Trigger on a configured UEC event."""
 
 
@@ -3854,6 +3848,7 @@ class L1CGMIICaptureUecMetric(IntEnum):
 
     CF_UPDATE_COUNT = 6
     """Credit count related metric (15 bit)."""
+
 
 class L1CGMIICaptureUecOperator(IntEnum):
     """Layer-1 CGMII capture UEC operators."""
