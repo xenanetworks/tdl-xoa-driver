@@ -33,7 +33,7 @@ from .enums import (
     OnOff,
     MACSecSCIMode,
     MACSecCipherSuite,
-    # MACSecVLANMode,
+    MACSecVLANMode,
     MACSecRekeyMode,
     MACSecEncryptionMode,
     MACSecPNMode,
@@ -64,7 +64,7 @@ class P_MACSEC_TXSC_CREATE:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
-    
+
 
 @register_command
 @dataclass
@@ -170,7 +170,7 @@ class P_MACSEC_TXSC_CONF_OFFSET:
         :type offset: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], offset=offset))
-    
+
 
 @register_command
 @dataclass
@@ -210,7 +210,7 @@ class P_MACSEC_TXSC_DESCR:
         :type description: str
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], description=description))
-    
+
 
 @register_command
 @dataclass
@@ -305,7 +305,7 @@ class P_MACSEC_TXSC_SCI:
         :type sci: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], sci=sci))
-    
+
 
 @register_command
 @dataclass
@@ -411,59 +411,64 @@ class P_MACSEC_TXSC_STARTING_PN:
         :type mode: MACSecPNMode
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], starting_pn=starting_pn, mode=mode))
-    
 
-# @register_command
-# @dataclass
-# class P_MACSEC_TXSC_VLAN_MODE:
-#     """
-#     The VLAN mode of the port’s TX SC.
-    
-#         * VLAN encrypted: The original MACsec header format encoded the 802.1Q tag as part of the encrypted payload, thus hiding it from the public Ethernet transport.
-        
-#         * VLAN in clear text (WAN MACsec): With 802.1Q tag in the clear, the 802.1Q tag is encoded outside the 802.1AE encryption header, exposing the tag to the private and public Ethernet transport.
 
-#     """
+@register_command
+@dataclass
+class P_MACSEC_TXSC_VLAN_MODE:
+    """
+    The VLAN mode of the port’s TX SC.
 
-#     code: typing.ClassVar[int] = 511
-#     pushed: typing.ClassVar[bool] = False
+        * ENCRYPTED: The original MACsec header format encodes the 802.1Q tag(s) as part of the encrypted payload, thus hiding them from the public Ethernet transport.
 
-#     _connection: 'interfaces.IConnection'
-#     _module: int
-#     _port: int
-#     _txsc_index: int
+        * CLEAR_TEXT_ONE_TAG / CLEAR_TEXT_TWO_TAG (WAN MACsec): One or two 802.1Q tags are kept in the clear, encoded outside the 802.1AE encryption header, exposing the tag(s) to the private and public Ethernet transport.
 
-#     class GetDataAttr(ResponseBodyStruct):
-#         mode: MACSecVLANMode = field(XmpByte())
-#         """integer, the VLAN mode. Default to ENCRYPTED."""
+    The VLAN mode cannot be changed while the TX SC is sending traffic.
+    """
 
-#     class SetDataAttr(RequestBodyStruct):
-#         mode: MACSecVLANMode = field(XmpByte())
-#         """integer, the VLAN mode. Default to ENCRYPTEDC."""
+    code: typing.ClassVar[int] = 552
+    pushed: typing.ClassVar[bool] = False
 
-#     def get(self) -> Token[GetDataAttr]:
-#         """Get the VLAN mode.
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+    _txsc_index: int
 
-#         :return: the VLAN mode.
-#         :rtype: P_MACSEC_TXSC_VLAN_MODE.GetDataAttr
-#         """
-#         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
+    class GetDataAttr(ResponseBodyStruct):
+        mode: MACSecVLANMode = field(XmpByte())
+        """byte, the VLAN mode. Default to ENCRYPTED."""
 
-#     def set(self, mode: MACSecVLANMode) -> Token[None]:
-#         """Set the VLAN mode.
+    class SetDataAttr(RequestBodyStruct):
+        mode: MACSecVLANMode = field(XmpByte())
+        """byte, the VLAN mode. Default to ENCRYPTED."""
 
-#         :param mode: the VLAN mode.
-#         :type mode: MACSecVLANMode
-#         """
-#         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], mode=mode))
-    
-#     set_encrypted = functools.partialmethod(set, MACSecVLANMode.ENCRYPTED)
-#     """Set VLAN mode to ENCRYPTED.
-#     """
+    def get(self) -> Token[GetDataAttr]:
+        """Get the VLAN mode of the port’s TX SC.
 
-#     set_clear_text = functools.partialmethod(set, MACSecVLANMode.CLEAR_TEXT)
-#     """Set VLAN mode to CLEAR_TEXT.
-#     """
+        :return: the VLAN mode of the port’s TX SC.
+        :rtype: P_MACSEC_TXSC_VLAN_MODE.GetDataAttr
+        """
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
+
+    def set(self, mode: MACSecVLANMode) -> Token[None]:
+        """Set the VLAN mode of the port’s TX SC.
+
+        :param mode: the VLAN mode.
+        :type mode: MACSecVLANMode
+        """
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], mode=mode))
+
+    set_encrypted = functools.partialmethod(set, MACSecVLANMode.ENCRYPTED)
+    """Set VLAN mode to ENCRYPTED.
+    """
+
+    set_clear_text_one_tag = functools.partialmethod(set, MACSecVLANMode.CLEAR_TEXT_ONE_TAG)
+    """Set VLAN mode to CLEAR_TEXT_ONE_TAG.
+    """
+
+    set_clear_text_two_tag = functools.partialmethod(set, MACSecVLANMode.CLEAR_TEXT_TWO_TAG)
+    """Set VLAN mode to CLEAR_TEXT_TWO_TAG.
+    """
 
 
 @register_command
@@ -550,7 +555,7 @@ class P_MACSEC_TXSC_ENCRYPT:
         :type mode: MACSecEncryptionMode
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], mode=mode))
-    
+
     set_encrypt_integrity = functools.partialmethod(set, MACSecEncryptionMode.ENCRYPT_INTEGRITY)
     """Set encryption mode to encryption and integrity.
     """
@@ -598,7 +603,7 @@ class P_MACSEC_TXSC_SAK_VALUE:
         :type sak_key_value: Hex
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index, self._sak_key_index], sak_key_value=sak_key_value))
-    
+
 
 @register_command
 @dataclass
@@ -638,7 +643,7 @@ class P_MACSEC_TXSC_XPN_SSCI:
         :type xpn_ssci: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], xpn_ssci=xpn_ssci))
-    
+
 
 @register_command
 @dataclass
@@ -678,7 +683,7 @@ class P_MACSEC_TXSC_XPN_SALT:
         :type xpn_salt: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], xpn_salt=xpn_salt))
-    
+
 
 @register_command
 @dataclass
@@ -703,7 +708,7 @@ class P_MACSEC_RXSC_CREATE:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
-    
+
 
 @register_command
 @dataclass
@@ -744,7 +749,7 @@ class P_MACSEC_RXSC_INDICES:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, rxsc_indices=rxsc_indices))
-    
+
 
 @register_command
 @dataclass
@@ -767,9 +772,9 @@ class P_MACSEC_RXSC_DELETE:
     def set(self) -> Token[None]:
         """Delete a RX Secure Channel (SC) on the port.
         """
-        
+
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
-    
+
 
 @register_command
 @dataclass
@@ -809,7 +814,7 @@ class P_MACSEC_RXSC_DESCR:
         :type description: str
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], description=description))
-    
+
 
 @register_command
 @dataclass
@@ -849,7 +854,7 @@ class P_MACSEC_RXSC_SCI:
         :type sci: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], sci=sci))
-    
+
 
 @register_command
 @dataclass
@@ -889,7 +894,7 @@ class P_MACSEC_RXSC_CONF_OFFSET:
         :type offset: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], offset=offset))
-    
+
 
 @register_command
 @dataclass
@@ -1027,7 +1032,7 @@ class P_MACSEC_RXSC_TPLDID:
         :type tpld_id: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], tpld_id=tpld_id))
-    
+
 
 @register_command
 @dataclass
@@ -1068,7 +1073,7 @@ class P_MACSEC_RXSC_SAK_VALUE:
         :type sak_key_value: Hex
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index, self._sak_key_index], sak_key_value=sak_key_value))
-    
+
 
 @register_command
 @dataclass
@@ -1108,7 +1113,7 @@ class P_MACSEC_RXSC_XPN_SSCI:
         :type xpn_ssci: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], xpn_ssci=xpn_ssci))
-    
+
 
 @register_command
 @dataclass
@@ -1195,7 +1200,7 @@ class P_MACSEC_TX_STATS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
-    
+
 
 @register_command
 @dataclass
@@ -1243,7 +1248,7 @@ class P_MACSEC_TXSC_STATS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._txsc_index]))
-    
+
 
 @register_command
 @dataclass
@@ -1267,7 +1272,7 @@ class P_MACSEC_TX_CLEAR:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port))
-    
+
 
 
 @register_command
@@ -1359,7 +1364,7 @@ class P_MACSEC_RXSC_STATS:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
-    
+
 
 @register_command
 @dataclass
@@ -1383,7 +1388,7 @@ class P_MACSEC_RX_CLEAR:
         """
 
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port))
-    
+
 
 @register_command
 @dataclass
@@ -1461,7 +1466,7 @@ class P_MACSEC_RXSC_AN:
         """
 
         return Token(self._connection, build_get_request(self, module=self._module, port=self._port, indices=[self._rxsc_index]))
-    
+
 
 @register_command
 @dataclass
@@ -1502,7 +1507,7 @@ class P_MACSEC_RXSC_NEXT_PN:
         :type value: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._rxsc_index], value=value))
-    
+
 
 @register_command
 @dataclass
@@ -1529,7 +1534,7 @@ class P_MACSEC_TXSC_NEXT_PN:
     def get(self) -> Token[GetDataAttr]:
         """Get the next PN number of the port’s TX SC expects to receive
 
-        NextPN is a monotonically incrementing 32 or 64 bit counter that is never zero. 
+        NextPN is a monotonically incrementing 32 or 64 bit counter that is never zero.
 
         :return: the next PN number of the port’s TX SC expects to receive
         :rtype: P_MACSEC_TXSC_NEXT_PN.GetDataAttr
@@ -1539,13 +1544,13 @@ class P_MACSEC_TXSC_NEXT_PN:
     def set(self, next_pn: int) -> Token[None]:
         """Set the next PN number of the port’s TX SC expects to receive
 
-        NextPN is a monotonically incrementing 32 or 64 bit counter that is never zero. 
+        NextPN is a monotonically incrementing 32 or 64 bit counter that is never zero.
 
         :param next_pn: The next PN number of the port’s TX SC expects to receive. Default to 1, maximum 2^64.
         :type next_pn: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], next_pn=next_pn))
-    
+
 
 
 @register_command
@@ -1569,7 +1574,7 @@ class P_MACSEC_RXSC_PN:
 
     def get(self) -> Token[GetDataAttr]:
         """Get RX SC's next PN
-        
+
         :return: RX SC's next PN
         :rtype: P_MACSEC_RXSC_PN.GetDataAttr
         """
@@ -1599,7 +1604,7 @@ class P_MACSEC_TXSC_NEXT_AN:
     class SetDataAttr(RequestBodyStruct):
         next_an: int = field(XmpInt())
         """integer, The next AN number of the port’s TX SC expects to receive.  Allowed to be 0."""
-    
+
     def get(self) -> Token[GetDataAttr]:
         """Get the next AN number of the port’s TX SC expects to receive
 
@@ -1611,7 +1616,7 @@ class P_MACSEC_TXSC_NEXT_AN:
     def set(self, next_an: int) -> Token[None]:
         """Set the next AN number of the port’s TX SC expects to receive
 
-        :param next_an: The next AN number of the port’s TX SC expects to receive. 
+        :param next_an: The next AN number of the port’s TX SC expects to receive.
         :type next_an: int
         """
         return Token(self._connection, build_set_request(self, module=self._module, port=self._port, indices=[self._txsc_index], next_an=next_an))
@@ -1629,6 +1634,7 @@ __all__ = [
     "P_MACSEC_TXSC_SCI",
     "P_MACSEC_TXSC_CIPHERSUITE",
     "P_MACSEC_TXSC_STARTING_PN",
+    "P_MACSEC_TXSC_VLAN_MODE",
     "P_MACSEC_TXSC_REKEY_MODE",
     "P_MACSEC_TXSC_ENCRYPT",
     "P_MACSEC_TXSC_SAK_VALUE",
