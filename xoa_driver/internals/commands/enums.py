@@ -3336,14 +3336,17 @@ class MACSecCipherSuite(IntEnum):
     """GCM-AES-XPN-256 (IEEE 802.1AE-2018 Clause 14.8)"""
 
 
-# class MACSecVLANMode(IntEnum):
-#     """MACSec SCI Mode"""
+class MACSecVLANMode(IntEnum):
+    """MACSec SCI Mode"""
 
-#     ENCRYPTED = 0
-#     """MACsec encryption starts after the MAC address fields."""
+    ENCRYPTED = 0
+    """MACsec encryption starts after the MAC address fields."""
 
-#     CLEAR_TEXT = 1
-#     """Clear-text VLAN (802.1Q). MACsec encryption will leave the first VLAN field out of the MACsec protocol data unit."""
+    CLEAR_TEXT_ONE_TAG = 1
+    """Clear-text VLAN (802.1Q). MACsec encryption will leave the first VLAN field out of the MACsec protocol data unit."""
+
+    CLEAR_TEXT_TWO_TAG = 2
+    """Clear-text VLAN (802.1Q). MACsec encryption will leave the first two VLAN fields out of the MACsec protocol data unit."""
 
 
 class MACSecRekeyMode(IntEnum):
