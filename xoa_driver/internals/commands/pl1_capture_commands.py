@@ -728,7 +728,7 @@ class PL1_CGMII_CAPTURE_UEC_CONFIG:
         filter: L1CGMIICaptureUecFilter = field(XmpByte())
         """Layer-1 CGMII capture UEC filter. Indicates the filter applied for the UEC metric."""
 
-        vc_index: int = field(XmpInt(signed=False))
+        vc_index: int = field(XmpByte(signed=False))
         """Layer-1 CGMII capture UEC virtual channel index. Indicates the VC index used for the UEC metric."""
 
     def get(self) -> Token[GetDataAttr]:
@@ -755,7 +755,7 @@ class PL1_CGMII_CAPTURE_UEC_CONFIG:
         filter: L1CGMIICaptureUecFilter = field(XmpByte())
         """Set the UEC filter for the Layer-1 CGMII capture feature."""
 
-        vc_index: int = field(XmpInt(signed=False))
+        vc_index: int = field(XmpByte(signed=False))
         """Set the UEC virtual channel index for the Layer-1 CGMII capture feature."""
 
     def set(self, metric: L1CGMIICaptureUecMetric, operator: L1CGMIICaptureUecOperator, threshold: int = 0, filter: L1CGMIICaptureUecFilter = L1CGMIICaptureUecFilter.NONE, vc_index: int = 0) -> Token[None]:
