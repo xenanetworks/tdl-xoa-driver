@@ -3834,7 +3834,7 @@ class L1CGMIICaptureUecMetric(IntEnum):
     NONE = 0
     """No UEC metric, use operator NOP."""
 
-    DISTANCE = 1
+    CTLOS_DISTANCE = 1
     """Codewords since the previous matching CtlOS."""
 
     SOP_CTLOS_DISTANCE = 2

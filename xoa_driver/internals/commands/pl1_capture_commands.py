@@ -704,7 +704,7 @@ class PL1_CGMII_CAPTURE_CONFIG:
 @dataclass
 class PL1_CGMII_CAPTURE_UEC_CONFIG:
     """
-    Layer-1 CGMII capture mode. It is used to get or set the mode of the Layer-1 CGMII capture feature.
+    Layer-1 CGMII capture UEC trigger configuration. It is used to get or set the metric, operator, threshold, filter and virtual channel index evaluated by the configurable UEC (CONF_UEC) capture trigger.
     """
 
     code: typing.ClassVar[int] = 1312
@@ -732,9 +732,9 @@ class PL1_CGMII_CAPTURE_UEC_CONFIG:
         """Layer-1 CGMII capture UEC virtual channel index. Indicates the VC index used for the UEC metric."""
 
     def get(self) -> Token[GetDataAttr]:
-        """Returns the Layer-1 CGMII capture mode.
+        """Returns the Layer-1 CGMII capture UEC trigger configuration.
 
-        :return: Layer-1 CGMII capture mode
+        :return: metric, operator, threshold, filter and virtual channel index of the UEC trigger
         :rtype: PL1_CGMII_CAPTURE_UEC_CONFIG.GetDataAttr
         """
 
@@ -759,17 +759,17 @@ class PL1_CGMII_CAPTURE_UEC_CONFIG:
         """Set the UEC virtual channel index for the Layer-1 CGMII capture feature."""
 
     def set(self, metric: L1CGMIICaptureUecMetric, operator: L1CGMIICaptureUecOperator, threshold: int = 0, filter: L1CGMIICaptureUecFilter = L1CGMIICaptureUecFilter.NONE, vc_index: int = 0) -> Token[None]:
-        """Set the Layer-1 CGMII capture mode.
+        """Set the Layer-1 CGMII capture UEC trigger configuration.
 
         :param metric: Layer-1 CGMII capture UEC metric.
         :type metric: L1CGMIICaptureUecMetric
         :param operator: Layer-1 CGMII capture UEC operator.
         :type operator: L1CGMIICaptureUecOperator
-        :param threshold: Layer-1 CGMII capture UEC threshold.
+        :param threshold: Layer-1 CGMII capture UEC threshold. Its maximum depends on the metric: 16 bits for CTLOS_DISTANCE, SOP_CTLOS_DISTANCE, INFRAME_CTLOS_DISTANCE and LLR_DATA, 20 bits for LLR_SEQ and 15 bits for CF_UPDATE_COUNT.
         :type threshold: int
         :param filter: Layer-1 CGMII capture UEC filter.
         :type filter: L1CGMIICaptureUecFilter
-        :param vc_index: Layer-1 CGMII capture UEC virtual channel index.
+        :param vc_index: Layer-1 CGMII capture UEC virtual channel index, 0 to 31. Only used by the CF_UPDATE_COUNT metric.
         :type vc_index: int
         """
 
