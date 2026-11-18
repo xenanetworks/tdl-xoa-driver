@@ -1,5 +1,6 @@
 import typing
 from xoa_driver import ports
+from xoa_driver.internals.hli.modules.modules_l23.module_config.module_type import ExtendedToken
 from xoa_driver.internals.hli import revisions
 from xoa_driver.internals.utils.managers import ports_manager as pm
 
@@ -15,9 +16,26 @@ if typing.TYPE_CHECKING:
     from xoa_driver.internals.core import interfaces as itf
     from ... import __interfaces as m_itf
 
+class _TopologyAwareActivate:
+    def __init__(self, conn, module):
+        self._command = M_SOLUTION_TRACK_ACTIVATE(conn, module.module_id)
+        self._module = module
+
+    def get(self):
+        return self._command.get()
+
+    def set(self, st):
+        return ExtendedToken(
+            self._command.set(st=st),
+            self._module,
+            force_ports_refresh=True,
+        )
+    
 class MSolutionTrack:
     """Test module solution track"""
-    def __init__(self, conn: "itf.IConnection", module_id: int) -> None:
+    def __init__(self, conn: "itf.IConnection", module) -> None:
+        module_id = module.module_id
+
         self.install = M_SOLUTION_TRACK_INSTALL(conn, module_id)
         """Install a solution track key.
 
@@ -36,7 +54,7 @@ class MSolutionTrack:
         :type: M_SOLUTION_TRACK_DEMO_EXP
         """
 
-        self.activate = M_SOLUTION_TRACK_ACTIVATE(conn, module_id)
+        self.activate = _TopologyAwareActivate(conn, module)
         """Activate the solution track.
 
         :type: M_SOLUTION_TRACK_ACTIVATE
