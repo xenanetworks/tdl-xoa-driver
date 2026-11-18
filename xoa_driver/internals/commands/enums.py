@@ -3804,7 +3804,7 @@ class L1CGMIICaptureTriggerType(IntEnum):
     """Trigger on any codeword error. /E/ (0xFE)."""
 
     UEC = 5
-    """Trigger on any UEC related dataword. /K/ (0x5C)."""
+    """Trigger on any UEC CtlOS (control ordered set). /C/ (0x5C)."""
 
     RX_FCS_ERROR = 6
     """Trigger on any Rx FCS error."""

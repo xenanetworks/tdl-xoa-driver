@@ -146,6 +146,8 @@ class L1CGMIICapture:
     def cgmii_codeword_str(self, cgmii_codeword: L1CGMIICodeword):
         """
         Generate a string representation of the 8 bytes in a CGMII codeword.
+
+        There is one symbol per byte, starting with lane 0, which is the most significant byte of the data.
         """
         def ctrlsymbol(c):
             if c == 0x07:
@@ -159,12 +161,14 @@ class L1CGMIICapture:
             if c == 0x9C:
                 return "Q"  # Sequence
             if c == 0x5C:
-                return "C"  # UEC CtLOS
+                return "C"  # UEC CtlOS (an IEEE signal ordered set also uses 0x5C; the O-code is not checked)
+            if c == 0x06:
+                return "i"  # Low Power Idle (LPI)
             return "K"      # Other control
 
         def datasymbol(b):
             if b == 0x55:
-                return "P"  # preamble
+                return "P"  # preamble (UEC LLR-eligible frames carry the sequence number in bytes 1-3)
             if b == 0xD5:
                 return "F"  # SFD
             return "D"      # payload/data
