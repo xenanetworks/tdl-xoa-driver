@@ -88,7 +88,7 @@ class ModuleFamilyFreya(ModuleL23):
         self.health = MHealth(conn, self.module_id)
         """Module health information"""
         
-        self.solution_track = MSolutionTrack(conn, self.module_id)
+        self.solution_track = MSolutionTrack(conn, self)
         """Module solution track control"""
         
         self.supported_configs_ext = M_MEDIASUPPORTEXT(conn, self.module_id)

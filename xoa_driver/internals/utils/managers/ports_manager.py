@@ -55,8 +55,8 @@ class PortsManager(PortBaseManager[PT]):
         self._ports_count = 0
         self.reinit(ports_count)
 
-    def reinit(self, ports_count: int) -> bool:
-        if ports_count == self._ports_count:
+    def reinit(self, ports_count: int, *, force: bool = False) -> bool:
+        if ports_count == self._ports_count and not force:
             return False
         
         if self._items:
@@ -114,6 +114,6 @@ class PortsCombiManager(PortBaseManager[PT]):
         self._items = cast(
             OrderedDict[int, PT],
             OrderedDict(
-                (port.kind.port_id, port) for port in ports
+                (port.identity.port_id, port) for port in ports
             )
         )
