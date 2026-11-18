@@ -45,7 +45,7 @@ class SerDesThor:
 
 class Layer1:
     def __init__(self, conn: "itf.IConnection", port: "FamilyThor") -> None:
-        module_id, port_id = port.kind
+        module_id, port_id = port.identity
         self.serdes: Tuple[SerDesThor, ...] = tuple(
                 SerDesThor(conn, module_id, port_id, serdes_xindex=idx)
                 for idx in range(port.info.capabilities.serdes_count)

@@ -218,7 +218,7 @@ class BaseMacSecTxScIdx(BaseIndex):
         :type: P_MACSEC_TXSC_DELETE
         """
 
-        await P_MACSEC_TXSC_DELETE(self._conn, *self.kind).set()
+        await P_MACSEC_TXSC_DELETE(self._conn, *self.identity).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod
@@ -249,7 +249,7 @@ class BaseMacSecRxScIdx(BaseIndex):
         :type: P_MACSEC_RXSC_DELETE
         """
 
-        await P_MACSEC_RXSC_DELETE(self._conn, *self.kind).set()
+        await P_MACSEC_RXSC_DELETE(self._conn, *self.identity).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

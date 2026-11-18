@@ -20,8 +20,8 @@ async def save_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     tester_ip = tester.info.host
     resp = await tester.password.get()
     tester_password = resp.password
-    port_index = f"{port.kind.module_id}/{port.kind.port_id}"
-    module = tester.modules.obtain(port.kind.module_id)
+    port_index = f"{port.identity.module_id}/{port.identity.port_id}"
+    module = tester.modules.obtain(port.identity.module_id)
     
     # Connect to the tester on tcp port 22611
     xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error)
@@ -69,7 +69,7 @@ async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     tester_ip = tester.info.host
     resp = await tester.password.get()
     tester_password = resp.password
-    port_index = f"{port.kind.module_id}/{port.kind.port_id}"
+    port_index = f"{port.identity.module_id}/{port.identity.port_id}"
     
     # Connect to the tester on tcp port 22611
     xm = XOACLIManager(host=tester_ip, debug=debug, halt_on_error=halt_on_error)
@@ -92,6 +92,7 @@ async def load_port_config(tester: testers.L23Tester, port: ports.GenericL23Port
     cli_cmds = config_block.commands
     for cmd in cli_cmds:
         if cmd.strip():  # Ensure the command is not empty
+            #resp = xm.send_wait(cmd=f"{port_index} {cmd}", wait_gap=0.05)
             resp = xm.send(cmd=f"{port_index} {cmd}", sync_on=False)
             result.append((resp, f"{port_index} {cmd}"))
 

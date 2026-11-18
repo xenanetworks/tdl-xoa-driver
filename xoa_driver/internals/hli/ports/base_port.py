@@ -115,8 +115,8 @@ class BasePort(ABC, Generic[PortStateStorage]):
 
     def _check_identity(self, request) -> bool:
         validators = (
-            self.kind.module_id == request.header.module_index,
-            self.kind.port_id == request.header.port_index
+            self.identity.module_id == request.header.module_index,
+            self.identity.port_id == request.header.port_index
         )
         return all(validators)
 

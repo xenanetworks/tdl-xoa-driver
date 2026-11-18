@@ -389,7 +389,7 @@ class BaseStreamIdx(BaseIndex):
         :type: PS_DELETE
         """
 
-        await PS_DELETE(self._conn, *self.kind).set()
+        await PS_DELETE(self._conn, *self.identity).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

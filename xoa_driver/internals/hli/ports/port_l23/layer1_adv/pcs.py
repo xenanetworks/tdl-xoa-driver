@@ -185,7 +185,7 @@ class PcsLayerAdv:
     def __init__(self, conn: "itf.IConnection", port: "FamilyFreya | FamilyEdun") -> None:
         self._conn = conn
         self.__port = port
-        module_id, port_id = port.kind
+        module_id, port_id = port.identity
 
         self.lane: Tuple["PcsLaneAdv", ...] = tuple(
             PcsLaneAdv(self._conn, module_id, port_id, lane_idx=idx)
