@@ -57,7 +57,7 @@ class PortDatasetIdx(BaseIndex):
         :type: PD_ENABLE
         """
 
-        await PD_DELETE(self._conn, *self.kind).set()
+        await PD_DELETE(self._conn, *self.identity).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

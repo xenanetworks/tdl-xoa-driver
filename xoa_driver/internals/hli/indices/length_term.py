@@ -35,7 +35,7 @@ class LengthTermIdx(BaseIndex):
         :type: PL_DELETE
         """
 
-        await PL_DELETE(self._conn, *self.kind).set()
+        await PL_DELETE(self._conn, *self.identity).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

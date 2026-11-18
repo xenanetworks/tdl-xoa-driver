@@ -60,7 +60,7 @@ class EdunPcsLayer(PcsLayer):
     """
 
     def __init__(self, conn: "itf.IConnection", port: "FamilyEdun") -> None:
-        module_id, port_id = port.kind
+        module_id, port_id = port.identity
         PcsLayer.__init__(self, conn, port)
     
         self.variant = PL1_PCS_VARIANT(conn, module_id, port_id)
@@ -73,7 +73,7 @@ class EdunPcsLayer(PcsLayer):
 
 class Layer1:
     def __init__(self, conn: "itf.IConnection", port: "FamilyEdun") -> None:
-        module_id, port_id = port.kind
+        module_id, port_id = port.identity
         self.serdes: Tuple[SerDesEdun, ...] = tuple(
                 SerDesEdun(conn, module_id, port_id, serdes_xindex=idx)
                 for idx in range(port.info.capabilities.serdes_count)

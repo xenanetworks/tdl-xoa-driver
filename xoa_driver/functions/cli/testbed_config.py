@@ -26,7 +26,7 @@ async def save_testbed_config(tester: testers.L23Tester, ports: List[ports.Gener
     modules_list: List[modules.GenericL23Module] = []
     if with_module_config:
         for port in ports:
-            module = tester.modules.obtain(port.kind.module_id)
+            module = tester.modules.obtain(port.identity.module_id)
             if module not in modules_list:
                 if not isinstance(module, modules.E100ChimeraModule):
                     modules_list.append(module)
@@ -70,8 +70,8 @@ async def save_testbed_config(tester: testers.L23Tester, ports: List[ports.Gener
         result += "\n" + ";\n" + module_config_block.config_block_str
 
     for port in ports:
-        port_index = f"{port.kind.module_id}/{port.kind.port_id}"
-        module = tester.modules.obtain(port.kind.module_id)
+        port_index = f"{port.identity.module_id}/{port.identity.port_id}"
+        module = tester.modules.obtain(port.identity.module_id)
         raw_resp = xm.get_port_full_config_raw(port_index)
 
         # Create config block

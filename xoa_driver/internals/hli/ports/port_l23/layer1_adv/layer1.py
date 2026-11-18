@@ -57,7 +57,7 @@ class SerdesAdv:
 
 class Layer1Adv:
     def __init__(self, conn: "itf.IConnection", port: "FamilyFreya | FamilyEdun") -> None:
-        module_id, port_id = port.kind
+        module_id, port_id = port.identity
 
         self.serdes: Tuple["SerdesAdv", ...] = tuple(
             SerdesAdv(conn, module_id, port_id, serdes_idx=idx)

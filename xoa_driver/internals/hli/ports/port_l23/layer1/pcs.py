@@ -179,7 +179,7 @@ class PcsLayer:
     def __init__(self, conn: "itf.IConnection", port: "Union[FamilyLoki, FamilyThor, FamilyFreya, FamilyEdun, FamilyLoki2, FamilyThor2]") -> None:
         self._conn = conn
         self.__port = port
-        module_id, port_id = port.kind
+        module_id, port_id = port.identity
 
         self.alarms = PcsAlarms(conn, module_id, port_id)
         """PCS alarms

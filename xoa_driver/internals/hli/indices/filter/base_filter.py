@@ -51,7 +51,7 @@ class BaseFilterIdx(BaseIndex):
         :type:  PF_DELETE
         """
 
-        await PF_DELETE(self._conn, *self.kind).set()
+        await PF_DELETE(self._conn, *self.identity).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

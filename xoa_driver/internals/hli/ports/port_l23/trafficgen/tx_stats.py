@@ -70,7 +70,7 @@ class PortTxStats:
         :rtype: PT_STREAM
         """
 
-        stream_idx = stream if isinstance(stream, int) else stream.kind.index_id
+        stream_idx = stream if isinstance(stream, int) else stream.identity.index_id
         return PT_STREAM(
             self.__conn,
             self.__module_id,
@@ -87,7 +87,7 @@ class PortTxStats:
         :rtype: PT_STREAMEXT
         """
 
-        stream_idx = stream if isinstance(stream, int) else stream.kind.index_id
+        stream_idx = stream if isinstance(stream, int) else stream.identity.index_id
         return PT_STREAMEXT(
             self.__conn,
             self.__module_id,

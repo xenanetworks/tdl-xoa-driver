@@ -18,21 +18,21 @@ class NotConnectedError(ConfigError):
 
 class NotSupportPcsPmaError(ConfigError):
     def __init__(self, port: GenericAnyPort) -> None:
-        module_id, port_id = port.kind.module_id, port.kind.port_id
+        module_id, port_id = port.identity.module_id, port.identity.port_id
         self.msg = f"This port {module_id}/{port_id} does not support pcs_pma!"
         super().__init__(self.msg)
 
 
 class NotSupportAutoNegError(ConfigError):
     def __init__(self, port: GenericAnyPort) -> None:
-        module_id, port_id = port.kind.module_id, port.kind.port_id
+        module_id, port_id = port.identity.module_id, port.identity.port_id
         self.msg = f"This port {module_id}/{port_id} does not support auto negotiation!"
         super().__init__(self.msg)
 
 
 class NotSupportLinkTrainError(ConfigError):
     def __init__(self, port: GenericAnyPort) -> None:
-        module_id, port_id = port.kind.module_id, port.kind.port_id
+        module_id, port_id = port.identity.module_id, port.identity.port_id
         self.msg = f"This port {module_id}/{port_id} does not support link training!"
         super().__init__(self.msg)
 

@@ -49,7 +49,7 @@ class Thor2PcsLayer(PcsLayer):
     """
 
     def __init__(self, conn: "itf.IConnection", port: "FamilyThor2") -> None:
-        module_id, port_id = port.kind
+        module_id, port_id = port.identity
         PcsLayer.__init__(self, conn, port)
     
         self.variant = PL1_PCS_VARIANT(conn, module_id, port_id)
@@ -63,7 +63,7 @@ class Thor2PcsLayer(PcsLayer):
 
 class Layer1:
     def __init__(self, conn: "itf.IConnection", port: "FamilyThor2") -> None:
-        module_id, port_id = port.kind
+        module_id, port_id = port.identity
         self.serdes: Tuple[SerDesThor, ...] = tuple(
                 SerDesThor(conn, module_id, port_id, serdes_xindex=idx)
                 for idx in range(port.info.capabilities.serdes_count)
