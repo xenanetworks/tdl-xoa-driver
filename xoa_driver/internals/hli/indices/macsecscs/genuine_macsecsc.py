@@ -38,9 +38,9 @@ class GenuineMacSecTxScIdx(BaseMacSecTxScIdx):
 
         return P_MACSEC_TXSC_SAK_VALUE(
             self._conn,
-            self.kind.module_id,
-            self.kind.port_id,
-            self.kind.index_id,
+            self.identity.module_id,
+            self.identity.port_id,
+            self.identity.index_id,
             sak_index
         )
 
@@ -65,8 +65,8 @@ class GenuineMacSecRxScIdx(BaseMacSecRxScIdx):
 
         return P_MACSEC_RXSC_SAK_VALUE(
             self._conn,
-            self.kind.module_id,
-            self.kind.port_id,
-            self.kind.index_id,
+            self.identity.module_id,
+            self.identity.port_id,
+            self.identity.index_id,
             sak_index
         )

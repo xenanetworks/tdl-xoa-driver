@@ -48,10 +48,11 @@ if typing.TYPE_CHECKING:
 
 class ExtendedToken:
     def __init__(
-        self, token: Token, module: typing.Union["ModuleL23", "ModuleChimera"]
+        self, token: Token, module: typing.Union["ModuleL23", "ModuleChimera"], *, force_ports_refresh: bool = False
     ) -> None:
         self.__token = token
         self.__module = module
+        self.__force_ports_refresh = force_ports_refresh
 
     def __await__(self):
         return self.__ask_then().__await__()
@@ -60,7 +61,7 @@ class ExtendedToken:
         r = await self.__token
         p_counts = (await self.__module.port_count.get()).port_count
         if self.__module.ports is not None:
-            changed = self.__module.ports.reinit(p_counts)
+            changed = self.__module.ports.reinit(p_counts, force=self.__force_ports_refresh)
             if changed:
                 await self.__module.ports.fill()
         return r

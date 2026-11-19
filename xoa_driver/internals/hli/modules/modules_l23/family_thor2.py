@@ -28,7 +28,7 @@ class ModuleFamilyThor2(ModuleL23):
     def __init__(self, conn: "itf.IConnection", init_data: "m_itf.ModuleInitData") -> None:
         super().__init__(conn, init_data)
         
-        self.solution_track = MSolutionTrack(conn, self.module_id)
+        self.solution_track = MSolutionTrack(conn, self)
         """Module solution track control"""
         
     on_solution_track_activation = functools.partialmethod(utils.on_event, M_SOLUTION_TRACK_ACTIVATE)

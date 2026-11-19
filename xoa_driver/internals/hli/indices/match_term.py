@@ -51,7 +51,7 @@ class MatchTermIdx(BaseIndex):
         :type: PM_DELETE
         """
 
-        await PM_DELETE(self._conn, *self.kind).set()
+        await PM_DELETE(self._conn, *self.identity).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod

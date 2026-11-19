@@ -13,7 +13,7 @@ from xoa_driver import enums
 
 
 def get_ctx(port: GenericAnyPort) -> tuple["itf.IConnection", int, int]:
-    module_id, port_id = port.kind  # Explicitly unpack to two ints
+    module_id, port_id = port.identity  # Explicitly unpack to two ints
     return (port._conn, module_id, port_id)
 
 

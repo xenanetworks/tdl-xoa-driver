@@ -172,7 +172,7 @@ class ConnectionGroupIdx(BaseIndex):
     async def delete(self):
         """Delete the Connection Group.
         """
-        await P4G_DELETE(self._conn, *self.kind).set()
+        await P4G_DELETE(self._conn, *self.identity).set()
         self._observer.notify(idx_obs.IndexEvents.DEL, self)
 
     @classmethod
