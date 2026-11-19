@@ -101,3 +101,35 @@ class L1CGMIICaptureSubscriptionType:
 
     trigger_type: L1CGMIICaptureTriggerType = field(XmpByte())
     """The type of the Layer-1 CGMII capture trigger."""
+
+_CGMII_CONTROL_SYMBOLS = {0x07: 'I', 0x06: 'LI', 0xFB: 'S', 0xFD: 'T', 0xFE: 'E', 0x9C: 'Q', 0x5C: 'C'}
+
+def cgmii_codeword_str(codeword: L1CGMIICodeword, sep: str = "", traditional=False) -> str:
+    """Show the 8 lanes of a CGMII codeword by symbol name, lane 0 (the most significant byte of ``data``) first.
+
+    Control characters are /I/ idle, /LI/ low power idle, /S/ start, /T/ terminate, /E/ error,
+    /Q/ sequence ordered set and /C/ UEC CtlOS. Any other control character shows its value, e.g. /0x1C/.
+    Data is /D/, except 0x55 and 0xD5 after an /S/ in the same codeword, which are /P/ (preamble) and /F/ (SFD).
+
+    :param codeword: the CGMII codeword
+    :type codeword: L1CGMIICodeword
+    :param sep: the text between the symbols
+    :type sep: str
+    :return: the symbols, e.g. ``SPPPPPPF``
+    :rtype: str
+    """
+    symbols = []
+    after_start = False
+    for lane in range(8):
+        byte = (codeword.data >> (56 - 8 * lane)) & 0xFF
+        if (codeword.ctrl >> (7 - lane)) & 1:
+            symbol = _CGMII_CONTROL_SYMBOLS.get(byte, f'0x{byte:02X}')
+            after_start = byte == 0xFB
+        elif after_start and byte == 0x55:
+            symbol = 'P'
+        elif after_start and byte == 0xD5:
+            symbol = 'F'
+        else:
+            symbol = 'D'
+        symbols.append(f'/{symbol}/' if traditional else symbol)
+    return sep.join(symbols)
