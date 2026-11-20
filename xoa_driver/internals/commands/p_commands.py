@@ -681,15 +681,18 @@ class P_CAPABILITIES:
 
         max_l1_event_logging_rsfec_threshold: int = field(XmpInt(), min_version=485)
         """Maximum supported RS-FEC event logging threshold."""
-        
+
         max_l1_cgmii_capture_size: int = field(XmpInt(), min_version=486)
         """Maximum number of CGMII Codewords that can be captured."""
-    
+
         l1_cgmii_capture_ring_elem_size_in_cw: int = field(XmpInt(), min_version=487)
         """The number of L1 CGMII capture codewords in a ring element."""
 
-        no_l1_event_logging_trigger_types: int = field(XmpInt(), min_version=487)
+        l1_event_logging_trigger_types_count: int = field(XmpInt(), min_version=487)
         """The number of L1 event logging trigger types supported."""
+
+        max_traffic_rate_mbps: int = field(XmpInt(), min_version=487)
+        """Normally == port speed, unless e.g. MACSec limits the rate the TGA can handle."""
 
     def get(self) -> Token[P_CAPABILITIES.GetDataAttr]:
         """Get the internal limits, aka. capabilities, of the port.
