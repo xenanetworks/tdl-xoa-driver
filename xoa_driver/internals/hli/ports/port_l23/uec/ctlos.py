@@ -9,6 +9,7 @@ from xoa_driver.internals.commands import (
     P_UE_CTLOS_RX_STATS,
     P_UE_CTLOS_TX_STATS,
     P_UE_CTLOS_SPACING,
+    P_UE_CTLOS_OCODE,
     P_UE_CTLOS_RX_ERRORS,
 )
 
@@ -21,6 +22,12 @@ class UecCtlOsConfig:
         """UE CtlOS spacing configuration.
 
         :type: P_UE_CTLOS_SPACING
+        """
+
+        self.ocode = P_UE_CTLOS_OCODE(conn, module_id, port_id)
+        """UE CtlOS O-code configuration.
+
+        :type: P_UE_CTLOS_OCODE
         """
         
 class UecCtlOsStats:

@@ -594,6 +594,52 @@ class P_UE_CTLOS_SPACING:
 
 @register_command
 @dataclass
+class P_UE_CTLOS_OCODE:
+    """
+    Configures the O-code of the UEC CtlOS (Control Ordered Set) of the port.
+
+    As defined in UEC 1.0 Section 6.2, the UE Control Ordered Set uses a value of 0x6 on D4[3:0] at the
+    MII interface. During 64B/66B PCS encoding, this value is mapped to the O-code value 0x6, which is
+    the default. The O-code is user-configurable, but 0x0 is rejected: it is the O-code of the IEEE
+    Sequence Ordered Set, which the hardware cannot tell from a CtlOS.
+    """
+
+    code: typing.ClassVar[int] = 1052
+    pushed: typing.ClassVar[bool] = False
+
+    _connection: 'interfaces.IConnection'
+    _module: int
+    _port: int
+
+    class GetDataAttr(ResponseBodyStruct):
+        o_code: Hex = field(XmpHex(size=1))
+        """one hex byte, the O-code of the UEC CtlOS."""
+
+    class SetDataAttr(RequestBodyStruct):
+        o_code: Hex = field(XmpHex(size=1))
+        """one hex byte, the O-code of the UEC CtlOS. Range 0x01 to 0x0F, default 0x06."""
+
+    def get(self) -> Token[GetDataAttr]:
+        """Get the O-code of the UEC CtlOS of the port.
+
+        :return: the O-code of the UEC CtlOS of the port
+        :rtype: P_UE_CTLOS_OCODE.GetDataAttr
+        """
+
+        return Token(self._connection, build_get_request(self, module=self._module, port=self._port))
+
+    def set(self, o_code: Hex) -> Token[None]:
+        """Set the O-code of the UEC CtlOS of the port.
+
+        :param o_code: the O-code of the UEC CtlOS, 0x01 to 0x0F, default 0x06
+        :type o_code: Hex
+        """
+
+        return Token(self._connection, build_set_request(self, module=self._module, port=self._port, o_code=o_code))
+
+
+@register_command
+@dataclass
 class P_UE_LLR_REPLAY:
     """
     Configures the LLR replay parameters of the port.
@@ -2237,6 +2283,7 @@ __all__ = [
     "P_UE_CTLOS_RX_STATS",
     "P_UE_CTLOS_TX_STATS",
     "P_UE_CTLOS_SPACING",
+    "P_UE_CTLOS_OCODE",
     "P_UE_CTLOS_RX_ERRORS",
     "P_UE_LINKNEG_OPTIONS",
     "P_UE_LINKNEG_OPTIONS_STATUS",
