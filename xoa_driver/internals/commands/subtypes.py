@@ -104,7 +104,40 @@ class L1CGMIICaptureSubscriptionType:
 
 _CGMII_CONTROL_SYMBOLS = {0x07: 'I', 0x06: 'LI', 0xFB: 'S', 0xFD: 'T', 0xFE: 'E', 0x9C: 'Q', 0x5C: 'C'}
 
-def cgmii_codeword_str(codeword: L1CGMIICodeword, sep: str = "", traditional=False) -> str:
+_LLR_CTLOS_TYPES = {0x01: 'LLR_ACK', 0x02: 'LLR_NACK', 0x03: 'LLR_INIT', 0x04: 'LLR_INIT_ECHO'}
+_CBFC_CF_UPDATE_TYPE = 0x10
+_LLR_ELIGIBLE_PREAMBLE_MARK = 0x7
+_DEFAULT_CTLOS_OCODE = 0x06
+
+
+def cgmii_llr_info_str(codeword: L1CGMIICodeword, ctlos_ocode: int = _DEFAULT_CTLOS_OCODE) -> str:
+    """Decode the UEC 1.1 link layer protocol content (LLR, CBFC) of a codeword, or return an empty string.
+
+    Only a lane 0 start of an LLR-eligible frame (Table 5-1) and a CtlOS (Tables 5-8, 5-20, 5-28) are decoded.
+    """
+    lanes = [(codeword.data >> (56 - 8 * lane)) & 0xFF for lane in range(8)]
+    lane0_only_ctrl = (codeword.ctrl & 0xFF) == 0x80
+
+    if lane0_only_ctrl and lanes[0] == 0xFB and (lanes[1] & 0x0F) == _LLR_ELIGIBLE_PREAMBLE_MARK:
+        frame_seq = ((lanes[1] >> 4) << 16) | (lanes[2] << 8) | lanes[3]
+        return f'LLR_FRAME seq=0x{frame_seq:05X}'
+
+    if not lane0_only_ctrl or lanes[0] != 0x5C or (lanes[4] & 0x0F) != ctlos_ocode:
+        return ''
+    msg_type = lanes[1]
+    seq = (lanes[2] << 12) | (lanes[3] << 4) | (lanes[4] >> 4)
+    if msg_type in (0x01, 0x02):
+        return f'{_LLR_CTLOS_TYPES[msg_type]} seq=0x{seq:05X}'
+    if msg_type in (0x03, 0x04):
+        return f'{_LLR_CTLOS_TYPES[msg_type]} seq=0x{seq:05X} data=0x{(lanes[5] << 8) | lanes[6]:04X}'
+    if msg_type == _CBFC_CF_UPDATE_TYPE:
+        cf1_count = ((lanes[2] & 0x07) << 12) | (lanes[3] << 4) | (lanes[4] >> 4)
+        cf2_count = ((lanes[5] & 0x07) << 12) | (lanes[6] << 4) | (lanes[7] >> 4)
+        return f'CF_UPDATE cf1=vc{lanes[2] >> 3}:{cf1_count} cf2=vc{lanes[5] >> 3}:{cf2_count}'
+    return f'CTLOS type=0x{msg_type:02X}'
+
+
+def cgmii_codeword_str(codeword: L1CGMIICodeword, ctlos_ocode:int = _DEFAULT_CTLOS_OCODE, sep: str = "", traditional=False, llr: bool = False) -> str:
     """Show the 8 lanes of a CGMII codeword by symbol name, lane 0 (the most significant byte of ``data``) first.
 
     Control characters are /I/ idle, /LI/ low power idle, /S/ start, /T/ terminate, /E/ error,
@@ -113,9 +146,17 @@ def cgmii_codeword_str(codeword: L1CGMIICodeword, sep: str = "", traditional=Fal
 
     :param codeword: the CGMII codeword
     :type codeword: L1CGMIICodeword
+    :param ctlos_ocode: the O-code in D4[3:0] of a CtlOS, only used to decode the protocol information
+    :type ctlos_ocode: int
     :param sep: the text between the symbols
     :type sep: str
-    :return: the symbols, e.g. ``SPPPPPPF``
+    :param traditional: show each symbol between slashes, e.g. ``/S//D/``
+    :type traditional: bool
+    :param llr: append the UEC link layer protocol information (UEC 1.1, section 5.1 and 5.2.6) when the codeword
+        is an LLR-eligible frame start (``LLR_FRAME seq=0x4A2D3``) or a CtlOS (``LLR_ACK seq=0x12345``,
+        ``LLR_NACK seq=...``, ``LLR_INIT seq=... data=...``, ``LLR_INIT_ECHO seq=... data=...``, ``CF_UPDATE cf1=vc<n>:<count> cf2=vc<n>:<count>``)
+    :type llr: bool
+    :return: the symbols, e.g. ``SPPPPPPF``, or ``CDDDDDDD LLR_ACK seq=0x12345`` with ``llr``
     :rtype: str
     """
     symbols = []
@@ -132,4 +173,6 @@ def cgmii_codeword_str(codeword: L1CGMIICodeword, sep: str = "", traditional=Fal
         else:
             symbol = 'D'
         symbols.append(f'/{symbol}/' if traditional else symbol)
-    return sep.join(symbols)
+    result = sep.join(symbols)
+    info = cgmii_llr_info_str(codeword, ctlos_ocode) if llr else ''
+    return f'{result} {info}' if info else result
