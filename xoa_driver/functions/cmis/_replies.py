@@ -7,9 +7,10 @@ class CMDBaseReply:
         """integer, indicates the CDB IO status.
 
         * 0: Idle, transceiver is not processing a CDB command.
-        * 1: Finished, transceiver has finished processing a CDB command. It is ready to accept a new CDB command.
+        * 1: Finished, transceiver has finished processing a CDB command. It is ready to accept a new CDB command. Check ``cdb_status``: ``0x01`` success, ``0x4x`` the transceiver rejected the command (do not resend).
         * 2: Timeout, transceiver has timed out while processing a CDB command. It is ready to accept a new CDB command.
         * 3: In progress: transceiver is currently processing a CDB command. It is not ready to accept a new CDB command.
+        * 4: Failed, the tester could not access the transceiver (I2C read/write failure or I2C lock not available). The command can be sent again.
         """
         self.cdb_status: int = reply['cdb_status']
         """
@@ -558,9 +559,10 @@ class CustomCMDReply():
         """integer, indicates the CDB IO status.
 
         * 0: Idle, transceiver is not processing a CDB command.
-        * 1: Finished, transceiver has finished processing a CDB command. It is ready to accept a new CDB command.
+        * 1: Finished, transceiver has finished processing a CDB command. It is ready to accept a new CDB command. Check ``cdb_status``: ``0x01`` success, ``0x4x`` the transceiver rejected the command (do not resend).
         * 2: Timeout, transceiver has timed out while processing a CDB command. It is ready to accept a new CDB command.
         * 3: In progress: transceiver is currently processing a CDB command. It is not ready to accept a new CDB command.
+        * 4: Failed, the tester could not access the transceiver (I2C read/write failure or I2C lock not available). The command can be sent again.
 
         """
 

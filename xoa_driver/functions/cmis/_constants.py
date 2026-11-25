@@ -23,3 +23,16 @@ class CdbCommandCoarseStatus(IntEnum):
     SUCCESS     = 0x01
     IN_PROGRESS = 0x80
     FAILED      = 0x40
+
+
+class CdbIoStatus(IntEnum):
+    """Xena-specific state of the CDB operation in the tester (``cdb_io_status`` in the replies)."""
+    IDLE        = 0
+    FINISHED    = 1
+    TIMEOUT     = 2
+    IN_PROGRESS = 3
+    FAILED      = 4
+
+
+#: cdb_io_status values that end a CDB operation; stop polling the reply on these.
+CDB_IO_STATUS_DONE = (CdbIoStatus.FINISHED, CdbIoStatus.TIMEOUT, CdbIoStatus.FAILED)
