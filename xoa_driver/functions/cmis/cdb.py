@@ -1097,7 +1097,7 @@ async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmwa
         await cmd_0101h_start_firmware_download_cmd(port, cdb_instance, firmware_header_size, firmware_header_data)
         while True:
             reply = await cmd_0101h_start_firmware_download_reply(port, cdb_instance)
-            if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+            if reply.cdb_io_status in CDB_IO_STATUS_DONE:
                 break
             await asyncio.sleep(0.1)
 
@@ -1126,7 +1126,7 @@ async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmwa
                 # Wait for completion by polling cdb_io_status
                 while True:
                     reply = await write_func_map["write_reply_func"](port, cdb_instance)
-                    if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+                    if reply.cdb_io_status in CDB_IO_STATUS_DONE:
                         break
                     await asyncio.sleep(0.1)
 
@@ -1142,7 +1142,7 @@ async def _write_data_block_loop(port: GenericL23Port, cdb_instance: int, firmwa
         await cmd_0107h_complete_firmware_download_cmd(port, cdb_instance)
         while True:
             reply = await cmd_0107h_complete_firmware_download_reply(port, cdb_instance)
-            if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+            if reply.cdb_io_status in CDB_IO_STATUS_DONE:
                 break
             await asyncio.sleep(0.1)
 
@@ -1170,7 +1170,7 @@ async def _abort_firmware_download(port: GenericL23Port, cdb_instance: int, use_
         await cmd_0102h_abort_firmware_download_cmd(port, cdb_instance)
         while True:
             reply = await cmd_0102h_abort_firmware_download_reply(port, cdb_instance)
-            if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+            if reply.cdb_io_status in CDB_IO_STATUS_DONE:
                 break
             await asyncio.sleep(0.1)
 
@@ -1183,7 +1183,7 @@ async def _abort_firmware_download(port: GenericL23Port, cdb_instance: int, use_
         await cmd_0107h_complete_firmware_download_cmd(port, cdb_instance)
         while True:
             reply = await cmd_0107h_complete_firmware_download_reply(port, cdb_instance)
-            if reply.cdb_io_status == 1 or reply.cdb_io_status == 2:
+            if reply.cdb_io_status in CDB_IO_STATUS_DONE:
                 break
             await asyncio.sleep(0.1)
 
